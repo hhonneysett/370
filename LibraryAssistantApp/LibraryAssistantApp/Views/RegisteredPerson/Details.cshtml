@@ -1,0 +1,67 @@
+﻿@model LibraryAssistantApp.Models.Registered_Person
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>My Details</h4>
+        <hr />
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Person_Title1.Person_Title1)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Person_Title1.Person_Title1)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Person_Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Person_Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Person_Surname)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Person_Surname)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Person_Email)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Person_Email)
+            </dd>
+               
+            <dt>
+                @Html.DisplayNameFor(model => model.Person_Level.Level_Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Person_Level.Level_Name)
+            </dd>
+                      
+        </dl>
+        @Html.ActionLink("Update Details", "UpdateDetails")
+    </div>
+    @{
+        Html.RenderAction("StudentTopic", "PersonTopic");
+    }
+</body>
+</html>

@@ -1,0 +1,144 @@
+﻿@using LibraryAssistantApp.Models
+@model List<Venue>
+
+@{
+    ViewBag.Title = "GetDiscussionRoomVenues";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    var details = (DiscussionRoomBooking)Session["details"];
+    <h4>Discussion Room Booking > @details.date.ToShortDateString() > @details.time.TimeOfDay > @details.length Minutes Duration > @details.campus_ID</h4>
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Please select a venue below:
+            </div>
+            <div class="panel-body">
+                @{
+                    <ul class="nav nav-tabs" id="buildingTabs">
+                        @foreach (var building in (List<Building>)Session["buildings"])
+                        {
+                            <li><a data-toggle="tab" href="#@building.Building_ID">@building.Building_Name</a></li>
+                        }
+                    </ul>
+
+                    <div class="tab-content" id="tabContent">
+                        @foreach (var building in (List<Building>)Session["buildings"])
+                        {
+                            <div id="@building.Building_ID" class="tab-pane fade">
+                                <table class="table" id="venueTable">
+                                    <tr>
+                                        <th>
+                                            Venue_Name
+                                        </th>
+                                        <th>
+                                            Campus ID
+                                        </th>
+                                        <th>
+                                            Capacity
+                                        </th>
+                                    </tr>
+                                    @foreach (var item in Model)
+                                    {
+                                        if (item.Building_ID.Equals(building.Building_ID))
+                                        {
+                                            <tr onclick="AssignButtonClicked(this)" data-assigned-id="@item.Venue_ID">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Venue_Name)
+                                                </td>
+                                                <td>
+                                                    <span>Floor</span> @Html.DisplayFor(modelItem => item.Building_Floor.Floor_Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Capacity)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="panel-footer">
+                @Html.ActionLink("Back", "BookDiscussionRoom", "Booking", htmlAttributes: new { @class = "btn btn-default" })
+                <input type="submit" id="btnSubmit" data-toggle="modal" data-target="#confirmDetails" value="Submit" class="btn btn-default" disabled="disabled" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                Additional Details:
+            </div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Venue Characteristics:
+                    </div>
+                    <div class="panel-body">
+                        @foreach (var characteristic in (List<Characteristic>)Session["characteristicList"])
+                        {
+                            <input type="checkbox" name="Characteristic_ID" value="@characteristic.Characteristic_ID"> @characteristic.Characteristic_Name <br>
+                        }
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Capacity
+                    </div>
+                    <div>
+                        <div class="panel-body">
+                            <div>
+                                <input type="range" name="ageInputName" id="ageInputId" value="0" step="5" min="0" max="100" oninput="ageOutputId.value = ageInputId.value">
+                                <output name="ageOutputName" id="ageOutputId">0</output>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <input type="submit" id="apply" value="Apply" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmDetailsForm"></div>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#venueTable tr").click(function () {
+                var selected = $(this).hasClass("alert-info");
+                $("#venueTable tr").removeClass("alert-info");
+                
+                if (!selected) {
+                    $(this).addClass("alert-info");
+                }
+                var buttonEnabled = $(this).hasClass("alert-info");
+                if (buttonEnabled) {
+                    $("#btnSubmit").prop('disabled', false)
+                } else {
+                    $("#btnSubmit").prop('disabled', true)
+                }
+            });
+            $(function () {
+                $('#tabContent div:first-child').addClass('in active');
+                $('#buildingTabs li:first-child').addClass('active');
+            });           
+        });
+    </script>
+    }
+
+@*<div class="form-group">
+    <div class="col-md-10">
+        @Html.ActionLink("Back", "BookDiscussionRoom", "Booking", )
+    </div>
+</div>*@
+

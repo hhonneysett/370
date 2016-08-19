@@ -1,0 +1,35 @@
+﻿@model LibraryAssistantApp.Models.Person_Topic
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Person_Topic</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Registered_Person.Person_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Registered_Person.Person_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Topic.Topic_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Topic.Topic_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

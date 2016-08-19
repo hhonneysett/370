@@ -1,0 +1,13 @@
+﻿@using LibraryAssistantApp.Models
+
+@{
+    ViewBag.Title = "View Tutorials";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Tutorials</h2>
+<hr />
+
+@{
+    Html.RenderAction("GetTypes", "Repository");
+}

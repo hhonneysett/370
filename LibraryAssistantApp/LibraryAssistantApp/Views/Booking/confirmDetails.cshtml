@@ -1,0 +1,35 @@
+﻿@using LibraryAssistantApp.Models
+
+<form id="myForm">
+    <div id="confirmDetailsForm">
+        @{
+            var bookingDetails = (DiscussionRoomBooking)Session["details"];
+            var venueDetails = (Venue)Session["venueSelect"];
+        }
+        <table>
+            <tbody>
+                <tr>
+                    <td style="padding-right:5em"><strong>Date:</strong></td>
+                    <td>@bookingDetails.date.ToShortDateString()</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Timeslot:</strong></td>
+                    <td>@bookingDetails.time.TimeOfDay - @bookingDetails.endDate.TimeOfDay</td>
+                </tr>
+                <tr>
+                    <td><strong>Campus:</strong></td>
+                    <td>@bookingDetails.campus_name</td>
+                </tr>
+                <tr>
+                    <td><strong>Building:</strong></td>
+                    <td>@Session["buildingName"]</td>
+                </tr>
+                <tr>
+                    <td><strong>Venue:</strong></td>
+                    <td>@venueDetails.Venue_Name</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>

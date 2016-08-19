@@ -1,0 +1,15 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Person_Topic>
+
+<hr />
+
+<div>
+    <h4>Favourite Topics</h4>
+    <select multiple="" class="form-control" style="padding-bottom:25px">
+        @foreach (var item in Model)
+        {
+            <option>@Html.DisplayFor(modelItem => item.Topic.Topic_Name)</option>
+        }
+    </select>
+</div>
+
+

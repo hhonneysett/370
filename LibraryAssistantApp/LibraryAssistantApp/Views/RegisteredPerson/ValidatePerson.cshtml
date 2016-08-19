@@ -1,0 +1,54 @@
+﻿@model LibraryAssistantApp.Models.Registered_Person
+
+@{
+    Layout = "~/Views/Shared/_LayoutBlank.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Regristration</title>
+</head>
+<body>
+    @using (Html.BeginForm()) 
+    {
+        @Html.AntiForgeryToken()
+        
+        <div class="form-horizontal">
+            <h4>Registration</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="panel-heading">
+                            Username Details
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="col-sm-12 col-md-12">
+                                <p>If you are currently enrolled at the University, please register with your '<strong>u</strong>' or '<strong>p</strong>' username.</p>
+                            </div>
+                            <div class="col-md-12 line-divider">
+                            </div>
+                            @Html.LabelFor(model => model.Person_ID)
+                            <div>
+                                @Html.EditorFor(model => model.Person_ID, new { htmlAttributes = new { @placeholder = "Example: u12345678" } })
+                                @Html.ValidationMessageFor(model => model.Person_ID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="panel-footer">
+                            <div>
+                                <input type="submit" value="Submit" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                       
+        </div>
+    }
+</body>
+</html>

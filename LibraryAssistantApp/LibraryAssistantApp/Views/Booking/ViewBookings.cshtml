@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "ViewBookings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewBookings</h2>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getBookings',
+                success: function (result) {
+                    result.forEach(function (entry) {
+
+                        var startdate = eval(entry.start.slice(1, -1));
+                        var enddate = eval(entry.end.slice(1, -1));
+
+                        entry.start = startdate;
+                        entry.end = enddate;
+
+                        alert(entry.start + ' ' + entry.end)
+                    });
+                    $('#calendar').fullCalendar({
+                        theme: true,
+                        timezone: 'local',
+                        header: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'month,agendaWeek,agendaDay'
+                        },
+
+                        defaultView: 'month',
+                        editable: false,
+                        allDaySlot: false,
+                        selectable: true,
+                        slotMinutes: 30,
+                        events: result
+                    });
+
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+            
+        });
+    </script>
+}
+
+<div id="calendar"></div>
