@@ -291,13 +291,5 @@ namespace LibraryAssistantApp.Controllers
             return Content(site);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

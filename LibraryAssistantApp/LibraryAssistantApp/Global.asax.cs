@@ -21,6 +21,8 @@ namespace LibraryAssistantApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //invoke RegisterGlobalFilters method
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            //start scheduled jobs
+            JobScheduler.Start();
         }
 
         protected void Application_PostAuthenticateRequest()
