@@ -203,11 +203,9 @@ namespace LibraryAssistantApp.Controllers
                             select new
                             {
                                 id = e.Venue_Booking_Seq,
-                                title = e.Description,
-                                start = e.DateTime_From,
-                                end = e.DateTime_To,
-                                someKey = e.Venue_Booking_Seq,
-                                allDay = false
+                                text = e.Description,
+                                start_date = e.DateTime_From.ToString(),
+                                end_date = e.DateTime_To.ToString(),
                             };
 
             //create an array object from the event list
@@ -215,6 +213,48 @@ namespace LibraryAssistantApp.Controllers
 
             //return a JSON object
             return Json(rows, JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: Selected booking details
+        [HttpGet]
+        public PartialViewResult getBookingDetails(int id)
+        {
+            //get the selected venue booking object
+            var booking = db.Venue_Booking.Where(v => v.Venue_Booking_Seq.Equals(id)).FirstOrDefault();
+
+            //get building name
+            var buildingName = (from b in db.Buildings
+                                where b.Building_ID.Equals(booking.Building_ID)
+                                select b.Building_Name).FirstOrDefault();
+
+            //get campus name
+            var campusName = (from c in db.Campus
+                              where c.Campus_ID.Equals(booking.Campus_ID)
+                              select c.Campus_Name).FirstOrDefault();
+
+            //get venue name
+            var venueName = (from v in db.Venues
+                             where v.Venue_ID.Equals(booking.Venue_ID)
+                             select v.Venue_Name).FirstOrDefault();
+
+            //create an instance of the view model
+            BookingDetailsModel a = new BookingDetailsModel
+            {
+                type = booking.Description,
+                building = buildingName,
+                campus = campusName,
+                date = booking.DateTime_From.ToShortDateString(),
+                timeslot = booking.DateTime_From.TimeOfDay + " - " + booking.DateTime_To.TimeOfDay,
+                venue = venueName,
+            };
+            return PartialView(a);
+        }
+
+        // GET : Cancel selected booking
+        [HttpGet]
+        public ActionResult cancelBooking()
+        {
+            return RedirectToAction("ViewBookings");
         }
     }
 }
