@@ -74,8 +74,8 @@
                                 $(this).load('/Booking/getBookingDetails/?id=' + id);
                             },
                             buttons: {
-                                "Edit": function () {
-                                    addUserInfo();
+                                "Cancel Booking": function () {
+                                    window.location.href = '@Url.Action("cancelBooking", "Booking")';
                                 },
                                 Cancel: function () {
                                     $(this).dialog("close");

@@ -193,6 +193,8 @@ namespace LibraryAssistantApp.Models
 
     public class BookingDetailsModel
     {
+        public int booking_seq { get; set; }
+
         [Display(Name ="Type")]
         public string type { get; set; }
 
