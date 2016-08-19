@@ -1,6 +1,7 @@
 ﻿using LibraryAssistantApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -240,6 +241,7 @@ namespace LibraryAssistantApp.Controllers
             //create an instance of the view model
             BookingDetailsModel a = new BookingDetailsModel
             {
+                booking_seq = booking.Venue_Booking_Seq,
                 type = booking.Description,
                 building = buildingName,
                 campus = campusName,
@@ -247,6 +249,10 @@ namespace LibraryAssistantApp.Controllers
                 timeslot = booking.DateTime_From.TimeOfDay + " - " + booking.DateTime_To.TimeOfDay,
                 venue = venueName,
             };
+
+            //save booking details model to the session data
+            Session["selectedBookingDetails"] = a;
+
             return PartialView(a);
         }
 
@@ -254,7 +260,44 @@ namespace LibraryAssistantApp.Controllers
         [HttpGet]
         public ActionResult cancelBooking()
         {
-            return RedirectToAction("ViewBookings");
+            return View();
+        }
+
+        // POST: Cancel selected booking
+        [HttpGet]
+        public ActionResult captureCancel()
+        {
+            var a = (BookingDetailsModel)Session["selectedBookingDetails"];
+
+            //get selected booking object from database
+            var cancelledBooking = db.Venue_Booking.Where(b => b.Venue_Booking_Seq.Equals(a.booking_seq)).FirstOrDefault();
+            var cancelledPersonBooking = db.Venue_Booking_Person.Where(p => p.Venue_Booking_Seq.Equals(a.booking_seq)).FirstOrDefault();
+
+            //change booking status to cancelled
+            cancelledBooking.Booking_Status = "Cancelled";
+            cancelledPersonBooking.Attendee_Status = "Cancelled";
+
+            //capture the cancellation
+            db.Entry(cancelledBooking).State = EntityState.Modified;
+            db.Entry(cancelledPersonBooking).State = EntityState.Modified;
+            db.SaveChanges();
+
+            //set notification information
+            TempData["Message"] = "Booking successfuly cancelled";
+            TempData["classStyle"] = "success";
+
+            //go back to the main view bookings folder
+            var site = Url.Action("ViewBookings", "Booking");
+            return Content(site);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

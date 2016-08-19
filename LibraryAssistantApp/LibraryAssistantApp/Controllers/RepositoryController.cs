@@ -384,5 +384,14 @@ namespace LibraryAssistantApp.Controllers
                 return View("ViewTutorials");
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

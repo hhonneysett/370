@@ -496,6 +496,7 @@
     <Content Include="Views\Booking\confirmDetails.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Booking\getBookingDetails.cshtml" />
+    <Content Include="Views\Booking\cancelBooking.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
