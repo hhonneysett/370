@@ -33,18 +33,13 @@ namespace LibraryAssistantApp
                         "~/Content/navbar-style.css",
                         "~/Content/metisMenu.css", 
                         "~/Content/font-awesome.css",
-                        "~/Content/jquery.timepicker.min.css"));
+                        "~/Content/jquery.timepicker.min.css",
+                        "~/Content/dhtmlxscheduler.css"));
 
-            //fullcalendar styling
-            bundles.Add(new StyleBundle("~/Content/fullcalendarcss").Include(
-                "~/Content/themes/base/jquery.ui.all.css",
-                "~/Content/fullcalendar.css"));
-
-            //fullcalendar scripts
-            bundles.Add(new ScriptBundle("~/bundles/fullcalendarjs").Include(
-                "~/Scripts/jquery-ui-{version}.min.js",
-                "~/Scripts/moment.min.js",
-                "~/Scripts/fullcalendar.js"));
+            bundles.Add(new ScriptBundle("~/bundles/headScripts").Include(
+                "~/Scripts/Scheduler/dhtmlxscheduler.js",
+                "~/Scripts/Scheduler/dhtmlxscheduler_agenda_view.js",
+                "~/Scripts/moment.min.js"));
         }
     }
 }

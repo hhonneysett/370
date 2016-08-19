@@ -190,4 +190,25 @@ namespace LibraryAssistantApp.Models
         [Display(Name ="One Time Pin")]
         public string pin { get; set; }
     }
+
+    public class BookingDetailsModel
+    {
+        [Display(Name ="Type")]
+        public string type { get; set; }
+
+        [Display(Name ="Date")]
+        public string date { get; set; }
+
+        [Display(Name ="Timeslot")]
+        public string timeslot { get; set; }
+
+        [Display(Name ="Campus")]
+        public string campus { get; set; }
+
+        [Display(Name ="Building")]
+        public string building { get; set; }
+
+        [Display(Name ="Venue")]
+        public string venue { get; set; }
+    }
 }

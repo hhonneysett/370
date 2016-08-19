@@ -61,8 +61,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
@@ -121,10 +121,23 @@
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\Demo.css" />
+    <Content Include="Content\dhtmlxscheduler.css" />
     <Content Include="Content\font-awesome.css" />
-    <Content Include="Content\fullcalendar.css" />
-    <Content Include="Content\fullcalendar.min.css" />
-    <Content Include="Content\fullcalendar.print.css" />
+    <Content Include="Content\imgs_dhx_terrace\arrow_left.png" />
+    <Content Include="Content\imgs_dhx_terrace\arrow_right.png" />
+    <Content Include="Content\imgs_dhx_terrace\but_repeat.gif" />
+    <Content Include="Content\imgs_dhx_terrace\calendar.gif" />
+    <Content Include="Content\imgs_dhx_terrace\clock_big.gif" />
+    <Content Include="Content\imgs_dhx_terrace\clock_small.gif" />
+    <Content Include="Content\imgs_dhx_terrace\close_icon.png" />
+    <Content Include="Content\imgs_dhx_terrace\collapse_expand_icon.gif" />
+    <Content Include="Content\imgs_dhx_terrace\controls.png" />
+    <Content Include="Content\imgs_dhx_terrace\databg.png" />
+    <Content Include="Content\imgs_dhx_terrace\databg_now.png" />
+    <Content Include="Content\imgs_dhx_terrace\export_ical.png" />
+    <Content Include="Content\imgs_dhx_terrace\export_pdf.png" />
+    <Content Include="Content\imgs_dhx_terrace\resize_dots.png" />
+    <Content Include="Content\imgs_dhx_terrace\resizing.png" />
     <Content Include="Content\jquery.timepicker.min.css" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\navbar-style.css" />
@@ -199,62 +212,11 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\datetimePicker.js" />
-    <Content Include="Scripts\fullcalendar.js" />
-    <Content Include="Scripts\fullcalendar.min.js" />
-    <Content Include="Scripts\gcal.js" />
+    <Content Include="Scripts\Scheduler\dhtmlxscheduler.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.min.js" />
     <Content Include="Scripts\jquery.timepicker.min.js" />
-    <Content Include="Scripts\lang-all.js" />
-    <Content Include="Scripts\lang\ar-ma.js" />
-    <Content Include="Scripts\lang\ar-sa.js" />
-    <Content Include="Scripts\lang\ar-tn.js" />
-    <Content Include="Scripts\lang\ar.js" />
-    <Content Include="Scripts\lang\bg.js" />
-    <Content Include="Scripts\lang\ca.js" />
-    <Content Include="Scripts\lang\cs.js" />
-    <Content Include="Scripts\lang\da.js" />
-    <Content Include="Scripts\lang\de-at.js" />
-    <Content Include="Scripts\lang\de.js" />
-    <Content Include="Scripts\lang\el.js" />
-    <Content Include="Scripts\lang\en-au.js" />
-    <Content Include="Scripts\lang\en-ca.js" />
-    <Content Include="Scripts\lang\en-gb.js" />
-    <Content Include="Scripts\lang\es.js" />
-    <Content Include="Scripts\lang\fa.js" />
-    <Content Include="Scripts\lang\fi.js" />
-    <Content Include="Scripts\lang\fr-ca.js" />
-    <Content Include="Scripts\lang\fr.js" />
-    <Content Include="Scripts\lang\he.js" />
-    <Content Include="Scripts\lang\hi.js" />
-    <Content Include="Scripts\lang\hr.js" />
-    <Content Include="Scripts\lang\hu.js" />
-    <Content Include="Scripts\lang\id.js" />
-    <Content Include="Scripts\lang\is.js" />
-    <Content Include="Scripts\lang\it.js" />
-    <Content Include="Scripts\lang\ja.js" />
-    <Content Include="Scripts\lang\ko.js" />
-    <Content Include="Scripts\lang\lt.js" />
-    <Content Include="Scripts\lang\lv.js" />
-    <Content Include="Scripts\lang\nb.js" />
-    <Content Include="Scripts\lang\nl.js" />
-    <Content Include="Scripts\lang\pl.js" />
-    <Content Include="Scripts\lang\pt-br.js" />
-    <Content Include="Scripts\lang\pt.js" />
-    <Content Include="Scripts\lang\ro.js" />
-    <Content Include="Scripts\lang\ru.js" />
-    <Content Include="Scripts\lang\sk.js" />
-    <Content Include="Scripts\lang\sl.js" />
-    <Content Include="Scripts\lang\sr-cyrl.js" />
-    <Content Include="Scripts\lang\sr.js" />
-    <Content Include="Scripts\lang\sv.js" />
-    <Content Include="Scripts\lang\th.js" />
-    <Content Include="Scripts\lang\tr.js" />
-    <Content Include="Scripts\lang\uk.js" />
-    <Content Include="Scripts\lang\vi.js" />
-    <Content Include="Scripts\lang\zh-cn.js" />
-    <Content Include="Scripts\lang\zh-tw.js" />
     <Content Include="Scripts\loginForm.js" />
     <Content Include="Scripts\metisMenuScripts.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
@@ -278,6 +240,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\Scheduler\dhtmlxscheduler_agenda_view.js" />
     <Content Include="Scripts\siteScripts.js" />
     <Content Include="Scripts\timepickerInt.js" />
     <Content Include="Web.config" />
@@ -532,6 +495,7 @@
     <Content Include="Views\Booking\GetDiscussionRoomVenues.cshtml" />
     <Content Include="Views\Booking\confirmDetails.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Booking\getBookingDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
