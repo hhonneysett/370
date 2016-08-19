@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -189,5 +190,40 @@ namespace LibraryAssistantApp.Models
         [Required(ErrorMessage ="Please provide one time pin")]
         [Display(Name ="One Time Pin")]
         public string pin { get; set; }
+    }
+    public class RoleModel
+    {
+        [Required]
+        public int RoleId { get; set; }
+        [Required]
+        [Display(Name = "Role Name")]
+        public string RoleName { get; set; }
+        public List<RoleActionModel> RoleActions { get; set; }
+    }
+
+    public class RoleActionModel
+    {
+        [Display(Name = "Create")]
+        public bool CreateInd { get; set; }
+        [Display(Name = "Read")]
+        public bool ReadInd { get; set; }
+        [Display(Name = "Update")]
+        public bool UpdateInd { get; set; }
+        [Display(Name = "Delete")]
+        public bool DeleteInd { get; set; }
+        public int ActionId { get; set; }
+        public int RoleId { get; set; }
+        [Display(Name = "Action")]
+        public string ActionName { get; set; }
+
+        public virtual RoleModel Role { get; set; }
+        public virtual ActionModel Action { get; set; }
+    }
+
+    public class ActionModel
+    {
+        public string ActionName { get; set; }
+        public string ActionDescription { get; set; }
+        public List<RoleActionModel> ActionRoles { get; set; }
     }
 }

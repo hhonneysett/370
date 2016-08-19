@@ -289,6 +289,7 @@
     </Key>
     <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="Topic_Seq" Type="int" Nullable="false" />
+    <Property Name="Active_Ind" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Person_Type">
     <Key>
@@ -373,12 +374,11 @@
       <PropertyRef Name="Role_ID" />
     </Key>
     <Property Name="Role_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Role_Name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Role_Name" Type="varchar" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="Role_Action">
     <Key>
-      <PropertyRef Name="Action_ID" />
-      <PropertyRef Name="Role_ID" />
+      <PropertyRef Name="RoleAction_ID" />
     </Key>
     <Property Name="Create_Ind" Type="bit" Nullable="false" />
     <Property Name="Read_Ind" Type="bit" Nullable="false" />
@@ -386,6 +386,7 @@
     <Property Name="Delete_Ind" Type="bit" Nullable="false" />
     <Property Name="Action_ID" Type="int" Nullable="false" />
     <Property Name="Role_ID" Type="int" Nullable="false" />
+    <Property Name="RoleAction_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
   </EntityType>
   <EntityType Name="Style_Type">
     <Key>
@@ -394,6 +395,16 @@
     <Property Name="Style_Type_ID" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Preview" Type="image" Nullable="false" />
     <Property Name="Description" Type="text" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="Topic">
     <Key>
@@ -433,7 +444,6 @@
     <Property Name="Venue_ID" Type="int" Nullable="false" />
     <Property Name="Venue_Name" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="Venue_Type" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="Capacity" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Venue_Booking">
     <Key>
@@ -825,7 +835,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Venue__Venue_Typ__656C112C">
+  <Association Name="FK__Venue__Venue_Typ__4AB81AF0">
     <End Role="Venue_Type" Type="Self.Venue_Type" Multiplicity="1" />
     <End Role="Venue" Type="Self.Venue" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1509,6 +1519,7 @@
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role_Action" EntityType="Self.Role_Action" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Style_Type" EntityType="Self.Style_Type" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Topic" EntityType="Self.Topic" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Topic_Category" EntityType="Self.Topic_Category" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trainer_Topic" EntityType="Self.Trainer_Topic" Schema="dbo" store:Type="Tables" />
@@ -1615,7 +1626,7 @@
       <End Role="Document_Type" EntitySet="Document_Type" />
       <End Role="Document_Repository" EntitySet="Document_Repository" />
     </AssociationSet>
-    <AssociationSet Name="FK__Venue__Venue_Typ__656C112C" Association="Self.FK__Venue__Venue_Typ__656C112C">
+    <AssociationSet Name="FK__Venue__Venue_Typ__4AB81AF0" Association="Self.FK__Venue__Venue_Typ__4AB81AF0">
       <End Role="Venue_Type" EntitySet="Venue_Type" />
       <End Role="Venue" EntitySet="Venue" />
     </AssociationSet>

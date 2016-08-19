@@ -25,7 +25,8 @@ namespace LibraryAssistantApp
                         "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/metisMenu").Include(
-                        "~/Scripts/metisMenu.js"));
+                        "~/Scripts/metisMenu.js",
+                        "~/Scripts/metisMenuScripts.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/bootstrap.css",
@@ -45,6 +46,10 @@ namespace LibraryAssistantApp
                 "~/Scripts/jquery-ui-{version}.min.js",
                 "~/Scripts/moment.min.js",
                 "~/Scripts/fullcalendar.min.js"));
+
+            //checkbox scripts
+            bundles.Add(new ScriptBundle("~/bundles/checkboxjs").Include(
+                "~/Scripts/checkbox.js"));
         }
     }
 }

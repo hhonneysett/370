@@ -12,13 +12,12 @@ namespace LibraryAssistantApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Person_Topic
+    public partial class sysdiagram
     {
-        public string Person_ID { get; set; }
-        public int Topic_Seq { get; set; }
-        public int Active_Ind { get; set; }
-    
-        public virtual Registered_Person Registered_Person { get; set; }
-        public virtual Topic Topic { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

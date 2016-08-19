@@ -10,15 +10,14 @@
 namespace LibraryAssistantApp.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Person_Topic
+    public partial class findBookingVenues_Result1
     {
-        public string Person_ID { get; set; }
-        public int Topic_Seq { get; set; }
-        public int Active_Ind { get; set; }
-    
-        public virtual Registered_Person Registered_Person { get; set; }
-        public virtual Topic Topic { get; set; }
+        public int Campus_ID { get; set; }
+        public int Building_ID { get; set; }
+        public int Building_Floor_ID { get; set; }
+        public int Venue_ID { get; set; }
+        public string Venue_Name { get; set; }
+        public string Venue_Type { get; set; }
     }
 }

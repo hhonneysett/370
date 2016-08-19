@@ -1,6 +1,7 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="ai.0.22.19-build00125.js" />
 /// <reference path="bootstrap.js" />
+/// <reference path="checkbox.js" />
 /// <reference path="datetimepicker.js" />
 /// <reference path="fullcalendar.min.js" />
 /// <reference path="gcal.js" />

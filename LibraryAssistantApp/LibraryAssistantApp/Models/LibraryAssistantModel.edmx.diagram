@@ -25,7 +25,6 @@
         <EntityTypeShape EntityType="LibraryAssistantModel.Document_Access_Log" Width="1.5" PointX="12.75" PointY="23.625" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Document_Category" Width="1.5" PointX="6" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Document_Extension" Width="1.5" PointX="6" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Document_Repository" Width="1.5" PointX="8.25" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Document_Type" Width="1.5" PointX="6" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Period_Type" Width="1.5" PointX="3" PointY="31" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Person_Level" Width="1.5" PointX="3" PointY="20.25" IsExpanded="true" />
@@ -46,10 +45,8 @@
         <EntityTypeShape EntityType="LibraryAssistantModel.Style_Type" Width="1.5" PointX="11.25" PointY="10.25" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Topic" Width="1.5" PointX="8.25" PointY="26.5" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Trainer_Topic" Width="1.5" PointX="15.5" PointY="20.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Venue" Width="1.5" PointX="3" PointY="25.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Booking" Width="1.5" PointX="5.25" PointY="14" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Booking_Person" Width="1.5" PointX="10.5" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Characteristic" Width="1.5" PointX="8.25" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Problem" Width="1.5" PointX="15.5" PointY="23.5" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Type" Width="1.5" PointX="0.75" PointY="29.75" IsExpanded="true" />
         <AssociationConnector Association="LibraryAssistantModel.AttendeeStatus_VenueBookingPerson" ManuallyRouted="false" />
@@ -59,23 +56,15 @@
         <AssociationConnector Association="LibraryAssistantModel.BookingType_VenueBooking" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Building_BuildingFloor" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Campus_Building" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.BuildingFloor_Venue" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PeriodType_Calender" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Colour_CalenderException" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.Venue_CalenderException" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Campus_CalenderRules" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.DayOfWeek_CalenderRules" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PeriodType_CalenderRules" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.Characteristic_VenueCharacteristic" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Clour_PeriodType" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.CommonProblemType_CommonProblem" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.CommonProblemType_VenueProblem" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.DocumentRepository_DocumentAccessLog" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PersonSessionLog_DocumentAccessLog" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.DocumentCategory_DocumentRepository" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.DocumentExtenstion_DocumentRepository" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.DocumentRepository_VenueBookingPerson" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.DocumentType_DocumentRepository" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PersonLevel_PersonRole" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PersonLevel_RegisteredPerson" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PersonType_Person_Level" ManuallyRouted="false" />
@@ -99,28 +88,40 @@
         <AssociationConnector Association="LibraryAssistantModel.PersonCreator_Questionnaire" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PersonInvolved_Questionnaire" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Questionnaire_QuesQuestions" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.Venue_Questionnaire" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.VenueBooking_Questionnaire" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PersonClosed_VenueProblem" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PersonLogged_VenueProblem" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_TrainerTopic" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.VenueBooking_VenueBookingPerson" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.FK__Venue__Venue_Typ__6A30C649" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.Venue_VenueBooking" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.Venue_VenueCharacteristic" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.Venue_VenueProblem" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_VenueBookingPerson" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Person_Level_Venue_Booking" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Topic_Category" ManuallyRouted="false" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Action" Width="1.5" PointX="10.375" PointY="1" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Role" Width="1.5" PointX="0.75" PointY="27" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Role_Action" Width="1.5" PointX="18.625" PointY="13.75" />
         <AssociationConnector Association="LibraryAssistantModel.Action_Action" />
         <AssociationConnector Association="LibraryAssistantModel.Action_PerSesActionLog" />
-        <AssociationConnector Association="LibraryAssistantModel.Action_RoleAction" />
         <AssociationConnector Association="LibraryAssistantModel.Role_PersonRole" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Role_Action" Width="1.5" PointX="18.625" PointY="13.625" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.sysdiagram" Width="1.5" PointX="10.375" PointY="4.75" />
+        <AssociationConnector Association="LibraryAssistantModel.Action_RoleAction" />
         <AssociationConnector Association="LibraryAssistantModel.Role_RoleAction" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Document_Repository" Width="1.5" PointX="13.25" PointY="2.75" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Characteristic" Width="1.5" PointX="8.25" PointY="29.75" />
+        <AssociationConnector Association="LibraryAssistantModel.Characteristic_VenueCharacteristic" />
+        <AssociationConnector Association="LibraryAssistantModel.DocumentRepository_DocumentAccessLog" />
+        <AssociationConnector Association="LibraryAssistantModel.DocumentCategory_DocumentRepository" />
+        <AssociationConnector Association="LibraryAssistantModel.DocumentExtenstion_DocumentRepository" />
+        <AssociationConnector Association="LibraryAssistantModel.DocumentRepository_VenueBookingPerson" />
+        <AssociationConnector Association="LibraryAssistantModel.DocumentType_DocumentRepository" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Venue" Width="1.5" PointX="3" PointY="25.875" />
+        <AssociationConnector Association="LibraryAssistantModel.BuildingFloor_Venue" />
+        <AssociationConnector Association="LibraryAssistantModel.Venue_CalenderException" />
+        <AssociationConnector Association="LibraryAssistantModel.Venue_Questionnaire" />
+        <AssociationConnector Association="LibraryAssistantModel.FK__Venue__Venue_Typ__4AB81AF0" />
+        <AssociationConnector Association="LibraryAssistantModel.Venue_VenueBooking" />
+        <AssociationConnector Association="LibraryAssistantModel.Venue_VenueCharacteristic" />
+        <AssociationConnector Association="LibraryAssistantModel.Venue_VenueProblem" />
         <AssociationConnector Association="LibraryAssistantModel.Venue_Role" />
         </Diagram>
     </edmx:Diagrams>

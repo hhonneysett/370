@@ -31,7 +31,6 @@ namespace LibraryAssistantApp.Models
         public int Venue_ID { get; set; }
         public string Venue_Name { get; set; }
         public string Venue_Type { get; set; }
-        public int Capacity { get; set; }
     
         public virtual Building_Floor Building_Floor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
