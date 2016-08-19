@@ -346,18 +346,10 @@
             });
         })(jQuery);
     </script>
-    @try
-    {
-        @RenderSection("script")
-    }
-    catch
-    {
-
-    }
 
     @Scripts.Render("~/Scripts/timepickerInt.js")
     @Scripts.Render("~/Scripts/siteScripts.js")
 
-    @RenderSection("scripts", required: false)
+    @RenderSection("script", required: false)
 </body>
 </html>

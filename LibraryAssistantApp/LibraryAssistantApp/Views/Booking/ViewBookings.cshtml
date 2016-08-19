@@ -14,15 +14,11 @@
                 url: '/Booking/getBookings',
                 success: function (result) {
                     result.forEach(function (entry) {
-
-                        var startdate = eval(entry.start.slice(1, -1));
-                        var enddate = eval(entry.end.slice(1, -1));
-
-                        entry.start = startdate;
-                        entry.end = enddate;
-
-                        alert(entry.start + ' ' + entry.end)
+                        var start = moment(entry.start).format('DD/MM/yyyy hh:mm');
+                        var end = moment(entry.end).format('DD/MM/yyyy hh:mm');
+                        alert(start + ' ' + end)
                     });
+                    var eventsList = result;
                     $('#calendar').fullCalendar({
                         theme: true,
                         timezone: 'local',
@@ -37,7 +33,7 @@
                         allDaySlot: false,
                         selectable: true,
                         slotMinutes: 30,
-                        events: result
+                        events: eventsList,
                     });
 
                 },
