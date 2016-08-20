@@ -518,10 +518,14 @@
     <Content Include="Views\Booking\getBookingDetails.cshtml" />
     <Content Include="Views\Booking\cancelBooking.cshtml" />
     <Content Include="Views\Booking\employeeViewBookings.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Question_Bank\Create.cshtml" />
     <Content Include="Views\Question_Bank\Delete.cshtml" />
     <Content Include="Views\Question_Bank\Edit.cshtml" />
     <Content Include="Views\Question_Bank\Index.cshtml" />
+=======
+    <Content Include="Views\Booking\employeeBookDiscussionRoom.cshtml" />
+>>>>>>> master
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
