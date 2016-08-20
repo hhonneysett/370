@@ -268,7 +268,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
-    <Compile Include="Controllers\Question_BankController.cs" />
     <Compile Include="Controllers\RegisteredPersonController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
     <Compile Include="Controllers\VenueController.cs" />
@@ -407,14 +406,12 @@
     <Compile Include="Models\Possible_Answer.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QuestionBank.cs" />
     <Compile Include="Models\Questionnaire.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Questionnaire_Questions.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QuestionTopic.cs" />
     <Compile Include="Models\Question_Bank.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
@@ -518,14 +515,7 @@
     <Content Include="Views\Booking\getBookingDetails.cshtml" />
     <Content Include="Views\Booking\cancelBooking.cshtml" />
     <Content Include="Views\Booking\employeeViewBookings.cshtml" />
-<<<<<<< HEAD
-    <Content Include="Views\Question_Bank\Create.cshtml" />
-    <Content Include="Views\Question_Bank\Delete.cshtml" />
-    <Content Include="Views\Question_Bank\Edit.cshtml" />
-    <Content Include="Views\Question_Bank\Index.cshtml" />
-=======
     <Content Include="Views\Booking\employeeBookDiscussionRoom.cshtml" />
->>>>>>> master
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
