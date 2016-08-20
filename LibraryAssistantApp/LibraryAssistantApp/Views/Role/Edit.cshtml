@@ -29,16 +29,16 @@
                             Action Name
                         </th>
                         <th>
-                            Create<input type="checkbox" id="checkCa" />
+                            Create<input type="checkbox" class="check-create-a" checked="checked"/>
                         </th>
                         <th>
-                            Read<input type="checkbox" id="checkRa" />
+                            Read<input type="checkbox" class="check-read-a" checked="checked"/>
                         </th>
                         <th>
-                            Update<input type="checkbox" id="checkUa" />
+                            Update<input type="checkbox" class="check-update-a" checked="checked"/>
                         </th>
                         <th>
-                            Delete<input type="checkbox" id="checkDa" />
+                            Delete<input type="checkbox" class="check-delete-a" checked="checked"/>
                         </th>
                     </tr>
                 </thead>
@@ -53,22 +53,23 @@
                                 @Html.DisplayFor(m => m.actionList[i].Action.Action_Name)
                             </td>
                             <td>
-                                @Html.CheckBoxFor(m => m.actionList[i].Create_Ind, htmlAttributes: new { @class = "checkC" })
+                                @Html.CheckBoxFor(m => m.actionList[i].Create_Ind, htmlAttributes: new { @class = "check-create" })
                             </td>
                             <td>
-                                @Html.CheckBoxFor(m => m.actionList[i].Read_Ind, htmlAttributes: new { @class = "checkR" })
+                                @Html.CheckBoxFor(m => m.actionList[i].Read_Ind, htmlAttributes: new { @class = "check-read" })
                             </td>
                             <td>
-                                @Html.CheckBoxFor(m => m.actionList[i].Update_Ind, htmlAttributes: new { @class = "checkU" })
+                                @Html.CheckBoxFor(m => m.actionList[i].Update_Ind, htmlAttributes: new { @class = "check-update" })
                             </td>
                             <td>
-                                @Html.CheckBoxFor(m => m.actionList[i].Delete_Ind, htmlAttributes: new { @class = "checkD" })
+                                @Html.CheckBoxFor(m => m.actionList[i].Delete_Ind, htmlAttributes: new { @class = "check-delete" })
                             </td>
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>       
         </div>
+        @Html.ActionLink("Delete", "Delete", new { id = Model.role.Role_ID })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
@@ -76,9 +77,7 @@
         </div>
     </div>
 }
-
 @Scripts.Render("~/bundles/checkboxjs")
-
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

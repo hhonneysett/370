@@ -1,35 +1,35 @@
 ﻿    $(document).ready(function () {
-        $('#checkCa').click(function () {
+        $('.check-create-a').click(function () {
             if ($(this).is(":checked"))
-                $('.checkC').prop('checked', true);
+                $('.check-create').prop('checked', true);
             else
-                $('.checkC').prop('checked', false);
+                $('.check-create').prop('checked', false);
         });
     });
 
     $(document).ready(function () {
-        $('#checkRa').click(function () {
+        $('.check-read-a').click(function () {
             if ($(this).is(":checked"))
-                $('.checkR').prop('checked', true);
+                $('.check-read').prop('checked', true);
             else
-                $('.checkR').prop('checked', false);
+                $('.check-read').prop('checked', false);
         });
     });
 
     $(document).ready(function () {
-        $('#checkUa').click(function () {
+        $('.check-update-a').click(function () {
             if ($(this).is(":checked"))
-                $('.checkU').prop('checked', true);
+                $('.check-update').prop('checked', true);
             else
-                $('.checkU').prop('checked', false);
+                $('.check-update').prop('checked', false);
         });
     });
 
     $(document).ready(function () {
-        $('#checkDa').click(function () {
+        $('.check-delete-a').click(function () {
             if ($(this).is(":checked"))
-                $('.checkD').prop('checked', true);
+                $('.check-delete').prop('checked', true);
             else
-                $('.checkD').prop('checked', false);
+                $('.check-delete').prop('checked', false);
         });
     });

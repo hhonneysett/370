@@ -147,18 +147,40 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Role/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            RoleEditModel roleModel = new RoleEditModel();
+            roleModel.role = db.Roles.Find(id);
+            if (roleModel.role == null)
+            {
+                return HttpNotFound();
+            }
+            roleModel.actionList = db.Role_Action.Where(
+                    i => i.Role_ID == id.Value).ToList();
+
+            return View(roleModel);
         }
 
         // POST: Role/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id, RoleEditModel roleEdit)
         {
             try
             {
                 // TODO: Add delete logic here
+                Role r = db.Roles.Find(id);
+                db.Roles.Remove(r);
+
+                foreach (var o in roleEdit.actionList)
+                {
+                    Role_Action ra = db.Role_Action.Find(o.RoleAction_ID);
+                    db.Role_Action.Remove(ra);
+                }
+                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
