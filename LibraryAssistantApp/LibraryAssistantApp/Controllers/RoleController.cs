@@ -1,10 +1,12 @@
 ﻿using LibraryAssistantApp.Models;
+using System.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
 
 namespace LibraryAssistantApp.Controllers
 {
@@ -13,9 +15,27 @@ namespace LibraryAssistantApp.Controllers
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
         
         // GET: Role
-        public ActionResult Index()
+        public ActionResult Index(int? id, int? actionID)
         {
-            return View();
+            var viewModel = new RoleIndexModel();
+            viewModel.Roles = db.Roles
+                .Include(i => i.Role_Action.Select(x => x.Action));
+
+            if (id != null)
+            {
+                ViewBag.RoleID = id.Value;
+                viewModel.RoleActions = viewModel.Roles.Single(
+                    i => i.Role_ID == id.Value).Role_Action;
+            }
+
+            if (actionID != null)
+            {
+                ViewBag.ActionID = actionID.Value;
+                viewModel.Actions = db.Actions.Where(
+                    i => i.Action_ID == actionID);
+            }
+
+            return View(viewModel);
         }
 
         // GET: Role/Details/5
@@ -76,7 +96,7 @@ namespace LibraryAssistantApp.Controllers
                 }
                 db.SaveChanges();
 
-                return RedirectToAction("Home","Index");
+                return RedirectToAction("Index","Role");
             }
             catch
             {
@@ -86,25 +106,44 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Role/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            RoleEditModel roleModel = new RoleEditModel();
+            roleModel.role = db.Roles.Find(id);
+            if (roleModel.role == null)
+            {
+                return HttpNotFound();
+            }
+            roleModel.actionList = db.Role_Action.Where(
+                    i => i.Role_ID == id.Value).ToList();
+
+            return View(roleModel);
         }
 
         // POST: Role/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, RoleEditModel roleEdit)
         {
-            try
-            {
-                // TODO: Add update logic here
+            Role r = db.Roles.Find(id);
+            r.Role_Name = roleEdit.role.Role_Name;
+            db.Entry(r).State = EntityState.Modified;
 
-                return RedirectToAction("Index");
-            }
-            catch
+            foreach (var o in roleEdit.actionList)
             {
-                return View();
+                Role_Action ra = db.Role_Action.Find(o.RoleAction_ID);
+                ra.Create_Ind = o.Create_Ind;
+                ra.Read_Ind = o.Read_Ind;
+                ra.Update_Ind = o.Update_Ind;
+                ra.Delete_Ind = o.Delete_Ind;
+                db.Entry(ra).State = EntityState.Modified;
             }
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Role");
         }
 
         // GET: Role/Delete/5

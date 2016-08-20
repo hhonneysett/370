@@ -30,16 +30,16 @@
                         Action Name
                     </th>
                     <th>
-                        Create<input type="checkbox" id="checkBoxCreateAll" />
+                        Create<input type="checkbox" id="checkCa"/>
                     </th>
                     <th>
-                        Read<input type="checkbox" id="checkBoxReadAll" />
+                        Read<input type="checkbox" id="checkRa" />
                     </th>
                     <th>
-                        Update<input type="checkbox" id="checkBoxUpdateAll" />
+                        Update<input type="checkbox" id="checkUa" />
                     </th>
                     <th>
-                        Delete<input type="checkbox" id="checkBoxDeleteAll" />
+                        Delete<input type="checkbox" id="checkDa" />
                     </th>
                 </tr>
             </thead>
@@ -52,16 +52,16 @@
                             @Html.DisplayFor(m => m.RoleActions[i].ActionName)
                         </td>
                         <td>
-                            @Html.CheckBoxFor(m => m.RoleActions[i].CreateInd, htmlAttributes: new { @class = "checkCreate"})
+                            @Html.CheckBoxFor(m => m.RoleActions[i].CreateInd, htmlAttributes: new { @class = "checkC" })
                         </td>
                         <td>
-                            @Html.CheckBoxFor(m => m.RoleActions[i].ReadInd, htmlAttributes: new { @class = "checkRead" })
+                            @Html.CheckBoxFor(m => m.RoleActions[i].ReadInd, htmlAttributes: new { @class = "checkR" })
                         </td>
                         <td>
-                            @Html.CheckBoxFor(m => m.RoleActions[i].UpdateInd, htmlAttributes: new { @class = "checkUpdate" })
+                            @Html.CheckBoxFor(m => m.RoleActions[i].UpdateInd, htmlAttributes: new { @class = "checkU" })
                         </td>
                         <td>
-                            @Html.CheckBoxFor(m => m.RoleActions[i].DeleteInd, htmlAttributes: new { @class = "checkDelete" })
+                            @Html.CheckBoxFor(m => m.RoleActions[i].DeleteInd, htmlAttributes: new { @class = "checkD" })
                         </td>
                         <td>
 

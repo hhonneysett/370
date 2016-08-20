@@ -226,4 +226,17 @@ namespace LibraryAssistantApp.Models
         public string ActionDescription { get; set; }
         public List<RoleActionModel> ActionRoles { get; set; }
     }
+
+    public class RoleIndexModel
+    {
+        public IEnumerable<Role> Roles { get; set; }
+        public IEnumerable<Action> Actions { get; set; }
+        public IEnumerable<Role_Action> RoleActions { get; set; }
+    }
+
+    public class RoleEditModel
+    {
+        public Role role { get; set; }
+        public List<Role_Action> actionList { get; set; }
+    }
 }

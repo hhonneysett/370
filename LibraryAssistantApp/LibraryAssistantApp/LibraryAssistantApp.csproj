@@ -542,6 +542,8 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\View.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,127 @@
+﻿@using System.Web.Optimization
+@model LibraryAssistantApp.Models.RoleIndexModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Roles</h2>
+<div class="row">
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-default" })
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Role Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Roles)
+    {
+        string selectedRow = "";
+        if (item.Role_ID == ViewBag.RoleID)
+        {
+            selectedRow = "selectedrow";
+        }
+        <tr class="@selectedRow">
+            <td>
+                @item.Role_Name
+            </td>
+            <td>
+                @Html.ActionLink("Select", "Index", new { id = item.Role_ID })
+                @Html.ActionLink("Update", "Edit", new { id = item.Role_ID })
+            </td>
+        </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+    <div class="col-md-8">
+        @if (Model.RoleActions != null)
+        {
+            <h4>Actions of select role</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Action Name
+                        </th>
+                        <th>
+                            Create
+                        </th>
+                        <th>
+                            Read
+                        </th>
+                        <th>
+                            Update
+                        </th>
+                        <th>
+                            Delete
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.RoleActions)
+                    {
+                        string selectedRow = "";
+                        if (item.Action_ID == ViewBag.actionID)
+                        {
+                            selectedRow = "selectedrow";
+                        }
+                        <tr class="@selectedRow">
+                            <td>
+                                @item.Action.Action_Name
+                            </td>
+                            <td>
+                                @item.Create_Ind
+                            </td>
+                            <td>
+                                @item.Read_Ind
+                            </td>
+                            <td>
+                                @item.Update_Ind
+                            </td>
+                            <td>
+                                @item.Delete_Ind
+                            </td>
+                            <td>
+                                @Html.ActionLink("Select", "Index", new { actionID = item.Action_ID })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+    <div class="col-md-4">
+        @if (Model.Actions != null)
+        {
+            <h4>Action details</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Description of the selected action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Actions)
+                    {
+                        <tr>
+                            <td>
+                                @item.Action_Description
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
