@@ -227,6 +227,57 @@ namespace LibraryAssistantApp.Controllers
             return Json(rows, JsonRequestBehavior.AllowGet);
         }
 
+        // GET: Get bookings based on selected criteria
+        public JsonResult getEmpBookings(string id, string idType)
+        {
+            //create local list
+            IEnumerable<Venue_Booking> bookings;
+
+            //switch to get bookings based on idType
+            switch (idType)
+            {
+                case "personID":
+                    var bookingSeq = (from b in db.Venue_Booking_Person
+                                      where b.Person_ID.Equals(id) && b.Attendee_Status.Equals("Active")
+                                      select b.Venue_Booking_Seq);
+                    bookings = (from a in db.Venue_Booking
+                                where bookingSeq.Contains(a.Venue_Booking_Seq)
+                                select a);
+                    break;
+                case "venueID":
+                    var test = id;
+                    int venueID = Convert.ToInt32(id);
+                    bookings = (from c in db.Venue_Booking
+                                where c.Venue_ID.Equals(venueID) && c.Booking_Status.Equals("Active")
+                                select c);
+                    break;
+                default:
+                    bookings = (from d in db.Venue_Booking
+                                select d);
+                    break;
+            }
+
+            //create list type of bookings
+            List<Venue_Booking> listOfBookings = bookings.ToList();
+
+            //create an event list
+            var eventList = from e in listOfBookings
+                            select new
+                            {
+                                id = e.Venue_Booking_Seq,
+                                text = e.Description,
+                                start_date = e.DateTime_From.ToString(),
+                                end_date = e.DateTime_To.ToString(),
+                            };
+
+            //create an array object from the event list
+            var rows = eventList.ToArray();
+
+            //return a JSON object
+            return Json(rows, JsonRequestBehavior.AllowGet);
+
+        }
+
         // GET: Selected booking details
         [HttpGet]
         public PartialViewResult getBookingDetails(int id)
