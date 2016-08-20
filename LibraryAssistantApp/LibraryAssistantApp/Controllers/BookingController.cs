@@ -15,6 +15,17 @@ namespace LibraryAssistantApp.Controllers
         {
             return View();
         }
+
+        public ActionResult employeeViewBookings()
+        {
+            //get list of campuses
+            var campus = from c in db.Campus
+                         select c;
+
+            //assign list of campuses to a select list
+            ViewBag.Campus_ID = new SelectList(campus, "Campus_ID", "Campus_Name");
+            return View();
+        }
         
         // GET: Book discussion room (student side)
         [HttpGet]
@@ -289,6 +300,57 @@ namespace LibraryAssistantApp.Controllers
             //go back to the main view bookings folder
             var site = Url.Action("ViewBookings", "Booking");
             return Content(site);
+        }
+
+        // GET: Get buildings that match selected campus
+        public JsonResult getBuildingsList(int id)
+        {
+            var buildingQuery = db.Buildings.Where(b => b.Campus_ID.Equals(id));
+            var buildingList = buildingQuery.ToList();
+            var jsonList = from b in buildingList
+                           select new
+                           {
+                               id = b.Building_ID,
+                               text = b.Building_Name,
+                           };
+
+            var rows = jsonList.ToArray();
+
+            return Json(rows, JsonRequestBehavior.AllowGet);
+        }
+
+        //GET: Get levels of selected building
+        public JsonResult getLevelList(int id)
+        {
+            var levelQuery = db.Building_Floor.Where(l => l.Building_ID.Equals(id));
+            var levelList = levelQuery.ToList();
+            var jsonList = from a in levelList
+                           select new
+                           {
+                               id = a.Building_Floor_ID,
+                               text = a.Floor_Name,
+                           };
+
+            var rows = jsonList.ToArray();
+
+            return Json(rows, JsonRequestBehavior.AllowGet);
+        }
+
+        //GET: Get venues of selected level
+        public JsonResult getVenueList(int id)
+        {
+            var venueQuery = db.Venues.Where(v => v.Building_Floor_ID.Equals(id));
+            var venueList = venueQuery.ToList();
+            var jsonList = from a in venueList
+                           select new
+                           {
+                               id = a.Venue_ID,
+                               text = a.Venue_Name,
+                           };
+
+            var rows = jsonList.ToArray();
+
+            return Json(rows, JsonRequestBehavior.AllowGet);
         }
 
     }

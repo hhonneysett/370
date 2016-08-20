@@ -1,0 +1,306 @@
+﻿
+@{
+    ViewBag.Title = "ViewBookings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Bookings</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Bookings For Person:
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <strong>
+                        Person ID:
+                    </strong>
+                </div> 
+                <div class="form-group">
+                    <input type="text" id="personIdInput" placeholder="Enter Person ID" class="form-control" />
+                </div>              
+            </div>
+            <div class="panel-footer">
+                <input type="submit" id="btnPersonId" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Bookings For Venue:
+            </div>
+            <div class="panel-body">
+                <div class="form-group col-md-3">
+                    <label>Campus:</label>
+                    <select class="form-control" id="campusSelectList">
+                        <option disabled selected value> -- select a campus -- </option>
+                        @foreach(var campus in (SelectList)ViewBag.Campus_ID)
+                        {
+                            <option id="@campus.Value">@campus.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Building:</label>
+                    <select class="form-control" id="buildingSelectList" disabled="disabled">
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Level:</label>
+                    <select class="form-control" disabled="disabled" id="levelSelectList">
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Venue:</label>
+                    <select class="form-control" disabled="disabled" id="venueSelectList">
+                    </select>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script{
+    <script type="text/javascript">
+
+        //populate the buildings combo box with buildings relating to the selected campus
+        $("#campusSelectList").change(function () {
+            //get the id of the selected campus
+            var id = $(this).children(":selected").attr("id");
+            alert(id);
+
+            //run ajax request to get all buildings for the selected campus
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getBuildingsList',
+                data: "id=" + id,
+                success: function (result) {
+                    var options = $("#buildingSelectList");
+
+                    //remove existing options from the select to add new options
+                    options.children().remove();
+
+                    //add blank option
+                    options.append($("<option disabled selected value />").text("-- select a building --"));
+
+                    //add an option to the select for each building                    
+                    result.forEach(function (entry) {
+                        options.append($("<option />").val(entry.id).text(entry.text));
+                    });
+                    options.prop('disabled', false)
+                    var level = $("#levelSelectList");
+                    level.prop('disabled', true)
+                    level.children().remove();
+                    var venue = $("#venueSelectList");
+                    venue.prop('disabled', true);
+                    venue.children().remove();
+                },
+                error: function (err, result) {
+                    alert("Error:" + err.responseText);
+                }
+            });
+        });
+
+        //populate the level combo box with buildings relating to the selected campus
+        $("#buildingSelectList").change(function () {
+            //get the id of the selected campus
+            var id = $(this).children(":selected").attr("value");
+
+            //run ajax request to get all buildings for the selected campus
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getLevelList',
+                data: "id=" + id,
+                success: function (result) {
+                    var options = $("#levelSelectList");
+
+                    //remove existing options from the select to add new options
+                    options.children().remove();
+
+                    //add blank option
+                    options.append($("<option disabled selected value />").text("-- select a level --"));
+
+                    //add an option to the select for each building
+                    result.forEach(function (entry) {
+                        options.append($("<option />").val(entry.id).text('Floor ' + entry.text));
+                    });
+                    options.prop('disabled', false)
+                    var venue = $("#venueSelectList");
+                    venue.prop('disabled', true)
+                    venue.children().remove();
+                },
+                error: function (err, result) {
+                    alert("Error:" + err.responseText);
+                }
+            });
+        });
+
+        //populate the venue combo box with buildings relating to the selected campus
+        $("#levelSelectList").change(function () {
+            //get the id of the selected campus
+            var id = $(this).children(":selected").attr("value");
+
+            //run ajax request to get all buildings for the selected campus
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getVenueList',
+                data: "id=" + id,
+                success: function (result) {
+                    var options = $("#venueSelectList");
+
+                    //remove existing options from the select to add new options
+                    options.children().remove();
+
+                    //add blank option
+                    options.append($("<option disabled selected value />").text("-- select a venue --"));
+
+                    //add an option to the select for each building
+                    result.forEach(function (entry) {
+                        options.append($("<option />").val(entry.id).text(entry.text));
+                    });
+                    options.prop('disabled', false)
+                },
+                error: function (err, result) {
+                    alert("Error:" + err.responseText);
+                }
+            });
+        });
+
+        //populate the venue combo box with buildings relating to the selected campus
+        $("#venueSelectList").change(function () {
+            //get the id of the selected campus
+            var id = $(this).children(":selected").attr("value");
+
+            //run ajax request to get all buildings for the selected campus
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getVenueList',
+                data: "id=" + id,
+                success: function (result) {
+                    var options = $("#venueSelectList");
+
+                    //remove existing options from the select to add new options
+                    options.children().remove();
+
+                    //add blank option
+                    options.append($("<option disabled selected value />").text("-- select a venue --"));
+
+                    //add an option to the select for each building
+                    result.forEach(function (entry) {
+                        options.append($("<option />").val(entry.id).text(entry.text));
+                    });
+                    options.prop('disabled', false)
+                },
+                error: function (err, result) {
+                    alert("Error:" + err.responseText);
+                }
+            });
+        });
+
+        //disable person id input if no text
+        $(document).ready(function () {
+            $('#btnPersonId').attr('disabled', true);
+            $('#personIdInput').keyup(function () {
+                if ($(this).val().length != 0)
+                    $('.sendButton').attr('disabled', false);
+                else
+                    $('.sendButton').attr('disabled', true);
+            })
+        });
+    </script>    
+}
+
+@*<div id="scheduler_here" class="dhx_cal_container" style='width:1000px; height:600px;'>
+    <div class="dhx_cal_navline">
+        <div class="dhx_cal_prev_button">&nbsp;</div>
+        <div class="dhx_cal_next_button">&nbsp;</div>
+        <div class="dhx_cal_today_button"></div>
+        <div class="dhx_cal_date"></div>
+        <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+        <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+        <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+        <div class="dhx_cal_tab" name="agenda_tab" style="right:280px;"></div>
+    </div>
+    <div class="dhx_cal_header"></div>
+    <div class="dhx_cal_data"></div>
+</div>
+
+<div id="bookingDetailsForm"></div>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getEmpBookings',
+                data: {filter : inputFilter, filterType : inputFilterType},
+                success: function (result) {
+                    //configuration for the scheduler
+                    scheduler.config.resize_month_events = false;
+                    scheduler.config.first_hour = 8;
+                    scheduler.config.last_hour = 17;
+                    scheduler.config.start_on_monday = true;
+                    scheduler.locale.labels.agenda_tab = "Agenda";
+                    scheduler.config.readonly = true;
+
+
+                    //initialize the scheduler
+                    scheduler.init('scheduler_here', new Date(), "month");
+
+                    //create an events json object
+                    var events = [];
+
+                    //go through list of events and add each event to the json events object
+                    result.forEach(function (entry) {
+                        var event = {
+                            id : entry.id,
+                            text : entry.text,
+                            start_date : moment(entry.start_date).format('MM[/]DD[/]YYYY h:mm:ss'),
+                            end_date: moment(entry.end_date).format('MM[/]DD[/]YYYY h:mm:ss'),
+                        }
+
+                        //adds the event to the events object
+                        events.push(event);
+                    });
+
+                    //passes the events to the scheduler
+                    scheduler.parse(events, "json");//takes the name and format of the data source
+
+                    scheduler.attachEvent("onClick", function (id, e) {
+                        //any custom logic here
+                        $("#bookingDetailsForm").dialog({
+                            autoOpen: true,
+                            position: { my: "center", at: "top+350", of: window },
+                            width: 1000,
+                            resizable: false,
+                            title: 'Booking Details',
+                            modal: true,
+                            open: function () {
+                                $(this).load('/Booking/getBookingDetails/?id=' + id);
+                            },
+                            buttons: {
+                                "Cancel Booking": function () {
+                                    window.location.href = '@Url.Action("cancelBooking", "Booking")';
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                        return false;
+                        return true;
+                    });
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+    </script>
+}*@
