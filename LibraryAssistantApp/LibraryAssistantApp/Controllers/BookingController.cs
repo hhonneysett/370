@@ -35,6 +35,14 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
+        // GET: Book discussion room via helpdesk
+        [HttpGet]
+        public ActionResult employeeBookDiscussionRoom()
+        {
+            ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+            return View();
+        }
+
         // POST: Book discussion room (student side)
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -75,6 +83,64 @@ namespace LibraryAssistantApp.Controllers
 
                 //load the GetDiscussionRoomVenues view
                 return RedirectToAction("GetDiscussionRoomVenues");
+            }
+            ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult employeeBookDiscussionRoom(DiscussionRoomBooking model)
+        {
+            if (ModelState.IsValid)
+            {
+                //get person object
+                var validPersonId = db.Registered_Person.Where(p => p.Person_ID.Equals(model.person_id));
+
+                //check if the submitted person id is valid
+                if (validPersonId.Any())
+                {
+                    //get the time and date components
+                    var time = model.time.TimeOfDay;
+                    var date = model.date.Date;
+
+                    //calculate the start time of the new session
+                    DateTime startDateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
+
+                    //calculate the end time of the new session
+                    TimeSpan duration = new TimeSpan(0, model.length, 0);
+                    DateTime endDateTime = startDateTime.Add(duration);
+                    model.date = startDateTime;
+                    model.endDate = endDateTime;
+
+                    //get the selected campus name and assign it to the model
+                    var campus_name = (from c in db.Campus
+                                       where c.Campus_ID.Equals(model.campus_ID)
+                                       select c.Campus_Name).FirstOrDefault();
+                    model.campus_name = campus_name;
+
+                    //capture the submitted booking details to a session variable
+                    Session["details"] = model;
+
+                    //get all available venues according to the submitted criteria
+                    var venues = db.findBookingVenuesFunc(startDateTime, endDateTime, "Discussion", model.campus_ID);
+                    Session["venues"] = venues.ToList();
+
+                    //get all existing characteristics to provide venue filtering on the form, and save it to a session variable
+                    var characteristics = from c in db.Characteristics
+                                          select c;
+                    Session["characteristicList"] = characteristics.ToList();
+
+                    //load the GetDiscussionRoomVenues view
+                    return RedirectToAction("GetDiscussionRoomVenues");
+                }
+                else
+                {
+                    ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+                    TempData["Message"] = "Invalid Person ID";
+                    TempData["classStyle"] = "warning";
+                    return View(model);
+                }          
             }
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
             return View(model);
@@ -178,7 +244,14 @@ namespace LibraryAssistantApp.Controllers
 
             //set properties of venue booking person object
             vbp.Venue_Booking_Seq = bookingSeq;
-            vbp.Person_ID = User.Identity.Name;
+            if (details.person_id == null)
+            {
+                vbp.Person_ID = User.Identity.Name;
+            }
+            else
+            {
+                vbp.Person_ID = details.person_id;
+            }          
             vbp.Certificate_Ind = 0;
             vbp.Attendee_Type = "Student";
             vbp.Attendee_Status = "Active";

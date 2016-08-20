@@ -153,6 +153,9 @@ namespace LibraryAssistantApp.Models
 
     public class DiscussionRoomBooking
     {
+        [Display(Name ="Person ID")]
+        public string person_id { get; set; }
+
         [Required(ErrorMessage ="Please provide a date selection")]
         [Display(Name ="Date")]
         public DateTime date { get; set; }

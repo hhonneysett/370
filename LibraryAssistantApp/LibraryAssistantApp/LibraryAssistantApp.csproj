@@ -515,6 +515,7 @@
     <Content Include="Views\Booking\getBookingDetails.cshtml" />
     <Content Include="Views\Booking\cancelBooking.cshtml" />
     <Content Include="Views\Booking\employeeViewBookings.cshtml" />
+    <Content Include="Views\Booking\employeeBookDiscussionRoom.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
