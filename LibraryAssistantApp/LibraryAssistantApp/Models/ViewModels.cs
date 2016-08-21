@@ -198,6 +198,12 @@ namespace LibraryAssistantApp.Models
     {
         public int booking_seq { get; set; }
 
+        [Display(Name ="Booking Status")]
+        public string booking_status { get; set; }
+
+        [Display(Name = "Person ID")]
+        public string person_id { get; set; }
+
         [Display(Name ="Type")]
         public string type { get; set; }
 

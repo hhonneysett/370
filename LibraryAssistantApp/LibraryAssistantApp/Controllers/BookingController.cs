@@ -391,6 +391,56 @@ namespace LibraryAssistantApp.Controllers
             return PartialView(a);
         }
 
+        //GET: Employee booking details
+        [HttpGet]
+        public PartialViewResult getEmpBookingDetails(int id)
+        {
+            //get the selected venue booking object
+            var booking = db.Venue_Booking.Where(v => v.Venue_Booking_Seq.Equals(id)).FirstOrDefault();
+
+            //get building name
+            var buildingName = (from b in db.Buildings
+                                where b.Building_ID.Equals(booking.Building_ID)
+                                select b.Building_Name).FirstOrDefault();
+
+            //get campus name
+            var campusName = (from c in db.Campus
+                              where c.Campus_ID.Equals(booking.Campus_ID)
+                              select c.Campus_Name).FirstOrDefault();
+
+            //get venue name
+            var venueName = (from v in db.Venues
+                             where v.Venue_ID.Equals(booking.Venue_ID)
+                             select v.Venue_Name).FirstOrDefault();
+
+            //get person id
+            var personID = (from p in db.Venue_Booking_Person
+                            where p.Venue_Booking_Seq.Equals(booking.Venue_Booking_Seq)
+                            select p.Person_ID).FirstOrDefault();
+
+            //get available booking status
+            ViewBag.Booking_Status1 = new SelectList(db.Booking_Status, "Booking_Status1", "Booking_Status1");
+
+
+            //create an instance of the view model
+            BookingDetailsModel a = new BookingDetailsModel
+            {
+                booking_seq = booking.Venue_Booking_Seq,
+                person_id = personID,
+                type = booking.Description,
+                building = buildingName,
+                campus = campusName,
+                date = booking.DateTime_From.ToShortDateString(),
+                timeslot = booking.DateTime_From.TimeOfDay + " - " + booking.DateTime_To.TimeOfDay,
+                venue = venueName,
+            };
+
+            //save booking details model to the session data
+            Session["selectedBookingDetails"] = a;
+
+            return PartialView(a);
+        }
+
         // GET : Cancel selected booking
         [HttpGet]
         public ActionResult cancelBooking()
@@ -477,5 +527,26 @@ namespace LibraryAssistantApp.Controllers
             return Json(rows, JsonRequestBehavior.AllowGet);
         }
 
+        //GET: Update booking status
+        public void updateStatus(string status)
+        {
+            var a = (BookingDetailsModel)Session["selectedBookingDetails"];
+
+            var updatedBooking = (from b in db.Venue_Booking
+                                  where b.Venue_Booking_Seq.Equals(a.booking_seq)
+                                  select b).FirstOrDefault();
+
+            var updatedPersonBooking = (from p in db.Venue_Booking_Person
+                                        where p.Venue_Booking_Seq.Equals(a.booking_seq)
+                                        select p).FirstOrDefault();
+
+            updatedBooking.Booking_Status = status;
+            updatedPersonBooking.Attendee_Status = status;
+
+            db.Entry(updatedBooking).State = EntityState.Modified;
+            db.Entry(updatedPersonBooking).State = EntityState.Modified;
+
+            db.SaveChanges();
+        }
     }
 }
