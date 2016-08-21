@@ -1,6 +1,23 @@
-﻿    <h4>Actions of select role</h4>
+﻿<script>
+    $(document).ready(function () {
+        $('#result-table-2 tr').click(function () {
+            $('#result-table-2 tr').removeClass('selectedrow');
+            $(this).addClass('selectedrow');
+            var a = $(this).attr('id');
+            $.ajax({
+                type: 'GET',
+                data: { actionID: a },
+                url: '@Url.Action("ActionDetails", "Role")',
+                success: function (result) {
+                    $('#action-details').html(result);
+                }
+            });
+        });
+    });
+</script>
+<h4>Actions of select role</h4>
     <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table"  id="result-table-2">
             <thead>
                 <tr>
                     <th>
@@ -28,7 +45,7 @@
                     {
                         selectedRow = "selectedrow";
                     }
-                    <tr class="@selectedRow">
+                    <tr class="@selectedRow" id="@item.Action_ID">
                         <td>
                             @item.Action.Action_Name
                         </td>
@@ -43,9 +60,6 @@
                         </td>
                         <td>
                             @item.Delete_Ind
-                        </td>
-                        <td>
-                            @Html.ActionLink("Select", "Index", new { actionID = item.Action_ID })
                         </td>
                     </tr>
                 }
