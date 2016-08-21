@@ -50,6 +50,8 @@ namespace LibraryAssistantApp
             //checkbox scripts
             bundles.Add(new ScriptBundle("~/bundles/checkboxjs").Include(
                 "~/Scripts/checkbox.js"));
+            bundles.Add(new ScriptBundle("~/bundles/selectrowjs").Include(
+                "~/Script/selectrow.js"));
         }
     }
 }

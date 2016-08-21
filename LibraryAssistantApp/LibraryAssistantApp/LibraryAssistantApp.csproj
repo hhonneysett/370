@@ -207,6 +207,8 @@
     <Content Include="Scripts\jquery-ui-1.12.0.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.min.js" />
     <Content Include="Scripts\jquery.timepicker.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\lang-all.js" />
     <Content Include="Scripts\lang\ar-ma.js" />
     <Content Include="Scripts\lang\ar-sa.js" />
@@ -279,6 +281,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\selectrow.js" />
     <Content Include="Scripts\siteScripts.js" />
     <Content Include="Scripts\timepickerInt.js" />
     <Content Include="Web.config" />
@@ -541,10 +544,11 @@
     <Content Include="Views\Booking\confirmDetails.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Role\Create.cshtml" />
-    <Content Include="Views\Role\View.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\Edit.cshtml" />
     <Content Include="Views\Role\Delete.cshtml" />
+    <Content Include="Views\Role\ActionDetails.cshtml" />
+    <Content Include="Views\Role\RoleDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -88,6 +88,13 @@ namespace LibraryAssistantApp.Models
         [Display(Name ="Campus Name")]
         public string Campus_Name;
     }
+
+    public class RoleMetadata
+    {
+        [Required(ErrorMessage ="Role name is required")]
+        [Display(Name = "Role Name")]
+        public string Role_Name;
+    }
 }
 
 //    //public class PersonTitleMetadata

@@ -1,0 +1,55 @@
+﻿    <h4>Actions of select role</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Action Name
+                    </th>
+                    <th>
+                        Create
+                    </th>
+                    <th>
+                        Read
+                    </th>
+                    <th>
+                        Update
+                    </th>
+                    <th>
+                        Delete
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.RoleActions)
+                {
+                    string selectedRow = "";
+                    if (item.Action_ID == ViewBag.actionID)
+                    {
+                        selectedRow = "selectedrow";
+                    }
+                    <tr class="@selectedRow">
+                        <td>
+                            @item.Action.Action_Name
+                        </td>
+                        <td>
+                            @item.Create_Ind
+                        </td>
+                        <td>
+                            @item.Read_Ind
+                        </td>
+                        <td>
+                            @item.Update_Ind
+                        </td>
+                        <td>
+                            @item.Delete_Ind
+                        </td>
+                        <td>
+                            @Html.ActionLink("Select", "Index", new { actionID = item.Action_ID })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+

@@ -195,7 +195,7 @@ namespace LibraryAssistantApp.Models
     {
         [Required]
         public int RoleId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Role name is required")]
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
         public List<RoleActionModel> RoleActions { get; set; }

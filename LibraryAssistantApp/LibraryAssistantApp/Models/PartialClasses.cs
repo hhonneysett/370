@@ -46,4 +46,9 @@ namespace LibraryAssistantApp.Models
     public partial class Campus
     {
     }
+
+    [MetadataType(typeof(RoleMetadata))]
+    public partial class Role
+    {
+    }
 }

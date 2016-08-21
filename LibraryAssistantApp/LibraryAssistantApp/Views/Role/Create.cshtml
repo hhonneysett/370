@@ -63,13 +63,11 @@
                         <td>
                             @Html.CheckBoxFor(m => m.RoleActions[i].DeleteInd, htmlAttributes: new { @class = "check-delete" })
                         </td>
-                        <td>
-
-                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+        <span class="field-validation-error text-danger">@ViewBag.Error</span>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
