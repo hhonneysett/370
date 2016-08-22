@@ -47,3 +47,8 @@ textarea {
 .selectedrow {
     background-color: #a4d4e6;
 }
+
+.loading {
+    display:none;
+    float: right;
+}

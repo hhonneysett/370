@@ -1,20 +1,19 @@
-﻿    <h4>Action details</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Description of the selected action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Actions)
-                    {
-                        <tr>
-                            <td>
-                                @item.Action_Description
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+﻿    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>
+                    Description
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Actions)
+            {
+                <tr>
+                    <td>
+                        @item.Action_Description
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

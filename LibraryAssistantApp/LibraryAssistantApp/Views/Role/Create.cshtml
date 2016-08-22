@@ -6,14 +6,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h3>Create Role</h3>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>RoleModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -23,60 +22,60 @@
                 @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
             </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Action Name
-                    </th>
-                    <th>
-                        Create<input type="checkbox" class="check-create-a" checked="checked"/>
-                    </th>
-                    <th>
-                        Read<input type="checkbox" class="check-read-a" checked="checked"/>
-                    </th>
-                    <th>
-                        Update<input type="checkbox" class="check-update-a" checked="checked"/>
-                    </th>
-                    <th>
-                        Delete<input type="checkbox" class="check-delete-a" checked="checked"/>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Model.RoleActions.Count(); i++)
+        <hr />
+            <div class="panel panel-default">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                Action
+                            </th>
+                            <th>
+                                Create<input type="checkbox" class="check-create-a" checked="checked" />
+                            </th>
+                            <th>
+                                Read<input type="checkbox" class="check-read-a" checked="checked" />
+                            </th>
+                            <th>
+                                Update<input type="checkbox" class="check-update-a" checked="checked" />
+                            </th>
+                            <th>
+                                Delete<input type="checkbox" class="check-delete-a" checked="checked" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.RoleActions.Count(); i++)
                 {
-                    @Html.HiddenFor(m => m.RoleActions[i].ActionId)
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(m => m.RoleActions[i].ActionName)
-                        </td>
-                        <td>
-                            @Html.CheckBoxFor(m => m.RoleActions[i].CreateInd, htmlAttributes: new { @class = "check-create" })
-                        </td>
-                        <td>
-                            @Html.CheckBoxFor(m => m.RoleActions[i].ReadInd, htmlAttributes: new { @class = "check-read" })
-                        </td>
-                        <td>
-                            @Html.CheckBoxFor(m => m.RoleActions[i].UpdateInd, htmlAttributes: new { @class = "check-update" })
-                        </td>
-                        <td>
-                            @Html.CheckBoxFor(m => m.RoleActions[i].DeleteInd, htmlAttributes: new { @class = "check-delete" })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <span class="field-validation-error text-danger">@ViewBag.Error</span>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                            @Html.HiddenFor(m => m.RoleActions[i].ActionId)
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(m => m.RoleActions[i].ActionName)
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(m => m.RoleActions[i].CreateInd, htmlAttributes: new { @class = "check-create" })
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(m => m.RoleActions[i].ReadInd, htmlAttributes: new { @class = "check-read" })
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(m => m.RoleActions[i].UpdateInd, htmlAttributes: new { @class = "check-update" })
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(m => m.RoleActions[i].DeleteInd, htmlAttributes: new { @class = "check-delete" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        </div>
+
+        <span class="field-validation-error text-danger">@ViewBag.Error</span>
     </div>
 }
-@Scripts.Render("~/bundles/checkboxjs")
-<div>
+<div class="form-group">
+    <input type="submit" value="Create" class="btn btn-default" /> |
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@Scripts.Render("~/bundles/checkboxjs")

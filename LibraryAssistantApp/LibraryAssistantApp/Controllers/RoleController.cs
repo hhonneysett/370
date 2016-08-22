@@ -14,7 +14,6 @@ namespace LibraryAssistantApp.Controllers
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
         
-        // GET: Role
         public ActionResult Index(int? id, int? actionID)
         {
             var viewModel = new RoleIndexModel();
@@ -49,7 +48,6 @@ namespace LibraryAssistantApp.Controllers
             return PartialView("ActionDetails", viewModel);
         }
 
-        // GET: Role/Create
         public ActionResult Create()
         {
             var RoleAction = db.Role_Action;
@@ -79,7 +77,6 @@ namespace LibraryAssistantApp.Controllers
             return View(roleModel);
         }
 
-        // POST: Role/Create
         [HttpPost]
         public ActionResult Create(RoleModel role)
         {
@@ -160,12 +157,12 @@ namespace LibraryAssistantApp.Controllers
             }       
         }
 
-        // GET: Role/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, RoleIndexModel roleIndex)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["Error"] = "Please select a role before selecting update";
+                return RedirectToAction("Index", roleIndex);
             }
             RoleEditModel roleModel = new RoleEditModel();
             roleModel.role = db.Roles.Find(id);
@@ -179,7 +176,6 @@ namespace LibraryAssistantApp.Controllers
             return View(roleModel);
         }
 
-        // POST: Role/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, RoleEditModel roleEdit)
         {
@@ -254,12 +250,12 @@ namespace LibraryAssistantApp.Controllers
 
         }
 
-        // GET: Role/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, RoleIndexModel roleIndex)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["Error"] = "Please select a role before selecting delete";
+                return RedirectToAction("Index", roleIndex);
             }
             RoleEditModel roleModel = new RoleEditModel();
             roleModel.role = db.Roles.Find(id);
@@ -273,7 +269,6 @@ namespace LibraryAssistantApp.Controllers
             return View(roleModel);
         }
 
-        // POST: Role/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id, RoleEditModel roleEdit)
         {

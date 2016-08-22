@@ -5,71 +5,82 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
+<h3>Delete Role</h3>
 <div>
-    <h4>RoleEditModel</h4>
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <span class="sr-only">Error:</span>
+        Are you sure you want to delete?
+    </div>
+
     <hr />
     <dl class="dl-horizontal">
     </dl>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.role.Role_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.role.Role_Name, new { htmlAttributes = new { @class = "form-control", @readonly="readonly"} })
-                @Html.ValidationMessageFor(model => model.role.Role_Name, "", new { @class = "text-danger" })
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.role.Role_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.role.Role_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.role.Role_Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <hr />
+                <div class="panel panel-default">
+                    <table class="table table-condensed table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Action
+                                </th>
+                                <th>
+                                    Create
+                                </th>
+                                <th>
+                                    Read
+                                </th>
+                                <th>
+                                    Update
+                                </th>
+                                <th>
+                                    Delete
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.actionList.Count(); i++)
+                            {
+                                <tr>
+                                    @Html.HiddenFor(m => m.actionList[i].RoleAction_ID)
+                                    @Html.HiddenFor(m => m.actionList[i].Action_ID)
+                                    @Html.HiddenFor(m => m.actionList[i].Role_ID)
+                                    <td>
+                                        @Html.DisplayFor(m => m.actionList[i].Action.Action_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayTextFor(m => m.actionList[i].Create_Ind)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayTextFor(m => m.actionList[i].Read_Ind)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayTextFor(m => m.actionList[i].Update_Ind)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayTextFor(m => m.actionList[i].Delete_Ind)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Action Name
-                        </th>
-                        <th>
-                            Create
-                        </th>
-                        <th>
-                            Read
-                        </th>
-                        <th>
-                            Update
-                        </th>
-                        <th>
-                            Delete
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i = 0; i < Model.actionList.Count(); i++)
-                    {
-                        <tr>
-                            @Html.HiddenFor(m => m.actionList[i].RoleAction_ID)
-                            @Html.HiddenFor(m => m.actionList[i].Action_ID)
-                            @Html.HiddenFor(m => m.actionList[i].Role_ID)
-                            <td>
-                                @Html.DisplayFor(m => m.actionList[i].Action.Action_Name)
-                            </td>
-                            <td>
-                                @Html.DisplayTextFor(m => m.actionList[i].Create_Ind)
-                            </td>
-                            <td>
-                                @Html.DisplayTextFor(m => m.actionList[i].Read_Ind)
-                            </td>
-                            <td>
-                                @Html.DisplayTextFor(m => m.actionList[i].Update_Ind)
-                            </td>
-                            <td>
-                                @Html.DisplayTextFor(m => m.actionList[i].Delete_Ind)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
         </div>
+
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |

@@ -92,7 +92,7 @@ namespace LibraryAssistantApp.Models
     public class RoleMetadata
     {
         [Required(ErrorMessage ="Role name is required")]
-        [Display(Name = "Role Name")]
+        [Display(Name = "Role")]
         public string Role_Name;
     }
 }
