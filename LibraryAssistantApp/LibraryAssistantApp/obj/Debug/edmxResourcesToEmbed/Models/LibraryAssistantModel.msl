@@ -238,17 +238,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Person_Role">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
-        <MappingFragment StoreEntitySet="Person_Role">
-          <ScalarProperty Name="Person_Role_ID" ColumnName="Person_Role_ID" />
-          <ScalarProperty Name="Active_Ind" ColumnName="Active_Ind" />
-          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
-          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
-          <ScalarProperty Name="Level_ID" ColumnName="Level_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Person_Session_Action_Log">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Session_Action_Log">
         <MappingFragment StoreEntitySet="Person_Session_Action_Log">
@@ -472,36 +461,6 @@
         <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
       </EndProperty>
     </AssociationSetMapping>
-    <EntitySetMapping Name="Actions">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Action">
-        <MappingFragment StoreEntitySet="Action">
-          <ScalarProperty Name="Action_Description" ColumnName="Action_Description" />
-          <ScalarProperty Name="Action_Name" ColumnName="Action_Name" />
-          <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Roles">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Role">
-        <MappingFragment StoreEntitySet="Role">
-          <ScalarProperty Name="Role_Name" ColumnName="Role_Name" />
-          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Role_Action">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Role_Action">
-        <MappingFragment StoreEntitySet="Role_Action">
-          <ScalarProperty Name="RoleAction_ID" ColumnName="RoleAction_ID" />
-          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
-          <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
-          <ScalarProperty Name="Delete_Ind" ColumnName="Delete_Ind" />
-          <ScalarProperty Name="Update_Ind" ColumnName="Update_Ind" />
-          <ScalarProperty Name="Read_Ind" ColumnName="Read_Ind" />
-          <ScalarProperty Name="Create_Ind" ColumnName="Create_Ind" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="sysdiagrams">
       <EntityTypeMapping TypeName="LibraryAssistantModel.sysdiagram">
         <MappingFragment StoreEntitySet="sysdiagrams">
@@ -540,6 +499,48 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="findBookingVenuesFunc" FunctionName="LibraryAssistantModel.Store.findBookingVenues" />
+    <EntitySetMapping Name="Actions">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Action">
+        <MappingFragment StoreEntitySet="Action">
+          <ScalarProperty Name="Action_Description" ColumnName="Action_Description" />
+          <ScalarProperty Name="Action_Name" ColumnName="Action_Name" />
+          <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Person_Role">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
+        <MappingFragment StoreEntitySet="Person_Role">
+          <ScalarProperty Name="Level_ID" ColumnName="Level_ID" />
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+          <ScalarProperty Name="Active_Ind" ColumnName="Active_Ind" />
+          <ScalarProperty Name="Person_Role_ID" ColumnName="Person_Role_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Role">
+        <MappingFragment StoreEntitySet="Role">
+          <ScalarProperty Name="Role_Name" ColumnName="Role_Name" />
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Role_Action">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Role_Action">
+        <MappingFragment StoreEntitySet="Role_Action">
+          <ScalarProperty Name="RoleAction_ID" ColumnName="RoleAction_ID" />
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+          <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
+          <ScalarProperty Name="Delete_Ind" ColumnName="Delete_Ind" />
+          <ScalarProperty Name="Update_Ind" ColumnName="Update_Ind" />
+          <ScalarProperty Name="Read_Ind" ColumnName="Read_Ind" />
+          <ScalarProperty Name="Create_Ind" ColumnName="Create_Ind" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Venues">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Venue">
         <MappingFragment StoreEntitySet="Venue">
@@ -552,17 +553,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="Venue_Role" TypeName="LibraryAssistantModel.Venue_Role" StoreEntitySet="Venue_Role">
-      <EndProperty Name="Venue">
-        <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
-        <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
-        <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
-        <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
-      </EndProperty>
-      <EndProperty Name="Role">
-        <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <FunctionImportMapping FunctionImportName="findBookingVenuesFunc" FunctionName="LibraryAssistantModel.Store.findBookingVenues" />
+    <EntitySetMapping Name="Venue_Role">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Role">
+        <MappingFragment StoreEntitySet="Venue_Role">
+          <ScalarProperty Name="Venue_Role_ID" ColumnName="Venue_Role_ID" />
+          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
+          <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
+          <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

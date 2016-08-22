@@ -512,17 +512,14 @@
   </EntityType>
   <EntityType Name="Venue_Role">
     <Key>
-      <PropertyRef Name="Role_ID" />
-      <PropertyRef Name="Venue_ID" />
-      <PropertyRef Name="Building_Floor_ID" />
-      <PropertyRef Name="Building_ID" />
-      <PropertyRef Name="Campus_ID" />
+      <PropertyRef Name="Venue_Role_ID" />
     </Key>
     <Property Name="Role_ID" Type="int" Nullable="false" />
     <Property Name="Venue_ID" Type="int" Nullable="false" />
     <Property Name="Building_Floor_ID" Type="int" Nullable="false" />
     <Property Name="Building_ID" Type="int" Nullable="false" />
     <Property Name="Campus_ID" Type="int" Nullable="false" />
+    <Property Name="Venue_Role_ID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Venue_Type">
     <Key>

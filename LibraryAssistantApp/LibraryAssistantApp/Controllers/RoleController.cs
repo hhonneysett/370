@@ -257,15 +257,52 @@ namespace LibraryAssistantApp.Controllers
                 TempData["Error"] = "Please select a role before selecting delete";
                 return RedirectToAction("Index", roleIndex);
             }
+
+            ViewBag.ErrorMsg = "Are you sure you want to delete?";
+            TempData["Disabled"] = false;
+
             RoleEditModel roleModel = new RoleEditModel();
             roleModel.role = db.Roles.Find(id);
+            roleModel.actionList = db.Role_Action.Where(
+            i => i.Role_ID == id.Value).ToList();
+
             if (roleModel.role == null)
             {
                 return HttpNotFound();
             }
-            roleModel.actionList = db.Role_Action.Where(
-                    i => i.Role_ID == id.Value).ToList();
+            if (roleModel.role.Role_Name == "Super Admin")
+            {
+                ViewBag.ErrorMsg = "'Super Admin' role cannot be deleted";
+                TempData["Disabled"] = true;
+                return View(roleModel);
+            }
+            if (roleModel.role.Role_Name == "Admin")
+            {
+                ViewBag.ErrorMsg = "'Admin' role cannot be deleted";
+                TempData["Disabled"] = true;
+                return View(roleModel);
+            }
 
+            var rolePerson = from p in db.Person_Role
+                             where p.Role_ID == id
+                             select p;
+
+            var venueRole = from v in db.Venue_Role
+                            where v.Role_ID == id
+                            select v;
+
+            if (rolePerson.Count() != 0)
+            {
+                ViewBag.ErrorMsg = "Role cannot be deleted becuase there are persons assigned to the role";
+                TempData["Disabled"] = true;
+                return View(roleModel);
+            }
+            if (venueRole.Count() != 0)
+            {
+                ViewBag.ErrorMsg = "Role cannot be deleted becuase there are venues assigned to the role";
+                TempData["Disabled"] = true;
+                return View(roleModel);
+            }
             return View(roleModel);
         }
 
@@ -274,8 +311,47 @@ namespace LibraryAssistantApp.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var rolePerson = from p in db.Person_Role
+                                 where p.Role_ID == id
+                                 select p;
+
+                var venueRole = from v in db.Venue_Role
+                                where v.Role_ID == id
+                                select v;
+
+                ViewBag.ErrorMsg = "Are you sure you want to delete?";
+                TempData["Disabled"] = false;
+                if (rolePerson.Count() != 0)
+                {
+                    ViewBag.ErrorMsg = "Role cannot be deleted becuase there are persons assigned to the role";
+                    TempData["Disabled"] = true;
+                    return View(roleEdit);
+                }
+                if (venueRole.Count() != 0)
+                {
+                    ViewBag.ErrorMsg = "Role cannot be deleted becuase there are venues assigned to the role";
+                    TempData["Disabled"] = true;
+                    return View(roleEdit);
+                }
                 Role r = db.Roles.Find(id);
+
+                if (roleEdit.role == null)
+                {
+                    return HttpNotFound();
+                }
+                if (roleEdit.role.Role_Name == "Super Admin")
+                {
+                    ViewBag.ErrorMsg = "'Super Admin' role cannot be deleted";
+                    TempData["Disabled"] = true;
+                    return View(roleEdit);
+                }
+                if (roleEdit.role.Role_Name == "Admin")
+                {
+                    ViewBag.ErrorMsg = "'Admin' role cannot be deleted";
+                    TempData["Disabled"] = true;
+                    return View(roleEdit);
+                }
+
                 db.Roles.Remove(r);
 
                 foreach (var o in roleEdit.actionList)

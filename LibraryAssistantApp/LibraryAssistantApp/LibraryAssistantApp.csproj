@@ -485,6 +485,9 @@
     <Compile Include="Models\Venue_Problem.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Venue_Role.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Venue_Type.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
