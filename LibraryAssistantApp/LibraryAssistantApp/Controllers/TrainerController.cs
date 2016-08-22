@@ -217,6 +217,270 @@ namespace LibraryAssistantApp.Controllers
 
             return Json(rows, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public ActionResult updateTopic(int id)
+        {
+            //get list of existing categories
+            var existingCategories = from c in db.Categories
+                                     select c;
+
+            ViewBag.Category = existingCategories;
+
+            var currentTopCat = (from t in db.Topics
+                                   join tc in db.Topic_Category on t.Topic_Seq equals tc.Topic_Seq
+                                   where tc.Topic_Seq.Equals(id)
+                                   select tc).FirstOrDefault();
+
+            var currentCat = (from c in db.Categories
+                              where c.Category_ID.Equals(currentTopCat.Category_ID)
+                              select c.Category_ID).FirstOrDefault().ToString();
+
+            ViewBag.currentCat = currentCat;
+
+            var model = (from t in db.Topics
+                         where t.Topic_Seq.Equals(id)
+                         select t).FirstOrDefault();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult updateTopic(Topic model, string submitButton, int category)
+        {
+            if (ModelState.IsValid)
+            {
+                switch (submitButton)
+                {
+
+                    //check if save button was clicked
+                    case "Save":
+
+                        //check if any topics with the same name already exist
+                        var check = (from t in db.Topics
+                                     where t.Topic_Name.Equals(model.Topic_Name) && t.Topic_Seq != model.Topic_Seq
+                                     select t);
+                        
+                        //if topic with the same name already exists return the form and display an error message
+                        if (check.Any())
+                        {
+                            //get list of existing categories
+                            var existCat = from c in db.Categories
+                                                     select c;
+
+                            //get current topic category
+                            ViewBag.Category = existCat;
+
+                            //get the current topic category object for the selected category
+                            var currentTC = (from t in db.Topics
+                                                 join tc in db.Topic_Category on t.Topic_Seq equals tc.Topic_Seq
+                                                 where tc.Topic_Seq.Equals(model.Topic_Seq)
+                                                 select tc).FirstOrDefault();
+
+                            //get the current category for the selected topic
+                            var currentC = (from c in db.Categories
+                                              where c.Category_ID.Equals(currentTC.Category_ID)
+                                              select c.Category_ID).FirstOrDefault().ToString();
+
+                            ViewBag.currentCat = currentC;
+
+                            //display error message
+                            TempData["Message"] = "Topic already exists with the same name";
+                            TempData["classStyle"] = "warning";
+
+                            //return form
+                            return View(model);
+                        }
+                        else
+                        {
+
+                            //get current topic category object
+                            var currentTC = (from tc in db.Topic_Category
+                                                 where tc.Topic_Seq.Equals(model.Topic_Seq)
+                                                 select tc).FirstOrDefault();
+
+                            //check if the category for the topic has changed
+                            if (currentTC.Category_ID.Equals(category))
+                            {
+
+                                //if category hasnt changed only update the topic object
+                                db.Entry(model).State = EntityState.Modified;
+                                db.SaveChanges();
+
+
+                                //display success message
+                                TempData["Message"] = "Topic successfully updated";
+                                TempData["classStyle"] = "success";
+
+                                return RedirectToAction("viewTopic");
+                            }
+                            else
+                            {
+                                //topic category has been changed so must remove old topic category object
+                                db.Topic_Category.Remove(currentTC);
+
+                                //add details for the new topic category details
+                                Topic_Category a = new Topic_Category
+                                {
+                                    Topic_Seq = model.Topic_Seq,
+                                    Category_ID = category,
+                                };
+
+                                //capture the new topic category object
+                                db.Topic_Category.Add(a);
+
+                                //capture the updated topic details
+                                db.Entry(model).State = EntityState.Modified;
+
+                                //save changes to the database
+                                db.SaveChanges();
+
+
+                                //display message of success
+                                TempData["Message"] = "Topic successfully updated";
+                                TempData["classStyle"] = "success";
+
+                                return RedirectToAction("viewTopic");
+                            }
+                        }
+                    
+                        //delete button was pressed go to delete action
+                    case "Delete Topic":
+                        return RedirectToAction("deleteTopic", "Trainer", new { id = model.Topic_Seq });
+
+                    default:
+                        //get list of existing categories
+                        var existingCategories = from c in db.Categories
+                                                 select c;
+
+                        //pass list of existing categories to viewbag for select list
+                        ViewBag.Category = existingCategories;
+
+                        //get the topic category obkect for the selected topic
+                        var currentTopCat = (from t in db.Topics
+                                             join tc in db.Topic_Category on t.Topic_Seq equals tc.Topic_Seq
+                                             where tc.Topic_Seq.Equals(model.Topic_Seq)
+                                             select tc).FirstOrDefault();
+
+
+                        //get the category for the selected topic
+                        var currentCat = (from c in db.Categories
+                                          where c.Category_ID.Equals(currentTopCat.Category_ID)
+                                          select c.Category_ID).FirstOrDefault().ToString();
+
+
+                        //assign the current category to a viewbag
+                        ViewBag.currentCat = currentCat;
+
+
+                        //return the view
+                        return View(model);
+                }               
+            }
+            else
+            {
+                //get list of existing categories
+                var existingCategories = from c in db.Categories
+                                         select c;
+
+                //assign selected category to a viewbag
+                ViewBag.Category = existingCategories;
+
+                //get the selected topic topic category object
+                var currentTopCat = (from t in db.Topics
+                                     join tc in db.Topic_Category on t.Topic_Seq equals tc.Topic_Seq
+                                     where tc.Topic_Seq.Equals(model.Topic_Seq)
+                                     select tc).FirstOrDefault();
+
+
+                //get the selected topic curremt category
+                var currentCat = (from c in db.Categories
+                                  where c.Category_ID.Equals(currentTopCat.Category_ID)
+                                  select c.Category_ID).FirstOrDefault().ToString();
+
+                //assing the current category to a viewbag
+                ViewBag.currentCat = currentCat;
+
+                //return view
+                return View(model);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult addTopic()
+        {
+            //get list of current categories
+            var categories = from c in db.Categories
+                             select c;
+
+            //assign current categories to a viewbag
+            ViewBag.Categories = categories;
+
+            //return the view
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult addTopic(Topic model, int category)
+        {
+            if (ModelState.IsValid)
+            {
+                //check if a topic with the same name already exists
+                var check = from t in db.Topics
+                            where t.Topic_Name.ToLower().Equals(model.Topic_Name)
+                            select t;
+
+                if (check.Any())
+                {
+                    //display error message
+                    TempData["Message"] = "Topic with the same name already exists";
+                    TempData["classStyle"] = "warning";
+
+                    //return form
+                    return View(model);
+                }
+                else
+                {
+                    //add new instance of topic to database
+                    db.Topics.Add(model);
+                    db.SaveChanges();
+
+                    var newTopicSeq = (from t in db.Topics
+                                       where t.Topic_Name.Equals(model.Topic_Name)
+                                       select t.Topic_Seq).FirstOrDefault();
+                    //create new instance of topic category
+                    Topic_Category a = new Topic_Category
+                    {
+                        Topic_Seq = newTopicSeq,
+                        Category_ID = category,
+                    };
+
+                    //add new instance of topic category to the database
+                    db.Topic_Category.Add(a);
+
+                    //save changes to the database
+                    db.SaveChanges();
+
+                    //display success message
+                    TempData["Message"] = "Topic successfully added";
+                    TempData["classStyle"] = "success";
+
+                    //return view
+                    return RedirectToAction("viewTopic");
+                }
+            }
+            else
+            {
+                //get list of current categories
+                var categories = from c in db.Categories
+                                 select c;
+
+                //assign current categories to a viewbag
+                ViewBag.Categories = categories;
+
+                return View(model);
+            }                   
+        }
             
     }
 }

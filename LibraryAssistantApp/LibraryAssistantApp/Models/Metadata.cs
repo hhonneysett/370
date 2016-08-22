@@ -44,6 +44,7 @@ namespace LibraryAssistantApp.Models
     public class TopicMetadata
     {
         [Display(Name = "Topic")]
+        [Required(ErrorMessage ="Please provide a topic name")]
         public string Topic_Name;
     }
 
