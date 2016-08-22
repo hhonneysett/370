@@ -14,12 +14,19 @@ namespace LibraryAssistantApp.Controllers
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
         
-        public ActionResult Index(int? id, int? actionID)
+        public ActionResult Index(string search)
         {
             var viewModel = new RoleIndexModel();
             viewModel.Roles = db.Roles
                 .Include(i => i.Role_Action.Select(x => x.Action));
-
+            if (search != null)
+            {
+                viewModel.Roles = (viewModel.Roles.Where(x => x.Role_Name.ToLower().StartsWith(search.ToLower())));
+            }
+            if (viewModel.Roles.Count() == 0)
+            {
+                TempData["Error"] = "No roles matched search criteria";
+            }
             return View(viewModel);
         }
         public PartialViewResult RoleDetails(int? id)

@@ -29,11 +29,27 @@
         });
     });
 </script>   
+<hr />
 
-<h3>Roles</h3>
-<hr/>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <h3>Roles</h3>
+        </div>
+        <form class="navbar-form navbar-right">
+            @using (Html.BeginForm("Index", "Role", FormMethod.Get))
+            {
+                @Html.ActionLink("View all", "Index")
+                <div class="form-group">
+                    <input class="form-control" placeholder="search roles" name="search">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+            }
+        </form>
+    </div>
+</nav>
 <div class="col-md-6">
-    <h5>Select a role to maintain or to view additional details</h5>
+    <h4>Select a role to maintain or to view additional details</h4>
     <div class="panel panel-default">
         <div class="table-responsive">
             <table class="table table-condensed" id="result-table-1">

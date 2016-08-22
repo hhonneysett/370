@@ -4,10 +4,16 @@
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@{
+    var alertcolor = "alert-warning";
+    if ((bool)TempData["Disabled"] == true)
+    {
+        alertcolor = "alert-danger";
+    }
+}
 <h3>Delete Role</h3>
 <div>
-    <div class="alert alert-danger" role="alert">
+    <div class="alert @alertcolor" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign"></span>
         <span class="sr-only">Error:</span>
         @ViewBag.ErrorMsg
