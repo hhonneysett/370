@@ -21,6 +21,7 @@
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.role.Role_Name, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.role.Role_Name, "", new { @class = "text-danger" })
+                    <span class="text-danger">@ViewBag.ErrorMsg</span>
                 </div>
             </div>
             <hr/>

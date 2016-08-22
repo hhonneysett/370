@@ -107,7 +107,15 @@ namespace LibraryAssistantApp.Controllers
                 bool read = true;
                 bool update = true;
                 bool delete = true;
-
+                ViewBag.ErrorMsg = "";
+                var query = (from q in db.Roles
+                             where q.Role_Name == role.RoleName
+                             select q);
+                if (query.Count() != 0)
+                {
+                    ViewBag.ErrorMsg = "The role name exists, please provide a different role name";
+                    return View(roleModel);
+                }
                 Role r = new Role();
                 r.Role_Name = role.RoleName;
                 db.Roles.Add(r);
@@ -186,6 +194,23 @@ namespace LibraryAssistantApp.Controllers
             bool delete = true;
             try
             {
+                ViewBag.ErrorMsg = "";
+                var query = (from q in db.Roles
+                             where q.Role_Name == roleEdit.role.Role_Name
+                             select q);
+                if (query.Count() > 1)
+                {
+                    ViewBag.ErrorMsg = "The role name exists, please provide a different role name";
+                    RoleEditModel roleModel = new RoleEditModel();
+                    roleModel.role = db.Roles.Find(id);
+                    if (roleModel.role == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    roleModel.actionList = db.Role_Action.Where(
+                            i => i.Role_ID == id).ToList();
+                    return View(roleModel);
+                }
                 Role r = db.Roles.Find(id);
                 r.Role_Name = roleEdit.role.Role_Name;
                 db.Entry(r).State = EntityState.Modified;

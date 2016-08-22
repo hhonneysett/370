@@ -92,6 +92,7 @@ namespace LibraryAssistantApp.Models
     public class RoleMetadata
     {
         [Required(ErrorMessage ="Role name is required")]
+        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage ="Role name must be alphabetic and can only include one space")]
         [Display(Name = "Role")]
         public string Role_Name;
     }

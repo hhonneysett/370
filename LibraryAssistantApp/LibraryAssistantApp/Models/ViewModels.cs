@@ -196,7 +196,7 @@ namespace LibraryAssistantApp.Models
         [Required]
         public int RoleId { get; set; }
         [Required(ErrorMessage = "Role name is required")]
-        [Display(Name = "Role")]
+        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage ="Role name must be alphabetic and can only include one space")]
         public string RoleName { get; set; }
         public List<RoleActionModel> RoleActions { get; set; }
     }
