@@ -71,12 +71,12 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Venue> Venues { get; set; }
         public virtual DbSet<Venue_Booking> Venue_Booking { get; set; }
         public virtual DbSet<Venue_Booking_Person> Venue_Booking_Person { get; set; }
-        public virtual DbSet<Venue_Characteristic> Venue_Characteristic { get; set; }
         public virtual DbSet<Venue_Problem> Venue_Problem { get; set; }
         public virtual DbSet<Venue_Type> Venue_Type { get; set; }
         public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Role_Action> Role_Action { get; set; }
+        public virtual DbSet<Venue_Characteristic> Venue_Characteristic { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {

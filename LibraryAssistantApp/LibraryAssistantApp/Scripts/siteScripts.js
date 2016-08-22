@@ -159,9 +159,18 @@ function displayCalendar(inputId, inputType) {
                             id: "btUpdateStatus",
                             disabled: "disabled",
                         },
+                        "Update Booking" :
+                            {
+                                text : "Update Booking",
+                                id: "btnUpdateBooking",
+                                click: function ()
+                                {
+                                    location = "/Booking/updateBookingDetails";
+                                }
+                            },
                         Cancel: function () {
                             $(this).dialog("close");
-                        }
+                        },
                     }
                 });
                 return false;
