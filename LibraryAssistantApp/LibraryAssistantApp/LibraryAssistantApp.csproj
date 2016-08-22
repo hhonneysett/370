@@ -270,6 +270,7 @@
     <Compile Include="Controllers\PersonTopicController.cs" />
     <Compile Include="Controllers\RegisteredPersonController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
+    <Compile Include="Controllers\TrainerController.cs" />
     <Compile Include="Controllers\VenueController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -433,6 +434,9 @@
     <Compile Include="Models\Topic.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Topic_Category.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Trainer_Topic.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
@@ -518,6 +522,11 @@
     <Content Include="Views\Booking\employeeBookDiscussionRoom.cshtml" />
     <Content Include="Views\Booking\getEmpBookingDetails.cshtml" />
     <Content Include="Views\Booking\updateBookingDetails.cshtml" />
+    <Content Include="Views\Trainer\viewCategory.cshtml" />
+    <Content Include="Views\Trainer\addCategory.cshtml" />
+    <Content Include="Views\Trainer\updateCategory.cshtml" />
+    <Content Include="Views\Trainer\deleteCategory.cshtml" />
+    <Content Include="Views\Trainer\viewTopic.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

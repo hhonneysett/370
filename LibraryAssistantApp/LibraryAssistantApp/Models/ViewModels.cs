@@ -266,4 +266,17 @@ namespace LibraryAssistantApp.Models
 
         public int building_floor_id { get; set; }
     }
+
+    public class CategoryModel
+    {
+        public int categoryId { get; set; }
+
+        [Display(Name ="Category Name")]
+        [Required(ErrorMessage ="Please provide a category name")]
+        public string categoryName { get; set; }
+
+        [Display(Name ="Description")]
+        public string description { get; set; }
+  
+    }
 }

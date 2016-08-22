@@ -88,6 +88,13 @@ namespace LibraryAssistantApp.Models
         [Display(Name ="Campus Name")]
         public string Campus_Name;
     }
+
+    public class CategoryMetadata
+    {
+        [Display(Name ="Category Name")]
+        [Required(ErrorMessage ="Please provide a category name")]
+        public string Category_Name;
+    }
 }
 
 //    //public class PersonTitleMetadata

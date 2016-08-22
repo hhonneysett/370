@@ -18,8 +18,8 @@ namespace LibraryAssistantApp.Models
         public Person_Level()
         {
             this.Person_Role = new HashSet<Person_Role>();
-            this.Registered_Person = new HashSet<Registered_Person>();
             this.Venue_Booking = new HashSet<Venue_Booking>();
+            this.Registered_Person = new HashSet<Registered_Person>();
         }
     
         public int Level_ID { get; set; }
@@ -30,10 +30,10 @@ namespace LibraryAssistantApp.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Role> Person_Role { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Registered_Person> Registered_Person { get; set; }
         public virtual Person_Type Person_Type1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Booking> Venue_Booking { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Registered_Person> Registered_Person { get; set; }
     }
 }

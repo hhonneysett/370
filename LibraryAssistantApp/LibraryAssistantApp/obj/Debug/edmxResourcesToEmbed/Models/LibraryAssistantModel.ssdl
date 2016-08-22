@@ -284,9 +284,9 @@
   </EntityType>
   <EntityType Name="Person_Topic">
     <Key>
-      <PropertyRef Name="Person_ID" />
-      <PropertyRef Name="Topic_Seq" />
+      <PropertyRef Name="Person_Topic_ID" />
     </Key>
+    <Property Name="Person_Topic_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="Topic_Seq" Type="int" Nullable="false" />
   </EntityType>
@@ -405,9 +405,9 @@
   </EntityType>
   <EntityType Name="Topic_Category">
     <Key>
-      <PropertyRef Name="Topic_Seq" />
-      <PropertyRef Name="Category_ID" />
+      <PropertyRef Name="Topic_Category_ID" />
     </Key>
+    <Property Name="Topic_Category_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Topic_Seq" Type="int" Nullable="false" />
     <Property Name="Category_ID" Type="int" Nullable="false" />
   </EntityType>
