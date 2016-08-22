@@ -529,6 +529,7 @@
     <Content Include="Views\Trainer\viewTopic.cshtml" />
     <Content Include="Views\Trainer\updateTopic.cshtml" />
     <Content Include="Views\Trainer\addTopic.cshtml" />
+    <Content Include="Views\Trainer\deleteTopic.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

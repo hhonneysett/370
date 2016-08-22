@@ -481,6 +481,58 @@ namespace LibraryAssistantApp.Controllers
                 return View(model);
             }                   
         }
+
+        [HttpGet]
+        public ActionResult deleteTopic(int id)
+        {
+            var topic = (from t in db.Topics
+                         where t.Topic_Seq.Equals(id)
+                         select t).FirstOrDefault();
+
+            var topicSeq = topic.Topic_Seq;
+
+            Session["selectedTopic"] = topicSeq;
+
+            var topicCat = (from t in db.Topics
+                            join tc in db.Topic_Category on t.Topic_Seq equals tc.Topic_Seq
+                            where tc.Topic_Seq.Equals(id)
+                            select tc.Category_ID).FirstOrDefault();
+
+            var category = (from c in db.Categories
+                            where c.Category_ID.Equals(topicCat)
+                            select c).FirstOrDefault();
+
+            ViewBag.Category = category;
+
+            return View(topic);
+        }
+
+        [HttpPost]
+        public ActionResult deleteTopic()
+        {
+            var topicSeq = (int)Session["selectedTopic"];
+
+            var topic = (from t in db.Topics
+                         where t.Topic_Seq.Equals(topicSeq)
+                         select t).FirstOrDefault();
+
+            var topicCat = (from tc in db.Topic_Category
+                            where tc.Topic_Seq.Equals(topic.Topic_Seq)
+                            select tc).FirstOrDefault();
+
+            //db.Topics.Attach(test);
+            //db.Topic_Category.Attach(topicCat);
+
+            db.Topic_Category.Remove(topicCat);
+            db.Topics.Remove(topic);
+
+            db.SaveChanges();
+
+            TempData["Message"] = "Topic successfully deleted";
+            TempData["classStyle"] = "success";
+
+            return RedirectToAction("viewTopic");
+        }
             
     }
 }
