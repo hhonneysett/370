@@ -19,7 +19,7 @@ namespace LibraryAssistantApp.Models
         public int Building_Floor_ID { get; set; }
         public int Building_ID { get; set; }
         public int Campus_ID { get; set; }
-        public int Capacity { get; set; }
+        public int Quantity { get; set; }
         public string Additional_Information { get; set; }
     
         public virtual Characteristic Characteristic { get; set; }

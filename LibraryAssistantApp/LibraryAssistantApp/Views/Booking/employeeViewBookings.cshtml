@@ -23,7 +23,7 @@
                 </div>              
             </div>
             <div class="panel-footer">
-                <input type="submit" id="btnPersonId" class="btn btn-default" disabled="disabled"/>
+                <input type="submit" id="btnPersonId" class="btn btn-default" disabled="disabled" value="Submit"/>
             </div>
         </div>
     </div>
@@ -223,147 +223,13 @@
         //show calendar on button click
         $("#btnPersonId").click(function() {
             var personID = $('#personIdInput').val();
-            $.ajax({
-                type: 'GET',
-                url: '/Booking/getEmpBookings',
-                data: { id: personID, idType: "personID" },
-                success: function (result) {
-                    scheduler.clearAll();
-                    $("#scheduler_here").show();                    
-                    
-                    //configuration for the scheduler
-                    scheduler.config.resize_month_events = false;
-                    scheduler.config.first_hour = 8;
-                    scheduler.config.last_hour = 17;
-                    scheduler.config.start_on_monday = true;
-                    scheduler.locale.labels.agenda_tab = "Agenda";
-                    scheduler.config.readonly = true;
-
-
-                    //initialize the scheduler
-                    scheduler.init('scheduler_here', new Date(), "month");
-
-                    //create an events json object
-                    var events = [];
-
-                    //go through list of events and add each event to the json events object
-                    result.forEach(function (entry) {
-                        var event = {
-                            id : entry.id,
-                            text : entry.text,
-                            start_date : moment(entry.start_date).format('MM[/]DD[/]YYYY h:mm:ss'),
-                            end_date: moment(entry.end_date).format('MM[/]DD[/]YYYY h:mm:ss'),
-                        }
-
-                        //adds the event to the events object
-                        events.push(event);
-                    });
-
-                    //passes the events to the scheduler
-                    scheduler.parse(events, "json");//takes the name and format of the data source
-
-                    scheduler.attachEvent("onClick", function (id, e) {
-                        //any custom logic here
-                        $("#bookingDetailsForm").dialog({
-                            autoOpen: true,
-                            position: { my: "center", at: "top+350", of: window },
-                            width: 1000,
-                            resizable: false,
-                            title: 'Booking Details',
-                            modal: true,
-                            open: function () {
-                                $(this).load('/Booking/getBookingDetails/?id=' + id);
-                            },
-                            buttons: {
-                                "Cancel Booking": function () {
-                                    window.location.href = '@Url.Action("cancelBooking", "Booking")';
-                                },
-                                Cancel: function () {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        });
-                        return false;
-                        return true;
-                    });                    
-                },
-                error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
-                }
-            })
+            displayCalendar(personID, "personID");
         });
 
+        //show calendar on button click
         $("#btnVenueSubmit").click(function () {
             var id = $("#venueSelectList").children(":selected").attr("value");
-            $.ajax({
-                type: 'GET',
-                url: '/Booking/getEmpBookings',
-                data: { id: id, idType: "venueID" },
-                success: function (result) {
-                    scheduler.clearAll();
-                    $("#scheduler_here").show();
-
-                    //configuration for the scheduler
-                    scheduler.config.resize_month_events = false;
-                    scheduler.config.first_hour = 8;
-                    scheduler.config.last_hour = 17;
-                    scheduler.config.start_on_monday = true;
-                    scheduler.locale.labels.agenda_tab = "Agenda";
-                    scheduler.config.readonly = true;
-
-
-                    //initialize the scheduler
-                    scheduler.init('scheduler_here', new Date(), "month");
-
-                    //create an events json object
-                    var events = [];
-
-                    //go through list of events and add each event to the json events object
-                    result.forEach(function (entry) {
-                        var event = {
-                            id: entry.id,
-                            text: entry.text,
-                            start_date: moment(entry.start_date).format('MM[/]DD[/]YYYY h:mm:ss'),
-                            end_date: moment(entry.end_date).format('MM[/]DD[/]YYYY h:mm:ss'),
-                        }
-
-                        //adds the event to the events object
-                        events.push(event);
-                    });
-
-                    //passes the events to the scheduler
-                    scheduler.parse(events, "json");//takes the name and format of the data source
-
-                    scheduler.attachEvent("onClick", function (id, e) {
-                        //any custom logic here
-                        $("#bookingDetailsForm").dialog({
-                            autoOpen: true,
-                            position: { my: "center", at: "top+350", of: window },
-                            width: 1000,
-                            resizable: false,
-                            title: 'Booking Details',
-                            modal: true,
-                            open: function () {
-                                $(this).load('/Booking/getBookingDetails/?id=' + id);
-                            },
-                            buttons: {
-                                "Cancel Booking": function () {
-                                    window.location.href = '@Url.Action("cancelBooking", "Booking")';
-                                },
-                                Cancel: function () {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        });
-                        return false;
-                        return true;
-                    });
-                },
-                error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
-                }
-            });
-            scheduler.updateView();
-        });
+            displayCalendar(id, "venueID");
+        });       
     </script>    
 }

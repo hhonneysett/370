@@ -480,7 +480,7 @@
     <Property Name="Building_Floor_ID" Type="int" Nullable="false" />
     <Property Name="Building_ID" Type="int" Nullable="false" />
     <Property Name="Campus_ID" Type="int" Nullable="false" />
-    <Property Name="Capacity" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
     <Property Name="Additional_Information" Type="text" />
   </EntityType>
   <EntityType Name="Venue_Problem">

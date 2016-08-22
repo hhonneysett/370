@@ -485,7 +485,7 @@
           <Property Name="Building_Floor_ID" Type="int" Nullable="false" />
           <Property Name="Building_ID" Type="int" Nullable="false" />
           <Property Name="Campus_ID" Type="int" Nullable="false" />
-          <Property Name="Capacity" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Additional_Information" Type="text" />
         </EntityType>
         <EntityType Name="Venue_Problem">
@@ -1935,7 +1935,7 @@
           <Property Name="Characteristic_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Characteristic_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Venue_Characteristic" Relationship="Self.Characteristic_VenueCharacteristic" FromRole="Characteristic" ToRole="Venue_Characteristic" />
+          <NavigationProperty Name="Venue_Characteristic" Relationship="LibraryAssistantModel.Characteristic_VenueCharacteristic" FromRole="Characteristic" ToRole="Venue_Characteristic" />
         </EntityType>
         <EntityType Name="Colour">
           <Key>
@@ -2302,10 +2302,10 @@
           <NavigationProperty Name="Questionnaires" Relationship="Self.Venue_Questionnaire" FromRole="Venue" ToRole="Questionnaire" />
           <NavigationProperty Name="Venue_Type1" Relationship="Self.FK__Venue__Venue_Typ__6A30C649" FromRole="Venue" ToRole="Venue_Type" />
           <NavigationProperty Name="Venue_Booking" Relationship="Self.Venue_VenueBooking" FromRole="Venue" ToRole="Venue_Booking" />
-          <NavigationProperty Name="Venue_Characteristic" Relationship="Self.Venue_VenueCharacteristic" FromRole="Venue" ToRole="Venue_Characteristic" />
           <NavigationProperty Name="Venue_Problem" Relationship="Self.Venue_VenueProblem" FromRole="Venue" ToRole="Venue_Problem" />
           <Property Name="Capacity" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Roles" Relationship="LibraryAssistantModel.Venue_Role" FromRole="Venue" ToRole="Role" />
+          <NavigationProperty Name="Venue_Characteristic" Relationship="LibraryAssistantModel.Venue_VenueCharacteristic" FromRole="Venue" ToRole="Venue_Characteristic" />
         </EntityType>
         <EntityType Name="Venue_Booking">
           <Key>
@@ -2350,24 +2350,6 @@
           <NavigationProperty Name="Document_Repository" Relationship="Self.DocumentRepository_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Document_Repository" />
           <NavigationProperty Name="Registered_Person" Relationship="Self.VenueBooking_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Registered_Person" />
           <NavigationProperty Name="Venue_Booking" Relationship="Self.RegisteredPerson_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Venue_Booking" />
-        </EntityType>
-        <EntityType Name="Venue_Characteristic">
-          <Key>
-            <PropertyRef Name="Characteristic_ID" />
-            <PropertyRef Name="Venue_ID" />
-            <PropertyRef Name="Building_Floor_ID" />
-            <PropertyRef Name="Building_ID" />
-            <PropertyRef Name="Campus_ID" />
-          </Key>
-          <Property Name="Characteristic_ID" Type="Int32" Nullable="false" />
-          <Property Name="Venue_ID" Type="Int32" Nullable="false" />
-          <Property Name="Building_Floor_ID" Type="Int32" Nullable="false" />
-          <Property Name="Building_ID" Type="Int32" Nullable="false" />
-          <Property Name="Campus_ID" Type="Int32" Nullable="false" />
-          <Property Name="Capacity" Type="Int32" Nullable="false" />
-          <Property Name="Additional_Information" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Characteristic" Relationship="Self.Characteristic_VenueCharacteristic" FromRole="Venue_Characteristic" ToRole="Characteristic" />
-          <NavigationProperty Name="Venue" Relationship="Self.Venue_VenueCharacteristic" FromRole="Venue_Characteristic" ToRole="Venue" />
         </EntityType>
         <EntityType Name="Venue_Problem">
           <Key>
@@ -2585,20 +2567,6 @@
             </Principal>
             <Dependent Role="Calender_Rules">
               <PropertyRef Name="Period_Type_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Characteristic_VenueCharacteristic">
-          <End Role="Characteristic" Type="Self.Characteristic" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Venue_Characteristic" Type="Self.Venue_Characteristic" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Characteristic">
-              <PropertyRef Name="Characteristic_ID" />
-            </Principal>
-            <Dependent Role="Venue_Characteristic">
-              <PropertyRef Name="Characteristic_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3134,26 +3102,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Venue_VenueCharacteristic">
-          <End Role="Venue" Type="Self.Venue" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Venue_Characteristic" Type="Self.Venue_Characteristic" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Venue">
-              <PropertyRef Name="Campus_ID" />
-              <PropertyRef Name="Building_ID" />
-              <PropertyRef Name="Building_Floor_ID" />
-              <PropertyRef Name="Venue_ID" />
-            </Principal>
-            <Dependent Role="Venue_Characteristic">
-              <PropertyRef Name="Campus_ID" />
-              <PropertyRef Name="Building_ID" />
-              <PropertyRef Name="Building_Floor_ID" />
-              <PropertyRef Name="Venue_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Venue_VenueProblem">
           <End Role="Venue" Type="Self.Venue" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3241,7 +3189,6 @@
           <EntitySet Name="Venues" EntityType="Self.Venue" />
           <EntitySet Name="Venue_Booking" EntityType="Self.Venue_Booking" />
           <EntitySet Name="Venue_Booking_Person" EntityType="Self.Venue_Booking_Person" />
-          <EntitySet Name="Venue_Characteristic" EntityType="Self.Venue_Characteristic" />
           <EntitySet Name="Venue_Problem" EntityType="Self.Venue_Problem" />
           <EntitySet Name="Venue_Type" EntityType="Self.Venue_Type" />
           <AssociationSet Name="AttendeeStatus_VenueBookingPerson" Association="Self.AttendeeStatus_VenueBookingPerson">
@@ -3299,10 +3246,6 @@
           <AssociationSet Name="PeriodType_CalenderRules" Association="Self.PeriodType_CalenderRules">
             <End Role="Period_Type" EntitySet="Period_Type" />
             <End Role="Calender_Rules" EntitySet="Calender_Rules" />
-          </AssociationSet>
-          <AssociationSet Name="Characteristic_VenueCharacteristic" Association="Self.Characteristic_VenueCharacteristic">
-            <End Role="Characteristic" EntitySet="Characteristics" />
-            <End Role="Venue_Characteristic" EntitySet="Venue_Characteristic" />
           </AssociationSet>
           <AssociationSet Name="Clour_PeriodType" Association="Self.Clour_PeriodType">
             <End Role="Colour" EntitySet="Colours" />
@@ -3468,10 +3411,6 @@
             <End Role="Venue" EntitySet="Venues" />
             <End Role="Venue_Booking" EntitySet="Venue_Booking" />
           </AssociationSet>
-          <AssociationSet Name="Venue_VenueCharacteristic" Association="Self.Venue_VenueCharacteristic">
-            <End Role="Venue" EntitySet="Venues" />
-            <End Role="Venue_Characteristic" EntitySet="Venue_Characteristic" />
-          </AssociationSet>
           <AssociationSet Name="Venue_VenueProblem" Association="Self.Venue_VenueProblem">
             <End Role="Venue" EntitySet="Venues" />
             <End Role="Venue_Problem" EntitySet="Venue_Problem" />
@@ -3520,6 +3459,15 @@
           <AssociationSet Name="Venue_Role" Association="LibraryAssistantModel.Venue_Role">
             <End Role="Role" EntitySet="Roles" />
             <End Role="Venue" EntitySet="Venues" />
+          </AssociationSet>
+          <EntitySet Name="Venue_Characteristic" EntityType="LibraryAssistantModel.Venue_Characteristic" />
+          <AssociationSet Name="Characteristic_VenueCharacteristic" Association="LibraryAssistantModel.Characteristic_VenueCharacteristic">
+            <End Role="Characteristic" EntitySet="Characteristics" />
+            <End Role="Venue_Characteristic" EntitySet="Venue_Characteristic" />
+          </AssociationSet>
+          <AssociationSet Name="Venue_VenueCharacteristic" Association="LibraryAssistantModel.Venue_VenueCharacteristic">
+            <End Role="Venue" EntitySet="Venues" />
+            <End Role="Venue_Characteristic" EntitySet="Venue_Characteristic" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="findBookingVenues_Result">
@@ -3631,6 +3579,58 @@
         <Association Name="Venue_Role">
           <End Type="LibraryAssistantModel.Role" Role="Role" Multiplicity="*" />
           <End Type="LibraryAssistantModel.Venue" Role="Venue" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Venue_Characteristic">
+          <Key>
+            <PropertyRef Name="Characteristic_ID" />
+            <PropertyRef Name="Venue_ID" />
+            <PropertyRef Name="Building_Floor_ID" />
+            <PropertyRef Name="Building_ID" />
+            <PropertyRef Name="Campus_ID" />
+          </Key>
+          <Property Name="Characteristic_ID" Type="Int32" Nullable="false" />
+          <Property Name="Venue_ID" Type="Int32" Nullable="false" />
+          <Property Name="Building_Floor_ID" Type="Int32" Nullable="false" />
+          <Property Name="Building_ID" Type="Int32" Nullable="false" />
+          <Property Name="Campus_ID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Additional_Information" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Characteristic" Relationship="LibraryAssistantModel.Characteristic_VenueCharacteristic" FromRole="Venue_Characteristic" ToRole="Characteristic" />
+          <NavigationProperty Name="Venue" Relationship="LibraryAssistantModel.Venue_VenueCharacteristic" FromRole="Venue_Characteristic" ToRole="Venue" />
+        </EntityType>
+        <Association Name="Characteristic_VenueCharacteristic">
+          <End Type="LibraryAssistantModel.Characteristic" Role="Characteristic" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="LibraryAssistantModel.Venue_Characteristic" Role="Venue_Characteristic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characteristic">
+              <PropertyRef Name="Characteristic_ID" />
+            </Principal>
+            <Dependent Role="Venue_Characteristic">
+              <PropertyRef Name="Characteristic_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Venue_VenueCharacteristic">
+          <End Type="LibraryAssistantModel.Venue" Role="Venue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="LibraryAssistantModel.Venue_Characteristic" Role="Venue_Characteristic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="Campus_ID" />
+              <PropertyRef Name="Building_ID" />
+              <PropertyRef Name="Building_Floor_ID" />
+              <PropertyRef Name="Venue_ID" />
+            </Principal>
+            <Dependent Role="Venue_Characteristic">
+              <PropertyRef Name="Campus_ID" />
+              <PropertyRef Name="Building_ID" />
+              <PropertyRef Name="Building_Floor_ID" />
+              <PropertyRef Name="Venue_ID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -4093,19 +4093,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Venue_Characteristic">
-            <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Characteristic">
-              <MappingFragment StoreEntitySet="Venue_Characteristic">
-                <ScalarProperty Name="Characteristic_ID" ColumnName="Characteristic_ID" />
-                <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
-                <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
-                <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
-                <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
-                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
-                <ScalarProperty Name="Additional_Information" ColumnName="Additional_Information" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Venue_Problem">
             <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Problem">
               <MappingFragment StoreEntitySet="Venue_Problem">
@@ -4189,6 +4176,19 @@
               <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Venue_Characteristic">
+            <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Characteristic">
+              <MappingFragment StoreEntitySet="Venue_Characteristic">
+                <ScalarProperty Name="Additional_Information" ColumnName="Additional_Information" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+                <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
+                <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
+                <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
+                <ScalarProperty Name="Characteristic_ID" ColumnName="Characteristic_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

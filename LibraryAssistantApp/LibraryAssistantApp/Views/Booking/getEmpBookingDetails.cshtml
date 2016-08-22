@@ -1,0 +1,42 @@
+﻿@model  LibraryAssistantApp.Models.BookingDetailsModel
+<form id="myForm">
+    <div id="confirmDetailsForm">
+        <table>
+            <tbody>
+                <tr>
+                    <td style="padding-right:5em"><strong>Person ID:</strong></td>
+                    <td>@Html.DisplayFor(m => m.person_id)</td>
+                </tr>
+                <tr>
+                    <td style="padding-right:5em"><strong>Type:</strong></td>
+                    <td>@Html.DisplayFor(m => m.type)</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Date:</strong></td>
+                    <td>@Html.DisplayFor(m => m.date)</td>
+                </tr>
+                <tr>
+                    <td><strong>Timeslot:</strong></td>
+                    <td>@Html.DisplayFor(m => m.timeslot)</td>
+                </tr>
+                <tr>
+                    <td><strong>Campus:</strong></td>
+                    <td>@Html.DisplayFor(m => m.campus)</td>
+                </tr>
+                <tr>
+                    <td><strong>Building:</strong></td>
+                    <td>@Html.DisplayFor(m => m.building)</td>
+                </tr>
+                <tr>
+                    <td><strong>Venue:</strong></td>
+                    <td>@Html.DisplayFor(m => m.venue)</td>
+                </tr>
+                <tr>
+                    <td><strong>Booking Status:</strong></td>
+                    <td>@Html.DropDownList("Booking_Status1", null, htmlAttributes: new {@id = "bookingStatusList", @onchange = "enableButton()" })</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>

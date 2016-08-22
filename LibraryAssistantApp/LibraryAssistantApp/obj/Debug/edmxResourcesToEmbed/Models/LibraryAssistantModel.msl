@@ -456,19 +456,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Venue_Characteristic">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Characteristic">
-        <MappingFragment StoreEntitySet="Venue_Characteristic">
-          <ScalarProperty Name="Characteristic_ID" ColumnName="Characteristic_ID" />
-          <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
-          <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
-          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
-          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
-          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
-          <ScalarProperty Name="Additional_Information" ColumnName="Additional_Information" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Venue_Problem">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Problem">
         <MappingFragment StoreEntitySet="Venue_Problem">
@@ -552,5 +539,18 @@
         <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
       </EndProperty>
     </AssociationSetMapping>
+    <EntitySetMapping Name="Venue_Characteristic">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Characteristic">
+        <MappingFragment StoreEntitySet="Venue_Characteristic">
+          <ScalarProperty Name="Additional_Information" ColumnName="Additional_Information" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
+          <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
+          <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
+          <ScalarProperty Name="Characteristic_ID" ColumnName="Characteristic_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -198,6 +198,12 @@ namespace LibraryAssistantApp.Models
     {
         public int booking_seq { get; set; }
 
+        [Display(Name ="Booking Status")]
+        public string booking_status { get; set; }
+
+        [Display(Name = "Person ID")]
+        public string person_id { get; set; }
+
         [Display(Name ="Type")]
         public string type { get; set; }
 
@@ -215,5 +221,49 @@ namespace LibraryAssistantApp.Models
 
         [Display(Name ="Venue")]
         public string venue { get; set; }
+    }
+
+    public class UpdateBookingModel
+    {
+        public int booking_seq { get; set; }
+
+        [Display(Name = "Person ID")]
+        public string person_id { get; set; }
+
+        [Display(Name = "Date")]
+        [Required(ErrorMessage ="Please provide a date")]
+        public string date { get; set; }
+
+        public DateTime startDate { get; set; }
+
+        public DateTime endDate { get; set; }
+
+        [Required(ErrorMessage = "Please provide a time selection")]
+        [Display(Name = "Time")]
+        public string time { get; set; }
+
+        [Required(ErrorMessage = "Please provide a length selection")]
+        [Display(Name = "Duration (Minutes)")]
+        public double length { get; set; }
+
+        [Display(Name = "Campus")]
+        [Required(ErrorMessage ="Please select a campus")]
+        public string campus { get; set; }
+
+        [Display(Name = "Building")]
+        [Required(ErrorMessage = "Please select a building")]
+        public string building { get; set; }
+
+        [Display(Name = "Venue")]
+        [Required(ErrorMessage = "Please select a venue")]
+        public string venue { get; set; }
+
+        public int campus_id { get; set; }
+
+        public int venue_id { get; set; }
+
+        public int building_id { get; set; }
+
+        public int building_floor_id { get; set; }
     }
 }

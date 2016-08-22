@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-		<Diagram DiagramId="58c94540889e405f8cafd6d1c5cf6193" Name="Diagram1" ZoomLevel="50">
+		<Diagram DiagramId="58c94540889e405f8cafd6d1c5cf6193" Name="Diagram1" ZoomLevel="65">
         <EntityTypeShape EntityType="LibraryAssistantModel.Attendee_Status" Width="1.5" PointX="8.25" PointY="9.375" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Attendee_Type" Width="1.5" PointX="8.25" PointY="11.625" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Booking_Status" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
@@ -49,7 +49,6 @@
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue" Width="1.5" PointX="3" PointY="25.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Booking" Width="1.5" PointX="5.25" PointY="14" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Booking_Person" Width="1.5" PointX="10.5" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Characteristic" Width="1.5" PointX="8.25" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Problem" Width="1.5" PointX="15.5" PointY="23.5" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Type" Width="1.5" PointX="0.75" PointY="29.75" IsExpanded="true" />
         <AssociationConnector Association="LibraryAssistantModel.AttendeeStatus_VenueBookingPerson" ManuallyRouted="false" />
@@ -66,7 +65,6 @@
         <AssociationConnector Association="LibraryAssistantModel.Campus_CalenderRules" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.DayOfWeek_CalenderRules" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.PeriodType_CalenderRules" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.Characteristic_VenueCharacteristic" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Clour_PeriodType" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.CommonProblemType_CommonProblem" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.CommonProblemType_VenueProblem" ManuallyRouted="false" />
@@ -108,7 +106,6 @@
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.FK__Venue__Venue_Typ__6A30C649" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Venue_VenueBooking" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryAssistantModel.Venue_VenueCharacteristic" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Venue_VenueProblem" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_VenueBookingPerson" ManuallyRouted="false" />
         <AssociationConnector Association="LibraryAssistantModel.Person_Level_Venue_Booking" ManuallyRouted="false" />
@@ -122,6 +119,9 @@
         <AssociationConnector Association="LibraryAssistantModel.Role_PersonRole" />
         <AssociationConnector Association="LibraryAssistantModel.Role_RoleAction" />
         <AssociationConnector Association="LibraryAssistantModel.Venue_Role" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Characteristic" Width="1.5" PointX="8.25" PointY="29.75" />
+        <AssociationConnector Association="LibraryAssistantModel.Characteristic_VenueCharacteristic" />
+        <AssociationConnector Association="LibraryAssistantModel.Venue_VenueCharacteristic" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
