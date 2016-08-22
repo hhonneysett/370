@@ -297,6 +297,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
+    <Compile Include="Controllers\PersonTypeController.cs" />
     <Compile Include="Controllers\RegisteredPersonController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -405,9 +406,6 @@
     <Compile Include="Models\PartialClasses.cs" />
     <Compile Include="Models\PartialEntities.cs" />
     <Compile Include="Models\Period_Type.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Person_Level.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Person_Questionnaire.cs">
@@ -555,6 +553,10 @@
     <Content Include="Views\Role\Delete.cshtml" />
     <Content Include="Views\Role\ActionDetails.cshtml" />
     <Content Include="Views\Role\RoleDetails.cshtml" />
+    <Content Include="Views\PersonType\Index.cshtml" />
+    <Content Include="Views\PersonType\Create.cshtml" />
+    <Content Include="Views\PersonType\Edit.cshtml" />
+    <Content Include="Views\PersonType\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

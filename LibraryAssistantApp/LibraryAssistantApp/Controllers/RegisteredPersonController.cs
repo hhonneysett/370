@@ -16,7 +16,7 @@ namespace LibraryAssistantApp.Controllers
         // GET: RegisteredPerson
         public ActionResult Index()
         {
-            var registered_Person = db.Registered_Person.Include(r => r.Person_Level).Include(r => r.Person_Title1).Include(r => r.Person_Type1);
+            var registered_Person = db.Registered_Person.Include(r => r.Person_Title1).Include(r => r.Person_Type);
             return View(registered_Person.ToList());
         }
 
@@ -70,7 +70,6 @@ namespace LibraryAssistantApp.Controllers
         // GET: RegisteredPerson/RegisterStudent
         public ActionResult RegisterStudent()
         {
-            ViewBag.Level_ID = new SelectList(db.Person_Level, "Level_ID", "Level_Name");
             ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
             return View();
         }
@@ -91,9 +90,7 @@ namespace LibraryAssistantApp.Controllers
                 a.Person_Surname = b.Person_Surname;
                 a.Person_Email = b.Person_Email;
                 a.Person_Password = b.Person_Password;
-                a.Level_ID = b.Level_ID;
                 a.Person_Title = b.Person_Title;
-                a.Person_Type = "Student";
                 a.Person_Registration_DateTime = DateTime.Now;
                 a.Person_Registration_Status = "Pending";
 
@@ -104,7 +101,6 @@ namespace LibraryAssistantApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Level_ID = new SelectList(db.Person_Level, "Level_ID", "Level_Name", b.Level_ID);
             ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", b.Person_Title);
             return View(b);
         }
@@ -151,9 +147,7 @@ namespace LibraryAssistantApp.Controllers
             b.Person_Name = registered_Person.Person_Name;
             b.Person_Surname = registered_Person.Person_Surname;
             b.Person_Email = registered_Person.Person_Email;
-            b.Level_ID = registered_Person.Level_ID;
 
-            ViewBag.Level = new SelectList(db.Person_Level, "Level_ID", "Level_Name", registered_Person.Level_ID);
             ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", registered_Person.Person_Title);
             return View(b);
         }
@@ -179,7 +173,6 @@ namespace LibraryAssistantApp.Controllers
                     registered_Person.Person_Name = model.Person_Name;
                     registered_Person.Person_Surname = model.Person_Surname;
                     registered_Person.Person_Email = model.Person_Email;
-                    registered_Person.Level_ID = model.Level_ID;
                     registered_Person.Person_Title = model.Person_Title;
 
                     db.Entry(registered_Person).State = EntityState.Modified;
@@ -188,13 +181,11 @@ namespace LibraryAssistantApp.Controllers
                 }
                 else
                 {
-                    ViewBag.Level = new SelectList(db.Person_Level, "Level_ID", "Level_Name", model.Level_ID);
                     ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Person_Title);
                     TempData["Message"] = "Email address already exists on the system";
                     return View(model);
                 }              
             }
-            ViewBag.Level = new SelectList(db.Person_Level, "Level_ID", "Level_Name", model.Level_ID);
             ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Person_Title);
             return View(model);
         }

@@ -40,11 +40,11 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Questionnaire> Person_Questionnaire { get; set; }
         public virtual Question_Topic Question_Topic { get; set; }
-        public virtual Registered_Person Registered_Person { get; set; }
-        public virtual Registered_Person Registered_Person1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Questionnaire_Questions> Questionnaire_Questions { get; set; }
         public virtual Venue_Booking Venue_Booking { get; set; }
         public virtual Venue Venue { get; set; }
+        public virtual Registered_Person Registered_Person { get; set; }
+        public virtual Registered_Person Registered_Person1 { get; set; }
     }
 }

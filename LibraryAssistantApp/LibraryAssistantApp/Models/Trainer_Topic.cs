@@ -18,7 +18,7 @@ namespace LibraryAssistantApp.Models
         public int Topic_Seq { get; set; }
         public int Active_Ind { get; set; }
     
-        public virtual Registered_Person Registered_Person { get; set; }
         public virtual Topic Topic { get; set; }
+        public virtual Registered_Person Registered_Person { get; set; }
     }
 }

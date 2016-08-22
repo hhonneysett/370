@@ -239,4 +239,22 @@ namespace LibraryAssistantApp.Models
         public Role role { get; set; }
         public List<Role_Action> actionList { get; set; }
     }
+
+    public class PersonTypeModel
+    {
+        public IEnumerable<Person_Type> person_types { get; set; }
+    }
+
+    public class PersonTypeAddModel
+    {
+        [Required(ErrorMessage ="Person Type is required")]
+        [Display(Name ="Person Type")]
+        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage = "Person Type must be alphabetic and can only include one space")]
+        public string person_type { get; set; }
+    }
+
+    public class PersonTypeEditModel
+    {
+        public Person_Type person_type { get; set; }
+    }
 }

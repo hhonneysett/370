@@ -205,26 +205,7 @@
       <PropertyRef Name="Period_Type_ID" />
     </Key>
     <Property Name="Period_Type_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Description" Type="text" />
-    <Property Name="HEX_Value" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Person_Level">
-    <Key>
-      <PropertyRef Name="Level_ID" />
-    </Key>
-    <Property Name="Level_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Level_Name" Type="varchar" MaxLength="30" Nullable="false" />
-    <Property Name="Description" Type="text" />
-    <Property Name="Graduate_Level" Type="char" MaxLength="30" />
-    <Property Name="Person_Type" Type="varchar" MaxLength="20" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Person_Level_Venue_Booking">
-    <Key>
-      <PropertyRef Name="Venue_Booking_Seq" />
-      <PropertyRef Name="Level_ID" />
-    </Key>
-    <Property Name="Venue_Booking_Seq" Type="int" Nullable="false" />
-    <Property Name="Level_ID" Type="int" Nullable="false" />
+    <Property Name="Period_Type_Description" Type="text" />
   </EntityType>
   <EntityType Name="Person_Questionnaire">
     <Key>
@@ -252,10 +233,8 @@
       <PropertyRef Name="Person_Role_ID" />
     </Key>
     <Property Name="Person_Role_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Active_Ind" Type="int" Nullable="false" />
     <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="Role_ID" Type="int" Nullable="false" />
-    <Property Name="Level_ID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Person_Session_Action_Log">
     <Key>
@@ -293,10 +272,10 @@
   </EntityType>
   <EntityType Name="Person_Type">
     <Key>
-      <PropertyRef Name="Person_Type" />
+      <PropertyRef Name="Person_Type_ID" />
     </Key>
+    <Property Name="Person_Type_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Person_Type" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="Description" Type="text" Nullable="false" />
   </EntityType>
   <EntityType Name="Possible_Answer">
     <Key>
@@ -365,8 +344,7 @@
     <Property Name="Person_Password" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Person_Registration_Status" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Person_Registration_DateTime" Type="datetime" Nullable="false" />
-    <Property Name="Level_ID" Type="int" Nullable="false" />
-    <Property Name="Person_Type" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Person_Type_ID" Type="int" Nullable="false" />
     <Property Name="Person_Title" Type="varchar" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="Role">
@@ -696,18 +674,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="Clour_PeriodType">
-    <End Role="Colour" Type="Self.Colour" Multiplicity="1" />
-    <End Role="Period_Type" Type="Self.Period_Type" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Colour">
-        <PropertyRef Name="HEX_Value" />
-      </Principal>
-      <Dependent Role="Period_Type">
-        <PropertyRef Name="HEX_Value" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="Colour_BookingStatus">
     <End Role="Colour" Type="Self.Colour" Multiplicity="1" />
     <End Role="Booking_Status" Type="Self.Booking_Status" Multiplicity="*" />
@@ -844,6 +810,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Person_Type_Person_Type">
+    <End Role="Person_Type" Type="Self.Person_Type" Multiplicity="1" />
+    <End Role="Person_Type1" Type="Self.Person_Type" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Person_Type">
+        <PropertyRef Name="Person_Type_ID" />
+      </Principal>
+      <Dependent Role="Person_Type1">
+        <PropertyRef Name="Person_Type_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="PeriodType_Calender">
     <End Role="Period_Type" Type="Self.Period_Type" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -905,44 +883,6 @@
       </Principal>
       <Dependent Role="Questionnaire">
         <PropertyRef Name="Person_ID_Involved" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="PersonLevel_PerLevVenueBooking">
-    <End Role="Person_Level" Type="Self.Person_Level" Multiplicity="1" />
-    <End Role="Person_Level_Venue_Booking" Type="Self.Person_Level_Venue_Booking" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Person_Level">
-        <PropertyRef Name="Level_ID" />
-      </Principal>
-      <Dependent Role="Person_Level_Venue_Booking">
-        <PropertyRef Name="Level_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="PersonLevel_PersonRole">
-    <End Role="Person_Level" Type="Self.Person_Level" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Person_Role" Type="Self.Person_Role" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Person_Level">
-        <PropertyRef Name="Level_ID" />
-      </Principal>
-      <Dependent Role="Person_Role">
-        <PropertyRef Name="Level_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="PersonLevel_RegisteredPerson">
-    <End Role="Person_Level" Type="Self.Person_Level" Multiplicity="1" />
-    <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Person_Level">
-        <PropertyRef Name="Level_ID" />
-      </Principal>
-      <Dependent Role="Registered_Person">
-        <PropertyRef Name="Level_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1011,32 +951,6 @@
       </Principal>
       <Dependent Role="Registered_Person">
         <PropertyRef Name="Person_Title" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="PersonType_Person_Level">
-    <End Role="Person_Type" Type="Self.Person_Type" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Person_Level" Type="Self.Person_Level" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Person_Type">
-        <PropertyRef Name="Person_Type" />
-      </Principal>
-      <Dependent Role="Person_Level">
-        <PropertyRef Name="Person_Type" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="PersonType_RegisteredPerson">
-    <End Role="Person_Type" Type="Self.Person_Type" Multiplicity="1" />
-    <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Person_Type">
-        <PropertyRef Name="Person_Type" />
-      </Principal>
-      <Dependent Role="Registered_Person">
-        <PropertyRef Name="Person_Type" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1191,6 +1105,18 @@
       </Principal>
       <Dependent Role="Person_Topic">
         <PropertyRef Name="Person_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RegisteredPerson_PersonType">
+    <End Role="Person_Type" Type="Self.Person_Type" Multiplicity="1" />
+    <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person_Type">
+        <PropertyRef Name="Person_Type_ID" />
+      </Principal>
+      <Dependent Role="Registered_Person">
+        <PropertyRef Name="Person_Type_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1426,20 +1352,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="VenueBooking_PerLevVenueBooking">
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Person_Level_Venue_Booking" Type="Self.Person_Level_Venue_Booking" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Venue_Booking">
-        <PropertyRef Name="Venue_Booking_Seq" />
-      </Principal>
-      <Dependent Role="Person_Level_Venue_Booking">
-        <PropertyRef Name="Venue_Booking_Seq" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="VenueBooking_Questionnaire">
     <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="0..1" />
     <End Role="Questionnaire" Type="Self.Questionnaire" Multiplicity="*" />
@@ -1497,8 +1409,6 @@
     <EntitySet Name="Document_Repository" EntityType="Self.Document_Repository" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Document_Type" EntityType="Self.Document_Type" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Period_Type" EntityType="Self.Period_Type" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Person_Level" EntityType="Self.Person_Level" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Person_Level_Venue_Booking" EntityType="Self.Person_Level_Venue_Booking" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Person_Questionnaire" EntityType="Self.Person_Questionnaire" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Person_Questionnaire_Result" EntityType="Self.Person_Questionnaire_Result" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Person_Role" EntityType="Self.Person_Role" Schema="dbo" store:Type="Tables" />
@@ -1579,10 +1489,6 @@
       <End Role="Characteristic" EntitySet="Characteristic" />
       <End Role="Venue_Characteristic" EntitySet="Venue_Characteristic" />
     </AssociationSet>
-    <AssociationSet Name="Clour_PeriodType" Association="Self.Clour_PeriodType">
-      <End Role="Colour" EntitySet="Colour" />
-      <End Role="Period_Type" EntitySet="Period_Type" />
-    </AssociationSet>
     <AssociationSet Name="Colour_BookingStatus" Association="Self.Colour_BookingStatus">
       <End Role="Colour" EntitySet="Colour" />
       <End Role="Booking_Status" EntitySet="Booking_Status" />
@@ -1627,6 +1533,10 @@
       <End Role="Venue_Type" EntitySet="Venue_Type" />
       <End Role="Venue" EntitySet="Venue" />
     </AssociationSet>
+    <AssociationSet Name="FK_Person_Type_Person_Type" Association="Self.FK_Person_Type_Person_Type">
+      <End Role="Person_Type" EntitySet="Person_Type" />
+      <End Role="Person_Type1" EntitySet="Person_Type" />
+    </AssociationSet>
     <AssociationSet Name="PeriodType_Calender" Association="Self.PeriodType_Calender">
       <End Role="Period_Type" EntitySet="Period_Type" />
       <End Role="Calender" EntitySet="Calender" />
@@ -1647,18 +1557,6 @@
       <End Role="Registered_Person" EntitySet="Registered_Person" />
       <End Role="Questionnaire" EntitySet="Questionnaire" />
     </AssociationSet>
-    <AssociationSet Name="PersonLevel_PerLevVenueBooking" Association="Self.PersonLevel_PerLevVenueBooking">
-      <End Role="Person_Level" EntitySet="Person_Level" />
-      <End Role="Person_Level_Venue_Booking" EntitySet="Person_Level_Venue_Booking" />
-    </AssociationSet>
-    <AssociationSet Name="PersonLevel_PersonRole" Association="Self.PersonLevel_PersonRole">
-      <End Role="Person_Level" EntitySet="Person_Level" />
-      <End Role="Person_Role" EntitySet="Person_Role" />
-    </AssociationSet>
-    <AssociationSet Name="PersonLevel_RegisteredPerson" Association="Self.PersonLevel_RegisteredPerson">
-      <End Role="Person_Level" EntitySet="Person_Level" />
-      <End Role="Registered_Person" EntitySet="Registered_Person" />
-    </AssociationSet>
     <AssociationSet Name="PersonLogged_VenueProblem" Association="Self.PersonLogged_VenueProblem">
       <End Role="Registered_Person" EntitySet="Registered_Person" />
       <End Role="Venue_Problem" EntitySet="Venue_Problem" />
@@ -1677,14 +1575,6 @@
     </AssociationSet>
     <AssociationSet Name="PersonTitle_RegisteredPerson" Association="Self.PersonTitle_RegisteredPerson">
       <End Role="Person_Title" EntitySet="Person_Title" />
-      <End Role="Registered_Person" EntitySet="Registered_Person" />
-    </AssociationSet>
-    <AssociationSet Name="PersonType_Person_Level" Association="Self.PersonType_Person_Level">
-      <End Role="Person_Type" EntitySet="Person_Type" />
-      <End Role="Person_Level" EntitySet="Person_Level" />
-    </AssociationSet>
-    <AssociationSet Name="PersonType_RegisteredPerson" Association="Self.PersonType_RegisteredPerson">
-      <End Role="Person_Type" EntitySet="Person_Type" />
       <End Role="Registered_Person" EntitySet="Registered_Person" />
     </AssociationSet>
     <AssociationSet Name="QuesQuestions_PersonQuesResult" Association="Self.QuesQuestions_PersonQuesResult">
@@ -1734,6 +1624,10 @@
     <AssociationSet Name="RegisteredPerson_PersonTopic" Association="Self.RegisteredPerson_PersonTopic">
       <End Role="Registered_Person" EntitySet="Registered_Person" />
       <End Role="Person_Topic" EntitySet="Person_Topic" />
+    </AssociationSet>
+    <AssociationSet Name="RegisteredPerson_PersonType" Association="Self.RegisteredPerson_PersonType">
+      <End Role="Person_Type" EntitySet="Person_Type" />
+      <End Role="Registered_Person" EntitySet="Registered_Person" />
     </AssociationSet>
     <AssociationSet Name="RegisteredPerson_Topic" Association="Self.RegisteredPerson_Topic">
       <End Role="Topic" EntitySet="Topic" />
@@ -1794,10 +1688,6 @@
     <AssociationSet Name="Venue_VenueRole" Association="Self.Venue_VenueRole">
       <End Role="Venue" EntitySet="Venue" />
       <End Role="Venue_Role" EntitySet="Venue_Role" />
-    </AssociationSet>
-    <AssociationSet Name="VenueBooking_PerLevVenueBooking" Association="Self.VenueBooking_PerLevVenueBooking">
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
-      <End Role="Person_Level_Venue_Booking" EntitySet="Person_Level_Venue_Booking" />
     </AssociationSet>
     <AssociationSet Name="VenueBooking_Questionnaire" Association="Self.VenueBooking_Questionnaire">
       <End Role="Venue_Booking" EntitySet="Venue_Booking" />

@@ -51,4 +51,9 @@ namespace LibraryAssistantApp.Models
     public partial class Role
     {
     }
+
+    [MetadataType(typeof(PersonTypeMetadata))]
+    public partial class Person_Type
+    {
+    }
 }

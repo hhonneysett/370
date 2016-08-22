@@ -34,7 +34,7 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <h3>Roles</h3>
+            <h3>Roles</h3><span class="field-validation-error text-danger">@TempData["Error"]</span>
         </div>
         <form class="navbar-form navbar-right">
             @using (Html.BeginForm("Index", "Role", FormMethod.Get))
@@ -74,7 +74,6 @@
         </div>
     </div>
 
-    <span class="field-validation-error text-danger">@TempData["Error"]</span>
     <div class="form-group">
         <div class="btn-group" role="group" aria-label="...">
             @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-default" })

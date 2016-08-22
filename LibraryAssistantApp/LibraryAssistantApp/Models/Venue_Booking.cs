@@ -19,7 +19,6 @@ namespace LibraryAssistantApp.Models
         {
             this.Questionnaires = new HashSet<Questionnaire>();
             this.Venue_Booking_Person = new HashSet<Venue_Booking_Person>();
-            this.Person_Level = new HashSet<Person_Level>();
         }
     
         public int Venue_Booking_Seq { get; set; }
@@ -45,8 +44,6 @@ namespace LibraryAssistantApp.Models
         public virtual ICollection<Questionnaire> Questionnaires { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Booking_Person> Venue_Booking_Person { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person_Level> Person_Level { get; set; }
         public virtual Venue Venue { get; set; }
     }
 }

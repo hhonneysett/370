@@ -25,7 +25,7 @@ namespace LibraryAssistantApp.Controllers
             }
             if (viewModel.Roles.Count() == 0)
             {
-                TempData["Error"] = "No roles matched search criteria";
+                TempData["Error"] = "No roles match search criteria";
             }
             return View(viewModel);
         }
@@ -116,7 +116,7 @@ namespace LibraryAssistantApp.Controllers
                 bool delete = true;
                 ViewBag.ErrorMsg = "";
                 var query = (from q in db.Roles
-                             where q.Role_Name == role.RoleName
+                             where q.Role_Name.ToLower() == role.RoleName.ToLower()
                              select q);
                 if (query.Count() != 0)
                 {
@@ -203,9 +203,9 @@ namespace LibraryAssistantApp.Controllers
             {
                 ViewBag.ErrorMsg = "";
                 var query = (from q in db.Roles
-                             where q.Role_Name == roleEdit.role.Role_Name
+                             where q.Role_Name.ToLower() == roleEdit.role.Role_Name.ToLower()
                              select q);
-                if (query.Count() > 1)
+                if (query.Count() == 1)
                 {
                     ViewBag.ErrorMsg = "The role name exists, please provide a different role name";
                     RoleEditModel roleModel = new RoleEditModel();
@@ -397,7 +397,7 @@ namespace LibraryAssistantApp.Controllers
             }
             catch
             {
-                return View();
+                return View(roleEdit);
             }
         }
     }

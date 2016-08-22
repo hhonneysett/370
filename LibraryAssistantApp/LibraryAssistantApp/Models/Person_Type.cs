@@ -17,15 +17,14 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Person_Type()
         {
-            this.Person_Level = new HashSet<Person_Level>();
             this.Registered_Person = new HashSet<Registered_Person>();
         }
     
+        public int Person_Type_ID { get; set; }
         public string Person_Type1 { get; set; }
-        public string Description { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person_Level> Person_Level { get; set; }
+        public virtual Person_Type Person_Type11 { get; set; }
+        public virtual Person_Type Person_Type2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Registered_Person> Registered_Person { get; set; }
     }

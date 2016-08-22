@@ -1,0 +1,64 @@
+﻿@using System.Web.Optimization
+@model LibraryAssistantApp.Models.PersonTypeModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $('#result-table-3 tr').click(function () {
+            $('#result-table-3 tr').removeClass('selectedrow');
+            $(this).addClass('selectedrow');
+            $('.btn-edit').attr('href', '/PersonType/Edit/' + $(this).attr('id'));
+            $('.btn-delete').attr('href', '/PersonType/Delete/' + $(this).attr('id'));
+        });
+    });
+</script>
+
+<hr/>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <h3>Person Types</h3>
+            <span class="text-success">@TempData["SuccessMsg"]</span>
+            <span class="field-validation-error text-danger">@TempData["ErrorMsg"]</span>
+        </div>
+        <form class="navbar-form navbar-right">
+            @using (Html.BeginForm("Index", "PersonType", FormMethod.Get))
+            {
+                @Html.ActionLink("View all", "Index")
+                <div class="form-group">
+                    <input class="form-control" placeholder="person type" name="search">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+            }
+        </form>
+    </div>
+</nav>
+
+<table id="result-table-3" class="table table-condensed">
+    <tr>
+        <th>Person Type</th>
+    </tr>
+
+@foreach (var item in Model.person_types) {
+    <tr id=@item.Person_Type_ID>
+        <td >
+            @Html.DisplayFor(x => item.Person_Type1)
+        </td>
+    </tr>
+}
+</table>
+
+<div class="form-group">
+    <div class="btn-group" role="group" aria-label="...">
+        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-default" })
+    </div>
+    <div class="btn-group">
+        @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-default btn-edit" })
+    </div>
+    <div class="btn-group">
+        @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-default btn-delete" })
+    </div>
+</div>

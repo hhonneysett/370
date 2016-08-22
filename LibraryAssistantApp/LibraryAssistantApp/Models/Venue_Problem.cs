@@ -28,8 +28,8 @@ namespace LibraryAssistantApp.Models
         public int Campus_ID { get; set; }
     
         public virtual Common_Problem_Type Common_Problem_Type { get; set; }
+        public virtual Venue Venue { get; set; }
         public virtual Registered_Person Registered_Person { get; set; }
         public virtual Registered_Person Registered_Person1 { get; set; }
-        public virtual Venue Venue { get; set; }
     }
 }
