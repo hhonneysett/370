@@ -1,0 +1,43 @@
+﻿<script>
+    $(document).ready(function () {
+        $('#emp-roles-table tbody tr').click(function () {
+            $('#emp-roles-table tr').removeClass('selectedrow');
+            $(this).addClass('selectedrow');
+            var a = $(this).attr('id');
+            $.ajax({
+                type: 'GET',
+                data: { id : a },
+                url: '@Url.Action("GetActions", "Employee")',
+                beforeSend: function (){
+                    $('.loading').show();
+                },
+                success: function (result) {
+                    $('#get-actions').html(result);
+                }
+            }).done(function () {
+                $('.loading').hide();
+            });
+        });
+    });
+</script>   
+
+<table id="emp-roles-table" class="table">
+    <thead>
+        <tr>
+            <th>
+                Role
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.role)
+        {
+            <tr id="@item.Role_ID">
+                <td>
+                    @item.Role_Name
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

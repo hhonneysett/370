@@ -5,7 +5,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+<script>
+    $(document).ready(function () {
+        $('#btn-continue').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetRoles", "Employee")',
+                beforeSend: function (){
+                    $('.loading').show();
+                },
+                success: function (result) {
+                    $('#get-roles').html(result);
+                }
+            }).done(function () {
+                $('.loading').hide();
+            });
+        });
+    });
+</script>   
+
+
 <h2>Create</h2>
+<div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
 
 @using (Html.BeginForm()) 
 {
@@ -23,7 +45,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.registered_person.Person_ID, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.registered_person.Person_ID, "", new { @class = "text-danger" })
-                <span class="text-danger">@ViewBag.ErrorMsg</span>
             </div>
         </div>
         <div class="form-group">
@@ -31,7 +52,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.registered_person.Person_Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.registered_person.Person_Name, "", new { @class = "text-danger" })
-                <span class="text-danger">@ViewBag.ErrorMsg</span>
             </div>
         </div>
         <div class="form-group">
@@ -39,30 +59,44 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.registered_person.Person_Surname, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.registered_person.Person_Surname, "", new { @class = "text-danger" })
-                <span class="text-danger">@ViewBag.ErrorMsg</span>
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.registered_person.Person_Title.Person_Title1, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("pTitle", new SelectList(ViewBag.pTitle, "Title_ID", "Person_Title1"), htmlAttributes: new { @class = "form-control" } )
-
-                <span class="text-danger">@ViewBag.ErrorMsg</span>
+                @Html.DropDownList("PersonTitle", null, htmlAttributes: new { @class = "form-control" } )
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Title, "", new { @class = "text-danger" })
             </div>
         </div>
-
-
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Type.Person_Type1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("PersonType", null, htmlAttributes: new { @class = "form-control", @disabled = true })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input id="btn-continue" type="button" value="Submit" class="btn btn-default" />
+                <div>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
             </div>
+        </div>
+        <div id="get-roles" class="col-md-4">
+
+        </div>
+        <div id="get-actions" class="col-md-8">
+
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

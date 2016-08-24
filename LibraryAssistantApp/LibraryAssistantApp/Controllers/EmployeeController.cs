@@ -53,29 +53,46 @@ namespace LibraryAssistantApp.Controllers
 
         public ActionResult Create()
         {
-            var registeredPerson = new EmployeeAddModel();
-            registeredPerson.current_up_person = db.Current_UP_Person;
+            var viewModel = new EmployeeAddModel();
+            viewModel.current_up_person = db.Current_UP_Person;
 
-            ViewBag.pTitle = db.Person_Title;
+            ViewBag.PersonTitle = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
+            ViewBag.PersonType = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", "Employee");
 
-            registeredPerson.person_type = db.Person_Type;
-            registeredPerson.role_action = db.Role_Action
-                .Include(ra => ra.Action);
-            return View(registeredPerson);
+            return View(viewModel);
+        }
+
+        public PartialViewResult GetRoles()
+        {
+            var viewModel = new EmployeeAddModel();
+
+            viewModel.role = db.Roles
+                .Include(i => i.Role_Action.Select(x => x.Action));
+
+            return PartialView(viewModel);
+        }
+
+        public PartialViewResult GetActions(int? id)
+        {
+            var viewModel = new EmployeeAddModel();
+            if (id != null)
+            {
+                viewModel.role_action = db.Roles.Single(
+                    r => r.Role_ID == id.Value).Role_Action;
+                return PartialView(viewModel);
+            }
+            return PartialView();
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(EmployeeAddModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-
+                TempData["SuccessMsg"] = "New employee created successfully";
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View();
         }
 
         public ActionResult Edit(int id)

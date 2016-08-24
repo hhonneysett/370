@@ -99,7 +99,7 @@ namespace LibraryAssistantApp.Models
 
     public class PersonTypeMetadata
     {
-        [Display(Name = "Person Type")]
+        [Display(Name = "Type")]
         [Required(ErrorMessage = "Person Type required")]
         [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage = "Person Type must be alphabetic and can only include one space")]
         public string Person_Type1 { get; set; }

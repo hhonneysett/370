@@ -272,5 +272,6 @@ namespace LibraryAssistantApp.Models
         public IEnumerable<Person_Type> person_type { get; set; }
         public IEnumerable<Role_Action> role_action { get; set; }
         public IEnumerable<Person_Role> person_role { get; set; }
+        public IEnumerable<Role> role { get; set; }
     }
 }
