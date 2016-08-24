@@ -1,12 +1,10 @@
 ﻿function AssignButtonClicked(elem) {
         var id = $(elem).data('assigned-id');
-        alert(id);
         $.ajax({
             type: 'POST',
             url: '/Booking/venueSelect',
             data: "id=" + id,
             success: function (result) {
-                alert("AssignButtonClicked");
             },
             error: function (err, result) {
                 alert("Error in assigning dataToSave" + err.responseText);
@@ -183,3 +181,274 @@ function displayCalendar(inputId, inputType) {
     });
     scheduler.updateView();
 };
+
+$(document).ready(function () {
+
+    //disable the create button and topic select on form load
+    $("#topicSelect").attr('disabled', true);
+
+    //show mathcing topics for selected category
+    $("#categorySelect").change(function () {
+        var id = $("#categorySelect").children(":selected").val();
+        $.ajax({
+            type: 'GET',
+            url: '/Trainer/getCatTopic',
+            data: { id: id },
+            success: function (result) {
+                var options = $("#topicSelect");
+
+                //remove existing options from the select to add new options
+                options.children().remove();
+
+                options.append($("<option disabled selected value />").text("-- select topic --"));
+
+                if (result.length == 0) {
+                    options.children().remove();
+                    options.append($("<option disabled selected value />").text("-- no topics --"));
+                }
+
+                //add an option to the select for each building
+                result.forEach(function (entry) {
+                    options.append($("<option />").val(entry.id).text(entry.text));
+                });
+                options.prop('disabled', false)
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    });
+
+    //load matching venues on button click
+    $("#btnSubmit").click(function () {
+
+        $('#possibleTrainers').empty();
+        $("#additionalDetails").empty();
+        var characteristicsList = [];
+
+        $('input:checkbox.Characteristic_ID').each(function () {
+            var sThisVal = (this.checked ? $(this).val() : "");
+            if (sThisVal > 0) {
+                characteristicsList.push(sThisVal);
+            };
+        });
+
+        var model = {
+            Category_ID: $("#categorySelect").val(),
+            Topic_ID: $("#topicSelect").val(),
+            duration: $("#durationSelect").val(),
+            startDate: $("#datepicker").val(),
+            Campus_ID: $("#campusSelect").val(),
+        };
+
+        //clear the session details div
+        $("#sessiondetails").empty();
+
+        $.ajax({
+            type: 'GET',
+            url: '/Trainer/getTrainingVenues',
+            contentType: 'application/json; charset=utf-8',
+            data: { model: JSON.stringify(model), characteristics: JSON.stringify(characteristicsList) },
+            success: function (result) {
+
+                //display the available venues from a partial
+                $('#availableVenues').replaceWith(result);
+
+                //toggle the session details section
+                $("#toggleMain").toggle(800);
+                $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-bottom");
+                $("#detailsTop span").addClass("glyphicon glyphicon-triangle-right");
+
+                //disable the proceed button
+                $("#btnProceed").attr('disabled', 'disabled');
+
+                //call a function on a table row click to capture the selected venue
+                $("#venueTable tbody tr").click(function () {
+                    var selected = $(this).hasClass("alert-info");
+                    $("#venueTable tbody tr").removeClass("alert-info");
+
+                    if (!selected) {
+                        $(this).addClass("alert-info");
+                    }
+                    var buttonEnabled = $(this).hasClass("alert-info");
+                    if (buttonEnabled) {
+                        $("#btnProceed").prop('disabled', false)
+                    } else {
+                        $("#btnProceed").prop('disabled', true)
+                    }
+                });
+
+                //toggle details when clicked
+                $("#venueDetails").click(function () {
+                    $("#toggleVenue").toggle(800);
+                    if ($("#venueDetails span").hasClass("glyphicon glyphicon-triangle-right")) {
+                        $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-right");
+                        $("#venueDetails span").addClass("glyphicon glyphicon-triangle-bottom");
+                    }
+                    else {
+                        $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-bottom");
+                        $("#venueDetails span").addClass("glyphicon glyphicon-triangle-right");
+                    }
+                });
+
+                //call function on button proceed click
+                $("#btnProceed").click(function () {
+                    $('#possibleTrainers').empty();
+                    $("#additionalDetails").empty();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Trainer/addTrainingSessionDetails',
+                        success: function (result) {
+
+                            //display the available venues from a partial
+                            $('#sessiondetails').replaceWith(result);
+                            $("#toggleVenue").toggle(800);
+                            $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-bottom");
+                            $("#venueDetails span").addClass("glyphicon glyphicon-triangle-right");
+                            $("#btnTimeslotProceed").attr('disabled', 'disabled');
+                        },
+                        error: function (err, result) {
+                            alert("Error in assigning dataToSave" + err.responseText);
+                        }
+                    });
+                })
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    });
+
+    //toggle details when clicked
+    $("#detailsTop").click(function () {
+        $("#toggleMain").toggle(800);
+        if ($("#detailsTop span").hasClass("glyphicon glyphicon-triangle-right")) {
+            $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-right");
+            $("#detailsTop span").addClass("glyphicon glyphicon-triangle-bottom");
+        }
+        else {
+            $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-bottom");
+            $("#detailsTop span").addClass("glyphicon glyphicon-triangle-right");
+        }
+    });
+
+
+
+});
+
+
+//get list of trainers that are available
+function getTrainers(elem) {
+    var id = $(elem).data('assigned-id');
+    $("#btnTimeslotProceed").attr('disabled', false);
+    $.ajax({
+        type: 'GET',
+        url: '/Trainer/getTrainers',
+        data: "id=" + id,
+        success: function (result) {
+            $('#possibleTrainers').replaceWith(result);
+
+            //select available trainer
+            $("#trainerTable tbody tr").click(function () {
+
+                var selected = $(this).hasClass("alert-info");
+                $("#trainerTable tbody tr").removeClass("alert-info");
+
+                if (!selected) {
+                    $(this).addClass("alert-info");
+                }
+            });
+        },
+        error: function (err, result) {
+            alert("Error in assigning dataToSave" + err.responseText);
+        }
+    });
+};
+
+//proceed from the select a timeslot section
+function timeslotProceed() {
+    toggleSection('#sessionTimeslot', '#toggleTimeslot');
+    $.ajax({
+        type: 'GET',
+        url: '/Trainer/additionalDetails',
+        success: function (result) {
+            $('#additionalDetails').replaceWith(result);
+        },
+        error: function (err, result) {
+            alert("Error in assigning dataToSave" + err.responseText);
+        }
+    });
+};
+
+//get the selected trainer and capture to server
+function trainerSelect(elem) {
+    var id = $(elem).data('assigned-id');
+    $.ajax({
+        type: 'GET',
+        url: '/Trainer/selectTrainer',
+        data: "id=" + id,
+        success: function (result) {
+        },
+        error: function (err, result) {
+            alert("Error in assigning dataToSave" + err.responseText);
+        }
+    });
+}
+
+//toggle the inputted sections
+function toggleSection(a, b)
+{
+    $(b).toggle(800);
+    if ($(a + " span").hasClass("glyphicon glyphicon-triangle-right")) {
+        $(a + " span").removeClass("glyphicon glyphicon-triangle-right");
+        $(a + " span").addClass("glyphicon glyphicon-triangle-bottom");
+    }
+    else {
+        $(a + " span").removeClass("glyphicon glyphicon-triangle-bottom");
+        $(a + " span").addClass("glyphicon glyphicon-triangle-right");
+    }
+}
+
+//
+function getRepeatType()
+{
+    var id = $("#repeatType").children(":selected").val();
+    $("#repeatErrorDiv").hide(800);
+    if (id == "none") {
+        $("#repeatToggle").hide(800);
+    }
+    else {
+        $("#repeatToggle").show(800);
+    }
+    
+}
+
+function checkRepeat()
+{
+    var repeatType = $("#repeatType").children(":selected").val();
+    var multiple = $("#repeatTimes").val();
+
+    if (multiple > 0)
+    {
+        $.ajax({
+            type: 'GET',
+            url: '/Trainer/reapeatCheck',
+            data: { repeatType: repeatType, multiple: multiple },
+            success: function (result) {
+                if (result) {
+                    $("#repeatErrorDiv").show();
+                    $("#repeatError").addClass("glyphicon glyphicon-ok")
+                    $("#repeatText").text(" No Clashes Detected")
+                }
+                else {
+                    $("#repeatError").removeClass("glyphicon glyphicon-ok")
+                    $("#repeatError").addClass("glyphicon glyphicon-remove")
+                    $("#repeatText").text("Clashes Detected")
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    }   
+}

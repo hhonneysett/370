@@ -279,4 +279,40 @@ namespace LibraryAssistantApp.Models
         public string description { get; set; }
   
     }
+
+    public class TrainingSessionModel
+    {
+        [Required(ErrorMessage ="Please provide a category selection")]
+        [Display(Name ="Category")]
+        public int Category_ID { get; set; }
+
+        [Required(ErrorMessage ="Please provide a topic selection")]
+        [Display(Name ="Topic")]
+        public int Topic_ID { get; set; }
+
+        [Required(ErrorMessage ="Please provide a duration")]
+        [Display(Name ="Duration (Minutes)")]
+        public int duration { get; set; }
+
+        [Required(ErrorMessage ="Please provide a start date")]
+        [Display(Name ="Date")]
+        public string startDate { get; set; }
+
+        [Required(ErrorMessage = "Please provide a campus")]
+        [Display(Name = "Campus")]
+        public int Campus_ID { get; set; }
+    }
+
+    public class timeslot
+    {
+        public int id { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+    }
+
+    public class venueTimeslot
+    {
+        public timeslot timeslot { get; set; }
+        public IEnumerable<Venue> venues { get; set; }
+    }
 }

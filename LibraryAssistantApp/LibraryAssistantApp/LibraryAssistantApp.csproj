@@ -530,6 +530,11 @@
     <Content Include="Views\Trainer\updateTopic.cshtml" />
     <Content Include="Views\Trainer\addTopic.cshtml" />
     <Content Include="Views\Trainer\deleteTopic.cshtml" />
+    <Content Include="Views\Trainer\addTrainingSession.cshtml" />
+    <Content Include="Views\Trainer\getTrainingVenues.cshtml" />
+    <Content Include="Views\Trainer\addTrainingSessionDetails.cshtml" />
+    <Content Include="Views\Trainer\getTrainers.cshtml" />
+    <Content Include="Views\Trainer\additionalDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

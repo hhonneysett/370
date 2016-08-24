@@ -43,3 +43,12 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.no-border {
+    border: 0;
+    box-shadow: none;
+}
+
+table tbody tr :hover {
+    cursor: pointer;
+}

@@ -1,0 +1,125 @@
+﻿@model LibraryAssistantApp.Models.TrainingSessionModel
+@using LibraryAssistantApp.Models
+
+@{
+    ViewBag.Title = "addTrainingSession";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = (IEnumerable<Category>)ViewBag.Categories;
+    var campuses = (IEnumerable<Campus>)ViewBag.Campuses;
+    var characteristics = (IEnumerable<Characteristic>)ViewBag.Characteristics;
+}
+
+<h2>Create Training Session</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div id="detailsTop"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Training Session Details:</b></div>
+        <hr />
+        <div class="row" id="toggleMain">
+            <div class="col-md-6">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Category_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select name="model.Category_ID" id="categorySelect" class="form-control">
+                            <option disabled selected value>-- select a category --</option>
+                            @foreach (var category in categories)
+                            {
+                                <option value="@category.Category_ID">@category.Category_Name</option>
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.Category_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Topic_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select name="model.topicId" class="form-control" id="topicSelect"></select>
+                        @Html.ValidationMessageFor(model => model.Topic_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.startDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input type="text" id="datepicker" name="model.startDate" class="form-control" placeholder="Select Date"/>                       
+                        @Html.ValidationMessageFor(model => model.startDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.duration, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select name="model.duration" id="durationSelect" class="form-control">
+                            <option disabled selected value>-- select duration --</option>
+                            <option value="60">01h:00</option>
+                            <option value="120">02h:00</option>
+                        </select>
+                        @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Campus_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select name="model.campusId" id="campusSelect" class="form-control">
+                            <option disabled selected value>-- select a campus --</option>
+                            @foreach (var campus in campuses)
+                            {
+                                <option value="@campus.Campus_ID">@campus.Campus_Name</option>
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.Campus_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Proceed" class="btn btn-default" id="btnSubmit"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Characteristics
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            @foreach (var characteristic in characteristics)
+                            {
+                                <li class="list-group-item no-border">
+                                    <span class="pull-right"><input type="checkbox" class="Characteristic_ID" value="@characteristic.Characteristic_ID"></span> @characteristic.Characteristic_Name
+                                </li>
+                            }
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" id="venueContent">
+            <div id="availableVenues"></div>
+        </div>
+        
+        <div class="row">
+            <div class="row" id="sessiondetails"></div>          
+        </div>
+
+        <div id="additionalDetails"></div>
+
+        
+    </div>
+
+
+}
