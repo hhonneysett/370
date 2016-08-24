@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -294,6 +295,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
@@ -465,6 +467,9 @@
     <Compile Include="Models\Topic.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Topic_Category.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Trainer_Topic.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
@@ -557,6 +562,7 @@
     <Content Include="Views\PersonType\Create.cshtml" />
     <Content Include="Views\PersonType\Edit.cshtml" />
     <Content Include="Views\PersonType\Delete.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

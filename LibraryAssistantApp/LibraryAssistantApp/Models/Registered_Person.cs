@@ -37,7 +37,7 @@ namespace LibraryAssistantApp.Models
         public string Person_Registration_Status { get; set; }
         public System.DateTime Person_Registration_DateTime { get; set; }
         public int Person_Type_ID { get; set; }
-        public string Person_Title { get; set; }
+        public int Title_ID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Questionnaire> Person_Questionnaire { get; set; }
@@ -45,7 +45,7 @@ namespace LibraryAssistantApp.Models
         public virtual ICollection<Person_Role> Person_Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Session_Log> Person_Session_Log { get; set; }
-        public virtual Person_Title Person_Title1 { get; set; }
+        public virtual Person_Title Person_Title { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Topic> Person_Topic { get; set; }
         public virtual Person_Type Person_Type { get; set; }

@@ -16,7 +16,7 @@ namespace LibraryAssistantApp.Controllers
         // GET: RegisteredPerson
         public ActionResult Index()
         {
-            var registered_Person = db.Registered_Person.Include(r => r.Person_Title1).Include(r => r.Person_Type);
+            var registered_Person = db.Registered_Person.Include(r => r.Person_Title).Include(r => r.Person_Type);
             return View(registered_Person.ToList());
         }
 
@@ -90,7 +90,7 @@ namespace LibraryAssistantApp.Controllers
                 a.Person_Surname = b.Person_Surname;
                 a.Person_Email = b.Person_Email;
                 a.Person_Password = b.Person_Password;
-                a.Person_Title = b.Person_Title;
+                a.Title_ID = b.Title_ID;
                 a.Person_Registration_DateTime = DateTime.Now;
                 a.Person_Registration_Status = "Pending";
 
@@ -101,7 +101,7 @@ namespace LibraryAssistantApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", b.Person_Title);
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", b.Title_ID);
             return View(b);
         }
 
@@ -143,7 +143,7 @@ namespace LibraryAssistantApp.Controllers
             }
 
             UpdatePersonModel b = new UpdatePersonModel();
-            b.Person_Title = registered_Person.Person_Title;
+            b.Title_ID = registered_Person.Title_ID;
             b.Person_Name = registered_Person.Person_Name;
             b.Person_Surname = registered_Person.Person_Surname;
             b.Person_Email = registered_Person.Person_Email;
@@ -173,7 +173,7 @@ namespace LibraryAssistantApp.Controllers
                     registered_Person.Person_Name = model.Person_Name;
                     registered_Person.Person_Surname = model.Person_Surname;
                     registered_Person.Person_Email = model.Person_Email;
-                    registered_Person.Person_Title = model.Person_Title;
+                    registered_Person.Title_ID = model.Title_ID;
 
                     db.Entry(registered_Person).State = EntityState.Modified;
                     db.SaveChanges();
@@ -181,12 +181,12 @@ namespace LibraryAssistantApp.Controllers
                 }
                 else
                 {
-                    ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Person_Title);
+                    ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Title_ID);
                     TempData["Message"] = "Email address already exists on the system";
                     return View(model);
                 }              
             }
-            ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Person_Title);
+            ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Title_ID);
             return View(model);
         }
 

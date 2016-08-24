@@ -107,7 +107,7 @@
     </Key>
     <Property Name="Category_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Category_Name" Type="varchar" MaxLength="30" Nullable="false" />
-    <Property Name="Description" Type="text" />
+    <Property Name="Category_Description" Type="text" />
   </EntityType>
   <EntityType Name="Characteristic">
     <Key>
@@ -256,10 +256,10 @@
   </EntityType>
   <EntityType Name="Person_Title">
     <Key>
-      <PropertyRef Name="Person_Title" />
+      <PropertyRef Name="Title_ID" />
     </Key>
+    <Property Name="Title_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Person_Title" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="Description" Type="text" Nullable="false" />
   </EntityType>
   <EntityType Name="Person_Topic">
     <Key>
@@ -268,7 +268,7 @@
     </Key>
     <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="Topic_Seq" Type="int" Nullable="false" />
-    <Property Name="Active_Ind" Type="int" Nullable="false" />
+    <Property Name="Active_Ind" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="Person_Type">
     <Key>
@@ -345,7 +345,7 @@
     <Property Name="Person_Registration_Status" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Person_Registration_DateTime" Type="datetime" Nullable="false" />
     <Property Name="Person_Type_ID" Type="int" Nullable="false" />
-    <Property Name="Person_Title" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Title_ID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Role">
     <Key>
@@ -394,20 +394,19 @@
   </EntityType>
   <EntityType Name="Topic_Category">
     <Key>
-      <PropertyRef Name="Topic_Seq" />
-      <PropertyRef Name="Category_ID" />
+      <PropertyRef Name="Topic_Category_ID" />
     </Key>
     <Property Name="Topic_Seq" Type="int" Nullable="false" />
     <Property Name="Category_ID" Type="int" Nullable="false" />
+    <Property Name="Topic_Category_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
   </EntityType>
   <EntityType Name="Trainer_Topic">
     <Key>
-      <PropertyRef Name="Person_ID" />
-      <PropertyRef Name="Topic_Seq" />
+      <PropertyRef Name="Trainer_Topic_ID" />
     </Key>
+    <Property Name="Trainer_Topic_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="Topic_Seq" Type="int" Nullable="false" />
-    <Property Name="Active_Ind" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Venue">
     <Key>
@@ -822,6 +821,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Registered_Person_Person_Title">
+    <End Role="Person_Title" Type="Self.Person_Title" Multiplicity="1" />
+    <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person_Title">
+        <PropertyRef Name="Title_ID" />
+      </Principal>
+      <Dependent Role="Registered_Person">
+        <PropertyRef Name="Title_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="PeriodType_Calender">
     <End Role="Period_Type" Type="Self.Period_Type" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -939,18 +950,6 @@
       </Principal>
       <Dependent Role="Document_Access_Log">
         <PropertyRef Name="Session_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="PersonTitle_RegisteredPerson">
-    <End Role="Person_Title" Type="Self.Person_Title" Multiplicity="1" />
-    <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Person_Title">
-        <PropertyRef Name="Person_Title" />
-      </Principal>
-      <Dependent Role="Registered_Person">
-        <PropertyRef Name="Person_Title" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1537,6 +1536,10 @@
       <End Role="Person_Type" EntitySet="Person_Type" />
       <End Role="Person_Type1" EntitySet="Person_Type" />
     </AssociationSet>
+    <AssociationSet Name="FK_Registered_Person_Person_Title" Association="Self.FK_Registered_Person_Person_Title">
+      <End Role="Person_Title" EntitySet="Person_Title" />
+      <End Role="Registered_Person" EntitySet="Registered_Person" />
+    </AssociationSet>
     <AssociationSet Name="PeriodType_Calender" Association="Self.PeriodType_Calender">
       <End Role="Period_Type" EntitySet="Period_Type" />
       <End Role="Calender" EntitySet="Calender" />
@@ -1572,10 +1575,6 @@
     <AssociationSet Name="PersonSessionLog_DocumentAccessLog" Association="Self.PersonSessionLog_DocumentAccessLog">
       <End Role="Person_Session_Log" EntitySet="Person_Session_Log" />
       <End Role="Document_Access_Log" EntitySet="Document_Access_Log" />
-    </AssociationSet>
-    <AssociationSet Name="PersonTitle_RegisteredPerson" Association="Self.PersonTitle_RegisteredPerson">
-      <End Role="Person_Title" EntitySet="Person_Title" />
-      <End Role="Registered_Person" EntitySet="Registered_Person" />
     </AssociationSet>
     <AssociationSet Name="QuesQuestions_PersonQuesResult" Association="Self.QuesQuestions_PersonQuesResult">
       <End Role="Questionnaire_Questions" EntitySet="Questionnaire_Questions" />

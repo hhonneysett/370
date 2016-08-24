@@ -12,13 +12,13 @@ namespace LibraryAssistantApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Person_Topic
+    public partial class Topic_Category
     {
-        public string Person_ID { get; set; }
         public int Topic_Seq { get; set; }
-        public bool Active_Ind { get; set; }
+        public int Category_ID { get; set; }
+        public int Topic_Category_ID { get; set; }
     
-        public virtual Registered_Person Registered_Person { get; set; }
+        public virtual Category Category { get; set; }
         public virtual Topic Topic { get; set; }
     }
 }

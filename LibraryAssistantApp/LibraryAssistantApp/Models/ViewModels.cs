@@ -23,7 +23,7 @@ namespace LibraryAssistantApp.Models
         public int Level_ID { get; set; }
 
         [Display(Name ="Title")]
-        public string Person_Title { get; set; }
+        public int Title_ID { get; set; }
     }
 
     public class CreatePersonModel
@@ -50,7 +50,7 @@ namespace LibraryAssistantApp.Models
 
         public int Level_ID { get; set; }
 
-        public string Person_Title { get; set; }
+        public int Title_ID { get; set; }
     }
 
     public class UpdatePasswordModel
@@ -256,5 +256,19 @@ namespace LibraryAssistantApp.Models
     public class PersonTypeEditModel
     {
         public Person_Type person_type { get; set; }
+    }
+
+    public class EmployeeIndexModel
+    {
+        public IEnumerable<Registered_Person> registered_person { get; set; }
+        public IEnumerable<Person_Role> person_role { get; set; }
+        public IEnumerable<Role> role { get; set; }
+        public IEnumerable<Action> action { get; set; }
+        public IEnumerable<Role_Action> role_action { get; set; }
+        public IEnumerable<Person_Type> person_type {get; set; }
+        public IEnumerable<Trainer_Topic> trainer_topic { get; set; }
+        public IEnumerable<Topic> topic { get; set; }
+        public IEnumerable<Category> category { get; set; }
+        public IEnumerable<Person_Title> person_title { get; set; }
     }
 }
