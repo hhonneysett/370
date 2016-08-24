@@ -119,6 +119,7 @@
   <ItemGroup>
     <Content Include="Content\404_normalize.css" />
     <Content Include="Content\404_style.css" />
+    <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\Demo.css" />
@@ -563,6 +564,9 @@
     <Content Include="Views\PersonType\Edit.cshtml" />
     <Content Include="Views\PersonType\Delete.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Employee\EmployeeDetails.cshtml" />
+    <Content Include="Views\Employee\RoleDetails.cshtml" />
+    <Content Include="Views\Employee\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

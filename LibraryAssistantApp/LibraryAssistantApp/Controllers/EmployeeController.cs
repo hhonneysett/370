@@ -18,7 +18,7 @@ namespace LibraryAssistantApp.Controllers
             viewModel.registered_person = db.Registered_Person
                 .Include(i => i.Person_Title).Include(t => t.Person_Type)
                     .Where(t => t.Person_Type.Person_Type1.ToLower() == "employee");
-            ViewBag.title1 = new SelectList(db.Person_Title, "Title_ID", "Person_Title1");
+            ViewBag.personTitle = db.Person_Title;
             viewModel.registered_person = from q in viewModel.registered_person
                             where ((string.IsNullOrEmpty(username) ? true : q.Person_ID.ToLower().StartsWith(username.ToLower())) &&
                                     (string.IsNullOrEmpty(name) ? true : q.Person_Name.ToLower().StartsWith(name.ToLower())) &&
@@ -29,14 +29,39 @@ namespace LibraryAssistantApp.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Details(int id)
+        public PartialViewResult EmployeeDetails(string id)
         {
-            return View();
+            var personRoles = new EmployeeIndexModel();
+            if (id != null)
+            {
+                personRoles.person_role = db.Person_Role
+                    .Where(x => x.Person_ID == id)
+                        .Include(pr => pr.Role);
+            }
+            return PartialView("EmployeeDetails", personRoles);
+        }
+        public PartialViewResult RoleDetails(int? id)
+        {
+            var roleAction = new EmployeeIndexModel();
+            if (id != null)
+            {
+                roleAction.role_action = db.Role_Action
+                    .Where(ra => ra.Role_ID == id).Include(a => a.Action);
+            }
+            return PartialView("RoleDetails", roleAction);
         }
 
         public ActionResult Create()
         {
-            return View();
+            var registeredPerson = new EmployeeAddModel();
+            registeredPerson.current_up_person = db.Current_UP_Person;
+
+            ViewBag.pTitle = db.Person_Title;
+
+            registeredPerson.person_type = db.Person_Type;
+            registeredPerson.role_action = db.Role_Action
+                .Include(ra => ra.Action);
+            return View(registeredPerson);
         }
 
         [HttpPost]

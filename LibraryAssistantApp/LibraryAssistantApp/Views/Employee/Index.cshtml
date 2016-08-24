@@ -7,7 +7,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#result-table-4 tr').click(function () {
+        $('#result-table-4 tbody tr').click(function () {
             $('#result-table-4 tr').removeClass('selectedrow');
             $(this).addClass('selectedrow');
             $('.btn-edit').attr('href', '/Employee/Edit/' + $(this).attr('id'));
@@ -16,10 +16,10 @@
             $.ajax({
                 type: 'GET',
                 data: { id: a },
-                url: '@Url.Action("RoleDetails", "Employee")',
-                /*beforeSend: function (){
+                url: '@Url.Action("EmployeeDetails", "Employee")',
+                beforeSend: function (){
                     $('.loading').show();
-                },*/
+                },
                 success: function (result) {
                     $('#emp-roles').html(result);
                 }
@@ -30,86 +30,90 @@
     });
     $(document).ready(function () {
         $('#search-emp').click(function () {
-            $('#search-panel').toggle()
+            $('#search-header').toggleClass('col-md-2 col-sm-4');
+            $('#search-header').toggleClass('col-md-4 col-sm-6');
+            $('#emp-panel').toggleClass('col-md-10 col-sm-12');
+            $('#emp-panel').toggleClass('col-md-8 col-sm-12');
+            $('#search-emp span').toggleClass('glyphicon-remove');
+            $('#search-panel').toggle(400);
         });
     });
 </script> 
 
-
 <h3>Employees</h3>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <span class="panel-title">Details</span>
-        <span class="field-validation-error text-danger">@TempData["Error"]</span>
-    </div>
-    <table id="result-table-4" class="table table-bordered">
-        <tr>
-            <th>Username</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Email</th>
-            <th>Title</th>
-            <th>Type</th>
-        </tr>
 
-        @foreach (var item in Model.registered_person)
-            {
-            <tr id="@item.Person_ID">
-                <td>
-                    @item.Person_ID
-                </td>
-                <td>
-                    @item.Person_Name
-                </td>
-                <td>
-                    @item.Person_Surname
-                </td>
-                <td>
-                    @item.Person_Email
-                </td>
-                <td>
-                    @item.Person_Title.Person_Title1
-                </td>
-                <td>
-                    @item.Person_Type.Person_Type1
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { @item.Person_ID }) |
-                    @Html.ActionLink("Details", "Details", new { @item.Person_ID }) |
-                    @Html.ActionLink("Delete", "Delete", new { @item.Person_ID })
-                </td>
-            </tr>
-        }
-    </table>
-
-    <div class="panel-body">
-                <div class="btn-group" role="group" aria-label="...">
-                    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-default" })
-                </div>
-                <div class="btn-group">
-                    @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-default btn-edit" })
-                </div>
-                <div class="btn-group">
-                    @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-default btn-delete" })
-                </div>
-                <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
-    </div>
-</div>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div id="emp-panel" class="col-md-10 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label class="panel-title">Details</label>
+                    <span class="field-validation-error text-danger">@TempData["Error"]</span>
+                </div>
+                <table id="result-table-4" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Email</th>
+                            <th>Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.registered_person)
+            {
+                            <tr id="@item.Person_ID">
+                                <td>
+                                    @item.Person_ID
+                                </td>
+                                <td>
+                                    @item.Person_Name
+                                </td>
+                                <td>
+                                    @item.Person_Surname
+                                </td>
+                                <td>
+                                    @item.Person_Email
+                                </td>
+                                <td>
+                                    @item.Person_Title.Person_Title1
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="panel-body">
+                    <div class="btn-group" role="group" aria-label="...">
+                        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-default" })
+                    </div>
+                    <div class="btn-group">
+                        @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-default btn-edit" })
+                    </div>
+                    <div class="btn-group">
+                        @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-default btn-delete" })
+                    </div>
+                    <div class="btn-group">
+                        @Html.ActionLink("Manage Trainers", "Trainers", null, htmlAttributes: new { @class = "btn btn-default btn-delete" })
+                    </div>
+                    @Html.ActionLink("View all", "Index")
+                    <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
+                </div>
+            </div>
+        </div>
+        <div id="search-header" class="col-md-2 col-sm-4">
             <div class="panel panel-default">
                 <div id="search-emp" class="panel-heading">
-                    <span class="panel-title">Search</span>
-                    <span class="glyphicon glyphicon-triangle-bottom glyphicon-align-right" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-plus pull-right"></span>
+                    <label class="panel-title">Search</label>
                 </div>
-                <div id="search-panel" class="panel-body">
+                <div id="search-panel" class="panel-body" style="display:none">
                     @using (Html.BeginForm("Index", "Employee", FormMethod.Get))
             {
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="control-label">Username:</label>
-                                <div class="form-group">
+                                <div class="form-group-sm">
                                     <input class="form-control" name="username" value="@Request["username"]"/>
                                 </div>
                             </div>
@@ -119,7 +123,7 @@
                                 <div class="col-md-6">
 
                                     <label class="control-label">Name:</label>
-                                    <div class="form-group">
+                                    <div class="form-group-sm">
                                         <input class="form-control" name="name" value="@Request["name"]"/>
                                     </div>
 
@@ -127,7 +131,7 @@
                                 <div class="col-md-6">
 
                                     <label class="control-label">Surname:</label>
-                                    <div class="form-group">
+                                    <div class="form-group-sm">
                                         <input class="form-control" name="surname" value="@Request["surname"]"/>
                                     </div>
 
@@ -137,7 +141,7 @@
                                 <div class="col-md-6">
 
                                     <label class="control-label">Email:</label>
-                                    <div class="form-group">
+                                    <div class="form-group-sm">
                                         <input class="form-control" name="email" value="@Request["email"]"/>
                                     </div>
 
@@ -145,18 +149,18 @@
                                 <div class="col-md-6">
 
                                     <label class="control-label">Title:</label>
-                                    <div class="form-group">
-                                        @Html.DropDownList("title1")
-                                        <input class="form-control" name="title" value="@Request["title"]"/>
+                                    <div class="form-group-sm">
+                                        @Html.DropDownList("title", new SelectList(ViewBag.personTitle, "Person_Title1", "Person_Title1"), htmlAttributes: new { @class="form-control"})
                                     </div>
 
                                 </div>
                             </div>
+                            <hr/>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="form-group">
+                                    <div class="form-group-sm">
                                         <button type="submit" class="btn btn-default">Search</button>
-                                        @Html.ActionLink("View all", "Index")
+                                        <button type="reset" class="btn btn-default">Clear</button>
                                     </div>
                                 </div>
                             </div>
@@ -167,10 +171,28 @@
     </div>
 </div>
 
-<div id="emp-roles">
-
+<div id="emp-roles" class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <label class="panel-title">
+                Roles
+            </label>
+        </div>
+        <div class="panel-body">
+            <span class="field-validation-error text-warning">No employee selected</span>
+        </div>
+    </div>
 </div>
 
-<div id="emp-action">
-
+<div id="emp-action" class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <label class="panel-title">
+                Actions
+            </label>
+        </div>
+        <div class="panel-body">
+            <span class="field-validation-error text-warning">No role selected</span>
+        </div>
+    </div>
 </div>

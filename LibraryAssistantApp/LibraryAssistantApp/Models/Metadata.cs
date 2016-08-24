@@ -4,7 +4,7 @@ namespace LibraryAssistantApp.Models
 {
     public class RegisteredPersonMetadata
     {
-        [Display(Name = "Student Number")]
+        [Display(Name = "Username")]
         public string Person_ID;
 
         [Display(Name = "Name")]
@@ -19,11 +19,11 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Password")]
         public string Person_Password;
 
-        [Display(Name = "Level")]
-        public int Level_ID;
-
         [Display(Name = "Title")]
-        public string Person_Title;
+        public int Person_Title;
+
+        [Display(Name = "Type")]
+        public string Person_Type;
     }
 
     public class PersonLevelMetadata
