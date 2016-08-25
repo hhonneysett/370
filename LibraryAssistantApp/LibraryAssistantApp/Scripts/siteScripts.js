@@ -1,21 +1,24 @@
 ﻿function AssignButtonClicked(elem) {
-        var id = $(elem).data('assigned-id');
-        $.ajax({
-            type: 'POST',
-            url: '/Booking/venueSelect',
-            data: "id=" + id,
-            success: function (result) {
-            },
-            error: function (err, result) {
-                alert("Error in assigning dataToSave" + err.responseText);
-            }
-        });
+    var id = $(elem).data('assigned-id');
+    $.ajax({
+        type: 'POST',
+        url: '/Booking/venueSelect',
+        data: "id=" + id,
+        success: function (result) { },
+        error: function (err, result) {
+            alert("Error in assigning dataToSave" + err.responseText);
+        }
+    });
 }
 
 $('#btnSubmit').on('click', function () {
     $("#confirmDetailsForm").dialog({
         autoOpen: true,
-        position: { my: "center", at: "top+350", of: window },
+        position: {
+            my: "center",
+            at: "top+350",
+            of: window
+        },
         width: 1000,
         resizable: false,
         title: 'Confirm Details:',
@@ -38,7 +41,11 @@ $('#btnSubmit').on('click', function () {
 $('#btnRegisterStudent').on('click', function () {
     $("#oneTimePin").dialog({
         autoOpen: true,
-        position: { my: "center", at: "top+350", of: window },
+        position: {
+            my: "center",
+            at: "top+350",
+            of: window
+        },
         width: 1000,
         resizable: false,
         title: 'Email Confirmation:',
@@ -86,7 +93,10 @@ function displayCalendar(inputId, inputType) {
     $.ajax({
         type: 'GET',
         url: '/Booking/getEmpBookings',
-        data: { id: inputId, idType: inputType },
+        data: {
+            id: inputId,
+            idType: inputType
+        },
         success: function (result) {
             scheduler.clearAll();
             $("#scheduler_here").show();
@@ -120,13 +130,17 @@ function displayCalendar(inputId, inputType) {
             });
 
             //passes the events to the scheduler
-            scheduler.parse(events, "json");//takes the name and format of the data source
+            scheduler.parse(events, "json"); //takes the name and format of the data source
 
             scheduler.attachEvent("onClick", function (id, e) {
                 //any custom logic here
                 $("#bookingDetailsForm").dialog({
                     autoOpen: true,
-                    position: { my: "center", at: "top+350", of: window },
+                    position: {
+                        my: "center",
+                        at: "top+350",
+                        of: window
+                    },
                     width: 1000,
                     resizable: false,
                     title: 'Booking Details',
@@ -157,15 +171,13 @@ function displayCalendar(inputId, inputType) {
                             id: "btUpdateStatus",
                             disabled: "disabled",
                         },
-                        "Update Booking" :
-                            {
-                                text : "Update Booking",
-                                id: "btnUpdateBooking",
-                                click: function ()
-                                {
-                                    location = "/Booking/updateBookingDetails";
-                                }
-                            },
+                        "Update Booking": {
+                            text: "Update Booking",
+                            id: "btnUpdateBooking",
+                            click: function () {
+                                location = "/Booking/updateBookingDetails";
+                            }
+                        },
                         Cancel: function () {
                             $(this).dialog("close");
                         },
@@ -182,7 +194,59 @@ function displayCalendar(inputId, inputType) {
     scheduler.updateView();
 };
 
+//run scripts on document ready
 $(document).ready(function () {
+
+    var $loading = $('#loadingDiv').hide();
+    $(document)
+      .ajaxStart(function () {
+          $loading.show();
+      })
+      .ajaxStop(function () {
+          $loading.hide();
+      });
+
+    //add a custom validation rule to validate date
+    jQuery.validator.addMethod("validDateCheck", function (value, element) {
+        var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+        return this.optional(element) || date_regex.test(value)
+    });
+
+    //check date isnt in the past
+    jQuery.validator.addMethod("datePastCheck", function (value, element) {
+        var convertDate = new Date(value);
+        var now = new Date();
+        if (convertDate < now) {
+            return this.optional(element) || false;
+        }
+        else {
+            return this.optional(element) || true;
+        }
+    }, "Date already taken place");
+
+    //apply validation rules
+    $("#form1").validate({
+        rules: {
+            category: "required",
+            topic: "required",
+            date: {
+                required: true,
+                validDateCheck: true,
+                datePastCheck : true,
+            },
+            duration: "required",
+            campus: "required",
+        },
+        messages: {
+            category: "Please provide a category selection",
+            topic: "Please provide a topic selection",
+            duration: "Please provide a duration selection",
+            campus: "Please provide a campus selection",
+        },
+        errorClass: "my-error-class",
+    });
+
+    $('#timepicker').removeAttr("data-val");
 
     //disable the create button and topic select on form load
     $("#topicSelect").attr('disabled', true);
@@ -193,7 +257,9 @@ $(document).ready(function () {
         $.ajax({
             type: 'GET',
             url: '/Trainer/getCatTopic',
-            data: { id: id },
+            data: {
+                id: id
+            },
             success: function (result) {
                 var options = $("#topicSelect");
 
@@ -222,101 +288,107 @@ $(document).ready(function () {
     //load matching venues on button click
     $("#btnSubmit").click(function () {
 
-        $('#possibleTrainers').empty();
-        $("#additionalDetails").empty();
-        var characteristicsList = [];
+        var check = $("#form1").valid();
+        if (check) {
+            $('#possibleTrainers').empty();
+            $("#additionalDetails").empty();
+            var characteristicsList = [];
 
-        $('input:checkbox.Characteristic_ID').each(function () {
-            var sThisVal = (this.checked ? $(this).val() : "");
-            if (sThisVal > 0) {
-                characteristicsList.push(sThisVal);
+            $('input:checkbox.Characteristic_ID').each(function () {
+                var sThisVal = (this.checked ? $(this).val() : "");
+                if (sThisVal > 0) {
+                    characteristicsList.push(sThisVal);
+                };
+            });
+
+            var model = {
+                Category_ID: $("#categorySelect").val(),
+                Topic_ID: $("#topicSelect").val(),
+                duration: $("#durationSelect").val(),
+                startDate: $("#datepicker").val(),
+                Campus_ID: $("#campusSelect").val(),
             };
-        });
 
-        var model = {
-            Category_ID: $("#categorySelect").val(),
-            Topic_ID: $("#topicSelect").val(),
-            duration: $("#durationSelect").val(),
-            startDate: $("#datepicker").val(),
-            Campus_ID: $("#campusSelect").val(),
-        };
+            //clear the session details div
+            $("#sessiondetails").empty();
 
-        //clear the session details div
-        $("#sessiondetails").empty();
+            $.ajax({
+                type: 'GET',
+                url: '/Trainer/getTrainingVenues',
+                contentType: 'application/json; charset=utf-8',
+                data: {
+                    model: JSON.stringify(model),
+                    characteristics: JSON.stringify(characteristicsList)
+                },
+                success: function (result) {
 
-        $.ajax({
-            type: 'GET',
-            url: '/Trainer/getTrainingVenues',
-            contentType: 'application/json; charset=utf-8',
-            data: { model: JSON.stringify(model), characteristics: JSON.stringify(characteristicsList) },
-            success: function (result) {
+                    //display the available venues from a partial
+                    $('#availableVenues').replaceWith(result);
 
-                //display the available venues from a partial
-                $('#availableVenues').replaceWith(result);
+                    //toggle the session details section
+                    $("#toggleMain").toggle(800);
+                    $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-bottom");
+                    $("#detailsTop span").addClass("glyphicon glyphicon-triangle-right");
 
-                //toggle the session details section
-                $("#toggleMain").toggle(800);
-                $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-bottom");
-                $("#detailsTop span").addClass("glyphicon glyphicon-triangle-right");
+                    //disable the proceed button
+                    $("#btnProceed").attr('disabled', 'disabled');
 
-                //disable the proceed button
-                $("#btnProceed").attr('disabled', 'disabled');
+                    //call a function on a table row click to capture the selected venue
+                    $("#venueTable tbody tr").click(function () {
+                        var selected = $(this).hasClass("alert-info");
+                        $("#venueTable tbody tr").removeClass("alert-info");
 
-                //call a function on a table row click to capture the selected venue
-                $("#venueTable tbody tr").click(function () {
-                    var selected = $(this).hasClass("alert-info");
-                    $("#venueTable tbody tr").removeClass("alert-info");
-
-                    if (!selected) {
-                        $(this).addClass("alert-info");
-                    }
-                    var buttonEnabled = $(this).hasClass("alert-info");
-                    if (buttonEnabled) {
-                        $("#btnProceed").prop('disabled', false)
-                    } else {
-                        $("#btnProceed").prop('disabled', true)
-                    }
-                });
-
-                //toggle details when clicked
-                $("#venueDetails").click(function () {
-                    $("#toggleVenue").toggle(800);
-                    if ($("#venueDetails span").hasClass("glyphicon glyphicon-triangle-right")) {
-                        $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-right");
-                        $("#venueDetails span").addClass("glyphicon glyphicon-triangle-bottom");
-                    }
-                    else {
-                        $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-bottom");
-                        $("#venueDetails span").addClass("glyphicon glyphicon-triangle-right");
-                    }
-                });
-
-                //call function on button proceed click
-                $("#btnProceed").click(function () {
-                    $('#possibleTrainers').empty();
-                    $("#additionalDetails").empty();
-                    $.ajax({
-                        type: 'GET',
-                        url: '/Trainer/addTrainingSessionDetails',
-                        success: function (result) {
-
-                            //display the available venues from a partial
-                            $('#sessiondetails').replaceWith(result);
-                            $("#toggleVenue").toggle(800);
-                            $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-bottom");
-                            $("#venueDetails span").addClass("glyphicon glyphicon-triangle-right");
-                            $("#btnTimeslotProceed").attr('disabled', 'disabled');
-                        },
-                        error: function (err, result) {
-                            alert("Error in assigning dataToSave" + err.responseText);
+                        if (!selected) {
+                            $(this).addClass("alert-info");
+                        }
+                        var buttonEnabled = $(this).hasClass("alert-info");
+                        if (buttonEnabled) {
+                            $("#btnProceed").prop('disabled', false)
+                        } else {
+                            $("#btnProceed").prop('disabled', true)
                         }
                     });
-                })
-            },
-            error: function (err, result) {
-                alert("Error in assigning dataToSave" + err.responseText);
-            }
-        });
+
+                    //toggle details when clicked
+                    $("#venueDetails").click(function () {
+                        $("#toggleVenue").toggle(800);
+                        if ($("#venueDetails span").hasClass("glyphicon glyphicon-triangle-right")) {
+                            $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-right");
+                            $("#venueDetails span").addClass("glyphicon glyphicon-triangle-bottom");
+                        } else {
+                            $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-bottom");
+                            $("#venueDetails span").addClass("glyphicon glyphicon-triangle-right");
+                        }
+                    });
+
+                    //call function on button proceed click
+                    $("#btnProceed").click(function () {
+                        $('#possibleTrainers').empty();
+                        $("#additionalDetails").empty();
+                        $.ajax({
+                            type: 'GET',
+                            url: '/Trainer/addTrainingSessionDetails',
+                            success: function (result) {
+
+                                //display the available venues from a partial
+                                $('#sessiondetails').replaceWith(result);
+                                $("#toggleVenue").toggle(800);
+                                $("#venueDetails span").removeClass("glyphicon glyphicon-triangle-bottom");
+                                $("#venueDetails span").addClass("glyphicon glyphicon-triangle-right");
+                                $("#btnTimeslotProceed").attr('disabled', 'disabled');
+                            },
+                            error: function (err, result) {
+                                alert("Error in assigning dataToSave" + err.responseText);
+                            }
+                        });
+                    })
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }
+
     });
 
     //toggle details when clicked
@@ -325,8 +397,7 @@ $(document).ready(function () {
         if ($("#detailsTop span").hasClass("glyphicon glyphicon-triangle-right")) {
             $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-right");
             $("#detailsTop span").addClass("glyphicon glyphicon-triangle-bottom");
-        }
-        else {
+        } else {
             $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-bottom");
             $("#detailsTop span").addClass("glyphicon glyphicon-triangle-right");
         }
@@ -335,7 +406,6 @@ $(document).ready(function () {
 
 
 });
-
 
 //get list of trainers that are available
 function getTrainers(elem) {
@@ -373,6 +443,14 @@ function timeslotProceed() {
         url: '/Trainer/additionalDetails',
         success: function (result) {
             $('#additionalDetails').replaceWith(result);
+
+            //only letters check
+            jQuery.validator.addMethod("lettersonly", function(value, element) {
+                return this.optional(element) || /^[a-z]+$/i.test(value);
+            }, "Letters only please"); 
+
+
+
         },
         error: function (err, result) {
             alert("Error in assigning dataToSave" + err.responseText);
@@ -387,8 +465,7 @@ function trainerSelect(elem) {
         type: 'GET',
         url: '/Trainer/selectTrainer',
         data: "id=" + id,
-        success: function (result) {
-        },
+        success: function (result) { },
         error: function (err, result) {
             alert("Error in assigning dataToSave" + err.responseText);
         }
@@ -396,59 +473,101 @@ function trainerSelect(elem) {
 }
 
 //toggle the inputted sections
-function toggleSection(a, b)
-{
+function toggleSection(a, b) {
     $(b).toggle(800);
     if ($(a + " span").hasClass("glyphicon glyphicon-triangle-right")) {
         $(a + " span").removeClass("glyphicon glyphicon-triangle-right");
         $(a + " span").addClass("glyphicon glyphicon-triangle-bottom");
-    }
-    else {
+    } else {
         $(a + " span").removeClass("glyphicon glyphicon-triangle-bottom");
         $(a + " span").addClass("glyphicon glyphicon-triangle-right");
     }
 }
 
-//
-function getRepeatType()
-{
+//toggle the repeat type
+function getRepeatType() {
     var id = $("#repeatType").children(":selected").val();
     $("#repeatErrorDiv").hide(800);
     if (id == "none") {
         $("#repeatToggle").hide(800);
-    }
-    else {
+    } else {
         $("#repeatToggle").show(800);
     }
-    
+
 }
 
-function checkRepeat()
-{
+//check if the repeat type is valid
+function checkRepeat() {
     var repeatType = $("#repeatType").children(":selected").val();
     var multiple = $("#repeatTimes").val();
 
-    if (multiple > 0)
-    {
+    if (multiple > 0) {
         $.ajax({
             type: 'GET',
             url: '/Trainer/reapeatCheck',
-            data: { repeatType: repeatType, multiple: multiple },
+            data: {
+                repeatType: repeatType,
+                multiple: multiple
+            },
             success: function (result) {
-                if (result) {
+                if (result == "True") {
                     $("#repeatErrorDiv").show();
+                    $("#repeatError").removeClass("glyphicon glyphicon-remove")
                     $("#repeatError").addClass("glyphicon glyphicon-ok")
                     $("#repeatText").text(" No Clashes Detected")
-                }
-                else {
+                } else {
+                    $("#repeatErrorDiv").show();
                     $("#repeatError").removeClass("glyphicon glyphicon-ok")
                     $("#repeatError").addClass("glyphicon glyphicon-remove")
-                    $("#repeatText").text("Clashes Detected")
+                    $("#repeatText").text(" Clashes Detected")
                 }
             },
             error: function (err, result) {
                 alert("Error in assigning dataToSave" + err.responseText);
             }
         });
-    }   
+    }
+}
+
+//submit the details for the training session
+function submitTrainingSession() {
+    //initiate validation for form 2
+    $("#form2").validate({
+        rules: {
+        description: { lettersonly: true },
+        confirmation: "required",
+        privacy: "required",
+        attendance: { required:true, number: true },
+        notify: "required",
+        },
+        errorClass: "my-error-class",
+    });
+    
+    //submit the form details
+    if ($("#form2").valid())
+    {
+        $.ajax({
+            type: 'GET',
+            url: '/Trainer/captureTrainingSession',
+            data: {
+                description: $('#description').val(),
+                maxAtt: $("#maxAtt").val(),
+                confirmation: $("#confirmationStatus").val(),
+                privacy: $("#privacyStatus").val(),
+                notify: $("#notifySelect").val(),
+                repeatType: $("#repeatType").val(),
+                multiple: $("#repeatTimes").val(),
+            },
+            success: function (result) {
+                if (result) {
+                    
+                } else {
+                    
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    }
 }

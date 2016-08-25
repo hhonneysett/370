@@ -16,16 +16,6 @@
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Venue_Booking_Person" Relationship="Self.AttendeeType_VenueBookingPerson" FromRole="Attendee_Type" ToRole="Venue_Booking_Person" />
   </EntityType>
-  <EntityType Name="Booking_Status">
-    <Key>
-      <PropertyRef Name="Booking_Status1" />
-    </Key>
-    <Property Name="Booking_Status1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="HEX_Value" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Venue_Booking" Relationship="Self.BookingStatus_VenueBooking" FromRole="Booking_Status" ToRole="Venue_Booking" />
-    <NavigationProperty Name="Colour" Relationship="Self.Colour_BookingStatus" FromRole="Booking_Status" ToRole="Colour" />
-  </EntityType>
   <EntityType Name="Booking_Type">
     <Key>
       <PropertyRef Name="Booking_Type_Seq" />
@@ -33,7 +23,7 @@
     <Property Name="Booking_Type_Seq" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Booking_Type_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Venue_Booking" Relationship="Self.BookingType_VenueBooking" FromRole="Booking_Type" ToRole="Venue_Booking" />
+    <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.BookingType_VenueBooking" FromRole="Booking_Type" ToRole="Venue_Booking" />
   </EntityType>
   <EntityType Name="Building">
     <Key>
@@ -125,7 +115,6 @@
     </Key>
     <Property Name="HEX_Value" Type="Int32" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Booking_Status" Relationship="Self.Colour_BookingStatus" FromRole="Colour" ToRole="Booking_Status" />
     <NavigationProperty Name="Calender_Exception" Relationship="Self.Colour_CalenderException" FromRole="Colour" ToRole="Calender_Exception" />
     <NavigationProperty Name="Period_Type" Relationship="Self.Clour_PeriodType" FromRole="Colour" ToRole="Period_Type" />
   </EntityType>
@@ -241,8 +230,8 @@
     <Property Name="Person_Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Person_Role" Relationship="Self.PersonLevel_PersonRole" FromRole="Person_Level" ToRole="Person_Role" />
     <NavigationProperty Name="Person_Type1" Relationship="Self.PersonType_Person_Level" FromRole="Person_Level" ToRole="Person_Type" />
-    <NavigationProperty Name="Venue_Booking" Relationship="Self.Person_Level_Venue_Booking" FromRole="Person_Level" ToRole="Venue_Booking" />
     <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.PersonLevel_RegisteredPerson" FromRole="Person_Level" ToRole="Registered_Person" />
+    <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.Person_Level_Venue_Booking" FromRole="Person_Level" ToRole="Venue_Booking" />
   </EntityType>
   <EntityType Name="Person_Questionnaire">
     <Key>
@@ -355,7 +344,6 @@
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Question_Bank" Relationship="Self.QuestionTopic_QuestionBank" FromRole="Question_Topic" ToRole="Question_Bank" />
     <NavigationProperty Name="Questionnaires" Relationship="Self.QuestionTopic_Questionnaire" FromRole="Question_Topic" ToRole="Questionnaire" />
-    <NavigationProperty Name="Venue_Booking" Relationship="Self.QuestionTopic_VenueBooking" FromRole="Question_Topic" ToRole="Venue_Booking" />
   </EntityType>
   <EntityType Name="Questionnaire">
     <Key>
@@ -380,9 +368,9 @@
     <NavigationProperty Name="Question_Topic" Relationship="Self.QuestionTopic_Questionnaire" FromRole="Questionnaire" ToRole="Question_Topic" />
     <NavigationProperty Name="Questionnaire_Questions" Relationship="Self.Questionnaire_QuesQuestions" FromRole="Questionnaire" ToRole="Questionnaire_Questions" />
     <NavigationProperty Name="Venue" Relationship="Self.Venue_Questionnaire" FromRole="Questionnaire" ToRole="Venue" />
-    <NavigationProperty Name="Venue_Booking" Relationship="Self.VenueBooking_Questionnaire" FromRole="Questionnaire" ToRole="Venue_Booking" />
     <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.PersonCreator_Questionnaire" FromRole="Questionnaire" ToRole="Registered_Person" />
     <NavigationProperty Name="Registered_Person1" Relationship="LibraryAssistantModel.PersonInvolved_Questionnaire" FromRole="Questionnaire" ToRole="Registered_Person" />
+    <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.VenueBooking_Questionnaire" FromRole="Questionnaire" ToRole="Venue_Booking" />
   </EntityType>
   <EntityType Name="Questionnaire_Questions">
     <Key>
@@ -423,38 +411,11 @@
     <NavigationProperty Name="Calender_Exception" Relationship="Self.Venue_CalenderException" FromRole="Venue" ToRole="Calender_Exception" />
     <NavigationProperty Name="Questionnaires" Relationship="Self.Venue_Questionnaire" FromRole="Venue" ToRole="Questionnaire" />
     <NavigationProperty Name="Venue_Type1" Relationship="Self.FK__Venue__Venue_Typ__6A30C649" FromRole="Venue" ToRole="Venue_Type" />
-    <NavigationProperty Name="Venue_Booking" Relationship="Self.Venue_VenueBooking" FromRole="Venue" ToRole="Venue_Booking" />
     <NavigationProperty Name="Venue_Problem" Relationship="Self.Venue_VenueProblem" FromRole="Venue" ToRole="Venue_Problem" />
     <Property Name="Capacity" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Roles" Relationship="LibraryAssistantModel.Venue_Role" FromRole="Venue" ToRole="Role" />
     <NavigationProperty Name="Venue_Characteristic" Relationship="LibraryAssistantModel.Venue_VenueCharacteristic" FromRole="Venue" ToRole="Venue_Characteristic" />
-  </EntityType>
-  <EntityType Name="Venue_Booking">
-    <Key>
-      <PropertyRef Name="Venue_Booking_Seq" />
-    </Key>
-    <Property Name="Venue_Booking_Seq" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Venue_Booking_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="DateTime_From" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="DateTime_To" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="Send_Email_To_Topic_Person_Ind" Type="Int32" Nullable="false" />
-    <Property Name="Max_Bookings" Type="Int32" Nullable="false" />
-    <Property Name="Exclusive_ind" Type="Int32" Nullable="false" />
-    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="Booking_Type_Seq" Type="Int32" Nullable="false" />
-    <Property Name="Topic_Seq" Type="Int32" Nullable="false" />
-    <Property Name="Booking_Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Venue_ID" Type="Int32" Nullable="false" />
-    <Property Name="Building_Floor_ID" Type="Int32" Nullable="false" />
-    <Property Name="Building_ID" Type="Int32" Nullable="false" />
-    <Property Name="Campus_ID" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Booking_Status1" Relationship="Self.BookingStatus_VenueBooking" FromRole="Venue_Booking" ToRole="Booking_Status" />
-    <NavigationProperty Name="Booking_Type" Relationship="Self.BookingType_VenueBooking" FromRole="Venue_Booking" ToRole="Booking_Type" />
-    <NavigationProperty Name="Question_Topic" Relationship="Self.QuestionTopic_VenueBooking" FromRole="Venue_Booking" ToRole="Question_Topic" />
-    <NavigationProperty Name="Questionnaires" Relationship="Self.VenueBooking_Questionnaire" FromRole="Venue_Booking" ToRole="Questionnaire" />
-    <NavigationProperty Name="Venue" Relationship="Self.Venue_VenueBooking" FromRole="Venue_Booking" ToRole="Venue" />
-    <NavigationProperty Name="Venue_Booking_Person" Relationship="Self.RegisteredPerson_VenueBookingPerson" FromRole="Venue_Booking" ToRole="Venue_Booking_Person" />
-    <NavigationProperty Name="Person_Level" Relationship="Self.Person_Level_Venue_Booking" FromRole="Venue_Booking" ToRole="Person_Level" />
+    <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.Venue_VenueBooking" FromRole="Venue" ToRole="Venue_Booking" />
   </EntityType>
   <EntityType Name="Venue_Booking_Person">
     <Key>
@@ -470,8 +431,8 @@
     <NavigationProperty Name="Attendee_Status1" Relationship="Self.AttendeeStatus_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Attendee_Status" />
     <NavigationProperty Name="Attendee_Type1" Relationship="Self.AttendeeType_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Attendee_Type" />
     <NavigationProperty Name="Document_Repository" Relationship="Self.DocumentRepository_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Document_Repository" />
-    <NavigationProperty Name="Venue_Booking" Relationship="Self.RegisteredPerson_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Venue_Booking" />
     <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.VenueBooking_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Registered_Person" />
+    <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.RegisteredPerson_VenueBookingPerson" FromRole="Venue_Booking_Person" ToRole="Venue_Booking" />
   </EntityType>
   <EntityType Name="Venue_Problem">
     <Key>
@@ -523,42 +484,6 @@
       </Principal>
       <Dependent Role="Venue_Booking_Person">
         <PropertyRef Name="Attendee_Type" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="BookingStatus_VenueBooking">
-    <End Role="Booking_Status" Type="Self.Booking_Status" Multiplicity="1" />
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Booking_Status">
-        <PropertyRef Name="Booking_Status1" />
-      </Principal>
-      <Dependent Role="Venue_Booking">
-        <PropertyRef Name="Booking_Status" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Colour_BookingStatus">
-    <End Role="Colour" Type="Self.Colour" Multiplicity="1" />
-    <End Role="Booking_Status" Type="Self.Booking_Status" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Colour">
-        <PropertyRef Name="HEX_Value" />
-      </Principal>
-      <Dependent Role="Booking_Status">
-        <PropertyRef Name="HEX_Value" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="BookingType_VenueBooking">
-    <End Role="Booking_Type" Type="Self.Booking_Type" Multiplicity="1" />
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Booking_Type">
-        <PropertyRef Name="Booking_Type_Seq" />
-      </Principal>
-      <Dependent Role="Venue_Booking">
-        <PropertyRef Name="Booking_Type_Seq" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -952,18 +877,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="QuestionTopic_VenueBooking">
-    <End Role="Question_Topic" Type="Self.Question_Topic" Multiplicity="1" />
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Question_Topic">
-        <PropertyRef Name="Topic_Seq" />
-      </Principal>
-      <Dependent Role="Venue_Booking">
-        <PropertyRef Name="Topic_Seq" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="Questionnaire_QuesQuestions">
     <End Role="Questionnaire" Type="Self.Questionnaire" Multiplicity="1" />
     <End Role="Questionnaire_Questions" Type="Self.Questionnaire_Questions" Multiplicity="*" />
@@ -994,18 +907,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="VenueBooking_Questionnaire">
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="0..1" />
-    <End Role="Questionnaire" Type="Self.Questionnaire" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Venue_Booking">
-        <PropertyRef Name="Venue_Booking_Seq" />
-      </Principal>
-      <Dependent Role="Questionnaire">
-        <PropertyRef Name="Venue_Booking_Seq" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__Venue__Venue_Typ__6A30C649">
     <End Role="Venue_Type" Type="Self.Venue_Type" Multiplicity="1" />
     <End Role="Venue" Type="Self.Venue" Multiplicity="*" />
@@ -1015,24 +916,6 @@
       </Principal>
       <Dependent Role="Venue">
         <PropertyRef Name="Venue_Type" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Venue_VenueBooking">
-    <End Role="Venue" Type="Self.Venue" Multiplicity="1" />
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Venue">
-        <PropertyRef Name="Campus_ID" />
-        <PropertyRef Name="Building_ID" />
-        <PropertyRef Name="Building_Floor_ID" />
-        <PropertyRef Name="Venue_ID" />
-      </Principal>
-      <Dependent Role="Venue_Booking">
-        <PropertyRef Name="Campus_ID" />
-        <PropertyRef Name="Building_ID" />
-        <PropertyRef Name="Building_Floor_ID" />
-        <PropertyRef Name="Venue_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1056,28 +939,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="RegisteredPerson_VenueBookingPerson">
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Venue_Booking_Person" Type="Self.Venue_Booking_Person" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Venue_Booking">
-        <PropertyRef Name="Venue_Booking_Seq" />
-      </Principal>
-      <Dependent Role="Venue_Booking_Person">
-        <PropertyRef Name="Venue_Booking_Seq" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Person_Level_Venue_Booking">
-    <End Role="Person_Level" Type="Self.Person_Level" Multiplicity="*" />
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
-  </Association>
   <EntityContainer Name="LibraryAssistantEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Attendee_Status" EntityType="Self.Attendee_Status" />
     <EntitySet Name="Attendee_Type" EntityType="Self.Attendee_Type" />
-    <EntitySet Name="Booking_Status" EntityType="Self.Booking_Status" />
     <EntitySet Name="Booking_Type" EntityType="Self.Booking_Type" />
     <EntitySet Name="Buildings" EntityType="Self.Building" />
     <EntitySet Name="Building_Floor" EntityType="Self.Building_Floor" />
@@ -1112,7 +976,6 @@
     <EntitySet Name="Questionnaire_Questions" EntityType="Self.Questionnaire_Questions" />
     <EntitySet Name="Style_Type" EntityType="Self.Style_Type" />
     <EntitySet Name="Venues" EntityType="Self.Venue" />
-    <EntitySet Name="Venue_Booking" EntityType="Self.Venue_Booking" />
     <EntitySet Name="Venue_Booking_Person" EntityType="Self.Venue_Booking_Person" />
     <EntitySet Name="Venue_Problem" EntityType="Self.Venue_Problem" />
     <EntitySet Name="Venue_Type" EntityType="Self.Venue_Type" />
@@ -1123,18 +986,6 @@
     <AssociationSet Name="AttendeeType_VenueBookingPerson" Association="Self.AttendeeType_VenueBookingPerson">
       <End Role="Attendee_Type" EntitySet="Attendee_Type" />
       <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
-    </AssociationSet>
-    <AssociationSet Name="BookingStatus_VenueBooking" Association="Self.BookingStatus_VenueBooking">
-      <End Role="Booking_Status" EntitySet="Booking_Status" />
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
-    </AssociationSet>
-    <AssociationSet Name="Colour_BookingStatus" Association="Self.Colour_BookingStatus">
-      <End Role="Colour" EntitySet="Colours" />
-      <End Role="Booking_Status" EntitySet="Booking_Status" />
-    </AssociationSet>
-    <AssociationSet Name="BookingType_VenueBooking" Association="Self.BookingType_VenueBooking">
-      <End Role="Booking_Type" EntitySet="Booking_Type" />
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
     </AssociationSet>
     <AssociationSet Name="Building_BuildingFloor" Association="Self.Building_BuildingFloor">
       <End Role="Building" EntitySet="Buildings" />
@@ -1252,10 +1103,6 @@
       <End Role="Question_Topic" EntitySet="Question_Topic" />
       <End Role="Questionnaire" EntitySet="Questionnaires" />
     </AssociationSet>
-    <AssociationSet Name="QuestionTopic_VenueBooking" Association="Self.QuestionTopic_VenueBooking">
-      <End Role="Question_Topic" EntitySet="Question_Topic" />
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
-    </AssociationSet>
     <AssociationSet Name="Questionnaire_QuesQuestions" Association="Self.Questionnaire_QuesQuestions">
       <End Role="Questionnaire" EntitySet="Questionnaires" />
       <End Role="Questionnaire_Questions" EntitySet="Questionnaire_Questions" />
@@ -1264,29 +1111,13 @@
       <End Role="Venue" EntitySet="Venues" />
       <End Role="Questionnaire" EntitySet="Questionnaires" />
     </AssociationSet>
-    <AssociationSet Name="VenueBooking_Questionnaire" Association="Self.VenueBooking_Questionnaire">
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
-      <End Role="Questionnaire" EntitySet="Questionnaires" />
-    </AssociationSet>
     <AssociationSet Name="FK__Venue__Venue_Typ__6A30C649" Association="Self.FK__Venue__Venue_Typ__6A30C649">
       <End Role="Venue_Type" EntitySet="Venue_Type" />
       <End Role="Venue" EntitySet="Venues" />
     </AssociationSet>
-    <AssociationSet Name="Venue_VenueBooking" Association="Self.Venue_VenueBooking">
-      <End Role="Venue" EntitySet="Venues" />
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
-    </AssociationSet>
     <AssociationSet Name="Venue_VenueProblem" Association="Self.Venue_VenueProblem">
       <End Role="Venue" EntitySet="Venues" />
       <End Role="Venue_Problem" EntitySet="Venue_Problem" />
-    </AssociationSet>
-    <AssociationSet Name="RegisteredPerson_VenueBookingPerson" Association="Self.RegisteredPerson_VenueBookingPerson">
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
-      <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
-    </AssociationSet>
-    <AssociationSet Name="Person_Level_Venue_Booking" Association="Self.Person_Level_Venue_Booking">
-      <End Role="Person_Level" EntitySet="Person_Level" />
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
     </AssociationSet>
     <FunctionImport Name="findBookingVenuesFunc" EntitySet="Venues" ReturnType="Collection(LibraryAssistantModel.Venue)">
       <Parameter Name="bookingStart" Mode="In" Type="DateTime" />
@@ -1403,6 +1234,36 @@
     <AssociationSet Name="VenueBooking_VenueBookingPerson" Association="LibraryAssistantModel.VenueBooking_VenueBookingPerson">
       <End Role="Registered_Person" EntitySet="Registered_Person" />
       <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
+    </AssociationSet>
+    <EntitySet Name="Venue_Booking" EntityType="LibraryAssistantModel.Venue_Booking" />
+    <AssociationSet Name="BookingType_VenueBooking" Association="LibraryAssistantModel.BookingType_VenueBooking">
+      <End Role="Booking_Type" EntitySet="Booking_Type" />
+      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
+    </AssociationSet>
+    <AssociationSet Name="VenueBooking_Questionnaire" Association="LibraryAssistantModel.VenueBooking_Questionnaire">
+      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
+      <End Role="Questionnaire" EntitySet="Questionnaires" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Venue_Boo__Topic__2AD55B43" Association="LibraryAssistantModel.FK__Venue_Boo__Topic__2AD55B43">
+      <End Role="Topic" EntitySet="Topics" />
+      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
+    </AssociationSet>
+    <AssociationSet Name="Venue_VenueBooking" Association="LibraryAssistantModel.Venue_VenueBooking">
+      <End Role="Venue" EntitySet="Venues" />
+      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
+    </AssociationSet>
+    <AssociationSet Name="RegisteredPerson_VenueBookingPerson" Association="LibraryAssistantModel.RegisteredPerson_VenueBookingPerson">
+      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
+      <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
+    </AssociationSet>
+    <AssociationSet Name="Person_Level_Venue_Booking" Association="LibraryAssistantModel.Person_Level_Venue_Booking">
+      <End Role="Person_Level" EntitySet="Person_Level" />
+      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
+    </AssociationSet>
+    <EntitySet Name="Booking_Status" EntityType="LibraryAssistantModel.Booking_Status" />
+    <AssociationSet Name="BookingStatus_VenueBooking" Association="LibraryAssistantModel.BookingStatus_VenueBooking">
+      <End Role="Booking_Status" EntitySet="Booking_Status" />
+      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
     </AssociationSet>
   </EntityContainer>
   <ComplexType Name="findBookingVenues_Result">
@@ -1586,6 +1447,7 @@
     <NavigationProperty Name="Trainer_Topic" Relationship="LibraryAssistantModel.RegisteredPerson_Topic" FromRole="Topic" ToRole="Trainer_Topic" />
     <NavigationProperty Name="Topic_Category" Relationship="LibraryAssistantModel.Topic_TopicCategory" FromRole="Topic" ToRole="Topic_Category" />
     <NavigationProperty Name="Person_Topic" Relationship="LibraryAssistantModel.Topic_PersonTopic" FromRole="Topic" ToRole="Person_Topic" />
+    <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.FK__Venue_Boo__Topic__2AD55B43" FromRole="Topic" ToRole="Venue_Booking" />
   </EntityType>
   <EntityType Name="Topic_Category">
     <Key>
@@ -1859,6 +1721,125 @@
       </Principal>
       <Dependent Role="Venue_Booking_Person">
         <PropertyRef Name="Person_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Venue_Booking">
+    <Key>
+      <PropertyRef Name="Venue_Booking_Seq" />
+    </Key>
+    <Property Name="Venue_Booking_Seq" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Venue_Booking_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="DateTime_From" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="DateTime_To" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="Send_Email_To_Topic_Person_Ind" Type="Int32" Nullable="false" />
+    <Property Name="Max_Bookings" Type="Int32" Nullable="false" />
+    <Property Name="Exclusive_ind" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Booking_Type_Seq" Type="Int32" Nullable="false" />
+    <Property Name="Booking_Status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Venue_ID" Type="Int32" Nullable="false" />
+    <Property Name="Building_Floor_ID" Type="Int32" Nullable="false" />
+    <Property Name="Building_ID" Type="Int32" Nullable="false" />
+    <Property Name="Campus_ID" Type="Int32" Nullable="false" />
+    <Property Name="Topic_Seq" Type="Int32" />
+    <NavigationProperty Name="Booking_Type" Relationship="LibraryAssistantModel.BookingType_VenueBooking" FromRole="Venue_Booking" ToRole="Booking_Type" />
+    <NavigationProperty Name="Questionnaires" Relationship="LibraryAssistantModel.VenueBooking_Questionnaire" FromRole="Venue_Booking" ToRole="Questionnaire" />
+    <NavigationProperty Name="Topic" Relationship="LibraryAssistantModel.FK__Venue_Boo__Topic__2AD55B43" FromRole="Venue_Booking" ToRole="Topic" />
+    <NavigationProperty Name="Venue" Relationship="LibraryAssistantModel.Venue_VenueBooking" FromRole="Venue_Booking" ToRole="Venue" />
+    <NavigationProperty Name="Venue_Booking_Person" Relationship="LibraryAssistantModel.RegisteredPerson_VenueBookingPerson" FromRole="Venue_Booking" ToRole="Venue_Booking_Person" />
+    <NavigationProperty Name="Person_Level" Relationship="LibraryAssistantModel.Person_Level_Venue_Booking" FromRole="Venue_Booking" ToRole="Person_Level" />
+    <NavigationProperty Name="Booking_Status1" Relationship="LibraryAssistantModel.BookingStatus_VenueBooking" FromRole="Venue_Booking" ToRole="Booking_Status" />
+  </EntityType>
+  <Association Name="BookingType_VenueBooking">
+    <End Type="LibraryAssistantModel.Booking_Type" Role="Booking_Type" Multiplicity="1" />
+    <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking_Type">
+        <PropertyRef Name="Booking_Type_Seq" />
+      </Principal>
+      <Dependent Role="Venue_Booking">
+        <PropertyRef Name="Booking_Type_Seq" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="VenueBooking_Questionnaire">
+    <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="0..1" />
+    <End Type="LibraryAssistantModel.Questionnaire" Role="Questionnaire" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Venue_Booking">
+        <PropertyRef Name="Venue_Booking_Seq" />
+      </Principal>
+      <Dependent Role="Questionnaire">
+        <PropertyRef Name="Venue_Booking_Seq" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Venue_Boo__Topic__2AD55B43">
+    <End Type="LibraryAssistantModel.Topic" Role="Topic" Multiplicity="0..1" />
+    <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Topic">
+        <PropertyRef Name="Topic_Seq" />
+      </Principal>
+      <Dependent Role="Venue_Booking">
+        <PropertyRef Name="Topic_Seq" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Venue_VenueBooking">
+    <End Type="LibraryAssistantModel.Venue" Role="Venue" Multiplicity="1" />
+    <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Venue">
+        <PropertyRef Name="Campus_ID" />
+        <PropertyRef Name="Building_ID" />
+        <PropertyRef Name="Building_Floor_ID" />
+        <PropertyRef Name="Venue_ID" />
+      </Principal>
+      <Dependent Role="Venue_Booking">
+        <PropertyRef Name="Campus_ID" />
+        <PropertyRef Name="Building_ID" />
+        <PropertyRef Name="Building_Floor_ID" />
+        <PropertyRef Name="Venue_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RegisteredPerson_VenueBookingPerson">
+    <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="LibraryAssistantModel.Venue_Booking_Person" Role="Venue_Booking_Person" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Venue_Booking">
+        <PropertyRef Name="Venue_Booking_Seq" />
+      </Principal>
+      <Dependent Role="Venue_Booking_Person">
+        <PropertyRef Name="Venue_Booking_Seq" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Person_Level_Venue_Booking">
+    <End Type="LibraryAssistantModel.Person_Level" Role="Person_Level" Multiplicity="*" />
+    <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Booking_Status">
+    <Key>
+      <PropertyRef Name="Booking_Status1" />
+    </Key>
+    <Property Name="Booking_Status1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.BookingStatus_VenueBooking" FromRole="Booking_Status" ToRole="Venue_Booking" />
+  </EntityType>
+  <Association Name="BookingStatus_VenueBooking">
+    <End Type="LibraryAssistantModel.Booking_Status" Role="Booking_Status" Multiplicity="1" />
+    <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking_Status">
+        <PropertyRef Name="Booking_Status1" />
+      </Principal>
+      <Dependent Role="Venue_Booking">
+        <PropertyRef Name="Booking_Status" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

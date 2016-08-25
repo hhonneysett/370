@@ -164,6 +164,8 @@ namespace LibraryAssistantApp.Models
 
         [Required(ErrorMessage ="Please provide a time selection")]
         [Display(Name ="Time")]
+        public string inTime { get; set; }
+
         public DateTime time { get; set; }
 
         [Required(ErrorMessage ="Please provide a length selection")]
@@ -314,5 +316,12 @@ namespace LibraryAssistantApp.Models
     {
         public timeslot timeslot { get; set; }
         public IEnumerable<Venue> venues { get; set; }
+    }
+
+    public class venueRating
+    {
+        public Venue venue { get; set; }
+        public double rating { get; set; }
+        public string characteristics { get; set; }
     }
 }

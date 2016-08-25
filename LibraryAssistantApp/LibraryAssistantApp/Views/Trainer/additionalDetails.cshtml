@@ -10,46 +10,58 @@
 
     <hr />
 
-    <div class="col-md-6">
+    <form id="form2">
+        <div class="col-md-6">
 
-        <div class="form-group">
-            <b class="control-label col-md-4">Training Session Description</b>
-            <input type="text" class="form-control" id="description" placeholder="Enter Description"/>
+            <div class="form-group">
+                <b class="control-label col-md-4">Training Session Description</b>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="description" placeholder="Enter Description" name="description" />
+                </div>                
+            </div>
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Maximum Attendees</b>
+                <div class="col-md-8">
+                    <input type="number" min="1" max="@venue.Capacity" id="maxAtt" class="form-control" placeholder="Enter Max Attendees" value="@venue.Capacity" name="attendance"/>
+                </div>               
+            </div>
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Confirmation Status</b>
+                <div class="col-md-8">
+                    <select id="confirmationStatus" class="form-control" name="confirmation">
+                        <option disabled selected value>--select status--</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Tentative">Tentative</option>
+                    </select>
+                </div>               
+            </div>
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Privacy Status</b>
+                <div class="col-md-8">
+                    <select id="privacyStatus" class="form-control" name="privacy">
+                        <option disabled selected value>--select privacy status--</option>
+                        <option value="Public">Public</option>
+                        <option value="Private">Private</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Notify Students of Training Session Addition</b>
+                <div class="col-md-8">
+                    <select id="notifySelect" class="form-control" name="notify">
+                        <option disabled selected value>--select notificaiton--</option>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <b class="control-label col-md-4">Maximum Attendees</b>
-            <input type="number" min="1" max="@venue.Capacity" id="maxAtt" class="form-control" placeholder="Enter Max Attendees" value="@venue.Capacity"/>
-        </div>
-
-        <div class="form-group">
-            <b class="control-label col-md-4">Confirmation Status</b>
-            <select id="confirmationStatus" class="form-control">
-                <option disabled selected value>--select status--</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="Tentative">Tentative</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <b class="control-label col-md-4">Privacy Status</b>
-            <select id="privacyStatus" class="form-control">
-                <option disabled selected value>--select privacy status--</option>
-                <option value="Public">Public</option>
-                <option value="Private">Private</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <b class="control-label col-md-4">Notify Students of Training Session Addition</b>
-            <select id="notifySelect" class="form-control">
-                <option disabled selected value>--select notificaiton--</option>
-                <option value="No">No</option>
-                <option value="Yes">Yes</option>
-            </select>
-        </div>
-    </div>
-
+    </form>
+ 
     <div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -82,7 +94,7 @@
     </div>
 
     <div class="row col-md-12">
-        <input id="btnFinal" type="button" class="btn btn-default" value="Submit" />
+        <input id="btnFinal" type="button" class="btn btn-default" value="Submit" onclick="submitTrainingSession()" />
     </div>
 
 </div>

@@ -150,6 +150,7 @@
     <Content Include="Content\imgs_dhx_terrace\export_pdf.png" />
     <Content Include="Content\imgs_dhx_terrace\resize_dots.png" />
     <Content Include="Content\imgs_dhx_terrace\resizing.png" />
+    <Content Include="Content\img\default.gif" />
     <Content Include="Content\jquery.timepicker.min.css" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\navbar-style.css" />
@@ -227,6 +228,7 @@
     </None>
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\datetimePicker.js" />
+    <Content Include="Scripts\notify.min.js" />
     <Content Include="Scripts\Scheduler\dhtmlxscheduler.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.js" />

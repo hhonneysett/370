@@ -24,7 +24,7 @@ namespace LibraryAssistantApp.Models
         public virtual Attendee_Status Attendee_Status1 { get; set; }
         public virtual Attendee_Type Attendee_Type1 { get; set; }
         public virtual Document_Repository Document_Repository { get; set; }
-        public virtual Venue_Booking Venue_Booking { get; set; }
         public virtual Registered_Person Registered_Person { get; set; }
+        public virtual Venue_Booking Venue_Booking { get; set; }
     }
 }

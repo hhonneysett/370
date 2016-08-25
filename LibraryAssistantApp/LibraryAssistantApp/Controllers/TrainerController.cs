@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
@@ -632,7 +633,128 @@ namespace LibraryAssistantApp.Controllers
                 }
             }
 
-            return PartialView(distinctVenue);          
+            List<venueRating> venueRatingList = new List<venueRating>();
+
+            if (characteristicList.Any())
+            {
+                //get venue id for available venues
+                var venueId = (from a in distinctVenue
+                              select a.Venue_ID).ToList();
+
+                //get venue characteristic objects for venues
+                //var venueChar = (from vc in db.Venue_Characteristic
+                //                 where venueId.Contains(vc.Venue_ID)
+                //                 select vc).ToList();
+
+                var venueChar = db.Venue_Characteristic.Where(p => venueId.Contains(p.Venue_ID)).Include(v => v.Characteristic);
+
+                //get venue char objects that match the submitted criteria
+                var filteredVenueChar = (from fc in venueChar
+                                         where characteristicList.Contains(fc.Characteristic_ID)
+                                         select fc.Venue_ID).ToList();
+
+                //get all venues that have characteristics provided
+                var filteredVenues = (from fv in db.Venues
+                                      where filteredVenueChar.Contains(fv.Venue_ID)
+                                      select fv).ToList();
+
+                //get total number of characteristics provided
+                int charCount = characteristicList.Count();
+                int loopCounter = 0;                
+
+                //get the rating of the venues
+                foreach (var venue in filteredVenues)
+                {
+                    //reset loop counter each venue loop
+                    loopCounter = 0;
+                    string matchCharString = "";
+
+                    //go through each characteristic and see if the venue satisfys it
+                    foreach(var charac in venueChar)
+                    {
+                        if (characteristicList.Contains(charac.Characteristic_ID) && charac.Venue_ID.Equals(venue.Venue_ID))
+                        {
+                            loopCounter = loopCounter + 1;
+                            if (matchCharString.Length == 0)
+                            {
+                                matchCharString = matchCharString + charac.Characteristic.Characteristic_Name;
+                            }
+                            else
+                            {
+                                matchCharString = matchCharString + ", " + charac.Characteristic.Characteristic_Name;
+                            }
+                            
+                        }
+                    }
+
+                    //add the venue and value to the venue rating list
+                    decimal rating = (Convert.ToDecimal(loopCounter) / Convert.ToDecimal(charCount)) * 100m;
+                    venueRating a = new venueRating
+                    {
+                        venue = venue,
+                        rating = Convert.ToDouble(Math.Round(rating)),
+                        characteristics = matchCharString,
+                    };
+                    venueRatingList.Add(a);
+                }
+
+                //add venues that dont match characteristics but are free
+                foreach(Venue v in distinctVenue)
+                {
+                    var check = venueRatingList.Any(i => i.venue.Venue_ID.Equals(v.Venue_ID));                    
+                    if (check == false)
+                    {
+                        var venchar = db.Venue_Characteristic.Where(ven => ven.Venue_ID.Equals(v.Venue_ID)).Include(c => c.Characteristic);
+                        string matchCharString = "";
+                        foreach (Venue_Characteristic item in venchar)
+                        {
+                            if (matchCharString.Length == 0)
+                            {
+                                matchCharString = matchCharString + item.Characteristic.Characteristic_Name;
+                            }
+                            else
+                            {
+                                matchCharString = matchCharString + ", " + item.Characteristic.Characteristic_Name;
+                            }
+                        }
+                        venueRating a = new venueRating
+                        {
+                            venue = v,
+                            rating = 0,
+                            characteristics = matchCharString,
+                        };
+                        venueRatingList.Add(a);
+                    }
+                }
+            }
+            else
+            {
+                foreach(Venue v in distinctVenue)
+                {
+                    var venchar = db.Venue_Characteristic.Where(ven => ven.Venue_ID.Equals(v.Venue_ID)).Include(c => c.Characteristic);
+                    string matchCharString = "";
+                    foreach (Venue_Characteristic item in venchar)
+                    {
+                        if (matchCharString.Length == 0)
+                        {
+                            matchCharString = matchCharString + item.Characteristic.Characteristic_Name;
+                        }
+                        else
+                        {
+                            matchCharString = matchCharString + ", " + item.Characteristic.Characteristic_Name;
+                        }
+                    }
+                    venueRating a = new venueRating
+                    {
+                        venue = v,
+                        rating = 100,
+                        characteristics = matchCharString,
+                    };
+                    venueRatingList.Add(a);
+                }
+            }           
+
+            return PartialView(venueRatingList);          
         }
 
         [HttpGet]
@@ -747,7 +869,9 @@ namespace LibraryAssistantApp.Controllers
         public void selectTrainer(string id)
         {
             //get the registered person by provided ID
-            var trainer = db.Registered_Person.Where(r => r.Person_ID.Equals(id));
+            var trainer = (from t in db.Registered_Person
+                           where t.Person_ID.Equals(id)
+                           select t).FirstOrDefault();
 
             //assing registered person to a session variable
             Session["trainer"] = trainer;
@@ -764,6 +888,8 @@ namespace LibraryAssistantApp.Controllers
         {
             //local variable of selected timeslot and venue details
             var timeslot = (timeslot)Session["selectedTimeslot"];
+            var startDate = timeslot.startDate;
+            var endDate = timeslot.endDate;
             var venue = (Venue)Session["venueSelect"];
 
 
@@ -773,7 +899,7 @@ namespace LibraryAssistantApp.Controllers
                     for (int i = 1; i <= multiple; i++)
                     {
                         var clash = from a in db.Venue_Booking
-                                    where (a.DateTime_From >= timeslot.startDate && a.DateTime_From <= timeslot.endDate) || (a.DateTime_To >= timeslot.startDate && a.DateTime_To <= timeslot.endDate) || (a.DateTime_From <= timeslot.startDate && a.DateTime_To >= timeslot.endDate) && a.Venue_ID.Equals(venue.Venue_ID)
+                                    where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
                                     select a;
                         if (clash.Any())
                         {
@@ -781,8 +907,8 @@ namespace LibraryAssistantApp.Controllers
                         }
                         else
                         {                           
-                            timeslot.startDate = timeslot.startDate.AddDays(1);
-                            timeslot.endDate = timeslot.endDate.AddDays(1);
+                            startDate = startDate.AddDays(1);
+                            endDate = endDate.AddDays(1);
                         }
                     }
                     return true;
@@ -791,7 +917,7 @@ namespace LibraryAssistantApp.Controllers
                     for (int i = 1; i <= multiple; i++)
                     {
                         var clash = from a in db.Venue_Booking
-                                    where (a.DateTime_From >= timeslot.startDate && a.DateTime_From <= timeslot.endDate) || (a.DateTime_To >= timeslot.startDate && a.DateTime_To <= timeslot.endDate) || (a.DateTime_From <= timeslot.startDate && a.DateTime_To >= timeslot.endDate) && a.Venue_ID.Equals(venue.Venue_ID)
+                                    where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
                                     select a;
                         if (clash.Any())
                         {
@@ -799,8 +925,8 @@ namespace LibraryAssistantApp.Controllers
                         }
                         else
                         {
-                            timeslot.startDate = timeslot.startDate.AddDays(7);
-                            timeslot.endDate = timeslot.endDate.AddDays(7);
+                            startDate = startDate.AddDays(7);
+                            endDate = endDate.AddDays(7);
                         }
                     }
                     return true;
@@ -809,7 +935,7 @@ namespace LibraryAssistantApp.Controllers
                     for (int i = 1; i <= multiple; i++)
                     {
                         var clash = from a in db.Venue_Booking
-                                    where (a.DateTime_From >= timeslot.startDate && a.DateTime_From <= timeslot.endDate) || (a.DateTime_To >= timeslot.startDate && a.DateTime_To <= timeslot.endDate) || (a.DateTime_From <= timeslot.startDate && a.DateTime_To >= timeslot.endDate) && a.Venue_ID.Equals(venue.Venue_ID)
+                                    where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
                                     select a;
                         if (clash.Any())
                         {
@@ -817,8 +943,8 @@ namespace LibraryAssistantApp.Controllers
                         }
                         else
                         {
-                            timeslot.startDate = timeslot.startDate.AddMonths(1);
-                            timeslot.endDate = timeslot.endDate.AddMonths(1);
+                            startDate = startDate.AddMonths(1);
+                            endDate = endDate.AddMonths(1);
                         }
                     }
                     return true;
@@ -827,7 +953,7 @@ namespace LibraryAssistantApp.Controllers
                     for (int i = 1; i <= multiple; i++)
                     {
                         var clash = from a in db.Venue_Booking
-                                    where (a.DateTime_From >= timeslot.startDate && a.DateTime_From <= timeslot.endDate) || (a.DateTime_To >= timeslot.startDate && a.DateTime_To <= timeslot.endDate) || (a.DateTime_From <= timeslot.startDate && a.DateTime_To >= timeslot.endDate) && a.Venue_ID.Equals(venue.Venue_ID)
+                                    where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
                                     select a;
                         if (clash.Any())
                         {
@@ -835,8 +961,8 @@ namespace LibraryAssistantApp.Controllers
                         }
                         else
                         {
-                            timeslot.startDate = timeslot.startDate.AddYears(1);
-                            timeslot.endDate = timeslot.endDate.AddYears(1);
+                            startDate = startDate.AddYears(1);
+                            endDate = endDate.AddYears(1);
                         }
                     }
                     return true;
@@ -846,7 +972,476 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
-        //controler dependant classes                
+        [HttpGet]
+        public bool captureTrainingSession(string description, int maxAtt, string confirmation, string privacy, string notify, string repeatType, int? multiple)
+        {
+            //get local versions of variables required
+            var session = (TrainingSessionModel)Session["sessionDetails"];
+            var venue = (Venue)Session["venueSelect"];
+            var timeslot = (timeslot)Session["selectedTimeslot"];
+            var trainer = (Registered_Person)Session["trainer"];
+            var startDate = timeslot.startDate;
+            var endDate = timeslot.endDate;
+
+            switch (repeatType)
+            {
+                case "none":
+                    //create instance of new venue booking object
+                    Venue_Booking a = new Venue_Booking();
+
+                    //assing values to the venue booking object
+                    a.Venue_Booking_Name = "";
+                    a.DateTime_From = timeslot.startDate;
+                    a.DateTime_To = timeslot.endDate;
+                    if (notify.Equals("Yes"))
+                    {
+                        a.Send_Email_To_Topic_Person_Ind = 1;
+                    }
+                    else
+                    {
+                        a.Send_Email_To_Topic_Person_Ind = 0;
+                    }
+                    a.Max_Bookings = maxAtt;
+                    if (privacy.Equals("Privacy"))
+                        a.Exclusive_ind = 1;
+                    else a.Exclusive_ind = 0;
+                    a.Description = description;
+                    a.Booking_Type_Seq = 2;
+                    a.Topic_Seq = session.Topic_ID;
+                    a.Booking_Status = confirmation;
+                    a.Venue_ID = venue.Venue_ID;
+                    a.Building_Floor_ID = venue.Building_Floor_ID;
+                    a.Building_ID = venue.Building_ID;
+                    a.Campus_ID = venue.Campus_ID;
+
+                    //add and save the training session to the database
+                    db.Venue_Booking.Add(a);
+                    db.SaveChanges();
+
+                    //get booking seq of newly created booking
+                    var bookingSeq = a.Venue_Booking_Seq;
+
+                    //create instance of a venue booking person object
+                    Venue_Booking_Person c = new Venue_Booking_Person();
+
+                    //asign values to venue booking person
+                    if (trainer == null)
+                        c.Person_ID = User.Identity.Name;
+                    else
+                    {
+                        c.Person_ID = trainer.Person_ID;
+                        sendTrainerMail(trainer.Person_ID, a);
+                    }                   
+                    c.Venue_Booking_Seq = bookingSeq;
+                    c.Certificate_Ind = 0;
+                    c.Attendee_Type = "Trainer";
+                    c.Attendee_Status = "Active";
+
+                    //add and save instance of person booking
+                    db.Venue_Booking_Person.Add(c);
+                    db.SaveChanges();
+
+                    if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
+                    {
+                        sendStudentsMail(session.Topic_ID, a);
+                    }
+                    return true;
+
+                case "daily":
+                    for (int i = 1; i <= multiple; i++)
+                    {
+                        //create instance of new venue booking object
+                        Venue_Booking daily = new Venue_Booking();
+
+                        //assing values to the venue booking object
+                        daily.Venue_Booking_Name = "";
+                        daily.DateTime_From = startDate;
+                        daily.DateTime_To = endDate;
+                        if (notify.Equals("Yes"))
+                        {
+                            daily.Send_Email_To_Topic_Person_Ind = 1;
+                        }
+                        else
+                        {
+                            daily.Send_Email_To_Topic_Person_Ind = 0;
+                        }
+                        daily.Max_Bookings = maxAtt;
+                        if (privacy.Equals("Privacy"))
+                            daily.Exclusive_ind = 1;
+                        else daily.Exclusive_ind = 0;
+                        daily.Description = description;
+                        daily.Booking_Type_Seq = 2;
+                        daily.Topic_Seq = session.Topic_ID;
+                        daily.Booking_Status = confirmation;
+                        daily.Venue_ID = venue.Venue_ID;
+                        daily.Building_Floor_ID = venue.Building_Floor_ID;
+                        daily.Building_ID = venue.Building_ID;
+                        daily.Campus_ID = venue.Campus_ID;
+
+                        //add and save the training session to the database
+                        db.Venue_Booking.Add(daily);
+                        db.SaveChanges();
+
+                        //get booking seq of newly created booking
+                        var id = daily.Venue_Booking_Seq;
+
+                        //create instance of a venue booking person object
+                        Venue_Booking_Person dailyVBP = new Venue_Booking_Person();
+
+                        //asign values to venue booking person
+                        dailyVBP.Venue_Booking_Seq = id;
+                        if (trainer == null)
+                            dailyVBP.Person_ID = User.Identity.Name;
+                        else
+                        {
+                            dailyVBP.Person_ID = trainer.Person_ID;
+                            sendTrainerMail(trainer.Person_ID, daily);
+                        }
+                        dailyVBP.Certificate_Ind = 0;
+                        dailyVBP.Attendee_Type = "Trainer";
+                        dailyVBP.Attendee_Status = "Active";
+
+                        //add and save instance of person booking
+                        db.Venue_Booking_Person.Add(dailyVBP);
+                        db.SaveChanges();
+
+                        //increase the timeslot
+                        startDate = startDate.AddDays(1);
+                        endDate = endDate.AddDays(1);
+                    }
+
+                    if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
+                    {
+                        sendGeneralStudentsMail(session.Topic_ID );
+                    }
+
+                    return true;
+
+                case "weekly":
+                    for (int i = 1; i <= multiple; i++)
+                    {
+                        //create instance of new venue booking object
+                        Venue_Booking daily = new Venue_Booking();
+
+                        //assing values to the venue booking object
+                        daily.Venue_Booking_Name = "";
+                        daily.DateTime_From = startDate;
+                        daily.DateTime_To = endDate;
+                        if (notify.Equals("Yes"))
+                        {
+                            daily.Send_Email_To_Topic_Person_Ind = 1;
+                        }
+                        else
+                        {
+                            daily.Send_Email_To_Topic_Person_Ind = 0;
+                        }
+                        daily.Max_Bookings = maxAtt;
+                        if (privacy.Equals("Privacy"))
+                            daily.Exclusive_ind = 1;
+                        else daily.Exclusive_ind = 0;
+                        daily.Description = description;
+                        daily.Booking_Type_Seq = 2;
+                        daily.Topic_Seq = session.Topic_ID;
+                        daily.Booking_Status = confirmation;
+                        daily.Venue_ID = venue.Venue_ID;
+                        daily.Building_Floor_ID = venue.Building_Floor_ID;
+                        daily.Building_ID = venue.Building_ID;
+                        daily.Campus_ID = venue.Campus_ID;
+
+                        //add and save the training session to the database
+                        db.Venue_Booking.Add(daily);
+                        db.SaveChanges();
+
+                        //get booking seq of newly created booking
+                        var id = daily.Venue_Booking_Seq;
+
+                        //create instance of a venue booking person object
+                        Venue_Booking_Person dailyVBP = new Venue_Booking_Person();
+
+                        //asign values to venue booking person
+                        dailyVBP.Venue_Booking_Seq = id;
+                        if (trainer == null)
+                            dailyVBP.Person_ID = User.Identity.Name;
+                        else
+                        {
+                            dailyVBP.Person_ID = trainer.Person_ID;
+                            sendTrainerMail(trainer.Person_ID, daily);
+                        }
+                        dailyVBP.Certificate_Ind = 0;
+                        dailyVBP.Attendee_Type = "Trainer";
+                        dailyVBP.Attendee_Status = "Active";
+
+                        //add and save instance of person booking
+                        db.Venue_Booking_Person.Add(dailyVBP);
+                        db.SaveChanges();
+
+                        //increase timeslot
+                        startDate = startDate.AddDays(7);
+                        endDate = endDate.AddDays(7);
+                    }
+
+                    if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
+                    {
+                        sendGeneralStudentsMail(session.Topic_ID);
+                    }
+
+                    return true;
+
+                case "monthly":
+                    for (int i = 1; i <= multiple; i++)
+                    {
+                        //create instance of new venue booking object
+                        Venue_Booking daily = new Venue_Booking();
+
+                        //assing values to the venue booking object
+                        daily.Venue_Booking_Name = "";
+                        daily.DateTime_From = startDate;
+                        daily.DateTime_To = endDate;
+                        if (notify.Equals("Yes"))
+                        {
+                            daily.Send_Email_To_Topic_Person_Ind = 1;
+                        }
+                        else
+                        {
+                            daily.Send_Email_To_Topic_Person_Ind = 0;
+                        }
+                        daily.Max_Bookings = maxAtt;
+                        if (privacy.Equals("Privacy"))
+                            daily.Exclusive_ind = 1;
+                        else daily.Exclusive_ind = 0;
+                        daily.Description = description;
+                        daily.Booking_Type_Seq = 2;
+                        daily.Topic_Seq = session.Topic_ID;
+                        daily.Booking_Status = confirmation;
+                        daily.Venue_ID = venue.Venue_ID;
+                        daily.Building_Floor_ID = venue.Building_Floor_ID;
+                        daily.Building_ID = venue.Building_ID;
+                        daily.Campus_ID = venue.Campus_ID;
+
+                        //add and save the training session to the database
+                        db.Venue_Booking.Add(daily);
+                        db.SaveChanges();
+
+                        //get booking seq of newly created booking
+                        var id = daily.Venue_Booking_Seq;
+
+                        //create instance of a venue booking person object
+                        Venue_Booking_Person dailyVBP = new Venue_Booking_Person();
+
+                        //asign values to venue booking person
+                        dailyVBP.Venue_Booking_Seq = id;
+                        if (trainer == null)
+                            dailyVBP.Person_ID = User.Identity.Name;
+                        else
+                        {
+                            dailyVBP.Person_ID = trainer.Person_ID;
+                            sendTrainerMail(trainer.Person_ID, daily);
+                        }
+                        dailyVBP.Certificate_Ind = 0;
+                        dailyVBP.Attendee_Type = "Trainer";
+                        dailyVBP.Attendee_Status = "Active";
+
+                        //add and save instance of person booking
+                        db.Venue_Booking_Person.Add(dailyVBP);
+                        db.SaveChanges();
+
+                        //increase timeslot
+                        startDate = startDate.AddMonths(1);
+                        endDate = endDate.AddMonths(1);
+                    }
+
+                    if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
+                    {
+                        sendGeneralStudentsMail(session.Topic_ID);
+                    }
+
+                    return true;
+
+                case "yearly":
+                    for (int i = 1; i <= multiple; i++)
+                    {
+                        //create instance of new venue booking object
+                        Venue_Booking daily = new Venue_Booking();
+
+                        //assing values to the venue booking object
+                        daily.Venue_Booking_Name = "";
+                        daily.DateTime_From = startDate;
+                        daily.DateTime_To = endDate;
+                        if (notify.Equals("Yes"))
+                        {
+                            daily.Send_Email_To_Topic_Person_Ind = 1;
+                        }
+                        else
+                        {
+                            daily.Send_Email_To_Topic_Person_Ind = 0;
+                        }
+                        daily.Max_Bookings = maxAtt;
+                        if (privacy.Equals("Privacy"))
+                            daily.Exclusive_ind = 1;
+                        else daily.Exclusive_ind = 0;
+                        daily.Description = description;
+                        daily.Booking_Type_Seq = 2;
+                        daily.Topic_Seq = session.Topic_ID;
+                        daily.Booking_Status = confirmation;
+                        daily.Venue_ID = venue.Venue_ID;
+                        daily.Building_Floor_ID = venue.Building_Floor_ID;
+                        daily.Building_ID = venue.Building_ID;
+                        daily.Campus_ID = venue.Campus_ID;
+
+                        //add and save the training session to the database
+                        db.Venue_Booking.Add(daily);
+                        db.SaveChanges();
+
+                        //get booking seq of newly created booking
+                        var id = daily.Venue_Booking_Seq;
+
+                        //create instance of a venue booking person object
+                        Venue_Booking_Person dailyVBP = new Venue_Booking_Person();
+
+                        //asign values to venue booking person
+                        dailyVBP.Venue_Booking_Seq = id;
+                        if (trainer == null)
+                            dailyVBP.Person_ID = User.Identity.Name;
+                        else
+                        {
+                            dailyVBP.Person_ID = trainer.Person_ID;
+                            sendTrainerMail(trainer.Person_ID, daily);
+                        }
+                        dailyVBP.Certificate_Ind = 0;
+                        dailyVBP.Attendee_Type = "Trainer";
+                        dailyVBP.Attendee_Status = "Active";
+
+                        //add and save instance of person booking
+                        db.Venue_Booking_Person.Add(dailyVBP);
+                        db.SaveChanges();
+
+                        startDate = timeslot.startDate.AddYears(1);
+                        endDate = timeslot.endDate.AddYears(1);
+                    }
+
+                    if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
+                    {
+                        sendGeneralStudentsMail(session.Topic_ID);
+                    }
+
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        public void sendTrainerMail(string id, Venue_Booking booking)
+        {
+            var trainer = (from rp in db.Registered_Person
+                           where rp.Person_ID.Equals(id)
+                           select rp).FirstOrDefault();
+
+            var venue = (from a in db.Venues
+                        where a.Venue_ID.Equals(booking.Venue_ID)
+                        select a).FirstOrDefault();
+
+            var campus = (from c in db.Campus
+                          where c.Campus_ID.Equals(venue.Campus_ID)
+                          select c.Campus_Name).FirstOrDefault();
+
+            var building = (from b in db.Buildings
+                            where b.Building_ID.Equals(venue.Building_ID)
+                            select b.Building_Name).FirstOrDefault();
+
+            var topic = (from b in db.Topics
+                         where b.Topic_Seq == booking.Topic_Seq
+                         select b.Topic_Name).FirstOrDefault();
+
+            var timeslot = (timeslot)Session["selectedTimeslot"];
+
+            MailMessage message = new MailMessage();
+            SmtpClient client = new SmtpClient();
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+
+            message.From = new MailAddress("uplibraryassistant@gmail.com");
+            message.To.Add(trainer.Person_Email);
+            message.Subject = "Training Session Assignment";
+            message.Body = "Hi, " + trainer.Person_Name + ", you have been assigned to a training session: <hr/> <p>Date: " + booking.DateTime_From.ToShortDateString() + "</p> <p>Duration: " + (booking.DateTime_To - booking.DateTime_From) + "</p> <p>Campus: " + campus + "</p> <p>Building: " + building + "</p> <p>Venue: " + venue.Venue_Name + "</p> <p>Topic: " + topic + "</p> <p>Capacity: " + venue.Capacity + "</p> <p>Timeslot: " + (timeslot.startDate.TimeOfDay + " - " + timeslot.endDate.TimeOfDay);
+            message.IsBodyHtml = true;
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = true;
+            client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+            client.Send(message);
+        }
+
+        public void sendStudentsMail(int id, Venue_Booking booking)
+        {
+            var topicPerson = db.Person_Topic.Include(p => p.Registered_Person).Include(t => t.Topic).Where(c => c.Topic_Seq.Equals(id) && c.Registered_Person.Person_Type.Equals("Student"));
+
+            var venue = (from a in db.Venues
+                         where a.Venue_ID.Equals(booking.Venue_ID)
+                         select a).FirstOrDefault();
+
+            var campus = (from c in db.Campus
+                          where c.Campus_ID.Equals(venue.Campus_ID)
+                          select c.Campus_Name).FirstOrDefault();
+
+            var building = (from b in db.Buildings
+                            where b.Building_ID.Equals(venue.Building_ID)
+                            select b.Building_Name).FirstOrDefault();
+
+            var topic = (from b in db.Topics
+                         where b.Topic_Seq == booking.Topic_Seq
+                         select b.Topic_Name).FirstOrDefault();
+
+            var timeslot = (timeslot)Session["selectedTimeslot"];
+
+            foreach (Person_Topic pt in topicPerson)
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;
+
+                message.From = new MailAddress("uplibraryassistant@gmail.com");
+                message.To.Add(pt.Registered_Person.Person_Email);
+                message.Subject = "Interesting Training Session";
+                message.Body = "Hi, " + pt.Registered_Person.Person_Name + ", a training session that may interest you has become available: <hr/> <p>Date: " + booking.DateTime_From.ToShortDateString() + "</p> <p>Duration: " + (booking.DateTime_To - booking.DateTime_From) + "</p> <p>Campus: " + campus + "</p> <p>Building: " + building + "</p> <p>Venue: " + venue.Venue_Name + "</p> <p>Topic: " + topic +  "</p> <p>Timeslot: " + (timeslot.startDate.TimeOfDay + " - " + timeslot.endDate.TimeOfDay);
+                message.IsBodyHtml = true;
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = true;
+                client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+                client.Send(message);
+            }
+        }
+
+        public void sendGeneralStudentsMail(int id)
+        {
+            var topicPerson = db.Person_Topic.Include(p => p.Registered_Person).Include(t => t.Topic).Where(c => c.Topic_Seq.Equals(id) && c.Registered_Person.Person_Type.Equals("Student"));
+
+            var topic = (from b in db.Topics
+                         where b.Topic_Seq == id
+                         select b.Topic_Name).FirstOrDefault();
+
+            var timeslot = (timeslot)Session["selectedTimeslot"];
+
+            foreach (Person_Topic pt in topicPerson)
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;
+
+                message.From = new MailAddress("uplibraryassistant@gmail.com");
+                message.To.Add(pt.Registered_Person.Person_Email);
+                message.Subject = "Interesting Training Session";
+                message.Body = "Hi, " + pt.Registered_Person.Person_Name + ", multiple training sessions for a topic that interests you have been added: <hr/> </p> <p>Topic: " + topic;
+                message.IsBodyHtml = true;
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = true;
+                client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+                client.Send(message);
+            }
+        }
+
+            //controler dependant classes
         private T Deserialise<T>(string json)
         {
             using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
