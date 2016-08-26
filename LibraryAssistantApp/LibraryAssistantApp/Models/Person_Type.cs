@@ -23,8 +23,6 @@ namespace LibraryAssistantApp.Models
         public int Person_Type_ID { get; set; }
         public string Person_Type1 { get; set; }
     
-        public virtual Person_Type Person_Type11 { get; set; }
-        public virtual Person_Type Person_Type2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Registered_Person> Registered_Person { get; set; }
     }

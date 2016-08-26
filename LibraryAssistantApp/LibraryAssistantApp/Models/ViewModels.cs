@@ -1,9 +1,11 @@
-﻿using System;
+﻿using System.Web.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+
 
 namespace LibraryAssistantApp.Models
 {
@@ -44,7 +46,7 @@ namespace LibraryAssistantApp.Models
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
         public string Person_Password { get; set; }
 
-        [Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
+        [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string Confirm_Password { get; set; }
 
@@ -65,7 +67,7 @@ namespace LibraryAssistantApp.Models
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
         public string NewPassword { get; set; }
 
-        [Compare("NewPassword", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm New Password")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm New Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string ConfirmNewPassword { get; set; }
     }
@@ -266,12 +268,36 @@ namespace LibraryAssistantApp.Models
     }
     public class EmployeeAddModel
     {
-        public IEnumerable<Current_UP_Person> current_up_person { get; set; }
-        public Registered_Person registered_person { get; set; }
-        public IEnumerable<Person_Title> person_title { get; set; }
-        public IEnumerable<Person_Type> person_type { get; set; }
         public IEnumerable<Role_Action> role_action { get; set; }
-        public IEnumerable<Person_Role> person_role { get; set; }
-        public IEnumerable<Role> role { get; set; }
+        public List<Role> role { get; set; }
+        public List<RoleCheck> role_check { get; set; }
+        [Required(ErrorMessage = "Title is required")]
+        [Display(Name = "Title")]
+        public int Person_Title { get; set; }
+        [Remote("UserExists", "Employee", ErrorMessage ="Employee does not exists at the university")]
+        [Required(ErrorMessage = "Username is required")]
+        [RegularExpression(@"/^([p])([0-9]{8})+$/", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [Required(ErrorMessage = "Name is required")]
+        [RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage = "Invalid name, please ensure the surname is alphabetic")]
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [Required(ErrorMessage = "Surname is required")]
+        [RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage ="Invalid surname, please ensure the name is alphabetic")]
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Remote("EmailExists", "Employee", ErrorMessage = "Email address is already in use")]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage ="Invalid email address, please try again. Example: example@example.co.za")]
+        [Display(Name = "Email Address")]
+        public string person_email { get; set; }
+        [Display(Name = "Person Type")]
+        public int Person_Type { get; set; }
+    }
+    public class RoleCheck
+    {
+        public int role_id { get; set; }
+        public bool role_ind { get; set; }
     }
 }

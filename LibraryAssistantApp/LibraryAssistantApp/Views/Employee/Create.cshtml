@@ -4,99 +4,217 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
+@*<script>
 
-<script>
-    $(document).ready(function () {
-        $('#btn-continue').click(function () {
+        $("#btnValidateEmp").click(function () {
+            var id = $("#person_id");
+            alert(id);
+        })
+
+        $(document).ready(function () {
+
+        });
+    </script>*@
+
+<h3>Create Employee</h3>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.person_id, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.person_id, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.person_id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            @if (ViewBag.Check1 == true)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.person_name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.person_name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.person_name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.person_surname, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.person_surname, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.person_surname, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Person_Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Person_Title", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Person_Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.person_email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.person_email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Person_Type, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Person_Type", null, htmlAttributes: new { @class = "form-control", @Disabled = true })
+                        @Html.Hidden("Person_Type", 2)
+                        @Html.ValidationMessageFor(model => model.Person_Type, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-4">
+            @if (ViewBag.Check2 == true)
+            {
+                <table id="tbl-roles" class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Role
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.role.Count(); i++)
+                        {
+                            <tr id="@Model.role[i].Role_ID">
+                                @Html.HiddenFor(x => x.role_check[i].role_id)
+                                <td>
+                                    @Html.DisplayFor(x => x.role[i].Role_Name)
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(x => x.role_check[i].role_ind)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input name="submit" type="submit" value="Submit" formmethod="get" formaction="Create" class="btn btn-default" />
+            </div>
+        </div>
+
+        <div id="div-actions" class="col-md-8">
+
+        </div>
+
+        @*@Ajax.ActionLink("Submit", "CreateEmp", "Employee", new { id = "__userid__" },  new AjaxOptions { HttpMethod = "GET", UpdateTargetId="create-emp", InsertionMode = InsertionMode.Replace}
+            , htmlAttributes: new { @class="btn btn-default", @id="btn-submit-1" })*@
+
+        <!--<div><input type="button" id="btn-submit-1" value="Submit" class="btn btn-default" /></div>-->
+        @*<div>
+                @Html.ActionLink("Submit", "Create")
+                <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
+            </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" formmethod="post" formaction="Create" class="btn btn-default" />
+            </div>
+        </div>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+}
+
+@section script {
+    <script type="text/javascript">
+
+        @*$('#btn-submit-1').click(function () {
+            var a = $('#person_id').val();
+            var e = $('#person_email').val();
+            if (e = undefined) { e = "" };
             $.ajax({
                 type: 'GET',
-                url: '@Url.Action("GetRoles", "Employee")',
-                beforeSend: function (){
+                data: { id: a , person_email : e },
+                url: '@Url.Action("Create", "Employee")',
+                beforeSend: function () {
                     $('.loading').show();
                 },
                 success: function (result) {
-                    $('#get-roles').html(result);
+                    $('#emp-form').html(result);
                 }
             }).done(function () {
                 $('.loading').hide();
             });
+        });*@
+
+        $(document).ready(function () {
+            $('#tbl-roles tbody tr').click(function () {
+                $('#tbl-roles tr').removeClass('selectedrow');
+                $(this).addClass('selectedrow');
+                var a = $(this).attr('id');
+                $.ajax({
+                    type: 'GET',
+                    data: { id: a },
+                    url: '@Url.Action("GetActions", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        $('#div-actions').html(result);
+                    }
+                }).done(function () {
+                    $('.loading').hide();
+                });
+            });
         });
-    });
-</script>   
 
 
-<h2>Create</h2>
-<div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
+        @*jQuery.validator.addMethod("validateEmp", function (value, element) {
+            $.ajax({
+                type: 'GET',
+                url: "/Employee/validateEmp",
+                data: { id: value },
+                beforeSend: function () {
+                    $('.loading').show();
+                },
+                success: function (result) {
+                    if (result == "True")
+                    {
+                        return this.optional(element) || true;
+                    }
+                    else return this.optional(element) || false;
+                }
+            }).done(function () {
+                $('.loading').hide();
+            })
+        }, "Person Exists");
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>EmployeeAddModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        $("#empCreateForm").validate({
+            rules: {
+                person_id: {required: true, validateEmp: true}
+            }
+        })
 
+        $("#btn-submit-1").click(function () {
+            var id = $("#person_id").val();
+        })
 
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_ID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.registered_person.Person_ID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.registered_person.Person_ID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.registered_person.Person_Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.registered_person.Person_Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_Surname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.registered_person.Person_Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.registered_person.Person_Surname, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_Title.Person_Title1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("PersonTitle", null, htmlAttributes: new { @class = "form-control" } )
-                @Html.ValidationMessageFor(model => model.registered_person.Person_Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.registered_person.Person_Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.registered_person.Person_Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_Type.Person_Type1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("PersonType", null, htmlAttributes: new { @class = "form-control", @disabled = true })
-                @Html.ValidationMessageFor(model => model.registered_person.Person_Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input id="btn-continue" type="button" value="Submit" class="btn btn-default" />
-                <div>
-                    @Html.ActionLink("Back to List", "Index")
-                </div>
-            </div>
-        </div>
-        <div id="get-roles" class="col-md-4">
-
-        </div>
-        <div id="get-actions" class="col-md-8">
-
-        </div>
-    </div>
+        $("#btn-submit-1").click(function () {
+            if ($("#empCreateForm").valid()) {
+                alert("VALID FORM")
+            }
+        })*@
+    </script>
 }

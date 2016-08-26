@@ -342,7 +342,6 @@
     <Property Name="Person_Surname" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="Person_Email" Type="varchar" MaxLength="40" Nullable="false" />
     <Property Name="Person_Password" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="Person_Registration_Status" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Person_Registration_DateTime" Type="datetime" Nullable="false" />
     <Property Name="Person_Type_ID" Type="int" Nullable="false" />
     <Property Name="Title_ID" Type="int" Nullable="false" />
@@ -809,18 +808,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Person_Type_Person_Type">
-    <End Role="Person_Type" Type="Self.Person_Type" Multiplicity="1" />
-    <End Role="Person_Type1" Type="Self.Person_Type" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Person_Type">
-        <PropertyRef Name="Person_Type_ID" />
-      </Principal>
-      <Dependent Role="Person_Type1">
-        <PropertyRef Name="Person_Type_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Registered_Person_Person_Title">
     <End Role="Person_Title" Type="Self.Person_Title" Multiplicity="1" />
     <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="*" />
@@ -830,6 +817,18 @@
       </Principal>
       <Dependent Role="Registered_Person">
         <PropertyRef Name="Title_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Registered_Person_Person_Type">
+    <End Role="Person_Type" Type="Self.Person_Type" Multiplicity="1" />
+    <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person_Type">
+        <PropertyRef Name="Person_Type_ID" />
+      </Principal>
+      <Dependent Role="Registered_Person">
+        <PropertyRef Name="Person_Type_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1104,18 +1103,6 @@
       </Principal>
       <Dependent Role="Person_Topic">
         <PropertyRef Name="Person_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="RegisteredPerson_PersonType">
-    <End Role="Person_Type" Type="Self.Person_Type" Multiplicity="1" />
-    <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Person_Type">
-        <PropertyRef Name="Person_Type_ID" />
-      </Principal>
-      <Dependent Role="Registered_Person">
-        <PropertyRef Name="Person_Type_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1532,12 +1519,12 @@
       <End Role="Venue_Type" EntitySet="Venue_Type" />
       <End Role="Venue" EntitySet="Venue" />
     </AssociationSet>
-    <AssociationSet Name="FK_Person_Type_Person_Type" Association="Self.FK_Person_Type_Person_Type">
-      <End Role="Person_Type" EntitySet="Person_Type" />
-      <End Role="Person_Type1" EntitySet="Person_Type" />
-    </AssociationSet>
     <AssociationSet Name="FK_Registered_Person_Person_Title" Association="Self.FK_Registered_Person_Person_Title">
       <End Role="Person_Title" EntitySet="Person_Title" />
+      <End Role="Registered_Person" EntitySet="Registered_Person" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Registered_Person_Person_Type" Association="Self.FK_Registered_Person_Person_Type">
+      <End Role="Person_Type" EntitySet="Person_Type" />
       <End Role="Registered_Person" EntitySet="Registered_Person" />
     </AssociationSet>
     <AssociationSet Name="PeriodType_Calender" Association="Self.PeriodType_Calender">
@@ -1623,10 +1610,6 @@
     <AssociationSet Name="RegisteredPerson_PersonTopic" Association="Self.RegisteredPerson_PersonTopic">
       <End Role="Registered_Person" EntitySet="Registered_Person" />
       <End Role="Person_Topic" EntitySet="Person_Topic" />
-    </AssociationSet>
-    <AssociationSet Name="RegisteredPerson_PersonType" Association="Self.RegisteredPerson_PersonType">
-      <End Role="Person_Type" EntitySet="Person_Type" />
-      <End Role="Registered_Person" EntitySet="Registered_Person" />
     </AssociationSet>
     <AssociationSet Name="RegisteredPerson_Topic" Association="Self.RegisteredPerson_Topic">
       <End Role="Topic" EntitySet="Topic" />

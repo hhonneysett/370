@@ -97,31 +97,30 @@
         <EntityTypeShape EntityType="LibraryAssistantModel.Period_Type" Width="1.5" PointX="0.5" PointY="18.25" />
         <AssociationConnector Association="LibraryAssistantModel.PeriodType_Calender" />
         <AssociationConnector Association="LibraryAssistantModel.PeriodType_CalenderRules" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Person_Type" Width="1.5" PointX="9.875" PointY="36" />
-        <AssociationConnector Association="LibraryAssistantModel.FK_Person_Type_Person_Type" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Category" Width="1.5" PointX="17.375" PointY="7" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Person_Title" Width="1.5" PointX="6" PointY="23.875" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Topic_Category" Width="1.5" PointX="19.625" PointY="3.875" />
         <AssociationConnector Association="LibraryAssistantModel.Category_TopicCategory" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Person_Topic" Width="1.5" PointX="21.5" PointY="16.125" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Registered_Person" Width="1.5" PointX="15.25" PointY="32.375" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Topic" Width="1.5" PointX="12.5" PointY="0.75" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Trainer_Topic" Width="1.5" PointX="20.5" PointY="19.125" />
+        <AssociationConnector Association="LibraryAssistantModel.Topic_PersonTopic" />
+        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" />
+        <AssociationConnector Association="LibraryAssistantModel.Topic_TopicCategory" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Person_Type" Width="1.5" PointX="6.125" PointY="26.875" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Registered_Person" Width="1.5" PointX="8.375" PointY="22.25" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonQues" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonRole" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonSessionLog" />
         <AssociationConnector Association="LibraryAssistantModel.FK_Registered_Person_Person_Title" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonTopic" />
-        <AssociationConnector Association="LibraryAssistantModel.Topic_PersonTopic" />
-        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonType" />
+        <AssociationConnector Association="LibraryAssistantModel.FK_Registered_Person_Person_Type" />
         <AssociationConnector Association="LibraryAssistantModel.PersonCreator_Questionnaire" />
         <AssociationConnector Association="LibraryAssistantModel.PersonInvolved_Questionnaire" />
         <AssociationConnector Association="LibraryAssistantModel.PersonClosed_VenueProblem" />
         <AssociationConnector Association="LibraryAssistantModel.PersonLogged_VenueProblem" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_TrainerTopic" />
         <AssociationConnector Association="LibraryAssistantModel.VenueBooking_VenueBookingPerson" />
-        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" />
-        <AssociationConnector Association="LibraryAssistantModel.Topic_TopicCategory" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

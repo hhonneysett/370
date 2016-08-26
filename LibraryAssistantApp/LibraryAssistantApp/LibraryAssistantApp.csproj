@@ -569,6 +569,7 @@
     <Content Include="Views\Employee\Create.cshtml" />
     <Content Include="Views\Employee\GetRoles.cshtml" />
     <Content Include="Views\Employee\GetActions.cshtml" />
+    <Content Include="Views\Employee\CreateEmp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -34,7 +34,6 @@ namespace LibraryAssistantApp.Models
         public string Person_Surname { get; set; }
         public string Person_Email { get; set; }
         public string Person_Password { get; set; }
-        public string Person_Registration_Status { get; set; }
         public System.DateTime Person_Registration_DateTime { get; set; }
         public int Person_Type_ID { get; set; }
         public int Title_ID { get; set; }

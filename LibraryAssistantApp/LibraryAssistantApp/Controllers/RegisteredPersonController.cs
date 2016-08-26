@@ -92,7 +92,6 @@ namespace LibraryAssistantApp.Controllers
                 a.Person_Password = b.Person_Password;
                 a.Title_ID = b.Title_ID;
                 a.Person_Registration_DateTime = DateTime.Now;
-                a.Person_Registration_Status = "Pending";
 
                 db.Registered_Person.Add(a);
                 db.SaveChanges();

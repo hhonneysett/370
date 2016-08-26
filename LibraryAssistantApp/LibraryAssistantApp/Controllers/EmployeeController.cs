@@ -51,32 +51,60 @@ namespace LibraryAssistantApp.Controllers
             return PartialView("RoleDetails", roleAction);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(string person_id, string person_email, string person_name, string person_surname)
         {
-            var viewModel = new EmployeeAddModel();
-            viewModel.current_up_person = db.Current_UP_Person;
-
-            ViewBag.PersonTitle = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
-            ViewBag.PersonType = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", "Employee");
-
-            return View(viewModel);
+            ViewBag.Check1 = false;
+            ViewBag.Check2 = false;   
+            var person = db.Current_UP_Person.Any(x => x.Person_ID == person_id);
+            if (person)
+            {
+                if (db.Registered_Person.Any(x => x.Person_ID == person_id))
+                {
+                    ModelState.AddModelError("person_id", "Username is already registered");
+                    return View();
+                }
+                ViewBag.Check1 = true;
+                ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1", "Select a title");
+                ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+                if (person_email != null)
+                {
+                    var person_address = db.Registered_Person.Any(e => e.Person_Email == person_email);
+                    if (!person_address)
+                    {
+                        ViewBag.Check2 = true;
+                        var viewModel = new EmployeeAddModel();
+                        viewModel.role = (db.Roles
+                            .Include(i => i.Role_Action.Select(x => x.Action))).ToList();
+                        var rolechecklist = new List<RoleCheck>();
+                        for (int i = 0; i < viewModel.role.Count(); i++)
+                        {
+                            var roleCheck = new RoleCheck();
+                            roleCheck.role_id = viewModel.role[i].Role_ID;
+                            rolechecklist.Add(roleCheck);
+                        }
+                        viewModel.role_check = rolechecklist;
+                        return View(viewModel);
+                    }
+                }
+            }
+            return View();                       
         }
 
-        public PartialViewResult GetRoles()
+        public JsonResult UserExists(string person_id)
         {
-            var viewModel = new EmployeeAddModel();
+            return Json(db.Current_UP_Person.Any(x => x.Person_ID.ToLower() == person_id.ToLower()), JsonRequestBehavior.AllowGet);
+        }
 
-            viewModel.role = db.Roles
-                .Include(i => i.Role_Action.Select(x => x.Action));
-
-            return PartialView(viewModel);
+        public JsonResult EmailExists(string person_email)
+        {
+            return Json(!(db.Registered_Person.Any(x => x.Person_Email.ToLower() == person_email.ToLower())), JsonRequestBehavior.AllowGet);
         }
 
         public PartialViewResult GetActions(int? id)
         {
-            var viewModel = new EmployeeAddModel();
             if (id != null)
             {
+                var viewModel = new EmployeeAddModel();
                 viewModel.role_action = db.Roles.Single(
                     r => r.Role_ID == id.Value).Role_Action;
                 return PartialView(viewModel);
@@ -84,15 +112,82 @@ namespace LibraryAssistantApp.Controllers
             return PartialView();
         }
 
+        //[HttpGet]
+        //public bool validateEmp(string id)
+        //{
+        //    var person = db.Registered_Person.Where(p => p.Person_ID.Equals(id));
+
+        //    var check = person.Any();
+
+        //    if (check)
+        //    {
+        //        return false;
+        //    }
+        //    else return true;
+        //}
+
+        //public ActionResult GetRoles( )
+        //{
+        //    ViewBag.Valid = true;
+        //    if (ModelState.IsValid)
+        //    {
+        //        viewModel.role = (db.Roles
+        //            .Include(i => i.Role_Action.Select(x => x.Action))).ToList();
+
+        //        return PartialView("GetRoles", viewModel);
+        //    }
+        //    ViewBag.Valid = false;
+        //    return PartialView("CreateEmp");
+        //}
+
         [HttpPost]
         public ActionResult Create(EmployeeAddModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (db.Registered_Person.Any(x => x.Person_ID == viewModel.person_id))
             {
-                TempData["SuccessMsg"] = "New employee created successfully";
-                return RedirectToAction("Index");
+                ModelState.AddModelError("person_id", "Username is already registered");
             }
-            return View();
+                if (ModelState.IsValid)
+                {
+                    var emp = new Registered_Person();
+                    emp.Person_ID = viewModel.person_id;
+                    emp.Person_Name = viewModel.person_name;
+                    emp.Person_Surname = viewModel.person_surname;
+                    emp.Title_ID = viewModel.Person_Title;
+                    emp.Person_Type_ID = viewModel.Person_Type;
+                    emp.Person_Password = "1234";
+                    emp.Person_Registration_DateTime = DateTime.Now;
+                    emp.Person_Email = viewModel.person_email;
+                    db.Registered_Person.Add(emp);
+                    foreach (var item in viewModel.role_check)
+                    {
+                        var prole = new Person_Role();
+                        if (item.role_ind)
+                        {
+                            prole.Role_ID = item.role_id;
+                            prole.Person_ID = emp.Person_ID;
+                            db.Person_Role.Add(prole);
+                        }
+                    }
+                    db.SaveChanges();
+                    TempData["SuccessMsg"] = "New employee created successfully";
+                    return RedirectToAction("Index");
+                }
+            ViewBag.Check1 = true;
+            ViewBag.Check2 = true;
+            viewModel.role = (db.Roles
+                .Include(i => i.Role_Action.Select(x => x.Action))).ToList();
+            var rolechecklist = new List<RoleCheck>();
+            for (int i = 0; i < viewModel.role.Count(); i++)
+            {
+                var roleCheck = new RoleCheck();
+                roleCheck.role_id = viewModel.role[i].Role_ID;
+                rolechecklist.Add(roleCheck);
+            }
+            viewModel.role_check = rolechecklist;
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1", viewModel.Person_Title);
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+            return View(viewModel);
         }
 
         public ActionResult Edit(int id)
