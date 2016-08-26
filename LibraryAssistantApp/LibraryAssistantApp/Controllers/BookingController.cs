@@ -53,6 +53,8 @@ namespace LibraryAssistantApp.Controllers
                 var dateToday = DateTime.Today;
                 if (model.date > dateToday)
                 {
+                    model.time = Convert.ToDateTime(model.inTime);
+
                     //get the time and date components
                     var time = model.time.TimeOfDay;
                     var date = model.date.Date;
@@ -115,7 +117,9 @@ namespace LibraryAssistantApp.Controllers
                     if (validPersonId.Any())
                     {
                         //get the time and date components
-                        var time = model.time.TimeOfDay;
+                        var dtTime = Convert.ToDateTime(model.time);
+
+                        var time = dtTime.TimeOfDay;
                         var date = model.date.Date;
 
                         //calculate the start time of the new session
@@ -260,9 +264,8 @@ namespace LibraryAssistantApp.Controllers
             db.SaveChanges();
 
             //get booking seq of booking just created
-            var bookingSeq = (from a in db.Venue_Booking
-                              where a.DateTime_From.Equals(details.date) && a.Venue_ID.Equals(venue.Venue_ID)
-                              select a.Venue_Booking_Seq).FirstOrDefault();
+
+            var bookingSeq = vb.Venue_Booking_Seq;
 
             //set properties of venue booking person object
             vbp.Venue_Booking_Seq = bookingSeq;

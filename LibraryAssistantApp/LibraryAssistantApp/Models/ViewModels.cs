@@ -164,6 +164,8 @@ namespace LibraryAssistantApp.Models
 
         [Required(ErrorMessage ="Please provide a time selection")]
         [Display(Name ="Time")]
+        public string inTime { get; set; }
+
         public DateTime time { get; set; }
 
         [Required(ErrorMessage ="Please provide a length selection")]
@@ -265,5 +267,104 @@ namespace LibraryAssistantApp.Models
         public int building_id { get; set; }
 
         public int building_floor_id { get; set; }
+    }
+
+    public class CategoryModel
+    {
+        public int categoryId { get; set; }
+
+        [Display(Name ="Category Name")]
+        [Required(ErrorMessage ="Please provide a category name")]
+        public string categoryName { get; set; }
+
+        [Display(Name ="Description")]
+        public string description { get; set; }
+  
+    }
+
+    public class TrainingSessionModel
+    {
+        [Required(ErrorMessage ="Please provide a category selection")]
+        [Display(Name ="Category")]
+        public int Category_ID { get; set; }
+
+        [Required(ErrorMessage ="Please provide a topic selection")]
+        [Display(Name ="Topic")]
+        public int Topic_ID { get; set; }
+
+        [Required(ErrorMessage ="Please provide a duration")]
+        [Display(Name ="Duration (Minutes)")]
+        public int duration { get; set; }
+
+        [Required(ErrorMessage ="Please provide a start date")]
+        [Display(Name ="Date")]
+        public string startDate { get; set; }
+
+        [Required(ErrorMessage = "Please provide a campus")]
+        [Display(Name = "Campus")]
+        public int Campus_ID { get; set; }
+    }
+
+    public class timeslot
+    {
+        public int id { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+    }
+
+    public class venueTimeslot
+    {
+        public timeslot timeslot { get; set; }
+        public IEnumerable<Venue> venues { get; set; }
+    }
+
+    public class venueRating
+    {
+        public Venue venue { get; set; }
+        public double rating { get; set; }
+        public string characteristics { get; set; }
+    }
+
+    public class TrainingDetailsModel
+    {
+        [Display(Name ="Person ID")]
+        public string personId { get; set; }
+
+        [Display(Name ="Booking Type")]
+        public string bookingType { get; set; }
+
+        [Display(Name ="Category")]
+        public string category { get; set; }
+
+        [Display(Name ="Topic")]
+        public string topic { get; set; }
+
+        [Display(Name ="Date")]
+        public string date { get; set; }
+
+        [Display(Name ="Timeslot")]
+        public string timeslot { get; set; }
+
+        [Display(Name ="Campus")]
+        public string campus { get; set; }
+
+        [Display(Name ="Building")]
+        public string building { get; set; }
+
+        [Display(Name ="Venue")]
+        public string venue { get; set; }
+
+        public bool attendance { get; set; }
+    }
+
+    public class AttendanceModel
+    {
+        public Registered_Person student { get; set; }
+        public bool attended { get; set; }
+    }
+
+    public class AttendanceListModel
+    {
+        public List<AttendanceModel> studentAttendance { get; set; }
     }
 }

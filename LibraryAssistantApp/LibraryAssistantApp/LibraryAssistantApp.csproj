@@ -150,6 +150,7 @@
     <Content Include="Content\imgs_dhx_terrace\export_pdf.png" />
     <Content Include="Content\imgs_dhx_terrace\resize_dots.png" />
     <Content Include="Content\imgs_dhx_terrace\resizing.png" />
+    <Content Include="Content\img\default.gif" />
     <Content Include="Content\jquery.timepicker.min.css" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\navbar-style.css" />
@@ -227,6 +228,7 @@
     </None>
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\datetimePicker.js" />
+    <Content Include="Scripts\notify.min.js" />
     <Content Include="Scripts\Scheduler\dhtmlxscheduler.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.js" />
@@ -270,6 +272,7 @@
     <Compile Include="Controllers\PersonTopicController.cs" />
     <Compile Include="Controllers\RegisteredPersonController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
+    <Compile Include="Controllers\TrainerController.cs" />
     <Compile Include="Controllers\VenueController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -433,6 +436,9 @@
     <Compile Include="Models\Topic.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Topic_Category.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Trainer_Topic.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
@@ -518,6 +524,22 @@
     <Content Include="Views\Booking\employeeBookDiscussionRoom.cshtml" />
     <Content Include="Views\Booking\getEmpBookingDetails.cshtml" />
     <Content Include="Views\Booking\updateBookingDetails.cshtml" />
+    <Content Include="Views\Trainer\viewCategory.cshtml" />
+    <Content Include="Views\Trainer\addCategory.cshtml" />
+    <Content Include="Views\Trainer\updateCategory.cshtml" />
+    <Content Include="Views\Trainer\deleteCategory.cshtml" />
+    <Content Include="Views\Trainer\viewTopic.cshtml" />
+    <Content Include="Views\Trainer\updateTopic.cshtml" />
+    <Content Include="Views\Trainer\addTopic.cshtml" />
+    <Content Include="Views\Trainer\deleteTopic.cshtml" />
+    <Content Include="Views\Trainer\addTrainingSession.cshtml" />
+    <Content Include="Views\Trainer\getTrainingVenues.cshtml" />
+    <Content Include="Views\Trainer\addTrainingSessionDetails.cshtml" />
+    <Content Include="Views\Trainer\getTrainers.cshtml" />
+    <Content Include="Views\Trainer\additionalDetails.cshtml" />
+    <Content Include="Views\Trainer\manageTrainingSession.cshtml" />
+    <Content Include="Views\Trainer\trainingSessionDetails.cshtml" />
+    <Content Include="Views\Trainer\logAttendance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

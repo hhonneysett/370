@@ -44,6 +44,7 @@ namespace LibraryAssistantApp.Models
     public class TopicMetadata
     {
         [Display(Name = "Topic")]
+        [Required(ErrorMessage ="Please provide a topic name")]
         public string Topic_Name;
     }
 
@@ -87,6 +88,13 @@ namespace LibraryAssistantApp.Models
     {
         [Display(Name ="Campus Name")]
         public string Campus_Name;
+    }
+
+    public class CategoryMetadata
+    {
+        [Display(Name ="Category Name")]
+        [Required(ErrorMessage ="Please provide a category name")]
+        public string Category_Name;
     }
 }
 

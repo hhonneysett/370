@@ -28,7 +28,6 @@
     </Key>
     <Property Name="Booking_Status" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Description" Type="text" />
-    <Property Name="HEX_Value" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Booking_Type">
     <Key>
@@ -284,9 +283,9 @@
   </EntityType>
   <EntityType Name="Person_Topic">
     <Key>
-      <PropertyRef Name="Person_ID" />
-      <PropertyRef Name="Topic_Seq" />
+      <PropertyRef Name="Person_Topic_ID" />
     </Key>
+    <Property Name="Person_Topic_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="Topic_Seq" Type="int" Nullable="false" />
   </EntityType>
@@ -405,9 +404,9 @@
   </EntityType>
   <EntityType Name="Topic_Category">
     <Key>
-      <PropertyRef Name="Topic_Seq" />
-      <PropertyRef Name="Category_ID" />
+      <PropertyRef Name="Topic_Category_ID" />
     </Key>
+    <Property Name="Topic_Category_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Topic_Seq" Type="int" Nullable="false" />
     <Property Name="Category_ID" Type="int" Nullable="false" />
   </EntityType>
@@ -441,19 +440,19 @@
     </Key>
     <Property Name="Venue_Booking_Seq" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Venue_Booking_Name" Type="varchar" MaxLength="30" Nullable="false" />
-    <Property Name="DateTime_From" Type="datetime" Nullable="false" />
-    <Property Name="DateTime_To" Type="datetime" Nullable="false" />
+    <Property Name="DateTime_From" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="DateTime_To" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="Send_Email_To_Topic_Person_Ind" Type="int" Nullable="false" />
     <Property Name="Max_Bookings" Type="int" Nullable="false" />
     <Property Name="Exclusive_ind" Type="int" Nullable="false" />
     <Property Name="Description" Type="text" />
     <Property Name="Booking_Type_Seq" Type="int" Nullable="false" />
-    <Property Name="Topic_Seq" Type="int" Nullable="false" />
     <Property Name="Booking_Status" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Venue_ID" Type="int" Nullable="false" />
     <Property Name="Building_Floor_ID" Type="int" Nullable="false" />
     <Property Name="Building_ID" Type="int" Nullable="false" />
     <Property Name="Campus_ID" Type="int" Nullable="false" />
+    <Property Name="Topic_Seq" Type="int" />
   </EntityType>
   <EntityType Name="Venue_Booking_Person">
     <Key>
@@ -701,18 +700,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="Colour_BookingStatus">
-    <End Role="Colour" Type="Self.Colour" Multiplicity="1" />
-    <End Role="Booking_Status" Type="Self.Booking_Status" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Colour">
-        <PropertyRef Name="HEX_Value" />
-      </Principal>
-      <Dependent Role="Booking_Status">
-        <PropertyRef Name="HEX_Value" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="Colour_CalenderException">
     <End Role="Colour" Type="Self.Colour" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -834,6 +821,18 @@
       </Principal>
       <Dependent Role="Venue">
         <PropertyRef Name="Venue_Type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Venue_Boo__Topic__2AD55B43">
+    <End Role="Topic" Type="Self.Topic" Multiplicity="0..1" />
+    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Topic">
+        <PropertyRef Name="Topic_Seq" />
+      </Principal>
+      <Dependent Role="Venue_Booking">
+        <PropertyRef Name="Topic_Seq" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1119,18 +1118,6 @@
         <PropertyRef Name="Topic_Seq" />
       </Principal>
       <Dependent Role="Questionnaire">
-        <PropertyRef Name="Topic_Seq" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="QuestionTopic_VenueBooking">
-    <End Role="Question_Topic" Type="Self.Question_Topic" Multiplicity="1" />
-    <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Question_Topic">
-        <PropertyRef Name="Topic_Seq" />
-      </Principal>
-      <Dependent Role="Venue_Booking">
         <PropertyRef Name="Topic_Seq" />
       </Dependent>
     </ReferentialConstraint>
@@ -1575,10 +1562,6 @@
       <End Role="Colour" EntitySet="Colour" />
       <End Role="Period_Type" EntitySet="Period_Type" />
     </AssociationSet>
-    <AssociationSet Name="Colour_BookingStatus" Association="Self.Colour_BookingStatus">
-      <End Role="Colour" EntitySet="Colour" />
-      <End Role="Booking_Status" EntitySet="Booking_Status" />
-    </AssociationSet>
     <AssociationSet Name="Colour_CalenderException" Association="Self.Colour_CalenderException">
       <End Role="Colour" EntitySet="Colour" />
       <End Role="Calender_Exception" EntitySet="Calender_Exception" />
@@ -1618,6 +1601,10 @@
     <AssociationSet Name="FK__Venue__Venue_Typ__656C112C" Association="Self.FK__Venue__Venue_Typ__656C112C">
       <End Role="Venue_Type" EntitySet="Venue_Type" />
       <End Role="Venue" EntitySet="Venue" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Venue_Boo__Topic__2AD55B43" Association="Self.FK__Venue_Boo__Topic__2AD55B43">
+      <End Role="Topic" EntitySet="Topic" />
+      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
     </AssociationSet>
     <AssociationSet Name="PeriodType_Calender" Association="Self.PeriodType_Calender">
       <End Role="Period_Type" EntitySet="Period_Type" />
@@ -1706,10 +1693,6 @@
     <AssociationSet Name="QuestionTopic_Questionnaire" Association="Self.QuestionTopic_Questionnaire">
       <End Role="Question_Topic" EntitySet="Question_Topic" />
       <End Role="Questionnaire" EntitySet="Questionnaire" />
-    </AssociationSet>
-    <AssociationSet Name="QuestionTopic_VenueBooking" Association="Self.QuestionTopic_VenueBooking">
-      <End Role="Question_Topic" EntitySet="Question_Topic" />
-      <End Role="Venue_Booking" EntitySet="Venue_Booking" />
     </AssociationSet>
     <AssociationSet Name="RegisteredPerson_PersonQues" Association="Self.RegisteredPerson_PersonQues">
       <End Role="Registered_Person" EntitySet="Registered_Person" />

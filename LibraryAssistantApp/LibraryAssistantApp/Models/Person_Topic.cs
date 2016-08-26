@@ -14,6 +14,7 @@ namespace LibraryAssistantApp.Models
     
     public partial class Person_Topic
     {
+        public int Person_Topic_ID { get; set; }
         public string Person_ID { get; set; }
         public int Topic_Seq { get; set; }
     

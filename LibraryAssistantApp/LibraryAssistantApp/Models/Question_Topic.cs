@@ -19,7 +19,6 @@ namespace LibraryAssistantApp.Models
         {
             this.Question_Bank = new HashSet<Question_Bank>();
             this.Questionnaires = new HashSet<Questionnaire>();
-            this.Venue_Booking = new HashSet<Venue_Booking>();
         }
     
         public int Topic_Seq { get; set; }
@@ -30,7 +29,5 @@ namespace LibraryAssistantApp.Models
         public virtual ICollection<Question_Bank> Question_Bank { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Questionnaire> Questionnaires { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Venue_Booking> Venue_Booking { get; set; }
     }
 }

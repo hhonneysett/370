@@ -1,0 +1,116 @@
+﻿@model LibraryAssistantApp.Models.CategoryModel
+@using LibraryAssistantApp.Models
+@{
+    ViewBag.Title = "viewTopic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var category = (IEnumerable<Category>)ViewBag.Category;
+}
+
+<h2>Topics</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Manage Topics
+            </div>
+            <div class="panel-body">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.categoryName, htmlAttributes: new { })
+                    <div>
+                        <select id="categorySelect" class="form-control">
+                            @foreach(var item in category)
+                            {
+                                <option value="@item.Category_ID">@item.Category_Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.Label("Topic")
+                    <div>
+                        <select id="topicSelect" disabled="disabled" size="5" class="form-control">
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <input type="submit" id="btnAddTop" class="btn btn-default" value="Add Topic" />
+                <input type="submit" id="btnUpdateTop" class="btn btn-default" value="Update Topic" />
+                <input type="submit" id="btnDeleteTop" class="btn btn-default" value="Delete Topic" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //disable update and delete on form load
+            $("#btnUpdateTop").attr('disabled', true);
+            $("#btnDeleteTop").attr('disabled', true);
+
+            //display all topics related to the selected category
+            $("#categorySelect").change(function () {
+                var id = $("#categorySelect").children(":selected").val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/Trainer/getCatTopic',
+                    data: {id: id},
+                    success: function (result) {
+                        var options = $("#topicSelect");
+
+                        $("#btnUpdateTop").attr('disabled', true);
+                        $("#btnDeleteTop").attr('disabled', true);
+
+                        //disable submit button when no selection
+                        var button = $("#btnVenueSubmit");
+                        button.prop('disabled', true);
+
+                        //remove existing options from the select to add new options
+                        options.children().remove();
+
+                        if (result.length == 0)
+                        {
+                            options.append($("<option disabled selected value />").text("-- no topics --"));
+                        }
+
+                        //add an option to the select for each building
+                        result.forEach(function (entry) {
+                            options.append($("<option />").val(entry.id).text(entry.text));
+                        });
+                        options.prop('disabled', false)                                              
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                });
+            });
+
+            //emable the update and delete button 
+            $("#topicSelect").change(function () {
+                $("#btnUpdateTop").attr('disabled', false);
+                $("#btnDeleteTop").attr('disabled', false);
+            });
+
+            //load add topic page on add click
+            $("#btnAddTop").click(function () {
+                window.location.href = "/Trainer/addTopic"
+            });
+
+            //load update topic page on update click
+            $("#btnUpdateTop").click(function () {
+                var id = $("#topicSelect").children(":selected").val();
+                window.location.href = "/Trainer/updateTopic/?id=" + id;
+            });
+
+            //load delete topic page on delete click
+            $("#btnDeleteTop").click(function () {
+                var id = $("#topicSelect").children(":selected").val();
+                window.location.href = "/Trainer/deleteTopic/?id=" + id;
+            });
+        });
+    </script>
+}

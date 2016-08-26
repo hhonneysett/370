@@ -7,7 +7,7 @@
 
 <h2>Add File</h2>
 
-@using (Html.BeginForm("GetTutorials", "Repository"))
+@using (Html.BeginForm("AddFile", "Repository", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     

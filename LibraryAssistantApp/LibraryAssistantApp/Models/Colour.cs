@@ -17,7 +17,6 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Colour()
         {
-            this.Booking_Status = new HashSet<Booking_Status>();
             this.Calender_Exception = new HashSet<Calender_Exception>();
             this.Period_Type = new HashSet<Period_Type>();
         }
@@ -25,8 +24,6 @@ namespace LibraryAssistantApp.Models
         public int HEX_Value { get; set; }
         public string Description { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Booking_Status> Booking_Status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Calender_Exception> Calender_Exception { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
