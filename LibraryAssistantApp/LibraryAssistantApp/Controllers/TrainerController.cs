@@ -5,10 +5,13 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace LibraryAssistantApp.Controllers
 {
@@ -1439,6 +1442,367 @@ namespace LibraryAssistantApp.Controllers
                 client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
                 client.Send(message);
             }
+        }
+
+        public ActionResult manageTrainingSession()
+        {
+            //get list of campuses to display in form
+            var campus = (from c in db.Campus
+                          select c).ToList();
+
+            //assign list of campuses to a viewbag
+            ViewBag.Campus = campus;
+
+            return View();
+        }
+
+        //get list of training sessions for the manage training sessions screen
+        public JsonResult getTrainingSessions(string id)
+        {
+            var length = id.Length;
+
+            switch (length)
+            {
+                case 1:
+                    var campusId = Convert.ToInt32(id);
+                    //get the bookings for the selected campus
+                    var bookings = (from b in db.Venue_Booking
+                                    where b.Campus_ID.Equals(campusId) && b.Booking_Type.Booking_Type_Name.Equals("Training") && (b.Booking_Status == "Confirmed" || b.Booking_Status == "Tentative")
+                                    select b).ToList();
+
+                    //create new events for each booking
+                    var events = from e in bookings
+                                 select new
+                                 {
+                                     id = e.Venue_Booking_Seq,
+                                     text = e.Description,
+                                     start_date = e.DateTime_From.ToString(),
+                                     end_date = e.DateTime_To.ToString(),
+                                 };
+                    //convert the new events to an array
+                    var rows = events.ToArray();
+
+                    //return the json formatted events
+                    return Json(rows, JsonRequestBehavior.AllowGet);
+                case 9:
+                    //get the bookings for the selected campus
+                    var personBookings = (from b in db.Venue_Booking_Person
+                                   where b.Person_ID.Equals(id) && b.Venue_Booking.Booking_Type.Booking_Type_Name.Equals("Training")
+                                   select b.Venue_Booking);
+
+                    //create new events for each booking
+                    var trainerEvents = from e in personBookings
+                                        select new
+                                 {
+                                     id = e.Venue_Booking_Seq,
+                                     text = e.Description,
+                                     start_date = e.DateTime_From.ToString(),
+                                     end_date = e.DateTime_To.ToString(),
+                                 };
+                    //convert the new events to an array
+                    var trainerRows = trainerEvents.ToArray();
+
+                    //return the json formatted events
+                    return Json(trainerRows, JsonRequestBehavior.AllowGet);
+
+                default:
+                    return null;
+            }            
+        }
+
+        //show details of selected training session
+        public PartialViewResult trainingSessionDetails(int id)
+        {
+            //store the selected session id in session data
+            Session["selectedSession"] = id;
+
+            //create instance of training session details view model
+            TrainingDetailsModel details = new TrainingDetailsModel();
+
+            var venue_booking = (from v in db.Venue_Booking
+                                 where v.Venue_Booking_Seq.Equals(id)
+                                 select v).Include(r => r.Venue_Booking_Person).Include(t => t.Booking_Type).Include(to => to.Topic).Include(c => c.Venue).FirstOrDefault();
+
+            var vbp = (from v in db.Venue_Booking_Person
+                       where v.Venue_Booking_Seq.Equals(id)
+                       select v.Person_ID).FirstOrDefault();
+
+            var tc = (from t in db.Topic_Category
+                      where t.Topic_Seq == venue_booking.Topic_Seq
+                      select t.Category.Category_Name).FirstOrDefault();
+
+            var campus = (from c in db.Campus
+                          where c.Campus_ID.Equals(venue_booking.Campus_ID)
+                          select c.Campus_Name).FirstOrDefault();
+
+            var building = (from b in db.Buildings
+                            where b.Building_ID.Equals(venue_booking.Building_ID)
+                            select b.Building_Name).FirstOrDefault();
+
+            var sessionAtt = (from vb in db.Venue_Booking_Person
+                           where vb.Venue_Booking_Seq.Equals(id) && vb.Attendee_Type.Equals("Student")
+                           select vb).Include(r => r.Registered_Person).Any();
+
+            //assing values to view model
+            details.personId = vbp;
+            details.bookingType = venue_booking.Booking_Type.Booking_Type_Name;
+            details.category = tc;
+            details.topic = venue_booking.Topic.Topic_Name;
+            details.date = venue_booking.DateTime_From.ToShortDateString();
+            details.timeslot = venue_booking.DateTime_From.ToShortTimeString() + " - " + venue_booking.DateTime_To.ToShortTimeString();
+            details.campus = campus;
+            details.building = building;
+            details.venue = venue_booking.Venue.Venue_Name;
+            details.attendance = sessionAtt;
+
+
+
+            return PartialView(details);
+        }
+
+        //generate attendance register
+        public void generateAttendance()
+        {
+            //get the id of the selected session
+            var id = (int)Session["selectedSession"];
+
+            var session = (from vb in db.Venue_Booking_Person
+                           where vb.Venue_Booking_Seq.Equals(id) && vb.Attendee_Type.Equals("Student")
+                           select vb).Include(r => r.Registered_Person);
+
+            if (session.Any())
+            {
+                var register = new System.Data.DataTable("Register");
+                register.Columns.Add("Student Number", typeof(string));
+                register.Columns.Add("Full Name", typeof(string));
+                register.Columns.Add("Attended", typeof(string));
+
+                foreach (Venue_Booking_Person vbp in session)
+                {
+                    var fullName = vbp.Registered_Person.Person_Name + " " + vbp.Registered_Person.Person_Surname;
+                    register.Rows.Add(vbp.Registered_Person.Person_ID,fullName, "");
+                }
+
+                var grid = new GridView();
+                grid.DataSource = register;
+                grid.DataBind();
+
+                Response.ClearContent();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment; filename=MyExcelFile.xls");
+                Response.ContentType = "application/ms-excel";
+
+                Response.Charset = "";
+                StringWriter sw = new StringWriter();
+                HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+                grid.RenderControl(htw);
+
+                Response.Output.Write(sw.ToString());
+                Response.Flush();
+                Response.End();
+            }
+        }
+
+        //log attendants
+        [HttpGet]
+        public ActionResult logAttendance()
+        {
+            //get the id of the selected session
+            var id = (int)Session["selectedSession"];
+
+            var session = (from vb in db.Venue_Booking_Person
+                           where vb.Venue_Booking_Seq.Equals(id) && vb.Attendee_Type.Equals("Student")
+                           select vb).Include(r => r.Registered_Person).ToList();
+
+            var certificates = (from dr in db.Document_Repository
+                                where dr.Document_Category.Category_Name.Equals("Certificate")
+                                select dr).ToList();
+
+            ViewBag.Certificates = certificates;
+
+            List<AttendanceModel> list = new List<AttendanceModel>();
+
+            //add a student to the list if they are assigned
+            foreach (Venue_Booking_Person item in session)
+            {
+                AttendanceModel a = new AttendanceModel();
+
+                a.student = item.Registered_Person;
+                a.attended = false;
+
+                list.Add(a);
+            }
+
+            return View(list);
+        }
+
+        [HttpGet]
+        public void submitAttendance(string attended, int? document)
+        {
+            List<string> studentAtt = Deserialise<List<string>>(attended);
+
+            int bookingSeq = (int)Session["selectedSession"];
+
+            if (document != null)
+            {
+                var file = (from d in db.Document_Repository
+                            where d.Document_Seq == document
+                            select d).FirstOrDefault();
+
+                foreach (string a in studentAtt)
+                {
+                    var student = (from b in db.Registered_Person
+                                   where b.Person_ID.Equals(a)
+                                   select b).FirstOrDefault();
+
+                    Venue_Booking_Person booking = (from c in db.Venue_Booking_Person
+                                                    where c.Venue_Booking_Seq == bookingSeq && c.Person_ID == a
+                                                    select c).FirstOrDefault();
+
+                    booking.Attendee_Status = "Attended";
+
+                    db.Entry(booking).State = EntityState.Modified;
+
+                    db.SaveChanges();
+
+                    MailMessage message = new MailMessage();
+                    SmtpClient client = new SmtpClient();
+                    client.Host = "smtp.gmail.com";
+                    client.Port = 587;
+
+                    var attachment = new Attachment(file.Directory_Path);
+                    
+                    message.From = new MailAddress("uplibraryassistant@gmail.com");
+                    message.To.Add(student.Person_Email);
+                    message.Subject = "Account Activation";
+                    message.Body = "Hi " + student.Person_Name + " congratulations for finishing a trainng session, attached is your certificate";
+                    message.IsBodyHtml = true;
+                    message.Attachments.Add(attachment);
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = true;
+                    client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+                    client.Send(message);
+                }
+            }
+            else
+            {
+                foreach (string a in studentAtt)
+                {
+                    var student = (from b in db.Registered_Person
+                                   where b.Person_ID.Equals(a)
+                                   select b).FirstOrDefault();
+
+                    Venue_Booking_Person booking = (from c in db.Venue_Booking_Person
+                                                    where c.Venue_Booking_Seq == bookingSeq && c.Person_ID == a
+                                                    select c).FirstOrDefault();
+
+                    booking.Attendee_Status = "Attended";
+
+                    db.Entry(booking).State = EntityState.Modified;
+
+                    db.SaveChanges();
+
+                    MailMessage message = new MailMessage();
+                    SmtpClient client = new SmtpClient();
+                    client.Host = "smtp.gmail.com";
+                    client.Port = 587;
+
+                    message.From = new MailAddress("uplibraryassistant@gmail.com");
+                    message.To.Add(student.Person_Email);
+                    message.Subject = "Training Session Completion";
+                    message.Body = "Hi " + student.Person_Name + ", congratulations for finishing a trainng session.";
+                    message.IsBodyHtml = true;
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = true;
+                    client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+                    client.Send(message);
+                }
+            }
+
+            var students = (from vb in db.Venue_Booking_Person
+                           where vb.Venue_Booking_Seq.Equals(bookingSeq) && vb.Attendee_Type.Equals("Student")
+                           select vb).Include(r => r.Registered_Person).ToList();
+
+            var absent = (from d in students
+                          where !studentAtt.Contains(d.Person_ID)
+                          select d);
+
+            foreach(var vbp in absent)
+            {
+                vbp.Attendee_Status = "Absent";
+                db.Entry(vbp).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            var venB = (from i in db.Venue_Booking
+                      where i.Venue_Booking_Seq == bookingSeq
+                      select i).FirstOrDefault();
+
+            venB.Booking_Status = "Complete";
+
+            db.Entry(venB).State = EntityState.Modified;
+
+            var venBP = (from p in db.Venue_Booking_Person
+                       where p.Venue_Booking_Seq == bookingSeq && p.Attendee_Type == "Trainer"
+                       select p).FirstOrDefault();
+
+            venBP.Attendee_Status = "Complete";
+
+            db.Entry(venBP).State = EntityState.Modified;
+
+            db.SaveChanges();
+
+        }
+
+        [HttpGet]
+        public void cancelTraining()
+        {
+            var bookingSeq = (int)Session["selectedSession"];
+            var bookings = (from h in db.Venue_Booking_Person
+                          where h.Venue_Booking_Seq.Equals(bookingSeq) && h.Attendee_Type.Equals("Student")
+                          select h);
+
+            foreach(var booking in bookings)
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;
+
+                message.From = new MailAddress("uplibraryassistant@gmail.com");
+                message.To.Add(booking.Registered_Person.Person_Email);
+                message.Subject = "Training Session Completion";
+                message.Body = "Hi " + booking.Registered_Person.Person_Name + ", unfortunataly a training session you are registered for has been cancelled. <hr/>" + "Topic: " + booking.Venue_Booking.Topic.Topic_Name;
+                message.IsBodyHtml = true;
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = true;
+                client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+                client.Send(message);
+
+                booking.Attendee_Status = "Cancelled";
+                db.Entry(booking).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            var venB = (from i in db.Venue_Booking
+                        where i.Venue_Booking_Seq == bookingSeq
+                        select i).FirstOrDefault();
+
+            venB.Booking_Status = "Cancelled";
+
+            db.Entry(venB).State = EntityState.Modified;
+
+            var venBP = (from p in db.Venue_Booking_Person
+                         where p.Venue_Booking_Seq == bookingSeq && p.Attendee_Type == "Trainer"
+                         select p).FirstOrDefault();
+
+            venBP.Attendee_Status = "Cancelled";
+
+            db.Entry(venBP).State = EntityState.Modified;
+
+            db.SaveChanges();
+
         }
 
             //controler dependant classes

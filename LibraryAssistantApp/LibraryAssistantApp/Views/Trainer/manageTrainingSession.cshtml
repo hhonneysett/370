@@ -1,0 +1,81 @@
+﻿@using LibraryAssistantApp.Models
+
+@{
+    ViewBag.Title = "manageTrainingSession";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Campus = (IEnumerable<Campus>)ViewBag.Campus;
+}
+
+<h2>Manage Training Sessions</h2>
+
+<hr />
+
+<form id="manageTraining">
+    <div class="row">
+        <div class="col-md-8">
+            <div id="existingTraining" class="panel panel-default">
+                <div class="panel-heading">
+                    Existing Training Sessions
+                </div>
+                <div class="panel-body">
+
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+                            <div class="col-md-4">
+                                <text class="control-label"><b>Campus:</b></text>
+                            </div>
+                            <div class="col-md-8">
+                                <select id="manageCampusSelect" class="form-control col-md-4">
+                                    <option disabled selected value="0">--select a campus--</option>
+                                    @foreach (var campus in Campus)
+                                    {
+                                        <option value="@campus.Campus_ID">@campus.Campus_Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="col-md-4">
+                                <text class="control-label"><b>Trainer ID:</b></text>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="trainerID" placeholder="Enter Trainer ID" name="trainerID">
+                                <input type="button" value="Submit" id="btnTrainerID" class="btn btn-default" style="margin-top: 15px" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="calendar">
+                        <div id="scheduler_here" class="dhx_cal_container col-md-12" style='height:450px;'>
+                            <div class="dhx_cal_navline">
+                                <div class="dhx_cal_prev_button">&nbsp;</div>
+                                <div class="dhx_cal_next_button">&nbsp;</div>
+                                <div class="dhx_cal_today_button"></div>
+                                <div class="dhx_cal_date"></div>
+                                <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+                                <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+                                <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+                                <div class="dhx_cal_tab" name="agenda_tab" style="right:280px;"></div>
+                            </div>
+                            <div class="dhx_cal_header"></div>
+                            <div class="dhx_cal_data"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" id="trainingDetails"></div>
+    </div>
+</form>
+
+<div id="loadingDiv"></div>
+
+<div id="cancelConfirm"></div>
+
+@section script{
+    <script type="text/javascript">
+        scheduler.init('scheduler_here', new Date(), "month");       
+    </script>
+    }

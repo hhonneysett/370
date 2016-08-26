@@ -324,4 +324,47 @@ namespace LibraryAssistantApp.Models
         public double rating { get; set; }
         public string characteristics { get; set; }
     }
+
+    public class TrainingDetailsModel
+    {
+        [Display(Name ="Person ID")]
+        public string personId { get; set; }
+
+        [Display(Name ="Booking Type")]
+        public string bookingType { get; set; }
+
+        [Display(Name ="Category")]
+        public string category { get; set; }
+
+        [Display(Name ="Topic")]
+        public string topic { get; set; }
+
+        [Display(Name ="Date")]
+        public string date { get; set; }
+
+        [Display(Name ="Timeslot")]
+        public string timeslot { get; set; }
+
+        [Display(Name ="Campus")]
+        public string campus { get; set; }
+
+        [Display(Name ="Building")]
+        public string building { get; set; }
+
+        [Display(Name ="Venue")]
+        public string venue { get; set; }
+
+        public bool attendance { get; set; }
+    }
+
+    public class AttendanceModel
+    {
+        public Registered_Person student { get; set; }
+        public bool attended { get; set; }
+    }
+
+    public class AttendanceListModel
+    {
+        public List<AttendanceModel> studentAttendance { get; set; }
+    }
 }

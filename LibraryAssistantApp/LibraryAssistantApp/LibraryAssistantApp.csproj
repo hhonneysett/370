@@ -537,6 +537,9 @@
     <Content Include="Views\Trainer\addTrainingSessionDetails.cshtml" />
     <Content Include="Views\Trainer\getTrainers.cshtml" />
     <Content Include="Views\Trainer\additionalDetails.cshtml" />
+    <Content Include="Views\Trainer\manageTrainingSession.cshtml" />
+    <Content Include="Views\Trainer\trainingSessionDetails.cshtml" />
+    <Content Include="Views\Trainer\logAttendance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
