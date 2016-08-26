@@ -75,10 +75,10 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Person_Title> Person_Title { get; set; }
         public virtual DbSet<Topic_Category> Topic_Category { get; set; }
         public virtual DbSet<Person_Topic> Person_Topic { get; set; }
-        public virtual DbSet<Topic> Topics { get; set; }
         public virtual DbSet<Trainer_Topic> Trainer_Topic { get; set; }
         public virtual DbSet<Person_Type> Person_Type { get; set; }
         public virtual DbSet<Registered_Person> Registered_Person { get; set; }
+        public virtual DbSet<Topic> Topics { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {

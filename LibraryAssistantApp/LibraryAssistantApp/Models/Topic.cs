@@ -24,7 +24,7 @@ namespace LibraryAssistantApp.Models
     
         public int Topic_Seq { get; set; }
         public string Topic_Name { get; set; }
-        public string Description { get; set; }
+        public string Topic_Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Topic> Person_Topic { get; set; }

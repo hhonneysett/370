@@ -1,0 +1,27 @@
+﻿@model LibraryAssistantApp.Models.EmployeeAddModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Topic
+            </th>
+            <th>
+                Topic Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.topic)
+        {
+            <tr id="@item.Topic_Seq">
+                <td>
+                    @item.Topic_Name
+                </td>
+                <td>
+                    @item.Topic_Description
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

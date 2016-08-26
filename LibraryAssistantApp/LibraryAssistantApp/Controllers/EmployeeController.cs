@@ -54,40 +54,34 @@ namespace LibraryAssistantApp.Controllers
         public ActionResult Create(string person_id, string person_email, string person_name, string person_surname)
         {
             ViewBag.Check1 = false;
-            ViewBag.Check2 = false;   
-            var person = db.Current_UP_Person.Any(x => x.Person_ID == person_id);
-            if (person)
+            if (db.Registered_Person.Any(x => x.Person_ID == person_id))
             {
-                if (db.Registered_Person.Any(x => x.Person_ID == person_id))
+                ModelState.AddModelError("person_id", "Username is already registered");
+                return View();
+            }
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1", "Select a title");
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+            if (person_email != null)
+            {
+                var person_address = db.Registered_Person.Any(e => e.Person_Email == person_email);
+                if (!person_address)
                 {
-                    ModelState.AddModelError("person_id", "Username is already registered");
-                    return View();
-                }
-                ViewBag.Check1 = true;
-                ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1", "Select a title");
-                ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
-                if (person_email != null)
-                {
-                    var person_address = db.Registered_Person.Any(e => e.Person_Email == person_email);
-                    if (!person_address)
+                    ViewBag.Check1 = true;
+                    var viewModel = new EmployeeAddModel();
+                    viewModel.role = (db.Roles
+                        .Include(i => i.Role_Action.Select(x => x.Action))).ToList();
+                    var rolechecklist = new List<RoleCheck>();
+                    for (int i = 0; i < viewModel.role.Count(); i++)
                     {
-                        ViewBag.Check2 = true;
-                        var viewModel = new EmployeeAddModel();
-                        viewModel.role = (db.Roles
-                            .Include(i => i.Role_Action.Select(x => x.Action))).ToList();
-                        var rolechecklist = new List<RoleCheck>();
-                        for (int i = 0; i < viewModel.role.Count(); i++)
-                        {
-                            var roleCheck = new RoleCheck();
-                            roleCheck.role_id = viewModel.role[i].Role_ID;
-                            rolechecklist.Add(roleCheck);
-                        }
-                        viewModel.role_check = rolechecklist;
-                        return View(viewModel);
+                        var roleCheck = new RoleCheck();
+                        roleCheck.role_id = viewModel.role[i].Role_ID;
+                        rolechecklist.Add(roleCheck);
                     }
+                    viewModel.role_check = rolechecklist;
+                    return View(viewModel);
                 }
             }
-            return View();                       
+            return View();
         }
 
         public JsonResult UserExists(string person_id)
@@ -110,6 +104,13 @@ namespace LibraryAssistantApp.Controllers
                 return PartialView(viewModel);
             }
             return PartialView();
+        }
+        public PartialViewResult Topics()
+        {
+            var viewModel = new EmployeeAddModel();
+            viewModel.topic = db.Topics.ToList();
+            
+            return PartialView("Topics", viewModel);
         }
 
         //[HttpGet]

@@ -102,11 +102,7 @@
         <EntityTypeShape EntityType="LibraryAssistantModel.Topic_Category" Width="1.5" PointX="19.625" PointY="3.875" />
         <AssociationConnector Association="LibraryAssistantModel.Category_TopicCategory" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Person_Topic" Width="1.5" PointX="21.5" PointY="16.125" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Topic" Width="1.5" PointX="12.5" PointY="0.75" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Trainer_Topic" Width="1.5" PointX="20.5" PointY="19.125" />
-        <AssociationConnector Association="LibraryAssistantModel.Topic_PersonTopic" />
-        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" />
-        <AssociationConnector Association="LibraryAssistantModel.Topic_TopicCategory" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Person_Type" Width="1.5" PointX="6.125" PointY="26.875" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Registered_Person" Width="1.5" PointX="8.375" PointY="22.25" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonQues" />
@@ -121,6 +117,10 @@
         <AssociationConnector Association="LibraryAssistantModel.PersonLogged_VenueProblem" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_TrainerTopic" />
         <AssociationConnector Association="LibraryAssistantModel.VenueBooking_VenueBookingPerson" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Topic" Width="1.5" PointX="10.375" PointY="2.375" />
+        <AssociationConnector Association="LibraryAssistantModel.Topic_PersonTopic" />
+        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" />
+        <AssociationConnector Association="LibraryAssistantModel.Topic_TopicCategory" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

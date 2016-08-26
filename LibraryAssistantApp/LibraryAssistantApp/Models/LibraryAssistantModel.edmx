@@ -394,7 +394,7 @@
           </Key>
           <Property Name="Topic_Seq" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Topic_Name" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="Description" Type="text" />
+          <Property Name="Topic_Description" Type="text" />
         </EntityType>
         <EntityType Name="Topic_Category">
           <Key>
@@ -2680,20 +2680,7 @@
             <End Role="Topic_Category" EntitySet="Topic_Category" />
           </AssociationSet>
           <EntitySet Name="Person_Topic" EntityType="LibraryAssistantModel.Person_Topic" />
-          <EntitySet Name="Topics" EntityType="LibraryAssistantModel.Topic" />
           <EntitySet Name="Trainer_Topic" EntityType="LibraryAssistantModel.Trainer_Topic" />
-          <AssociationSet Name="Topic_PersonTopic" Association="LibraryAssistantModel.Topic_PersonTopic">
-            <End Role="Topic" EntitySet="Topics" />
-            <End Role="Person_Topic" EntitySet="Person_Topic" />
-          </AssociationSet>
-          <AssociationSet Name="RegisteredPerson_Topic" Association="LibraryAssistantModel.RegisteredPerson_Topic">
-            <End Role="Topic" EntitySet="Topics" />
-            <End Role="Trainer_Topic" EntitySet="Trainer_Topic" />
-          </AssociationSet>
-          <AssociationSet Name="Topic_TopicCategory" Association="LibraryAssistantModel.Topic_TopicCategory">
-            <End Role="Topic" EntitySet="Topics" />
-            <End Role="Topic_Category" EntitySet="Topic_Category" />
-          </AssociationSet>
           <EntitySet Name="Person_Type" EntityType="LibraryAssistantModel.Person_Type" />
           <EntitySet Name="Registered_Person" EntityType="LibraryAssistantModel.Registered_Person" />
           <AssociationSet Name="RegisteredPerson_PersonQues" Association="LibraryAssistantModel.RegisteredPerson_PersonQues">
@@ -2743,6 +2730,19 @@
           <AssociationSet Name="VenueBooking_VenueBookingPerson" Association="LibraryAssistantModel.VenueBooking_VenueBookingPerson">
             <End Role="Registered_Person" EntitySet="Registered_Person" />
             <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
+          </AssociationSet>
+          <EntitySet Name="Topics" EntityType="LibraryAssistantModel.Topic" />
+          <AssociationSet Name="Topic_PersonTopic" Association="LibraryAssistantModel.Topic_PersonTopic">
+            <End Role="Topic" EntitySet="Topics" />
+            <End Role="Person_Topic" EntitySet="Person_Topic" />
+          </AssociationSet>
+          <AssociationSet Name="RegisteredPerson_Topic" Association="LibraryAssistantModel.RegisteredPerson_Topic">
+            <End Role="Topic" EntitySet="Topics" />
+            <End Role="Trainer_Topic" EntitySet="Trainer_Topic" />
+          </AssociationSet>
+          <AssociationSet Name="Topic_TopicCategory" Association="LibraryAssistantModel.Topic_TopicCategory">
+            <End Role="Topic" EntitySet="Topics" />
+            <End Role="Topic_Category" EntitySet="Topic_Category" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="findBookingVenues_Result">
@@ -3266,19 +3266,8 @@
           <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="Topic_Seq" Type="Int32" Nullable="false" />
           <Property Name="Active_Ind" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Topic" Relationship="LibraryAssistantModel.Topic_PersonTopic" FromRole="Person_Topic" ToRole="Topic" />
           <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_PersonTopic" FromRole="Person_Topic" ToRole="Registered_Person" />
-        </EntityType>
-        <EntityType Name="Topic">
-          <Key>
-            <PropertyRef Name="Topic_Seq" />
-          </Key>
-          <Property Name="Topic_Seq" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Topic_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Person_Topic" Relationship="LibraryAssistantModel.Topic_PersonTopic" FromRole="Topic" ToRole="Person_Topic" />
-          <NavigationProperty Name="Trainer_Topic" Relationship="LibraryAssistantModel.RegisteredPerson_Topic" FromRole="Topic" ToRole="Trainer_Topic" />
-          <NavigationProperty Name="Topic_Category" Relationship="LibraryAssistantModel.Topic_TopicCategory" FromRole="Topic" ToRole="Topic_Category" />
+          <NavigationProperty Name="Topic" Relationship="LibraryAssistantModel.Topic_PersonTopic" FromRole="Person_Topic" ToRole="Topic" />
         </EntityType>
         <EntityType Name="Trainer_Topic">
           <Key>
@@ -3287,47 +3276,9 @@
           <Property Name="Trainer_Topic_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="Topic_Seq" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Topic" Relationship="LibraryAssistantModel.RegisteredPerson_Topic" FromRole="Trainer_Topic" ToRole="Topic" />
           <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_TrainerTopic" FromRole="Trainer_Topic" ToRole="Registered_Person" />
+          <NavigationProperty Name="Topic" Relationship="LibraryAssistantModel.RegisteredPerson_Topic" FromRole="Trainer_Topic" ToRole="Topic" />
         </EntityType>
-        <Association Name="Topic_PersonTopic">
-          <End Type="LibraryAssistantModel.Topic" Role="Topic" Multiplicity="1" />
-          <End Type="LibraryAssistantModel.Person_Topic" Role="Person_Topic" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Topic">
-              <PropertyRef Name="Topic_Seq" />
-            </Principal>
-            <Dependent Role="Person_Topic">
-              <PropertyRef Name="Topic_Seq" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="RegisteredPerson_Topic">
-          <End Type="LibraryAssistantModel.Topic" Role="Topic" Multiplicity="1" />
-          <End Type="LibraryAssistantModel.Trainer_Topic" Role="Trainer_Topic" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Topic">
-              <PropertyRef Name="Topic_Seq" />
-            </Principal>
-            <Dependent Role="Trainer_Topic">
-              <PropertyRef Name="Topic_Seq" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Topic_TopicCategory">
-          <End Type="LibraryAssistantModel.Topic" Role="Topic" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="LibraryAssistantModel.Topic_Category" Role="Topic_Category" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Topic">
-              <PropertyRef Name="Topic_Seq" />
-            </Principal>
-            <Dependent Role="Topic_Category">
-              <PropertyRef Name="Topic_Seq" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Person_Type">
           <Key>
             <PropertyRef Name="Person_Type_ID" />
@@ -3510,6 +3461,55 @@
             </Principal>
             <Dependent Role="Venue_Booking_Person">
               <PropertyRef Name="Person_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Topic">
+          <Key>
+            <PropertyRef Name="Topic_Seq" />
+          </Key>
+          <Property Name="Topic_Seq" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Topic_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Topic_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Person_Topic" Relationship="LibraryAssistantModel.Topic_PersonTopic" FromRole="Topic" ToRole="Person_Topic" />
+          <NavigationProperty Name="Trainer_Topic" Relationship="LibraryAssistantModel.RegisteredPerson_Topic" FromRole="Topic" ToRole="Trainer_Topic" />
+          <NavigationProperty Name="Topic_Category" Relationship="LibraryAssistantModel.Topic_TopicCategory" FromRole="Topic" ToRole="Topic_Category" />
+        </EntityType>
+        <Association Name="Topic_PersonTopic">
+          <End Type="LibraryAssistantModel.Topic" Role="Topic" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Person_Topic" Role="Person_Topic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topic">
+              <PropertyRef Name="Topic_Seq" />
+            </Principal>
+            <Dependent Role="Person_Topic">
+              <PropertyRef Name="Topic_Seq" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RegisteredPerson_Topic">
+          <End Type="LibraryAssistantModel.Topic" Role="Topic" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Trainer_Topic" Role="Trainer_Topic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topic">
+              <PropertyRef Name="Topic_Seq" />
+            </Principal>
+            <Dependent Role="Trainer_Topic">
+              <PropertyRef Name="Topic_Seq" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Topic_TopicCategory">
+          <End Type="LibraryAssistantModel.Topic" Role="Topic" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="LibraryAssistantModel.Topic_Category" Role="Topic_Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topic">
+              <PropertyRef Name="Topic_Seq" />
+            </Principal>
+            <Dependent Role="Topic_Category">
+              <PropertyRef Name="Topic_Seq" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4020,15 +4020,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Topics">
-            <EntityTypeMapping TypeName="LibraryAssistantModel.Topic">
-              <MappingFragment StoreEntitySet="Topic">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Topic_Name" ColumnName="Topic_Name" />
-                <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Trainer_Topic">
             <EntityTypeMapping TypeName="LibraryAssistantModel.Trainer_Topic">
               <MappingFragment StoreEntitySet="Trainer_Topic">
@@ -4057,6 +4048,15 @@
                 <ScalarProperty Name="Person_Surname" ColumnName="Person_Surname" />
                 <ScalarProperty Name="Person_Name" ColumnName="Person_Name" />
                 <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Topics">
+            <EntityTypeMapping TypeName="LibraryAssistantModel.Topic">
+              <MappingFragment StoreEntitySet="Topic">
+                <ScalarProperty Name="Topic_Description" ColumnName="Topic_Description" />
+                <ScalarProperty Name="Topic_Name" ColumnName="Topic_Name" />
+                <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

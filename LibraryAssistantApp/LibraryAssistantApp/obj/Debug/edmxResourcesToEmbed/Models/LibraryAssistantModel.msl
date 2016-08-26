@@ -502,15 +502,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Topics">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Topic">
-        <MappingFragment StoreEntitySet="Topic">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Topic_Name" ColumnName="Topic_Name" />
-          <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Trainer_Topic">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Trainer_Topic">
         <MappingFragment StoreEntitySet="Trainer_Topic">
@@ -539,6 +530,15 @@
           <ScalarProperty Name="Person_Surname" ColumnName="Person_Surname" />
           <ScalarProperty Name="Person_Name" ColumnName="Person_Name" />
           <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Topics">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Topic">
+        <MappingFragment StoreEntitySet="Topic">
+          <ScalarProperty Name="Topic_Description" ColumnName="Topic_Description" />
+          <ScalarProperty Name="Topic_Name" ColumnName="Topic_Name" />
+          <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

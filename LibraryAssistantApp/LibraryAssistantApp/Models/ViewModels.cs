@@ -270,21 +270,23 @@ namespace LibraryAssistantApp.Models
     {
         public IEnumerable<Role_Action> role_action { get; set; }
         public List<Role> role { get; set; }
+        public IEnumerable<Person_Topic> person_topic { get; set; }
+        public IEnumerable<Topic> topic { get; set; }
         public List<RoleCheck> role_check { get; set; }
         [Required(ErrorMessage = "Title is required")]
         [Display(Name = "Title")]
         public int Person_Title { get; set; }
         [Remote("UserExists", "Employee", ErrorMessage ="Employee does not exists at the university")]
         [Required(ErrorMessage = "Username is required")]
-        [RegularExpression(@"/^([p])([0-9]{8})+$/", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
+        //[RegularExpression(@"/^([p])([0-9]{8})+$/", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
         [Display(Name = "Username")]
         public string person_id { get; set; }
         [Required(ErrorMessage = "Name is required")]
-        [RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage = "Invalid name, please ensure the surname is alphabetic")]
+        //[RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage = "Invalid name, please ensure the surname is alphabetic")]
         [Display(Name = "Name")]
         public string person_name { get; set; }
         [Required(ErrorMessage = "Surname is required")]
-        [RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage ="Invalid surname, please ensure the name is alphabetic")]
+        //[RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage ="Invalid surname, please ensure the name is alphabetic")]
         [Display(Name = "Surname")]
         public string person_surname { get; set; }
         [Remote("EmailExists", "Employee", ErrorMessage = "Email address is already in use")]

@@ -389,7 +389,7 @@
     </Key>
     <Property Name="Topic_Seq" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Topic_Name" Type="varchar" MaxLength="30" Nullable="false" />
-    <Property Name="Description" Type="text" />
+    <Property Name="Topic_Description" Type="text" />
   </EntityType>
   <EntityType Name="Topic_Category">
     <Key>

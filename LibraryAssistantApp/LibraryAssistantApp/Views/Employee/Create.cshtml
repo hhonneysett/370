@@ -38,8 +38,6 @@
         </div>
 
         <div class="col-md-12">
-            @if (ViewBag.Check1 == true)
-            {
                 <div class="form-group">
                     @Html.LabelFor(model => model.person_name, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -76,11 +74,9 @@
                         @Html.ValidationMessageFor(model => model.Person_Type, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            }
         </div>
-
         <div class="col-md-4">
-            @if (ViewBag.Check2 == true)
+            @if (ViewBag.Check1 == true)
             {
                 <table id="tbl-roles" class="table">
                     <thead>
@@ -99,7 +95,7 @@
                                     @Html.DisplayFor(x => x.role[i].Role_Name)
                                 </td>
                                 <td>
-                                    @Html.CheckBoxFor(x => x.role_check[i].role_ind)
+                                    @Html.CheckBoxFor(x => x.role_check[i].role_ind, htmlAttributes: new { @onclick="myFunction(this)", @id=Model.role[i].Role_ID })
                                 </td>
                             </tr>
                         }
@@ -109,12 +105,18 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input name="submit" type="submit" value="Submit" formmethod="get" formaction="Create" class="btn btn-default" />
+                <input name="submit" type="submit" value="Submit" formmethod="get" formaction="Create" class="btn btn-default btn-submit"/>
             </div>
         </div>
 
         <div id="div-actions" class="col-md-8">
 
+        </div>
+
+        <div id="topic-parent" hidden>
+            <div id="div-topics">
+
+            </div>
         </div>
 
         @*@Ajax.ActionLink("Submit", "CreateEmp", "Employee", new { id = "__userid__" },  new AjaxOptions { HttpMethod = "GET", UpdateTargetId="create-emp", InsertionMode = InsertionMode.Replace}
@@ -172,14 +174,28 @@
                         $('.loading').show();
                     },
                     success: function (result) {
-                        $('#div-actions').html(result);
+                        $('#div-actions').html(result);  
                     }
                 }).done(function () {
                     $('.loading').hide();
                 });
+                if (a == 31) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("Topics", "Employee")',
+                        success: function (result) {
+                            $('#div-topics').html(result);
+                        }
+                    }) 
+                }
             });
         });
-
+        function myFunction (e) {
+            if ($(e).attr('id') == 31)
+            {
+                $('#topic-parent').toggle(400);
+            }
+        }
 
         @*jQuery.validator.addMethod("validateEmp", function (value, element) {
             $.ajax({
