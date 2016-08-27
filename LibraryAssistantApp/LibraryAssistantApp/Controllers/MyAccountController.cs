@@ -1,6 +1,8 @@
 ﻿using LibraryAssistantApp.Models;
 using System;
 using System.Linq;
+using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -10,6 +12,10 @@ namespace LibraryAssistantApp.Controllers
 {
     public class MyAccountController : Controller
     {
+        LibraryAssistantEntities db = new LibraryAssistantEntities();
+
+        public object WebSecurity { get; private set; }
+
         public ActionResult Login()
         {
             //prevent logged in user from login again
@@ -82,5 +88,126 @@ namespace LibraryAssistantApp.Controllers
 
             return RedirectToAction("Index", "Home");
         } //user logout
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(LostPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var person = (from a in db.Registered_Person
+                              where a.Person_ID == model.personId
+                              select a).FirstOrDefault();
+
+                var result = db.spResetPasswordFunc(model.personId).FirstOrDefault();
+
+                if (Convert.ToBoolean(result.ReturnCode))
+                {
+                    SendPasswordResetEmail(result.Email, model.personId, result.UniqueId.ToString());
+                }
+
+                return RedirectToAction("passResetPost");
+            }
+            else return View();           
+        }
+
+        private void SendPasswordResetEmail(string ToEmail, string UserName, string UniqueId)
+        {
+            // MailMessage class is present is System.Net.Mail namespace
+            MailMessage mailMessage = new MailMessage("YourEmail@gmail.com", ToEmail);
+
+
+            // StringBuilder class is present in System.Text namespace
+            StringBuilder sbEmailBody = new StringBuilder();
+            sbEmailBody.Append("Dear " + UserName + ",<br/><br/>");
+            sbEmailBody.Append("Please click on the following link to reset your password");
+            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://localhost:52621/MyAccount/ResetPassword/?id=" + UniqueId);
+            sbEmailBody.Append("<br/><br/>");
+            sbEmailBody.Append("<b>UP Library Assistant</b>");
+
+            mailMessage.IsBodyHtml = true;
+
+            MailMessage message = new MailMessage();
+            SmtpClient client = new SmtpClient();
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+
+            message.From = new MailAddress("uplibraryassistant@gmail.com");
+            message.To.Add(ToEmail);
+            message.Subject = "Account Activation";
+            message.Body = sbEmailBody.ToString();
+            message.IsBodyHtml = true;
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = true;
+            client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+            client.Send(message);
+        }
+
+        public ActionResult passResetPost()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ResetPassword(string id)
+        {
+            var rp = db.ResetPasswordRequests.ToList();
+            var check = rp.Any(r => r.Id.ToString() == id);
+
+            if(check)
+            {
+                var passReset = (from c in rp
+                                 where c.Id.ToString() == id
+                                 select c).FirstOrDefault();
+
+                Session["passReset"] = passReset;
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("invalidReset");
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(ResetPassModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var Pass = (ResetPasswordRequest)Session["passReset"];
+                var Person = db.Registered_Person.Where(p => p.Person_ID == Pass.Person_ID).FirstOrDefault();
+
+                var deletePass = db.ResetPasswordRequests.Where(p => p.Person_ID == Person.Person_ID).FirstOrDefault();
+
+                var hashedPass = FormsAuthentication.HashPasswordForStoringInConfigFile(model.Person_Password, "MD5");
+
+                Person.Person_Password = hashedPass;
+
+                db.Entry(Person).State = System.Data.Entity.EntityState.Modified;
+
+                db.ResetPasswordRequests.Remove(deletePass);
+
+                db.SaveChanges();
+
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                return View();
+            }
+            
+        }
+
+        public ActionResult invalidReset()
+        {
+            return View();
+        }
     }
 }

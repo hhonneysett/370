@@ -9,17 +9,17 @@ namespace LibraryAssistantApp.Models
     public class UpdatePersonModel
     {
         [Required(ErrorMessage = "Please provide a name", AllowEmptyStrings = false), StringLength(30), Display(Name = "Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Person_Name { get; set; }
 
         [Required(ErrorMessage = "Please provide a surname", AllowEmptyStrings = false), StringLength(30), Display(Name = "Surname")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Person_Surname { get; set; }
 
         [Required(ErrorMessage = "Please provide an email address"), StringLength(254), Display(Name = "Email Address"), RegularExpression(@"^([0-9a-zA-Z]([\+\-_\.][0-9a-zA-Z]+)*)+@(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]*\.)+[a-zA-Z0-9]{2,3})$",
         ErrorMessage = "Please provide valid email id")]
+        [Remote("checkUpdateEmail", "Validate", ErrorMessage = "Email is already in use")]
         public string Person_Email { get; set; }
-
-        [Display(Name ="Level")]
-        public int Level_ID { get; set; }
 
         [Display(Name ="Title")]
         public string Person_Title { get; set; }
@@ -65,6 +65,7 @@ namespace LibraryAssistantApp.Models
     {
         [Required(ErrorMessage ="Please provide current password"), Display(Name ="Current Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [Remote("currentPass", "Validate", ErrorMessage ="Password does not match your current password")]
         public string CurrentPassword { get; set; }
 
         [Required(ErrorMessage = "Please provide new password", AllowEmptyStrings = false)]
@@ -384,6 +385,28 @@ namespace LibraryAssistantApp.Models
         [Display(Name ="One Time Pin")]
         [Remote("checkOTP", "Validate", ErrorMessage ="Invalid OTP")]
         public int OTP { get; set; }
+    }
+
+    public class LostPasswordModel
+    {
+        [Remote("checkRegPerson", "Validate", ErrorMessage ="Student number is not registered")]
+        [RegularExpression(@"[u][0-9]{8}", ErrorMessage = "Invalid student number")]
+        [Display(Name ="Student Number")]
+        public string personId { get; set; }
+    }
+
+    public class ResetPassModel
+    {
+        [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
+        [Display(Name = "Password")]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 6 char long")]
+        public string Person_Password { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [Required(ErrorMessage = "Please confirm password")]
+        public string Confirm_Password { get; set; }
     }
 
 }

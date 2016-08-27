@@ -422,10 +422,16 @@
     <Compile Include="Models\Registered_Person.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ResetPasswordRequest.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role_Action.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spResetPasswordFunc_Result.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Style_Type.cs">
@@ -538,6 +544,11 @@
     <Content Include="Views\Trainer\logAttendance.cshtml" />
     <Content Include="Views\RegisteredPerson\RegisterStudent.cshtml" />
     <Content Include="Views\RegisteredPerson\oneTimePin.cshtml" />
+    <Content Include="Views\RegisteredPerson\updateFavTopics.cshtml" />
+    <Content Include="Views\MyAccount\ForgotPassword.cshtml" />
+    <Content Include="Views\MyAccount\passResetPost.cshtml" />
+    <Content Include="Views\MyAccount\ResetPassword.cshtml" />
+    <Content Include="Views\MyAccount\invalidReset.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

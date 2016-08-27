@@ -1,5 +1,6 @@
 ﻿using LibraryAssistantApp.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -163,8 +164,6 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // POST: RegisteredPerson/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateDetails(UpdatePersonModel model)
@@ -231,9 +230,14 @@ namespace LibraryAssistantApp.Controllers
                 var registered_person = (from a in db.Registered_Person
                                          where a.Person_ID.Equals(identity)
                                          select a).FirstOrDefault();
-                if (registered_person.Person_Password.Equals(model.CurrentPassword))
+
+                var hashedPass = FormsAuthentication.HashPasswordForStoringInConfigFile(model.CurrentPassword, "MD5");
+
+                if (registered_person.Person_Password.Equals(hashedPass))
                 {
-                    registered_person.Person_Password = model.NewPassword;
+                    var newHashed = FormsAuthentication.HashPasswordForStoringInConfigFile(model.NewPassword, "MD5");
+
+                    registered_person.Person_Password = newHashed;
                     db.Entry(registered_person).State = EntityState.Modified;
                     db.SaveChanges();
                     TempData["Message"] = "Password Updated";
@@ -296,6 +300,127 @@ namespace LibraryAssistantApp.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpGet]
+        public ActionResult updateFavTopics()
+        {
+            //get list of topics student already favourites
+            var favTopics = db.Person_Topic.Where(t => t.Person_ID == User.Identity.Name).Include(t => t.Topic).ToList();
+
+
+            //get list of available topics not favourited
+            var ts = (from t in favTopics
+                      select t.Topic_Seq).ToList();
+
+            var availableTopics = (from t in db.Topics
+                                   where !ts.Contains(t.Topic_Seq)
+                                   select t).ToList();
+
+            //get list of categories
+            var categories = (from c in db.Categories
+                              select c);
+
+            //assing the variables to session
+            Session["favTopics"] = favTopics;
+            Session["availTopics"] = availableTopics;
+            Session["categories"] = categories;
+
+            return View();
+        }
+
+        [HttpGet]
+        public JsonResult getAvailTopics(int? category)
+        {
+            var availTopics = (IEnumerable<Topic>)Session["availTopics"];
+
+            if (category == null)
+            {
+                var topicList = from a in availTopics
+                                select new
+                                {
+                                    id = a.Topic_Seq,
+                                    text = a.Topic_Name,
+                                };
+                var rows = topicList.ToArray();
+
+                return Json(rows, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var topSeq = (from a in db.Topic_Category
+                              where a.Category_ID == category
+                              select a.Topic_Seq);
+
+                var filteredTop = from a in availTopics
+                                  where topSeq.Contains(a.Topic_Seq)
+                                  select a;
+
+                var topList = from b in filteredTop
+                           select new
+                           {
+                               id = b.Topic_Seq,
+                               text = b.Topic_Name,
+                           };
+
+                var rows = topList.ToArray();
+
+                return Json(rows, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public void addTopic(int id)
+        {
+            Person_Topic newTopic = new Person_Topic();
+
+            var topic = db.Topics.Where(t => t.Topic_Seq == id).FirstOrDefault();
+
+            newTopic.Person_ID = User.Identity.Name;
+            newTopic.Topic_Seq = id;
+
+            db.Person_Topic.Add(newTopic);
+            db.SaveChanges();
+
+            //get list of topics student already favourites
+            var favTopics = db.Person_Topic.Where(t => t.Person_ID == User.Identity.Name).Include(t => t.Topic).ToList();
+
+
+            //get list of available topics not favourited
+            var ts = (from t in favTopics
+                      select t.Topic_Seq).ToList();
+
+            var availableTopics = (from t in db.Topics
+                                   where !ts.Contains(t.Topic_Seq)
+                                   select t).ToList();
+
+            Session["favTopics"] = favTopics;
+            Session["availTopics"] = availableTopics;
+        }
+
+        [HttpGet]
+        public void removeTopic(int id)
+        {
+            var removeTop = db.Person_Topic.Where(t => t.Person_ID == User.Identity.Name && t.Topic_Seq == id).FirstOrDefault();
+
+            db.Person_Topic.Remove(removeTop);
+            db.SaveChanges();
+
+            //get list of topics student already favourites
+            var favTopics = db.Person_Topic.Where(t => t.Person_ID == User.Identity.Name).Include(t => t.Topic).ToList();
+
+
+            //get list of available topics not favourited
+            var ts = (from t in favTopics
+                      select t.Topic_Seq).ToList();
+
+            var availableTopics = (from t in db.Topics
+                                   where !ts.Contains(t.Topic_Seq)
+                                   select t).ToList();
+
+            Session["favTopics"] = favTopics;
+            Session["availTopics"] = availableTopics;
+
         }
     }
 }

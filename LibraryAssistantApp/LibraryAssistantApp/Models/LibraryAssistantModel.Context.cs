@@ -77,6 +77,7 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Venue> Venues { get; set; }
         public virtual DbSet<Venue_Booking> Venue_Booking { get; set; }
         public virtual DbSet<Registered_Person> Registered_Person { get; set; }
+        public virtual DbSet<ResetPasswordRequest> ResetPasswordRequests { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {
@@ -118,6 +119,15 @@ namespace LibraryAssistantApp.Models
                 new ObjectParameter("campusID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Venue>("findBookingVenuesFunc", mergeOption, bookingStartParameter, bookingEndParameter, venueTypeParameter, campusIDParameter);
+        }
+    
+        public virtual ObjectResult<spResetPasswordFunc_Result> spResetPasswordFunc(string userName)
+        {
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spResetPasswordFunc_Result>("spResetPasswordFunc", userNameParameter);
         }
     }
 }

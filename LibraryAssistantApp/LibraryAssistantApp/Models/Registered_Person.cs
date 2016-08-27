@@ -27,6 +27,7 @@ namespace LibraryAssistantApp.Models
             this.Venue_Problem1 = new HashSet<Venue_Problem>();
             this.Trainer_Topic = new HashSet<Trainer_Topic>();
             this.Venue_Booking_Person = new HashSet<Venue_Booking_Person>();
+            this.ResetPasswordRequests = new HashSet<ResetPasswordRequest>();
         }
     
         public string Person_ID { get; set; }
@@ -60,5 +61,7 @@ namespace LibraryAssistantApp.Models
         public virtual ICollection<Trainer_Topic> Trainer_Topic { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Booking_Person> Venue_Booking_Person { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ResetPasswordRequest> ResetPasswordRequests { get; set; }
     }
 }

@@ -313,6 +313,14 @@
       <End Role="Registered_Person" EntitySet="Registered_Person" />
       <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
     </AssociationSet>
+    <EntitySet Name="ResetPasswordRequests" EntityType="LibraryAssistantModel.ResetPasswordRequest" />
+    <AssociationSet Name="FK__ResetPass__Perso__6166761E" Association="LibraryAssistantModel.FK__ResetPass__Perso__6166761E">
+      <End Role="Registered_Person" EntitySet="Registered_Person" />
+      <End Role="ResetPasswordRequest" EntitySet="ResetPasswordRequests" />
+    </AssociationSet>
+    <FunctionImport Name="spResetPasswordFunc" ReturnType="Collection(LibraryAssistantModel.spResetPasswordFunc_Result)">
+      <Parameter Name="UserName" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="findBookingVenues_Result">
     <Property Type="Int32" Name="Campus_ID" Nullable="false" />
@@ -1629,6 +1637,7 @@
     <NavigationProperty Name="Venue_Problem1" Relationship="LibraryAssistantModel.PersonLogged_VenueProblem" FromRole="Registered_Person" ToRole="Venue_Problem" />
     <NavigationProperty Name="Trainer_Topic" Relationship="LibraryAssistantModel.RegisteredPerson_TrainerTopic" FromRole="Registered_Person" ToRole="Trainer_Topic" />
     <NavigationProperty Name="Venue_Booking_Person" Relationship="LibraryAssistantModel.VenueBooking_VenueBookingPerson" FromRole="Registered_Person" ToRole="Venue_Booking_Person" />
+    <NavigationProperty Name="ResetPasswordRequests" Relationship="LibraryAssistantModel.FK__ResetPass__Perso__6166761E" FromRole="Registered_Person" ToRole="ResetPasswordRequest" />
   </EntityType>
   <Association Name="RegisteredPerson_PersonQues">
     <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
@@ -1782,4 +1791,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="ResetPasswordRequest">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Guid" Nullable="false" />
+    <Property Name="Person_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+    <Property Name="ResetRequestDateTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.FK__ResetPass__Perso__6166761E" FromRole="ResetPasswordRequest" ToRole="Registered_Person" />
+  </EntityType>
+  <Association Name="FK__ResetPass__Perso__6166761E">
+    <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="0..1" />
+    <End Type="LibraryAssistantModel.ResetPasswordRequest" Role="ResetPasswordRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Registered_Person">
+        <PropertyRef Name="Person_ID" />
+      </Principal>
+      <Dependent Role="ResetPasswordRequest">
+        <PropertyRef Name="Person_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="spResetPasswordFunc_Result">
+    <Property Type="Int32" Name="ReturnCode" Nullable="false" />
+    <Property Type="Guid" Name="UniqueId" Nullable="true" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+  </ComplexType>
 </Schema>

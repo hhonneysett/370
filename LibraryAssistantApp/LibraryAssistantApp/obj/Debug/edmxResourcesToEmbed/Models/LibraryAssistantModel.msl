@@ -534,5 +534,23 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ResetPasswordRequests">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.ResetPasswordRequest">
+        <MappingFragment StoreEntitySet="ResetPasswordRequests">
+          <ScalarProperty Name="ResetRequestDateTime" ColumnName="ResetRequestDateTime" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spResetPasswordFunc" FunctionName="LibraryAssistantModel.Store.spResetPassword">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibraryAssistantModel.spResetPasswordFunc_Result">
+          <ScalarProperty Name="ReturnCode" ColumnName="ReturnCode" />
+          <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

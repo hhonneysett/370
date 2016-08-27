@@ -119,6 +119,8 @@
         <AssociationConnector Association="LibraryAssistantModel.PersonLogged_VenueProblem" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_TrainerTopic" />
         <AssociationConnector Association="LibraryAssistantModel.VenueBooking_VenueBookingPerson" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.ResetPasswordRequest" Width="1.5" PointX="5.25" PointY="7.75" />
+        <AssociationConnector Association="LibraryAssistantModel.FK__ResetPass__Perso__6166761E" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
