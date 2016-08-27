@@ -62,7 +62,6 @@ $('#btnRegisterStudent').on('click', function () {
             }
         }
     });
-    return false;
 });
 
 function confirmBooking() {
@@ -227,6 +226,11 @@ $(document).ready(function () {
         var regex = /^[p][0-9]{8}$/;
         return this.optional(element) || regex.test(value);
     }, "Invalid person ID");
+
+    jQuery.validator.addMethod("validStudentID", function (value, element) {
+        var regex = /^[u][0-9]{8}$/;
+        return this.optional(element) || regex.test(value);
+    }, "You have entered an invalid studnet number");
 
     //apply validation rules
     $("#form1").validate({
@@ -713,6 +717,45 @@ function cancelTraining() {
         },
         error: function (err, result) {
             alert("Unfortunately, something went wrong, please contact IT support for further assistance. Have a nice day!");
+        }
+    });
+}
+
+//request one time pin
+function oneTimePin()
+{
+    var email = $("#Person_Email").val();
+    $.ajax({
+        type: 'GET',
+        url: '/RegisteredPerson/oneTimePin',
+        data: { email: email },
+        success: function (result) {
+            $("#onetimepin").dialog({
+                autoOpen: true,
+                position: {
+                    my: "center",
+                    at: "top+350",
+                    of: window
+                },
+                width: 1000,
+                resizable: false,
+                title: 'Email Confirmation:',
+                modal: true,
+                open: function () {
+                    $(this).load('/RegisteredPerson/showOTP');
+                },
+                buttons: {
+                    "Submit": function () {
+                        checkPin();
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        },
+        error: function (err, result) {
+            alert("Error in assigning dataToSave" + err.responseText);
         }
     });
 }

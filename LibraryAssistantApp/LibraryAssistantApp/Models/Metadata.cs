@@ -5,6 +5,7 @@ namespace LibraryAssistantApp.Models
     public class RegisteredPersonMetadata
     {
         [Display(Name = "Student Number")]
+        [RegularExpression(@"^[u][0-9]{8}$", ErrorMessage ="Invalid student number")]
         public string Person_ID;
 
         [Display(Name = "Name")]
@@ -18,9 +19,6 @@ namespace LibraryAssistantApp.Models
 
         [Display(Name = "Password")]
         public string Person_Password;
-
-        [Display(Name = "Level")]
-        public int Level_ID;
 
         [Display(Name = "Title")]
         public string Person_Title;

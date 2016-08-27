@@ -34,13 +34,10 @@ namespace LibraryAssistantApp.Models
         public string Person_Surname { get; set; }
         public string Person_Email { get; set; }
         public string Person_Password { get; set; }
-        public string Person_Registration_Status { get; set; }
         public System.DateTime Person_Registration_DateTime { get; set; }
-        public int Level_ID { get; set; }
         public string Person_Type { get; set; }
         public string Person_Title { get; set; }
     
-        public virtual Person_Level Person_Level { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Questionnaire> Person_Questionnaire { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

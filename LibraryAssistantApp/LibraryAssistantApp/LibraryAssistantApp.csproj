@@ -273,6 +273,7 @@
     <Compile Include="Controllers\RegisteredPersonController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
     <Compile Include="Controllers\TrainerController.cs" />
+    <Compile Include="Controllers\ValidateController.cs" />
     <Compile Include="Controllers\VenueController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -379,9 +380,6 @@
     <Compile Include="Models\Period_Type.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Person_Level.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Person_Questionnaire.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
@@ -483,11 +481,9 @@
     <Content Include="Views\MyAccount\Login.cshtml" />
     <Content Include="Views\Home\AdminIndex.cshtml" />
     <Content Include="Views\Home\StudentIndex.cshtml" />
-    <Content Include="Views\RegisteredPerson\RegisterStudent.cshtml" />
     <Content Include="Views\RegisteredPerson\Details.cshtml" />
     <Content Include="Views\RegisteredPerson\UpdateDetails.cshtml" />
     <Content Include="Views\RegisteredPerson\Index.cshtml" />
-    <Content Include="Views\RegisteredPerson\ValidatePerson.cshtml" />
     <Content Include="Views\Shared\_LayoutBlank.cshtml" />
     <Content Include="Views\RegisteredPerson\UpdatePassword.cshtml" />
     <Content Include="Views\PersonTopic\Create.cshtml" />
@@ -540,6 +536,8 @@
     <Content Include="Views\Trainer\manageTrainingSession.cshtml" />
     <Content Include="Views\Trainer\trainingSessionDetails.cshtml" />
     <Content Include="Views\Trainer\logAttendance.cshtml" />
+    <Content Include="Views\RegisteredPerson\RegisterStudent.cshtml" />
+    <Content Include="Views\RegisteredPerson\oneTimePin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -550,6 +548,7 @@
   <ItemGroup>
     <Folder Include="App_Data\Uploads\" />
     <Folder Include="Views\Default\" />
+    <Folder Include="Views\Validate\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

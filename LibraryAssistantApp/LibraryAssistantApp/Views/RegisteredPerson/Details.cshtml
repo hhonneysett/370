@@ -1,67 +1,113 @@
 ﻿@model LibraryAssistantApp.Models.Registered_Person
+@using LibraryAssistantApp.Models
 
 @{
+    ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var pt = (IEnumerable<Person_Topic>)TempData["personTopic"];
+    var categories = (IEnumerable<Category>)TempData["categories"];
 }
 
-<!DOCTYPE html>
+<h2>Student Details</h2>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-    <div>
-        <h4>My Details</h4>
-        <hr />
-        <dl class="dl-horizontal">
+<div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Person_Title1.Person_Title1)
-            </dt>
+    <hr />
 
-            <dd>
-                @Html.DisplayFor(model => model.Person_Title1.Person_Title1)
-            </dd>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Personal Details</h4>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Person_Name)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Person_Name)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Person_Surname)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Person_Surname)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Person_Email)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Person_Email)
-            </dd>
-               
-            <dt>
-                @Html.DisplayNameFor(model => model.Person_Level.Level_Name)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Person_Level.Level_Name)
-            </dd>
-                      
-        </dl>
-        @Html.ActionLink("Update Details", "UpdateDetails")
+                    <table class="table">
+                        <tr>
+                            <td><b>Title</b></td>
+                            <td>@Model.Person_Title</td>
+                        </tr>
+                        <tr>
+                            <td><b>Name</b></td>
+                            <td>@Model.Person_Name</td>
+                        </tr>
+                        <tr>
+                            <td>Surname</td>
+                            <td>@Model.Person_Surname</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email Address</b></td>
+                            <td>@Model.Person_Email</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            @Html.ActionLink("Update Details", "UpdateDetails", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-default" })
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Favourite Course Topics</h4>
+
+                    <hr />
+                    <text>Categories</text>
+                    <select class="form-control" id="details_categorySelect">
+                        <option value="all" selected>All</option>
+                        @foreach (Category c in categories)
+                        {
+                            <option value="@c.Category_ID">@c.Category_Name</option>
+                        }
+                    </select>
+
+                    <hr />
+                    @if (pt.Any())
+                    {
+                        <p>Topics</p>
+                        <select class="form-control" id="details_topicSelect" size="5">
+                            @foreach (Person_Topic t in pt)
+                            {
+                                <option value="@t.Topic.Topic_Seq">@t.Topic.Topic_Name</option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <p class="center-block">No Favourite Topics</p>
+                    }
+                </div>
+            </div>
+            <input type="button" class="btn btn-default" id="updateFavTopics" value="Update Favourite Topics" />
+        </div>
     </div>
-    @{
-        Html.RenderAction("StudentTopic", "PersonTopic");
-    }
-</body>
-</html>
+</div>
+
+<script type="text/javascript">
+    $("#details_categorySelect").change(function () {
+
+        var category = $("#details_categorySelect").children(":selected").val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/RegisteredPerson/getTopics',
+            data: { category: category },
+            success: function (result) {
+                var options = $("#details_topicSelect");
+
+                //remove existing options from the select to add new options
+                options.children().remove();
+
+                
+                if (result.length == 0) {
+                    options.children().remove();
+                    options.append($("<option disabled selected value />").text("-- no topics --"));
+                }
+
+                //add an option to the select for each building
+                result.forEach(function (entry) {
+                    options.append($("<option />").val(entry.id).text(entry.text));
+                });
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    })
+</script>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace LibraryAssistantApp.Models
 {
@@ -27,14 +27,23 @@ namespace LibraryAssistantApp.Models
 
     public class CreatePersonModel
     {
+        [Display(Name ="Student Number")]
+        [Required(ErrorMessage ="Please provide a student number")]
+        [RegularExpression(@"[u][0-9]{8}", ErrorMessage ="Invalid student number")]
+        [Remote("validateStudentNumber", "Validate", ErrorMessage ="You are not a student at TUKS or are already registered")]
+        public string Person_ID { get; set; }
+
         [Required(ErrorMessage = "Please provide a name", AllowEmptyStrings = false), StringLength(30), Display(Name = "Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Person_Name { get; set; }
 
         [Required(ErrorMessage = "Please provide a surname", AllowEmptyStrings = false), StringLength(30), Display(Name = "Surname")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Person_Surname { get; set; }
 
         [Required(ErrorMessage = "Please provide an email address"), StringLength(254), Display(Name = "Email Address"), RegularExpression(@"^([0-9a-zA-Z]([\+\-_\.][0-9a-zA-Z]+)*)+@(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]*\.)+[a-zA-Z0-9]{2,3})$",
-        ErrorMessage = "Please provide valid email id")]
+        ErrorMessage = "Please provide valid email address")]
+        [Remote("checkEmail", "Validate", ErrorMessage ="Email is already in use")]
         public string Person_Email { get; set; }
 
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
@@ -43,12 +52,12 @@ namespace LibraryAssistantApp.Models
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
         public string Person_Password { get; set; }
 
-        [Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
+        [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [Required(ErrorMessage ="Please confirm password")]
         public string Confirm_Password { get; set; }
 
-        public int Level_ID { get; set; }
-
+        [Display(Name ="Title")]
         public string Person_Title { get; set; }
     }
 
@@ -64,7 +73,7 @@ namespace LibraryAssistantApp.Models
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
         public string NewPassword { get; set; }
 
-        [Compare("NewPassword", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm New Password")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm New Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string ConfirmNewPassword { get; set; }
     }
@@ -363,8 +372,18 @@ namespace LibraryAssistantApp.Models
         public bool attended { get; set; }
     }
 
-    public class AttendanceListModel
+    public class StudentModel
     {
-        public List<AttendanceModel> studentAttendance { get; set; }
+        [Display(Name ="Student Number")]
+        [RegularExpression(@"[u][0-9]{8}", ErrorMessage = "Invalid student number")]
+        public string personId { get; set; }
     }
+
+    public class OneTimePin
+    {
+        [Display(Name ="One Time Pin")]
+        [Remote("checkOTP", "Validate", ErrorMessage ="Invalid OTP")]
+        public int OTP { get; set; }
+    }
+
 }

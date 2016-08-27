@@ -14,10 +14,10 @@ namespace LibraryAssistantApp.Models
     
     public partial class Role_Action
     {
-        public bool Create_Ind { get; set; }
-        public bool Read_Ind { get; set; }
-        public bool Update_Ind { get; set; }
-        public bool Delete_Ind { get; set; }
+        public int Create_Ind { get; set; }
+        public int Read_Ind { get; set; }
+        public int Update_Ind { get; set; }
+        public int Delete_Ind { get; set; }
         public int Action_ID { get; set; }
         public int Role_ID { get; set; }
     

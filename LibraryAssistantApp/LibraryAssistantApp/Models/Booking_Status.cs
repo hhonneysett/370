@@ -22,7 +22,9 @@ namespace LibraryAssistantApp.Models
     
         public string Booking_Status1 { get; set; }
         public string Description { get; set; }
+        public int HEX_Value { get; set; }
     
+        public virtual Colour Colour { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Booking> Venue_Booking { get; set; }
     }

@@ -12,6 +12,11 @@ namespace LibraryAssistantApp.Controllers
     {
         public ActionResult Login()
         {
+            //prevent logged in user from login again
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -19,9 +24,12 @@ namespace LibraryAssistantApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(Login l, string ReturnUrl = "")
         {
+
+
             if (ModelState.IsValid)
             {
-                bool isValidUser = Membership.ValidateUser(l.Person_ID, l.Person_Password);
+                var hashedPass = FormsAuthentication.HashPasswordForStoringInConfigFile(l.Person_Password, "MD5");
+                bool isValidUser = Membership.ValidateUser(l.Person_ID, hashedPass);
                 LibraryAssistantEntities db = new LibraryAssistantEntities();
                 if (isValidUser)
                 {

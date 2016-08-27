@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace LibraryAssistantApp.Controllers
 {
@@ -13,12 +14,6 @@ namespace LibraryAssistantApp.Controllers
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
 
-        // GET: RegisteredPerson
-        public ActionResult Index()
-        {
-            var registered_Person = db.Registered_Person.Include(r => r.Person_Level).Include(r => r.Person_Title1).Include(r => r.Person_Type1);
-            return View(registered_Person.ToList());
-        }
 
         // GET: RegisteredPerson/Details/5
         public ActionResult Details()
@@ -34,43 +29,28 @@ namespace LibraryAssistantApp.Controllers
             {
                 return HttpNotFound();
             }
-            var personTopicList = from a in db.Person_Topic
-                                  where a.Person_ID.Equals(User.Identity.Name)
-                                  select a;
+            var pt = (from t in db.Person_Topic
+                      where t.Person_ID.Equals(User.Identity.Name)
+                      select t).Include(t => t.Topic);
+
+            var c = (from d in db.Categories
+                      select d);
+
+            TempData["categories"] = c;
+
+            TempData["personTopic"] = pt;
 
             return View(registered_Person);
-        }
-
-        // GET: RegisteredPerson/ValidatePerson
-        public ActionResult ValidatePerson()
-        {
-            return View();
-        }
-
-        // POST: RegisteredPerson/ValidatePerson
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ValidatePerson([Bind(Include ="Person_ID")]Registered_Person registered_person)
-        {
-                var exists = db.Registered_Person.Any(p => p.Person_ID.Equals(registered_person.Person_ID));
-
-                if (exists)
-                {
-                     TempData["Message"] = "You are already a registered user.";
-                    return RedirectToAction("Login", "MyAccount");
-                }
-                else
-                {
-                    TempData["tempPerson"] = registered_person;
-                    return RedirectToAction("RegisterStudent");
-                }
-                     
         }
 
         // GET: RegisteredPerson/RegisterStudent
         public ActionResult RegisterStudent()
         {
-            ViewBag.Level_ID = new SelectList(db.Person_Level, "Level_ID", "Level_Name");
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
             return View();
         }
@@ -84,50 +64,76 @@ namespace LibraryAssistantApp.Controllers
             {
                 Registered_Person a = new Registered_Person();
 
-                var c = (Registered_Person)TempData["tempPerson"];
+                //hash password
+                var hashPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(b.Person_Password, "MD5");
 
-                a.Person_ID = c.Person_ID;
+                a.Person_ID = b.Person_ID;
                 a.Person_Name = b.Person_Name;
                 a.Person_Surname = b.Person_Surname;
                 a.Person_Email = b.Person_Email;
-                a.Person_Password = b.Person_Password;
-                a.Level_ID = b.Level_ID;
+                a.Person_Password = hashPassword;
                 a.Person_Title = b.Person_Title;
                 a.Person_Type = "Student";
                 a.Person_Registration_DateTime = DateTime.Now;
-                a.Person_Registration_Status = "Pending";
 
-                db.Registered_Person.Add(a);
-                db.SaveChanges();
-                SendEmail(a);   
+                Session["newStudent"] = a;
 
-                return RedirectToAction("Index");
+                return RedirectToAction("oneTimePin");
             }
 
-            ViewBag.Level_ID = new SelectList(db.Person_Level, "Level_ID", "Level_Name", b.Level_ID);
             ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", b.Person_Title);
             return View(b);
         }
 
-        //send email to registered person
-        public void SendEmail(Registered_Person registered_Person)
+        //send one time pin to student 
+        [HttpGet]
+        public ActionResult oneTimePin()
         {
+            var newStudent = (Registered_Person)Session["newStudent"];
+
             MailMessage message = new MailMessage();
             SmtpClient client = new SmtpClient();
             client.Host = "smtp.gmail.com";
             client.Port = 587;
 
-            string personActivation = "";
+            //generate one time pin
+            int _min = 1000;
+            int _max = 9999;
+            Random _rdm = new Random();
+            var OTP = _rdm.Next(_min, _max);
+
+            //capture one time pin to session
+            Session["OTP"] = OTP;
 
             message.From = new MailAddress("uplibraryassistant@gmail.com");
-            message.To.Add(registered_Person.Person_Email);
+            message.To.Add(newStudent.Person_Email);
             message.Subject = "Account Activation";
-            message.Body = "Hi, " + registered_Person.Person_Name + " your email activation link is here </b>" + personActivation;
+            message.Body = "Hi, your one time pin for registration is: <b>" + OTP + "</b>";
             message.IsBodyHtml = true;
             client.EnableSsl = true;
             client.UseDefaultCredentials = true;
             client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
             client.Send(message);
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult oneTimePin(OneTimePin model)
+        {
+            if (ModelState.IsValid)
+            {
+                var newStudent = (Registered_Person)Session["newStudent"];
+
+                db.Registered_Person.Add(newStudent);
+                db.SaveChanges();
+
+                Session.Remove("newStudent");
+                Session.Remove("OTP");
+
+                return RedirectToAction("Login", "MyAccount");
+            }
+            else return View();
         }
 
         // GET: RegisteredPerson/Edit/5
@@ -151,9 +157,7 @@ namespace LibraryAssistantApp.Controllers
             b.Person_Name = registered_Person.Person_Name;
             b.Person_Surname = registered_Person.Person_Surname;
             b.Person_Email = registered_Person.Person_Email;
-            b.Level_ID = registered_Person.Level_ID;
 
-            ViewBag.Level = new SelectList(db.Person_Level, "Level_ID", "Level_Name", registered_Person.Level_ID);
             ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", registered_Person.Person_Title);
             return View(b);
         }
@@ -179,7 +183,6 @@ namespace LibraryAssistantApp.Controllers
                     registered_Person.Person_Name = model.Person_Name;
                     registered_Person.Person_Surname = model.Person_Surname;
                     registered_Person.Person_Email = model.Person_Email;
-                    registered_Person.Level_ID = model.Level_ID;
                     registered_Person.Person_Title = model.Person_Title;
 
                     db.Entry(registered_Person).State = EntityState.Modified;
@@ -188,13 +191,11 @@ namespace LibraryAssistantApp.Controllers
                 }
                 else
                 {
-                    ViewBag.Level = new SelectList(db.Person_Level, "Level_ID", "Level_Name", model.Level_ID);
                     ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Person_Title);
                     TempData["Message"] = "Email address already exists on the system";
                     return View(model);
                 }              
             }
-            ViewBag.Level = new SelectList(db.Person_Level, "Level_ID", "Level_Name", model.Level_ID);
             ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Person_Title);
             return View(model);
         }
@@ -249,6 +250,45 @@ namespace LibraryAssistantApp.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public JsonResult getTopics(int? category)
+        {
+            if (category == null)
+            {
+                var allTopics = db.Person_Topic.Where(t => t.Person_ID.Equals(User.Identity.Name)).Include(c => c.Topic);
+
+                var allTopicsList = from b in allTopics
+                                 select new
+                                 {
+                                     id = b.Topic_Seq,
+                                     text = b.Topic.Topic_Name
+                                 };
+
+                var allRows = allTopicsList.ToArray();
+
+                return Json(allRows, JsonRequestBehavior.AllowGet);
+            }
+
+            var personTopics = (from i in db.Person_Topic
+                                where i.Person_ID == User.Identity.Name
+                                select i.Topic_Seq);
+
+            var topics = db.Topic_Category.Where(c => c.Category_ID == category && personTopics.Contains(c.Topic_Seq)).Include(t => t.Topic);
+
+
+            var topicsList = from b in topics
+                             select new
+                             {
+                                 id = b.Topic_Seq,
+                                 text = b.Topic.Topic_Name,
+                             };
+
+            var rows = topicsList.ToArray();
+
+            return Json(rows, JsonRequestBehavior.AllowGet);
+            
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -256,11 +296,6 @@ namespace LibraryAssistantApp.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public ActionResult oneTimePin()
-        {
-            return PartialView();
         }
     }
 }
