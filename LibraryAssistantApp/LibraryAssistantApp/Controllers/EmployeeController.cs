@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LibraryAssistantApp.Models;
-
+using System.Web.Security;
 
 namespace LibraryAssistantApp.Controllers
 {
@@ -53,14 +53,21 @@ namespace LibraryAssistantApp.Controllers
 
         public ActionResult Create(string person_id, string person_email, string person_name, string person_surname)
         {
+            TempData["_Categories"] = from c in db.Categories
+                                      select c;
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1");
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
             ViewBag.Check1 = false;
+            if (!db.Registered_Person.Any(x => x.Person_ID.StartsWith("p")))
+            {
+                ModelState.AddModelError("person_id", "Username must start with a 'p' and follow with 8 digits");
+                return View();
+            }
             if (db.Registered_Person.Any(x => x.Person_ID == person_id))
             {
                 ModelState.AddModelError("person_id", "Username is already registered");
                 return View();
             }
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1", "Select a title");
-            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
             if (person_email != null)
             {
                 var person_address = db.Registered_Person.Any(e => e.Person_Email == person_email);
@@ -101,6 +108,7 @@ namespace LibraryAssistantApp.Controllers
                 var viewModel = new EmployeeAddModel();
                 viewModel.role_action = db.Roles.Single(
                     r => r.Role_ID == id.Value).Role_Action;
+
                 return PartialView(viewModel);
             }
             return PartialView();
@@ -108,38 +116,66 @@ namespace LibraryAssistantApp.Controllers
         public PartialViewResult Topics()
         {
             var viewModel = new EmployeeAddModel();
-            viewModel.topic = db.Topics.ToList();
-            
+                viewModel.topic_category = db.Topic_Category.Include(x => x.Topic).ToList();
+            var topicchecklist = new List<TopicCheck>();
+            foreach (var item in viewModel.topic_category)
+            {
+                var t = new TopicCheck();
+                t.topic_sec = item.Topic_Seq;
+                topicchecklist.Add(t);
+            }
+            viewModel.topic_check = topicchecklist;
             return PartialView("Topics", viewModel);
+            //if (id == null)
+            //{
+            //    viewModel.topic_category = db.Topic_Category.Include(x => x.Topic).ToList();
+            //}
+            //if (id != null)
+            //{
+            //    viewModel.topic_category = (db.Topic_Category
+            //        .Include(x => x.Topic).Where(i => i.Category_ID == id)).ToList();
+            //        var tcList = new List<TopicCheck>();
+            //        foreach (var item in viewModel.topic_category)
+            //        {
+            //            var tc = new TopicCheck();
+            //        if (viewModel.topic_check.Any())
+            //        {
+            //            foreach (var tc1 in viewModel.topic_check)
+            //            {
+            //                bool myBool = false;
+            //                int count = viewModel.topic_check.Count();
+            //                while (myBool != true)
+            //                {
+            //                    for (int i = 0; i < count; i++)
+            //                    {
+            //                        if (tc1.topic_sec == item.Topic_Seq)
+            //                        {
+            //                            tc.topic_sec = item.Topic_Seq;
+            //                            tc.topic_ind = tc1.topic_ind;
+            //                            tcList.Add(tc);
+            //                            myBool = true;
+            //                        }
+            //                        if (i == count)
+            //                        {
+            //                            tc.topic_sec = item.Topic_Seq;
+            //                            tcList.Add(tc);
+            //                            myBool = true;
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        else 
+            //        {
+            //            tc.topic_sec = item.Topic_Seq;
+            //            tcList.Add(tc);
+            //        }
+
+            //        }
+            //        viewModel.topic_check = tcList;
+            //}
+            //return PartialView("Topics", viewModel);
         }
-
-        //[HttpGet]
-        //public bool validateEmp(string id)
-        //{
-        //    var person = db.Registered_Person.Where(p => p.Person_ID.Equals(id));
-
-        //    var check = person.Any();
-
-        //    if (check)
-        //    {
-        //        return false;
-        //    }
-        //    else return true;
-        //}
-
-        //public ActionResult GetRoles( )
-        //{
-        //    ViewBag.Valid = true;
-        //    if (ModelState.IsValid)
-        //    {
-        //        viewModel.role = (db.Roles
-        //            .Include(i => i.Role_Action.Select(x => x.Action))).ToList();
-
-        //        return PartialView("GetRoles", viewModel);
-        //    }
-        //    ViewBag.Valid = false;
-        //    return PartialView("CreateEmp");
-        //}
 
         [HttpPost]
         public ActionResult Create(EmployeeAddModel viewModel)
@@ -148,15 +184,22 @@ namespace LibraryAssistantApp.Controllers
             {
                 ModelState.AddModelError("person_id", "Username is already registered");
             }
+            if (!db.Registered_Person.Any(x => x.Person_ID.StartsWith("p")))
+            {
+                ModelState.AddModelError("person_id", "Username must start with a 'p' and follow with 8 digits");
+            }
                 if (ModelState.IsValid)
+
                 {
-                    var emp = new Registered_Person();
+                string password = Membership.GeneratePassword(8, 1);
+                var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "MD5");                
+                var emp = new Registered_Person();
                     emp.Person_ID = viewModel.person_id;
                     emp.Person_Name = viewModel.person_name;
                     emp.Person_Surname = viewModel.person_surname;
                     emp.Title_ID = viewModel.Person_Title;
                     emp.Person_Type_ID = viewModel.Person_Type;
-                    emp.Person_Password = "1234";
+                    emp.Person_Password = password;
                     emp.Person_Registration_DateTime = DateTime.Now;
                     emp.Person_Email = viewModel.person_email;
                     db.Registered_Person.Add(emp);
@@ -170,6 +213,17 @@ namespace LibraryAssistantApp.Controllers
                             db.Person_Role.Add(prole);
                         }
                     }
+                    foreach (var item in viewModel.topic_check)
+                    {
+                        var trainertopic = new Trainer_Topic();
+                        if (item.topic_ind)
+                        {
+                            trainertopic.Person_ID = emp.Person_ID;
+                            trainertopic.Topic_Seq = item.topic_sec;
+                            db.Trainer_Topic.Add(trainertopic);
+                        }
+                    }
+                
                     db.SaveChanges();
                     TempData["SuccessMsg"] = "New employee created successfully";
                     return RedirectToAction("Index");
@@ -191,9 +245,46 @@ namespace LibraryAssistantApp.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            return View();
+            if (id == null)
+            {
+                TempData["ErrorMsg"] = "Please seect an employee before selecting update";
+                ModelState.AddModelError("person_id", "Please select an employee before selecting update");
+                return RedirectToAction("Index");
+            }
+            var viewModel = new EmployeeEditModel();
+
+            viewModel.registered_person = db.Registered_Person.Find(id);
+
+            foreach (var item in viewModel.person_role)
+            {
+                foreach (var a in db.Roles)
+                {
+                    if (a.Role_ID )
+                    {
+
+                    }
+                }
+                var rolecheck = new RoleCheck();
+                var test = db.Roles.Selec                
+            }
+
+            viewModel.person_role = db.Person_Role.Where(
+                    i => i.Person_ID == id).ToList();
+            
+
+            viewModel.role = (db.Roles
+                .Include(i => i.Role_Action.Select(x => x.Action))).ToList();
+
+            var trainercheck = db.Trainer_Topic.Any(x => x.Person_ID == id);
+            if (trainercheck)
+            {
+                viewModel.trainer_topic = db.Trainer_Topic.Where(t => t.Person_ID == id);
+            }
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1");
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+            return View(viewModel);
         }
 
         [HttpPost]

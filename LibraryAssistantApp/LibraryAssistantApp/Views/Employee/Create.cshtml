@@ -1,4 +1,5 @@
-﻿@model LibraryAssistantApp.Models.EmployeeAddModel
+﻿@using LibraryAssistantApp.Models
+@model LibraryAssistantApp.Models.EmployeeAddModel
 
 @{
     ViewBag.Title = "Create";
@@ -7,21 +8,14 @@
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
-@*<script>
-
-        $("#btnValidateEmp").click(function () {
-            var id = $("#person_id");
-            alert(id);
-        })
-
-        $(document).ready(function () {
-
-        });
-    </script>*@
+@{
+    var catlist = (IEnumerable<Category>)TempData["_Categories"];
+}
 
 <h3>Create Employee</h3>
 <hr />
-
+<h4>Enter new employee details below:</h4>
+<br />
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -66,7 +60,7 @@
                         @Html.ValidationMessageFor(model => model.person_email, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" hidden>
                     @Html.LabelFor(model => model.Person_Type, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownList("Person_Type", null, htmlAttributes: new { @class = "form-control", @Disabled = true })
@@ -75,61 +69,67 @@
                     </div>
                 </div>
         </div>
-        <div class="col-md-4">
-            @if (ViewBag.Check1 == true)
-            {
-                <table id="tbl-roles" class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                Role
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.role.Count(); i++)
-                        {
-                            <tr id="@Model.role[i].Role_ID">
-                                @Html.HiddenFor(x => x.role_check[i].role_id)
-                                <td>
-                                    @Html.DisplayFor(x => x.role[i].Role_Name)
-                                </td>
-                                <td>
-                                    @Html.CheckBoxFor(x => x.role_check[i].role_ind, htmlAttributes: new { @onclick="myFunction(this)", @id=Model.role[i].Role_ID })
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input name="submit" type="submit" value="Submit" formmethod="get" formaction="Create" class="btn btn-default btn-submit"/>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    @if (ViewBag.Check1 == true)
+                {
+                        <table id="tbl-roles" class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Role
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.role.Count(); i++)
+                                {
+                                    <tr id="@Model.role[i].Role_ID">
+                                        @Html.HiddenFor(x => x.role_check[i].role_id)
+                                        <td>
+                                            @Html.DisplayFor(x => x.role[i].Role_Name)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(x => x.role_check[i].role_ind, htmlAttributes: new { @onclick = "myFunction(this)", @id = Model.role[i].Role_ID })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+            <div id="div-actions" class="col-md-8">
+
             </div>
         </div>
 
-        <div id="div-actions" class="col-md-8">
-
-        </div>
-
         <div id="topic-parent" hidden>
+            <h4>Please select topics that the new trainer is able to present:</h4>
+            <br/>
+            @*<div class="col-md-4">
+                <select id="category-dropdown" class="form-control">
+                    <option>
+                        All categories
+                    </option>
+                    @foreach (var item in catlist)
+                {
+                        <option id="@item.Category_ID">
+                            @item.Category_Name
+                        </option>
+                    }
+                </select>
+            </div>*@            
             <div id="div-topics">
 
             </div>
         </div>
 
-        @*@Ajax.ActionLink("Submit", "CreateEmp", "Employee", new { id = "__userid__" },  new AjaxOptions { HttpMethod = "GET", UpdateTargetId="create-emp", InsertionMode = InsertionMode.Replace}
-            , htmlAttributes: new { @class="btn btn-default", @id="btn-submit-1" })*@
-
-        <!--<div><input type="button" id="btn-submit-1" value="Submit" class="btn btn-default" /></div>-->
-        @*<div>
-                @Html.ActionLink("Submit", "Create")
-                <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
-            </div>*@
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                <input name="submit" type="submit" value="Submit" formmethod="get" formaction="Create" class="btn btn-default btn-submit" />
                 <input type="submit" value="Create" formmethod="post" formaction="Create" class="btn btn-default" />
             </div>
         </div>
@@ -141,25 +141,6 @@
 
 @section script {
     <script type="text/javascript">
-
-        @*$('#btn-submit-1').click(function () {
-            var a = $('#person_id').val();
-            var e = $('#person_email').val();
-            if (e = undefined) { e = "" };
-            $.ajax({
-                type: 'GET',
-                data: { id: a , person_email : e },
-                url: '@Url.Action("Create", "Employee")',
-                beforeSend: function () {
-                    $('.loading').show();
-                },
-                success: function (result) {
-                    $('#emp-form').html(result);
-                }
-            }).done(function () {
-                $('.loading').hide();
-            });
-        });*@
 
         $(document).ready(function () {
             $('#tbl-roles tbody tr').click(function () {
@@ -196,6 +177,26 @@
                 $('#topic-parent').toggle(400);
             }
         }
+
+        
+        @*$('#btn-submit-1').click(function () {
+            var a = $('#person_id').val();
+            var e = $('#person_email').val();
+            if (e = undefined) { e = "" };
+            $.ajax({
+                type: 'GET',
+                data: { id: a , person_email : e },
+                url: '@Url.Action("Create", "Employee")',
+                beforeSend: function () {
+                    $('.loading').show();
+                },
+                success: function (result) {
+                    $('#emp-form').html(result);
+                }
+            }).done(function () {
+                $('.loading').hide();
+            });
+        });*@
 
         @*jQuery.validator.addMethod("validateEmp", function (value, element) {
             $.ajax({

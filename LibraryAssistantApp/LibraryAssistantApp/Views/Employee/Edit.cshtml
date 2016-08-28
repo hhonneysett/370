@@ -1,0 +1,111 @@
+﻿@model LibraryAssistantApp.Models.EmployeeEditModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>EmployeeEditModel</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_ID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_ID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_Surname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Surname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Title.Person_Title1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Person_Title", null, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Title.Person_Title1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Reset Password" class="btn btn-default" />
+            </div>
+        </div>
+        <div class="form-group" hidden>
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.registered_person, new { htmlAttributes = new { @class = "form-control" } })                
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Role
+                                </th>
+                            </tr>
+                        </thead>
+                        @for (int i = 0; i < Model.person_role.Count(); i++)
+                        {
+                            <tbody>
+                                <tr id="@Model.person_role[i].Role_ID">
+                                    <td>
+                                        @Model.person_role[i].Role.Role_Name
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => Model.role_check[i].role_ind)
+                                    </td>
+                                </tr>
+                            </tbody>                            
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="table">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

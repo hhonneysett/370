@@ -21,10 +21,10 @@ namespace LibraryAssistantApp.Models
         ErrorMessage = "Please provide valid email id")]
         public string Person_Email { get; set; }
 
-        [Display(Name ="Level")]
+        [Display(Name = "Level")]
         public int Level_ID { get; set; }
 
-        [Display(Name ="Title")]
+        [Display(Name = "Title")]
         public int Title_ID { get; set; }
     }
 
@@ -57,7 +57,7 @@ namespace LibraryAssistantApp.Models
 
     public class UpdatePasswordModel
     {
-        [Required(ErrorMessage ="Please provide current password"), Display(Name ="Current Password")]
+        [Required(ErrorMessage = "Please provide current password"), Display(Name = "Current Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string CurrentPassword { get; set; }
 
@@ -74,20 +74,20 @@ namespace LibraryAssistantApp.Models
 
     public class AddPersonTopicModel
     {
-        [Required, Display(Name ="Topic")]
+        [Required, Display(Name = "Topic")]
         public int Topic_Seq { get; set; }
     }
 
     public class DeletePersonTopicModel
     {
-        [Display(Name ="Topic")]
+        [Display(Name = "Topic")]
         public int Topic_Sequence { get; set; }
     }
 
     public class AddFileModel
     {
-        [Required(ErrorMessage ="Please provide a file name")]
-        [Display(Name ="File Name")]
+        [Required(ErrorMessage = "Please provide a file name")]
+        [Display(Name = "File Name")]
         public string Document_Name { get; set; }
 
         public string Description { get; set; }
@@ -95,10 +95,10 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Category")]
         public int Category_ID { get; set; }
 
-        [Display(Name ="Type")]
+        [Display(Name = "Type")]
         public int Document_Type_ID { get; set; }
 
-        [Display(Name ="Upload File"), Required(ErrorMessage ="Please provide a file")]
+        [Display(Name = "Upload File"), Required(ErrorMessage = "Please provide a file")]
         public HttpPostedFileBase uploadFile { get; set; }
     }
 
@@ -140,11 +140,11 @@ namespace LibraryAssistantApp.Models
 
     public class AddFileTypeModel
     {
-        [Required(ErrorMessage ="Please provide a file type name")]
-        [Display(Name ="File Type Name")]
+        [Required(ErrorMessage = "Please provide a file type name")]
+        [Display(Name = "File Type Name")]
         public string Type_Name { get; set; }
 
-        [Display(Name ="File Type Description")]
+        [Display(Name = "File Type Description")]
         public string Description { get; set; }
     }
 
@@ -156,22 +156,22 @@ namespace LibraryAssistantApp.Models
 
     public class DiscussionRoomBooking
     {
-        [Required(ErrorMessage ="Please provide a date selection")]
-        [Display(Name ="Date")]
+        [Required(ErrorMessage = "Please provide a date selection")]
+        [Display(Name = "Date")]
         public DateTime date { get; set; }
 
         public DateTime endDate { get; set; }
 
-        [Required(ErrorMessage ="Please provide a time selection")]
-        [Display(Name ="Time")]
+        [Required(ErrorMessage = "Please provide a time selection")]
+        [Display(Name = "Time")]
         public DateTime time { get; set; }
 
-        [Required(ErrorMessage ="Please provide a length selection")]
-        [Display(Name ="Duration (Minutes)")]
+        [Required(ErrorMessage = "Please provide a length selection")]
+        [Display(Name = "Duration (Minutes)")]
         public int length { get; set; }
 
-        [Required(ErrorMessage ="Please provide a campus selection")]
-        [Display(Name ="Campus")]
+        [Required(ErrorMessage = "Please provide a campus selection")]
+        [Display(Name = "Campus")]
         public int campus_ID { get; set; }
 
         public string campus_name { get; set; }
@@ -181,16 +181,16 @@ namespace LibraryAssistantApp.Models
     {
         public int Campus_ID { get; set; }
 
-        [Required(ErrorMessage ="Please provide a campus name")]
-        [RegularExpression("^[a-zA-Z ]*$", ErrorMessage ="Only alphabet characters allowed")]
-        [Display(Name ="Campus Name")]
+        [Required(ErrorMessage = "Please provide a campus name")]
+        [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Only alphabet characters allowed")]
+        [Display(Name = "Campus Name")]
         public string Campus_Name { get; set; }
     }
 
     public class OneTimePinModel
     {
-        [Required(ErrorMessage ="Please provide one time pin")]
-        [Display(Name ="One Time Pin")]
+        [Required(ErrorMessage = "Please provide one time pin")]
+        [Display(Name = "One Time Pin")]
         public string pin { get; set; }
     }
     public class RoleModel
@@ -198,7 +198,7 @@ namespace LibraryAssistantApp.Models
         [Required]
         public int RoleId { get; set; }
         [Required(ErrorMessage = "Role name is required")]
-        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage ="Role name must be alphabetic and can only include one space")]
+        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage = "Role name must be alphabetic and can only include one space")]
         public string RoleName { get; set; }
         public List<RoleActionModel> RoleActions { get; set; }
     }
@@ -249,8 +249,8 @@ namespace LibraryAssistantApp.Models
 
     public class PersonTypeAddModel
     {
-        [Required(ErrorMessage ="Person Type is required")]
-        [Display(Name ="Person Type")]
+        [Required(ErrorMessage = "Person Type is required")]
+        [Display(Name = "Person Type")]
         [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage = "Person Type must be alphabetic and can only include one space")]
         public string person_type { get; set; }
     }
@@ -270,13 +270,13 @@ namespace LibraryAssistantApp.Models
     {
         public IEnumerable<Role_Action> role_action { get; set; }
         public List<Role> role { get; set; }
-        public IEnumerable<Person_Topic> person_topic { get; set; }
-        public IEnumerable<Topic> topic { get; set; }
+        public List<Topic_Category> topic_category { get; set; }
         public List<RoleCheck> role_check { get; set; }
+        public List<TopicCheck> topic_check { get; set; }
         [Required(ErrorMessage = "Title is required")]
         [Display(Name = "Title")]
         public int Person_Title { get; set; }
-        [Remote("UserExists", "Employee", ErrorMessage ="Employee does not exists at the university")]
+        [Remote("UserExists", "Employee", ErrorMessage = "Employee does not exists at the university")]
         [Required(ErrorMessage = "Username is required")]
         //[RegularExpression(@"/^([p])([0-9]{8})+$/", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
         [Display(Name = "Username")]
@@ -291,7 +291,7 @@ namespace LibraryAssistantApp.Models
         public string person_surname { get; set; }
         [Remote("EmailExists", "Employee", ErrorMessage = "Email address is already in use")]
         [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage ="Invalid email address, please try again. Example: example@example.co.za")]
+        [EmailAddress(ErrorMessage = "Invalid email address, please try again. Example: example@example.co.za")]
         [Display(Name = "Email Address")]
         public string person_email { get; set; }
         [Display(Name = "Person Type")]
@@ -301,5 +301,21 @@ namespace LibraryAssistantApp.Models
     {
         public int role_id { get; set; }
         public bool role_ind { get; set; }
+    }
+
+    public class TopicCheck
+    {
+        public int topic_sec { get; set; }
+        public bool topic_ind { get; set; }
+    }
+    public class EmployeeEditModel
+    {
+        public Registered_Person registered_person { get; set; }
+        public List<Person_Role> person_role { get; set; }
+        public IEnumerable<Role_Action> role_action { get; set; }
+        public List<Role> role { get; set; }
+        public IEnumerable<Trainer_Topic> trainer_topic { get; set; }
+        public List<RoleCheck> role_check { get; set; }
+        public List<TopicCheck> topic_check { get; set; }
     }
 }
