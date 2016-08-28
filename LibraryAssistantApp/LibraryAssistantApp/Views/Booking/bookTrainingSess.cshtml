@@ -1,0 +1,111 @@
+﻿@using LibraryAssistantApp.Models
+
+@{
+    ViewBag.Title = "Book Training Session";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = (IEnumerable<Category>)Session["categories"];
+}
+
+<h2>Book Training Session</h2>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4>Select A Category</h4>
+
+                <hr />
+
+                <select class="form-control" id="bkTrainingCat">
+                    <option disabled selected value>--select category--</option>
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category.Category_ID">@category.Category_Name</option>
+                    }
+                </select>
+
+            </div>
+        </div>
+
+        <div id="topicToggle">
+            <div id="topicPanel"></div>
+        </div>
+
+        <div id="sessionToggle">
+            <div id="bkTrainingBookings"></div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmTrainingBooking"></div>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#topicToggle").hide();
+        })
+
+        $("#bkTrainingCat").change(function () {
+            var id = $("#bkTrainingCat").children(":selected").val();
+
+            $("#sessionToggle").hide(800);
+
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getTopics',
+                data: "id=" + id,
+                success: function (result) {
+                    $('#topicPanel').replaceWith(result);
+                    $("#topicToggle").show(800);
+
+                    $("#bkTrainingTopic").change(function () {
+                        var id = $("#bkTrainingTopic").children(":selected").val();
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '/Booking/getAvailableTrainingSess',
+                            data: "id=" + id,
+                            success: function (result) {
+                                $('#bkTrainingBookings').replaceWith(result);
+                                $("#sessionToggle").show(800);
+
+                                $("#btnBkTraining").prop('disabled', true);
+
+                                //select available trainer
+                                $("#sessionTable tbody tr").click(function () {
+
+                                    var selected = $(this).hasClass("alert-info");
+                                    $("#sessionTable tbody tr").removeClass("alert-info");
+
+                                    if (!selected) {
+                                        $(this).addClass("alert-info");
+                                    }
+                                    var buttonEnabled = $(this).hasClass("alert-info");
+                                    if (buttonEnabled) {
+                                        $("#btnBkTraining").prop('disabled', false)
+                                    } else {
+                                        $("#btnBkTraining").prop('disabled', true)
+                                    }
+                                });
+
+                                $("#btnBkTraining").click(function () {
+                                    getTrainingBookingDetails();
+                                })
+
+                            },
+                            error: function (err, result) {
+                                alert("Error in assigning dataToSave" + err.responseText);
+                            }
+                        });
+                    })
+
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+    </script>
+    }

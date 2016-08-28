@@ -409,4 +409,14 @@ namespace LibraryAssistantApp.Models
         public string Confirm_Password { get; set; }
     }
 
+    public class BookTrainingSessionModel
+    {
+        public int id { get; set; }
+        public string date { get; set; }
+        public string timeslot { get; set; }
+        public string campus { get; set; }
+        public string building { get; set; }            
+        public string venue { get; set; }
+    }
+
 }

@@ -549,6 +549,10 @@
     <Content Include="Views\MyAccount\passResetPost.cshtml" />
     <Content Include="Views\MyAccount\ResetPassword.cshtml" />
     <Content Include="Views\MyAccount\invalidReset.cshtml" />
+    <Content Include="Views\Booking\bookTrainingSess.cshtml" />
+    <Content Include="Views\Booking\getTopics.cshtml" />
+    <Content Include="Views\Booking\getAvailableTrainingSess.cshtml" />
+    <Content Include="Views\Booking\confirmStudentTraining.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

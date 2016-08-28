@@ -28,15 +28,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Booking_Status">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Booking_Status">
-        <MappingFragment StoreEntitySet="Booking_Status">
-          <ScalarProperty Name="HEX_Value" ColumnName="HEX_Value" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Booking_Status1" ColumnName="Booking_Status" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Booking_Type">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Booking_Type">
         <MappingFragment StoreEntitySet="Booking_Type">
@@ -552,5 +543,14 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="Booking_Status">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Booking_Status">
+        <MappingFragment StoreEntitySet="Booking_Status">
+          <ScalarProperty Name="HEX_Value" ColumnName="HEX_Value" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Booking_Status1" ColumnName="Booking_Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -759,3 +759,55 @@ function oneTimePin()
         }
     });
 }
+
+function getSelectedTraining(elem) {
+    var id = $(elem).data('assigned-id');
+    $.ajax({
+        type: 'GET',
+        url: '/Booking/sessionSelect',
+        data: "id=" + id,
+        success: function (result) { },
+        error: function (err, result) {
+            alert("Error in assigning dataToSave" + err.responseText);
+        }
+    });
+}
+
+function getTrainingBookingDetails() {
+    $("#confirmTrainingBooking").dialog({
+        autoOpen: true,
+        position: {
+            my: "center",
+            at: "top+350",
+            of: window
+        },
+        width: 600,
+        resizable: false,
+        title: 'Confirm Booking:',
+        modal: true,
+        open: function () {
+            $(this).load('/Booking/confirmStudentTraining');
+        },
+        buttons: {
+            "Confirm": function () {
+                studentBook();
+            },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
+
+function studentBook() {
+    $.ajax({
+        type: 'POST',
+        url: '/Booking/captureStudentTraining',
+        success: function (result) {
+            window.location.href = "/Booking/ViewBookings/";
+        },
+        error: function (err, result) {
+            alert("Error in assigning dataToSave" + err.responseText);
+        }
+    });
+}

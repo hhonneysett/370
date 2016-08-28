@@ -776,5 +776,104 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult bookTrainingSess()
+        {
+            var categories = (from c in db.Categories
+                              select c);
+
+            Session["categories"] = categories;
+
+            return View();
+        }
+
+        [HttpGet]
+        public PartialViewResult getTopics(int id)
+        {
+            var topics = db.Topic_Category.Where(t => t.Category_ID == id).Include(t => t.Topic);
+
+            TempData["matchingTopics"] = topics;
+
+            return PartialView();
+        }
+
+        [HttpGet]
+        public PartialViewResult getAvailableTrainingSess(int id)
+        {
+            var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id).Include(v => v.Venue).ToList();
+
+            var bookings = from a in trainingSessions
+                           select new BookTrainingSessionModel
+                           {
+                               date = a.DateTime_From.ToShortDateString(),
+                               timeslot = a.DateTime_From.ToShortTimeString() + " - " + a.DateTime_To.ToShortTimeString(),
+                               campus = (from c in db.Campus
+                                         where c.Campus_ID == a.Campus_ID
+                                         select c.Campus_Name).FirstOrDefault(),
+                               building = (from b in db.Buildings
+                                           where b.Building_ID == a.Building_ID
+                                           select b.Building_Name).FirstOrDefault(),
+                               venue = a.Venue.Venue_Name,
+                               id = a.Venue_Booking_Seq,
+                           };
+
+            TempData["trainingSessions"] = bookings;
+
+            return PartialView();
+        }
+
+        [HttpGet]
+        public void sessionSelect(int id)
+        {
+            Session["studentSelectedSess"] = id;
+        }
+
+        [HttpGet]
+        public PartialViewResult confirmStudentTraining()
+        {
+            var id = (int)Session["studentSelectedSess"];
+
+            var trainingSession = db.Venue_Booking.Where(b => b.Venue_Booking_Seq == id).ToList();
+
+            var bookings = from a in trainingSession
+                           select new BookTrainingSessionModel
+                           {
+                               date = a.DateTime_From.ToShortDateString(),
+                               timeslot = a.DateTime_From.ToShortTimeString() + " - " + a.DateTime_To.ToShortTimeString(),
+                               campus = (from c in db.Campus
+                                         where c.Campus_ID == a.Campus_ID
+                                         select c.Campus_Name).FirstOrDefault(),
+                               building = (from b in db.Buildings
+                                           where b.Building_ID == a.Building_ID
+                                           select b.Building_Name).FirstOrDefault(),
+                               venue = a.Venue.Venue_Name,
+                               id = a.Venue_Booking_Seq,
+                           };
+
+            var booking = bookings.FirstOrDefault();
+
+            TempData["booking"] = booking;
+
+            return PartialView();
+        }
+
+        [HttpPost]
+        public void captureStudentTraining()
+        {
+            var id = (int)Session["studentSelectedSess"];
+
+            Venue_Booking_Person a = new Venue_Booking_Person
+            {
+                Person_ID = User.Identity.Name,
+                Venue_Booking_Seq = id,
+                Certificate_Ind = 0,
+                Attendee_Type = "Student",
+                Attendee_Status = "Active",
+            };
+
+            db.Venue_Booking_Person.Add(a);
+
+            db.SaveChanges();
+        }
     }
 }
