@@ -1,8 +1,8 @@
 ﻿@model LibraryAssistantApp.Models.DiscussionRoomBooking
 
 @{
-    ViewBag.Title = "BookDiscussionRoom";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+        ViewBag.Title = "BookDiscussionRoom";
+        Layout = (string)Session["layout"];
 }
 
 <h2>Discussion Room Booking</h2>

@@ -125,14 +125,21 @@ namespace LibraryAssistantApp.Controllers
             if (ModelState.IsValid)
             {
                 var newStudent = (Registered_Person)Session["newStudent"];
+                var personRole = new Person_Role();
+
+                personRole.Person_ID = newStudent.Person_ID;
+                personRole.Role_ID = (from r in db.Roles
+                                      where r.Role_Name == "Student"
+                                      select r.Role_ID).FirstOrDefault();
 
                 db.Registered_Person.Add(newStudent);
+                db.Person_Role.Add(personRole);
                 db.SaveChanges();
 
                 Session.Remove("newStudent");
                 Session.Remove("OTP");
 
-                return RedirectToAction("Login", "MyAccount");
+                return RedirectToAction("Login", "Account");
             }
             else return View();
         }

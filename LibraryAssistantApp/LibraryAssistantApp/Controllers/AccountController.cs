@@ -10,13 +10,13 @@ using System.Web.Security;
 
 namespace LibraryAssistantApp.Controllers
 {
-    public class MyAccountController : Controller
+    public class AccountController : Controller
     {
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
         public object WebSecurity { get; private set; }
 
-        public ActionResult Login()
+        public ActionResult Login(string ReturnUrl = "")
         {
             //prevent logged in user from login again
             if (User.Identity.IsAuthenticated)
@@ -57,6 +57,36 @@ namespace LibraryAssistantApp.Controllers
                         string encToken = FormsAuthentication.Encrypt(ticket);
                         HttpCookie authCookies = new HttpCookie(FormsAuthentication.FormsCookieName, encToken);
                         Response.Cookies.Add(authCookies);
+
+                        Person_Session_Log newSession = new Person_Session_Log();
+
+                        newSession.Person_ID = l.Person_ID;
+                        newSession.Login_DateTime = DateTime.Now;
+
+                        var tempLogout = new TimeSpan(0, 100, 0);
+
+                        newSession.Logout_DateTime = DateTime.Now.Add(tempLogout);
+
+                        db.Person_Session_Log.Add(newSession);
+
+                        db.SaveChanges();
+
+                        Session["loginSession"] = newSession;
+
+                        //add layout tpye
+                        if (registered_person.Person_Type == "Administrator")
+                        {
+                            Session["layout"] = "~/Views/Shared/_Layout.cshtml";
+                        }
+                        else if (registered_person.Person_Type == "Student")
+                        {
+                            Session["layout"] = "~/Views/Shared/_LayoutStudent.cshtml";
+                        }
+                        else
+                        {
+                            Session["layout"] = "~/Views/Shared/_LayoutEmp.cshtml";
+                        }
+
                         if (ReturnUrl != "")
                         {
                             return Redirect(ReturnUrl);
@@ -83,7 +113,18 @@ namespace LibraryAssistantApp.Controllers
             FormsAuthentication.SignOut();
 
             //update session logout time
-            LibraryAssistantEntities db = new LibraryAssistantEntities();        
+
+            var session = (Person_Session_Log)Session["loginSession"];
+
+            var logoutSession = (from a in db.Person_Session_Log
+                                 where a.Session_ID == session.Session_ID
+                                 select a).FirstOrDefault();
+
+            logoutSession.Logout_DateTime = DateTime.Now;
+
+            db.Entry(logoutSession).State = System.Data.Entity.EntityState.Modified;
+
+            db.SaveChanges();
             //end session update
 
             return RedirectToAction("Index", "Home");
@@ -126,7 +167,7 @@ namespace LibraryAssistantApp.Controllers
             StringBuilder sbEmailBody = new StringBuilder();
             sbEmailBody.Append("Dear " + UserName + ",<br/><br/>");
             sbEmailBody.Append("Please click on the following link to reset your password");
-            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://localhost:52621/MyAccount/ResetPassword/?id=" + UniqueId);
+            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://localhost:52621/Account/ResetPassword/?id=" + UniqueId);
             sbEmailBody.Append("<br/><br/>");
             sbEmailBody.Append("<b>UP Library Assistant</b>");
 

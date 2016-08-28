@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryAssistantApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,26 +10,30 @@ namespace LibraryAssistantApp.Controllers
     public class HomeController : Controller
     {
 
-        [AllowAnonymous] //this is for un-authorized users
+        LibraryAssistantEntities db = new LibraryAssistantEntities();
+
+        [Authorize]
         public ActionResult Index()
         {
-            return View();
-        }
+            var persons = db.Registered_Person.Where(p => p.Person_ID == User.Identity.Name);
 
-        [Authorize] //this is for authorized users
-        public ActionResult MyProfile()
-        {
-            return View();
+            return View();                  
         }
 
         [Authorize(Roles ="Admin")]
-        public ActionResult AdminIndex()
+        public ActionResult adminView()
         {
             return View();
         }
 
         [Authorize(Roles = "Student")]
-        public ActionResult StudentIndex()
+        public ActionResult studentView()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Student")]
+        public ActionResult empView()
         {
             return View();
         }

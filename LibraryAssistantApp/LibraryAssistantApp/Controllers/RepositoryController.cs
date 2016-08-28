@@ -319,7 +319,7 @@ namespace LibraryAssistantApp.Controllers
         [HttpGet]
         public PartialViewResult GetTypes()
         {
-            ViewBag.Category_ID = new SelectList(db.Document_Category, "Category_ID", "Category_Name");
+            ViewBag.Category_ID = new SelectList(db.Document_Type, "Document_Type_ID", "Document_Type_Name");
             return PartialView();
         }
 

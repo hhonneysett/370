@@ -73,6 +73,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NotFoundMvc, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NotFoundMvc.1.4.0\lib\net40\NotFoundMvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Quartz, Version=2.4.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.2.4.0\lib\net40\Quartz.dll</HintPath>
       <Private>True</Private>
@@ -267,10 +271,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MyAccountController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
     <Compile Include="Controllers\RegisteredPersonController.cs" />
+    <Compile Include="Controllers\ReportingController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
     <Compile Include="Controllers\TrainerController.cs" />
     <Compile Include="Controllers\ValidateController.cs" />
@@ -477,16 +483,12 @@
     <Content Include="Models\LibraryAssistantModel.edmx.diagram">
       <DependentUpon>LibraryAssistantModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\MyProfile.cshtml" />
-    <Content Include="Views\MyAccount\Login.cshtml" />
-    <Content Include="Views\Home\AdminIndex.cshtml" />
-    <Content Include="Views\Home\StudentIndex.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\RegisteredPerson\Details.cshtml" />
     <Content Include="Views\RegisteredPerson\UpdateDetails.cshtml" />
     <Content Include="Views\RegisteredPerson\Index.cshtml" />
@@ -545,14 +547,22 @@
     <Content Include="Views\RegisteredPerson\RegisterStudent.cshtml" />
     <Content Include="Views\RegisteredPerson\oneTimePin.cshtml" />
     <Content Include="Views\RegisteredPerson\updateFavTopics.cshtml" />
-    <Content Include="Views\MyAccount\ForgotPassword.cshtml" />
-    <Content Include="Views\MyAccount\passResetPost.cshtml" />
-    <Content Include="Views\MyAccount\ResetPassword.cshtml" />
-    <Content Include="Views\MyAccount\invalidReset.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\passResetPost.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\invalidReset.cshtml" />
     <Content Include="Views\Booking\bookTrainingSess.cshtml" />
     <Content Include="Views\Booking\getTopics.cshtml" />
     <Content Include="Views\Booking\getAvailableTrainingSess.cshtml" />
     <Content Include="Views\Booking\confirmStudentTraining.cshtml" />
+    <Content Include="Views\Shared\_LayoutStudent.cshtml" />
+    <Content Include="Views\Home\studentView.cshtml" />
+    <Content Include="Views\Home\adminView.cshtml" />
+    <Content Include="Views\Error\error.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Shared\_LayoutEmp.cshtml" />
+    <Content Include="Views\Reporting\personSession.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

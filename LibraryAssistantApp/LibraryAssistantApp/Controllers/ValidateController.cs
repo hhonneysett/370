@@ -64,5 +64,11 @@ namespace LibraryAssistantApp.Controllers
         {
             return Json(db.Registered_Person.Any(r => r.Person_ID == personId), JsonRequestBehavior.AllowGet);
         }
+
+        //check student is a registered person
+        public JsonResult loginCheckPerson(string Person_ID)
+        {
+            return Json(db.Registered_Person.Any(r => r.Person_ID == Person_ID), JsonRequestBehavior.AllowGet);
+        }
     }
 }

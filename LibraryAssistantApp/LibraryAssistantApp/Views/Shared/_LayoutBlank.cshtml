@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - UP Library Assistant</title>
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -45,21 +45,6 @@
                         <li>Chat with a librarian</li>
                         <li>Contact</li>
                     </ul>
-                </li>
-                <li>
-                    @{
-                        if (Request.IsAuthenticated)
-                        {
-                            using (Html.BeginForm("Logout", "MyAccount", FormMethod.Post, new { id = "logoutForm" }))
-                            {
-                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
-                            }
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Login", "Login", "MyAccount")
-                        }
-                    }
                 </li>
             </ul>
             <!-- end navbar links-->

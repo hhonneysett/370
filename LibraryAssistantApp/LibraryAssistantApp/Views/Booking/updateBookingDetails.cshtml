@@ -3,95 +3,93 @@
 
 @{
     ViewBag.Title = "updateBookingDetails";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
     var bookingDetails = (BookingDetailsModel)Session["selectedBookingDetails"];
 }
 
 <h2>Update Booking</h2>
 
-@using (Html.BeginForm())
-{
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Please provide updated booking details:</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control", @id = "datepicker", @placeholder = "Select Date" } })
-                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<form id="updateDetailsForm">
+    <h4>Please provide updated booking details:</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.time, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.time, new { htmlAttributes = new { @class = "form-control timepicker", @id = "timepicker" } })
-                @Html.ValidationMessageFor(model => model.time, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.length, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select name="length" id="length" class="form-control" Value="@Model.length">
-                    <option>30</option>
-                    <option>60</option>
-                    <option>90</option>
-                </select>
-                @Html.ValidationMessageFor(model => model.length, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.campus, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select name="campus" id="campus" class="form-control">
-                    @foreach(var item in (IEnumerable<Campus>)ViewBag.Campus)
-                    {
-                        <option id="@item.Campus_ID">@item.Campus_Name</option>
-                    }
-                </select>
-                @Html.ValidationMessageFor(model => model.campus, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.building, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select name="building" id="building" class="form-control">
-                    @foreach(var building in (IEnumerable<Building>)ViewBag.Building)
-                    {
-                        <option id="@building.Building_ID">@building.Building_Name</option>
-                    }
-                </select>
-                @Html.ValidationMessageFor(model => model.building, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.venue, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select name="venue" id="venue" class="form-control">
-                    @foreach (var venue in (IEnumerable<Venue>)ViewBag.Venue)
-                    {
-                        <option id="@venue.Venue_ID">@venue.Venue_Name</option>
-                    }
-                </select>
-                @Html.ValidationMessageFor(model => model.venue, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" id="btnSubmit" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control", @id = "datepicker", @placeholder = "Select Date" } })
+            @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
         </div>
     </div>
-}
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.time, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.time, new { htmlAttributes = new { @class = "form-control timepicker", @id = "timepicker" } })
+            @Html.ValidationMessageFor(model => model.time, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.length, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="length" id="length" class="form-control" Value="@Model.length">
+                <option>30</option>
+                <option>60</option>
+                <option>90</option>
+            </select>
+            @Html.ValidationMessageFor(model => model.length, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.campus, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="campus" id="campus" class="form-control">
+                @foreach (var item in (IEnumerable<Campus>)ViewBag.Campus)
+                {
+                    <option id="@item.Campus_ID">@item.Campus_Name</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.campus, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.building, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="building" id="building" class="form-control">
+                @foreach (var building in (IEnumerable<Building>)ViewBag.Building)
+                {
+                    <option id="@building.Building_ID">@building.Building_Name</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.building, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.venue, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select name="venue" id="venue" class="form-control">
+                @foreach (var venue in (IEnumerable<Venue>)ViewBag.Venue)
+                {
+                    <option id="@venue.Venue_ID">@venue.Venue_Name</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.venue, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Save" class="btn btn-default" id="btnUpdateBooking" />
+        </div>
+    </div>
+</form>
+       
 
 @section script{
     <script type="text/javascript">
@@ -317,13 +315,14 @@
                 $("#btnSubmit").prop("disabled", false);
             });
 
-            $("#btnSubmit").click(function () {
+            $("#btnUpdateBooking").click(function () {
+
                 var model = {person_id : '@Model.person_id', date: $("#datepicker").val(), time: $("#timepicker").val(), length: $("#length").val(), campus: $("#campus").val(), building: $("#building").val(), venue: $("#venue").val(), booking_seq: '@Model.booking_seq', campus_id: $("#campus").children(":selected").attr("id"), venue_id: $("#venue").children(":selected").attr("id"), building_id: $("#building").children(":selected").attr("id")}
                 var url  = '@Url.Action("updateBookingDetails","Booking")';
 
-                $.post(url, model, function () {
-                    window.location.href = "/Booking/ViewBookings";
-                })
+                    $.post(url, model, function () {
+                        window.location.href = "/Booking/ViewBookings";
+                    })
             });
         });
     </script>

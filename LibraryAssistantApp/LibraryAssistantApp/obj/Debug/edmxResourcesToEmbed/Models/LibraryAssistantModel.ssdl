@@ -29,7 +29,6 @@
     </Key>
     <Property Name="Booking_Status" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Description" Type="text" />
-    <Property Name="HEX_Value" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Booking_Type">
     <Key>
@@ -235,7 +234,6 @@
       <PropertyRef Name="Person_Role_ID" />
     </Key>
     <Property Name="Person_Role_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Active_Ind" Type="int" Nullable="false" />
     <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="Role_ID" Type="int" Nullable="false" />
   </EntityType>
@@ -686,18 +684,6 @@
         <PropertyRef Name="HEX_Value" />
       </Principal>
       <Dependent Role="Period_Type">
-        <PropertyRef Name="HEX_Value" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Colour_BookingStatus">
-    <End Role="Colour" Type="Self.Colour" Multiplicity="1" />
-    <End Role="Booking_Status" Type="Self.Booking_Status" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Colour">
-        <PropertyRef Name="HEX_Value" />
-      </Principal>
-      <Dependent Role="Booking_Status">
         <PropertyRef Name="HEX_Value" />
       </Dependent>
     </ReferentialConstraint>
@@ -1511,10 +1497,6 @@
     <AssociationSet Name="Clour_PeriodType" Association="Self.Clour_PeriodType">
       <End Role="Colour" EntitySet="Colour" />
       <End Role="Period_Type" EntitySet="Period_Type" />
-    </AssociationSet>
-    <AssociationSet Name="Colour_BookingStatus" Association="Self.Colour_BookingStatus">
-      <End Role="Colour" EntitySet="Colour" />
-      <End Role="Booking_Status" EntitySet="Booking_Status" />
     </AssociationSet>
     <AssociationSet Name="Colour_CalenderException" Association="Self.Colour_CalenderException">
       <End Role="Colour" EntitySet="Colour" />

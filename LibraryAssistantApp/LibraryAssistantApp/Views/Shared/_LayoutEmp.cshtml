@@ -21,7 +21,7 @@
     <div class="navbar navbar-custom navbar-fixed-top">
         <!--navbar header-->
         <div class="nav-img">
-            <a href="#"><img src="/img/UP_logo.png" alt="" /></a>     
+            <a href="#"><img src="/img/UP_logo.png" alt="" /></a>
         </div>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -31,7 +31,7 @@
             </button>
             @Html.ActionLink("UP Library Assistant", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <!--end navbar header-->
-        </div>       
+        </div>
         <!--navbar links-->
         <div class="navbar-collapse collapse">
             <!--login Partial will go here-->
@@ -49,17 +49,15 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    <a href="#">Discussion Room</a>
+                                    @Html.ActionLink("Discussion Room", "BookDiscussionRoom", "Booking")
                                 </li>
                                 <li>
-                                    <a href="#">Training Room</a>
+                                    @Html.ActionLink("Training Room", "bookTrainingSess", "Booking")
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">
-                                View Personal Bookings
-                            </a>
+                            @Html.ActionLink("View Personal Bookings", "ViewBookings", "Booking")
                         </li>
                     </ul>
                 </li>
@@ -76,16 +74,10 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    <a href="#">Create Training Session</a>
+                                    @Html.ActionLink("Create Training Session", "addTrainingSession", "Trainer")
                                 </li>
                                 <li>
-                                    <a href="#">Manage Training Session</a>
-                                </li>
-                                <li>
-                                    <a href="#">Attendance Register</a>
-                                </li>
-                                <li>
-                                    <a href="#">Log Attendants</a>
+                                    @Html.ActionLink("Manage Training Session", "manageTrainingSession", "Trainer")
                                 </li>
                             </ul>
                         </li>
@@ -96,7 +88,7 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    <a href="#">Manage Sessions</a>
+                                    @Html.ActionLink("Manage Sessions", "employeeViewBookings", "Booking")
                                 </li>
                             </ul>
                         </li>
@@ -126,13 +118,13 @@
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
-                            <a href="#">Manage Tutorials</a>
+                            @Html.ActionLink("Manage Repository", "ViewFiles", "Repository")
                         </li>
                         <li>
                             @Html.ActionLink("View Library Map", "ViewMap", "Repository")
                         </li>
                         <li>
-                            <a href="#">View Tutorials</a>
+                            @Html.ActionLink("View Tutorials", "ViewTutorials", "Repository")
                         </li>
                     </ul>
                 </li>

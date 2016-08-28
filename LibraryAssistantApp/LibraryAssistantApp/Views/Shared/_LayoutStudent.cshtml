@@ -1,0 +1,195 @@
+﻿@using System.Web.Optimization
+@using LibraryAssistantApp.Models
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - UP Library Assistant</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/themes/base/jquery-ui.css")
+    @Scripts.Render("~/Scripts/jquery-1.12.4.js")
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.0.js")
+    @Scripts.Render("~/Scripts/datetimePicker.js")
+    @Scripts.Render("~/bundles/headScripts")
+
+</head>
+<body>
+    <div class="navbar navbar-custom navbar-fixed-top">
+        <!--navbar header-->
+        <div class="nav-img">
+            <a href="http://www.up.ac.za/"><img src="/img/UP_logo.png" alt="" /></a>
+        </div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("UP Library Assistant", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <!--end navbar header-->
+        </div>
+        <!--navbar links-->
+        <div class="navbar-collapse collapse">
+            <!--login Partial will go here-->
+            <ul class="nav navbar-nav metismenu" id="menu">
+                <li>
+                    <a href="#" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-book fa-fw"></span>
+                        Bookings
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li>
+                            <a href="#">
+                                Create Booking
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav-third-level" aria-expanded="false">
+                                <li>
+                                    @Html.ActionLink("Discussion Room", "BookDiscussionRoom", "Booking")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Training Room", "bookTrainingSess", "Booking")
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            @Html.ActionLink("View Personal Bookings", "ViewBookings", "Booking")
+                        </li>
+                    </ul>
+                </li>
+                
+                <li>
+                    <a href="#" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-wrench fa-fw"></span>
+                        Feedback
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li>
+                            <a href="#">Report a Problem</a>
+                        </li>
+                        <li>
+                            <a href="#">Venue Feedback</a>
+                        </li>
+                        <li>
+                            <a href="#">Training Session Feedback</a>
+                        </li>
+                        <li>
+                            <a href="#">Staff Feedback</a>
+                        </li>
+                        <li>
+                            <a href="#">General Feedback</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-wrench fa-fw"></span>
+                        Information
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li>
+                            @Html.ActionLink("Library Map", "ViewMap", "Repository")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Tutorials", "ViewTutorials", "Repository")
+                        </li>
+                        <li>
+                            <a href="http://www.library.up.ac.za/askalibrarian/index.htm">Chat To A Librarian</a>
+                        </li>
+                        <li>
+                            <a href="http://www.library.up.ac.za/contact/general.htm">Contact Us</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="pull-right">
+                    @{
+                        if (Request.IsAuthenticated)
+                        {
+                            using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                            }
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Login", "Login", "Account")
+                        }
+                    }
+                </li>
+            </ul>
+
+            <!-- end navbar links-->
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @Html.Notification()
+        @RenderBody()
+        <hr />
+        <footer>
+            <!--<p>&copy; @DateTime.Now.Year - UP Library Assistant</p>-->
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/metisMenu")
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.0.min.js")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!--Metis menu scripts-->
+
+    <script>
+        $(function () {
+            $('#menu').metisMenu();
+        });
+    </script>
+
+    <script>
+        $(document).on('click', function (event) {
+            var container = $("#menu");
+            if (!container.is(event.target)
+                && container.has(event.target).length === 0)
+            {
+                $("li").removeClass("active");
+                $("ul").removeClass("in");
+                $("li").attr("aria-expanded", "false");
+            }
+
+        });
+    </script>
+
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+                var $this = $('#menu'),
+                  resizeTimer,
+                  self = this;
+
+                var initCollapse = function (el) {
+                    if ($(window).width() >= 768) {
+                        this.find('li').has('ul').children('a').off('click');
+                    }
+                };
+
+                $(window).resize(function () {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(self.initCollapse($this), 250);
+                });
+
+            });
+        })(jQuery);
+    </script>
+
+    @Scripts.Render("~/Scripts/timepickerInt.js")
+    @Scripts.Render("~/Scripts/siteScripts.js")
+
+    @RenderSection("script", required: false)
+</body>
+</html>

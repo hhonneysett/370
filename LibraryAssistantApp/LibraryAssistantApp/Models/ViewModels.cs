@@ -164,6 +164,7 @@ namespace LibraryAssistantApp.Models
     public class DiscussionRoomBooking
     {
         [Display(Name ="Person ID")]
+        [Remote("loginCheckPerson", "Validate", ErrorMessage ="Invalid person ID")]
         public string person_id { get; set; }
 
         [Required(ErrorMessage ="Please provide a date selection")]
@@ -175,7 +176,6 @@ namespace LibraryAssistantApp.Models
         [Required(ErrorMessage ="Please provide a time selection")]
         [Display(Name ="Time")]
         public string inTime { get; set; }
-
         public DateTime time { get; set; }
 
         [Required(ErrorMessage ="Please provide a length selection")]
@@ -184,6 +184,35 @@ namespace LibraryAssistantApp.Models
 
         [Required(ErrorMessage ="Please provide a campus selection")]
         [Display(Name ="Campus")]
+        public int campus_ID { get; set; }
+
+        public string campus_name { get; set; }
+    }
+
+    public class EmpDiscussionRoomBooking
+    {
+        [Display(Name = "Person ID")]
+        [Remote("loginCheckPerson", "Validate", ErrorMessage = "Not a registered person ID")]
+        [Required(ErrorMessage ="Please enter a person ID")]
+        public string person_id { get; set; }
+
+        [Required(ErrorMessage = "Please provide a date selection")]
+        [Display(Name = "Date")]
+        public DateTime date { get; set; }
+
+        public DateTime endDate { get; set; }
+
+        [Required(ErrorMessage = "Please provide a time selection")]
+        [Display(Name = "Time")]
+        public string inTime { get; set; }
+        public DateTime time { get; set; }
+
+        [Required(ErrorMessage = "Please provide a length selection")]
+        [Display(Name = "Duration (Minutes)")]
+        public int length { get; set; }
+
+        [Required(ErrorMessage = "Please provide a campus selection")]
+        [Display(Name = "Campus")]
         public int campus_ID { get; set; }
 
         public string campus_name { get; set; }
@@ -417,6 +446,13 @@ namespace LibraryAssistantApp.Models
         public string campus { get; set; }
         public string building { get; set; }            
         public string venue { get; set; }
+    }
+
+    public class PersonSessionReportModel
+    {
+        public Registered_Person person { get; set; }
+        public int count { get; set; }
+        public double totalTime { get; set; }
     }
 
 }

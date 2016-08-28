@@ -11,6 +11,7 @@ namespace LibraryAssistantApp.Controllers
     {
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
+        [Authorize]
         public ActionResult ViewBookings()
         {
             return View();
@@ -29,6 +30,7 @@ namespace LibraryAssistantApp.Controllers
         
         // GET: Book discussion room (student side)
         [HttpGet]
+        [Authorize]
         public ActionResult BookDiscussionRoom()
         {
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
@@ -37,6 +39,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Book discussion room via helpdesk
         [HttpGet]
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult employeeBookDiscussionRoom()
         {
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
@@ -103,7 +106,7 @@ namespace LibraryAssistantApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult employeeBookDiscussionRoom(DiscussionRoomBooking model)
+        public ActionResult employeeBookDiscussionRoom(EmpDiscussionRoomBooking model)
         {
             if (ModelState.IsValid)
             {
@@ -138,7 +141,23 @@ namespace LibraryAssistantApp.Controllers
                         model.campus_name = campus_name;
 
                         //capture the submitted booking details to a session variable
-                        Session["details"] = model;
+
+                        //convert to discussionroombooking
+
+                        DiscussionRoomBooking convert = new DiscussionRoomBooking
+                        {
+                            campus_ID = model.campus_ID,
+                            campus_name = model.campus_name,
+                            date = model.date,
+                            endDate = model.endDate,
+                            inTime = model.inTime,
+                            length = model.length,
+                            person_id = model.person_id,
+                            time = model.time,
+
+                        };
+
+                        Session["details"] = convert;
 
                         //get all available venues according to the submitted criteria
                         var venues = db.findBookingVenuesFunc(startDateTime, endDateTime, "Discussion", model.campus_ID);
@@ -231,7 +250,9 @@ namespace LibraryAssistantApp.Controllers
         public ActionResult captureDetails()
         {
             //assign session variables and cast
+
             var venue = (Venue)Session["venueSelect"];
+
             var details = (DiscussionRoomBooking)Session["details"];
 
             //create instance of new Venue_Booking object

@@ -1,20 +1,8 @@
 ﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
 }
 
 <h2>Index</h2>
-
-<h3>Welcome Anonymous Guest</h3>
-
-<div>
-    @{ 
-        if (Request.IsAuthenticated)
-        {
-            var identity = (HttpContext.Current.User as LibraryAssistantApp.Models.MyPrincipal).Identity as LibraryAssistantApp.Models.MyIdentity;
-            <p>Hello @identity.Registered_Person.Person_Name</p>
-        }
-    }
-</div>
 

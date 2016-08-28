@@ -9,7 +9,7 @@ namespace LibraryAssistantApp.Models
 {
     public class MyRoleProvider : RoleProvider
     {
-        private int _cacheTimeoutInMinute = 20;
+        private int _cacheTimeoutInMinute = 100;
 
         public override string ApplicationName
         {

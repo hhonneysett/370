@@ -1,0 +1,48 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.PersonSessionReportModel>
+
+@{
+    ViewBag.Title = "personSession";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Person Session Report</h2>
+
+<div class="row">
+    <div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Person ID
+                            </th>
+                            <th>
+                                Person
+                            </th>
+                            <th>
+                                Total Sessions
+                            </th>
+                            <th>
+                                Total Session Duration (h)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.person.Person_ID</td>
+                                <td>@item.person.Person_Name @item.person.Person_Surname</td>
+                                <td>@item.count</td>
+                                <td>@item.totalTime</td>
+                                </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

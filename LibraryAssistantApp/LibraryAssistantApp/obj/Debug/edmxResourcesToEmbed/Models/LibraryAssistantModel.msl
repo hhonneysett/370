@@ -226,16 +226,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Person_Role">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
-        <MappingFragment StoreEntitySet="Person_Role">
-          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
-          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
-          <ScalarProperty Name="Active_Ind" ColumnName="Active_Ind" />
-          <ScalarProperty Name="Person_Role_ID" ColumnName="Person_Role_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Person_Session_Action_Log">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Session_Action_Log">
         <MappingFragment StoreEntitySet="Person_Session_Action_Log">
@@ -543,10 +533,18 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="Person_Role">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
+        <MappingFragment StoreEntitySet="Person_Role">
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+          <ScalarProperty Name="Person_Role_ID" ColumnName="Person_Role_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Booking_Status">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Booking_Status">
         <MappingFragment StoreEntitySet="Booking_Status">
-          <ScalarProperty Name="HEX_Value" ColumnName="HEX_Value" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Booking_Status1" ColumnName="Booking_Status" />
         </MappingFragment>
