@@ -306,16 +306,41 @@ namespace LibraryAssistantApp.Models
     public class TopicCheck
     {
         public int topic_sec { get; set; }
+        public int person_id { get; set; }
         public bool topic_ind { get; set; }
     }
     public class EmployeeEditModel
     {
         public Registered_Person registered_person { get; set; }
         public List<Person_Role> person_role { get; set; }
-        public IEnumerable<Role_Action> role_action { get; set; }
-        public List<Role> role { get; set; }
-        public IEnumerable<Trainer_Topic> trainer_topic { get; set; }
-        public List<RoleCheck> role_check { get; set; }
-        public List<TopicCheck> topic_check { get; set; }
+        //public IEnumerable<Role_Action> role_action { get; set; }
+        //public List<Role> role { get; set; }
+        public List<Trainer_Topic> trainer_topic { get; set; }
+        //public List<RoleCheck> role_check { get; set; }
+        //public List<TopicCheck> topic_check { get; set; }
+        //public EmpRoleCheckEdit emprole { get; set; }
+        public List<EmpRoleCheckEdit> emprolecheckeditlist { get; set; }
+        public List<TrainerTopicCheck> trainertopiccheck { get; set; }
+    }
+
+    public class EmpRoleCheckEdit
+    {
+        public int role_id;
+        public string person_ID;
+        public string role_name;
+        public bool role_ind;
+    }
+    public class TrainerTopicCheck
+    {
+        public int topic_seq;
+        public string personid;
+        public string topic_name;
+        public string topic_description;
+        public bool topic_ind;
+    }
+
+    public class EmployeeDeleteModel
+    {
+        public Registered_Person registered_person { get; set; }
     }
 }

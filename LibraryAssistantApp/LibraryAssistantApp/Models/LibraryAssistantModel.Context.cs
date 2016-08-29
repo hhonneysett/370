@@ -69,7 +69,6 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Role_Action> Role_Action { get; set; }
         public virtual DbSet<Venue> Venues { get; set; }
         public virtual DbSet<Venue_Role> Venue_Role { get; set; }
-        public virtual DbSet<Person_Role> Person_Role { get; set; }
         public virtual DbSet<Period_Type> Period_Type { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Person_Title> Person_Title { get; set; }
@@ -77,8 +76,9 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Person_Topic> Person_Topic { get; set; }
         public virtual DbSet<Trainer_Topic> Trainer_Topic { get; set; }
         public virtual DbSet<Person_Type> Person_Type { get; set; }
-        public virtual DbSet<Registered_Person> Registered_Person { get; set; }
         public virtual DbSet<Topic> Topics { get; set; }
+        public virtual DbSet<Registered_Person> Registered_Person { get; set; }
+        public virtual DbSet<Person_Role> Person_Role { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {

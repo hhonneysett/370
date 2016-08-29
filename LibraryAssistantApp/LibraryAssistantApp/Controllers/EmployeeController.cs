@@ -199,7 +199,7 @@ namespace LibraryAssistantApp.Controllers
                     emp.Person_Surname = viewModel.person_surname;
                     emp.Title_ID = viewModel.Person_Title;
                     emp.Person_Type_ID = viewModel.Person_Type;
-                    emp.Person_Password = password;
+                    emp.Person_Password = hashed;
                     emp.Person_Registration_DateTime = DateTime.Now;
                     emp.Person_Email = viewModel.person_email;
                     db.Registered_Person.Add(emp);
@@ -257,30 +257,54 @@ namespace LibraryAssistantApp.Controllers
 
             viewModel.registered_person = db.Registered_Person.Find(id);
 
-            foreach (var item in viewModel.person_role)
-            {
-                foreach (var a in db.Roles)
-                {
-                    if (a.Role_ID )
-                    {
+            viewModel.person_role = db.Person_Role.Where(
+                i => i.Person_ID == id).Include(x => x.Role).ToList();
 
+            var rolechecklist = new List<EmpRoleCheckEdit>();
+            foreach (var item in db.Roles)
+            {
+            var rolecheck = new EmpRoleCheckEdit();
+            rolecheck.role_id = item.Role_ID;
+            rolecheck.role_name = item.Role_Name;
+                rolecheck.person_ID = id;
+                foreach (var r in viewModel.person_role)
+                {
+                    if (item.Role_ID == r.Role_ID)
+                    {
+                        rolecheck.role_ind = true;
                     }
                 }
-                var rolecheck = new RoleCheck();
-                var test = db.Roles.Selec                
+            rolechecklist.Add(rolecheck);
             }
+            viewModel.emprolecheckeditlist = (from r in rolechecklist
+                                      select r).ToList();
 
-            viewModel.person_role = db.Person_Role.Where(
-                    i => i.Person_ID == id).ToList();
-            
-
-            viewModel.role = (db.Roles
-                .Include(i => i.Role_Action.Select(x => x.Action))).ToList();
-
+            TempData["Check1"] = false;
             var trainercheck = db.Trainer_Topic.Any(x => x.Person_ID == id);
             if (trainercheck)
             {
-                viewModel.trainer_topic = db.Trainer_Topic.Where(t => t.Person_ID == id);
+                viewModel.trainer_topic = db.Trainer_Topic
+                    .Where(i => i.Person_ID == id).ToList();
+                var trainertopicchecklist = new List<TrainerTopicCheck>();
+                foreach (var item in db.Topics)
+                {
+                    var topiccheck = new TrainerTopicCheck();
+                    topiccheck.topic_seq = item.Topic_Seq;
+                    topiccheck.topic_name = item.Topic_Name;
+                    topiccheck.topic_description = item.Topic_Description;
+                    foreach (var tt in viewModel.trainer_topic)
+                    {
+                       topiccheck.personid = id;
+                       if (item.Topic_Seq == tt.Topic_Seq)
+                        {
+                            topiccheck.topic_ind = true;
+                        }
+                    }
+                    trainertopicchecklist.Add(topiccheck);
+                }
+                viewModel.trainertopiccheck = (from t in trainertopicchecklist
+                                              select t).ToList();
+                TempData["Check1"] = true;
             }
             ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1");
             ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
@@ -288,36 +312,152 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string id, EmployeeEditModel viewModel, string Password_, int Person_Title)
         {
+
+            TempData["ErrorMsg"] = "Not enough permissionb to update employee roles";
+
+            if (ModelState.IsValid)
+            {
+                Registered_Person rp = db.Registered_Person.Find(id);
+                rp.Person_ID = id;
+                rp.Person_Name = viewModel.registered_person.Person_Name;
+                rp.Person_Surname = viewModel.registered_person.Person_Surname;
+                rp.Person_Email = viewModel.registered_person.Person_Email;
+                rp.Title_ID = Person_Title;
+                rp.Person_Type_ID = 2;
+                if (Password_.Equals("true"))
+                {
+                    string password = Membership.GeneratePassword(8, 1);
+                    var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "MD5");
+                    rp.Person_Password = hashed;
+                }
+                db.Entry(rp).State = EntityState.Modified;
+                //foreach (var item in viewModel.emprolecheckeditlist)
+                //{ 
+                //    if (item.role_ind == true)
+                //    {
+                //        if (!db.Person_Role.Any(x => x.Person_ID == id))
+                //        {
+                //            var pRole = new Person_Role();
+                //            pRole.Person_ID = item.person_ID;
+                //            pRole.Role_ID = item.role_id;                            
+                //            db.Person_Role.Add(pRole);                             
+                //        }  
+                //    }
+                //    if (item.role_ind == false)
+                //    {
+                //        if (db.Person_Role.Any(x => x.Role_ID.Equals(item.role_id)))
+                //        {
+                //            Person_Role remove = db.Person_Role.Find(item.role_id);
+                //            db.Person_Role.Remove(remove);
+                //        }
+                //    }
+                //}
+                db.SaveChanges();
+            }
+            TempData["Check2"] = false;
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1");
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Delete(string id)
+        {
+            if (id == null)
+            {
+                TempData["Error"] = "Please select an employee before selecting delete";
+                return RedirectToAction("Index");
+            }
+            ViewBag.ErrorMsg = "Are you sure you want to delete?";
+            TempData["Disabled"] = false;
+
+            var viewModel = new EmployeeDeleteModel();
+            viewModel.registered_person = db.Registered_Person.Find(id);
+
+            return View(viewModel);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirm(string id, EmployeeDeleteModel viewModel)
+        {
+            ViewBag.ErrorMsg = "Are you sure you want to delete?";
+            TempData["Disabled"] = false;
             try
             {
+                if (db.Venue_Booking_Person.Any(x => x.Person_ID.ToLower() == id.ToLower()))
+                {
+                    ModelState.AddModelError("person_id", "Employee cannot be deleted because they have been active on the system (relating to venue bookings)");
+                    TempData["Disabled"] = true;
+                }
+                if (db.Person_Questionnaire.Any(x => x.Person_ID.ToLower() == id.ToLower()))
+                {
+                    ModelState.AddModelError("person_id", "Employee cannot be deleted because they have been active on the system (relating to person questionnaire)");
+                    TempData["Disabled"] = true;
+                }
+                if (db.Person_Questionnaire_Result.Any(x => x.Person_ID.ToLower() == id.ToLower()))
+                {
+                    ModelState.AddModelError("person_id", "Employee cannot be deleted because they have been active on the system (person questionnaire results)");
+                    TempData["Disabled"] = true;
+                }
+                if (db.Person_Session_Log.Any(x => x.Person_ID.ToLower() == id.ToLower()))
+                {
+                    ModelState.AddModelError("person_id", "The employee cannot be deleted because they have been active on the system (relating to person session log)");
+                    TempData["Disabled"] = true;
+                }
+                var admin = from p in db.Person_Role
+                                  where p.Person_ID == id && p.Role_ID == 1
+                                  select p;
+                if (admin != null)
+                {
+                    ModelState.AddModelError("person_id", "Admin cannot be deleted");
+                    TempData["Disabled"] = true;
+                }
+
+                var superadmin = from s in db.Person_Role
+                                  where s.Person_ID == id && s.Role_ID == 1
+                                  select s;
+
+                if (superadmin != null)
+                {
+                    ModelState.AddModelError("person_id", "Super admin cannot be deleted");
+                    TempData["Disabled"] = true;
+                }
+
+                Registered_Person rp = db.Registered_Person.Find(id);
+                if (viewModel.registered_person == null)
+                {
+                    return HttpNotFound();
+                }
+
+                foreach (var o in db.Person_Role)
+                {
+                    Person_Role person = db.Person_Role.Find(o.Person_Role_ID);
+                    db.Person_Role.Remove(person);
+                }
+                foreach (var p in db.Person_Topic)
+                {
+                    Person_Topic topic = db.Person_Topic.Find(p.Person_ID);
+                    db.Person_Topic.Remove(topic);
+                }
+                foreach (var a in db.Trainer_Topic)
+                {
+                    Trainer_Topic trainer = db.Trainer_Topic.Find(a.Trainer_Topic_ID);
+                    db.Trainer_Topic.Remove(trainer);
+                }
+
+                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View(viewModel);
             }
-        }
 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View("Index");
         }
     }
 }

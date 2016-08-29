@@ -10,7 +10,8 @@ namespace LibraryAssistantApp
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.timepicker.min.js"));
+                        "~/Scripts/jquery.timepicker.min.js",
+                        "~/Script/bootbox.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -50,8 +51,12 @@ namespace LibraryAssistantApp
             //checkbox scripts
             bundles.Add(new ScriptBundle("~/bundles/checkboxjs").Include(
                 "~/Scripts/checkbox.js"));
+            //select rows script
             bundles.Add(new ScriptBundle("~/bundles/selectrowjs").Include(
                 "~/Script/selectrow.js"));
+            //model script
+            bundles.Add(new ScriptBundle("~/bundles/bootbox").Include(
+                "~/Script/bootbox.js"));
         }
     }
 }

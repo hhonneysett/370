@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-		<Diagram DiagramId="58c94540889e405f8cafd6d1c5cf6193" Name="Diagram1" ZoomLevel="93">
+		<Diagram DiagramId="58c94540889e405f8cafd6d1c5cf6193" Name="Diagram1" ZoomLevel="67">
         <EntityTypeShape EntityType="LibraryAssistantModel.Attendee_Status" Width="1.5" PointX="8.25" PointY="9.375" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Attendee_Type" Width="1.5" PointX="8.25" PointY="11.625" IsExpanded="true" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Booking_Status" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
@@ -92,8 +92,6 @@
         <AssociationConnector Association="LibraryAssistantModel.Venue_VenueCharacteristic" />
         <AssociationConnector Association="LibraryAssistantModel.Venue_VenueProblem" />
         <AssociationConnector Association="LibraryAssistantModel.Venue_VenueRole" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Person_Role" Width="1.5" PointX="12.5" PointY="29.75" />
-        <AssociationConnector Association="LibraryAssistantModel.Role_PersonRole" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Period_Type" Width="1.5" PointX="0.5" PointY="18.25" />
         <AssociationConnector Association="LibraryAssistantModel.PeriodType_Calender" />
         <AssociationConnector Association="LibraryAssistantModel.PeriodType_CalenderRules" />
@@ -104,9 +102,12 @@
         <EntityTypeShape EntityType="LibraryAssistantModel.Person_Topic" Width="1.5" PointX="21.5" PointY="16.125" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Trainer_Topic" Width="1.5" PointX="20.5" PointY="19.125" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Person_Type" Width="1.5" PointX="6.125" PointY="26.875" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Registered_Person" Width="1.5" PointX="8.375" PointY="22.25" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Topic" Width="1.5" PointX="10.375" PointY="2.375" />
+        <AssociationConnector Association="LibraryAssistantModel.Topic_PersonTopic" />
+        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" />
+        <AssociationConnector Association="LibraryAssistantModel.Topic_TopicCategory" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Registered_Person" Width="1.5" PointX="15.375" PointY="31.75" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonQues" />
-        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonRole" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonSessionLog" />
         <AssociationConnector Association="LibraryAssistantModel.FK_Registered_Person_Person_Title" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonTopic" />
@@ -117,10 +118,9 @@
         <AssociationConnector Association="LibraryAssistantModel.PersonLogged_VenueProblem" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_TrainerTopic" />
         <AssociationConnector Association="LibraryAssistantModel.VenueBooking_VenueBookingPerson" />
-        <EntityTypeShape EntityType="LibraryAssistantModel.Topic" Width="1.5" PointX="10.375" PointY="2.375" />
-        <AssociationConnector Association="LibraryAssistantModel.Topic_PersonTopic" />
-        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" />
-        <AssociationConnector Association="LibraryAssistantModel.Topic_TopicCategory" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Person_Role" Width="1.5" PointX="17.625" PointY="33.25" />
+        <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_PersonRole" />
+        <AssociationConnector Association="LibraryAssistantModel.Role_PersonRole" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

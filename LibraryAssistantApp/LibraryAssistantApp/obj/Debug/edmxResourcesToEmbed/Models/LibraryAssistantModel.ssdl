@@ -341,7 +341,7 @@
     <Property Name="Person_Name" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="Person_Surname" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="Person_Email" Type="varchar" MaxLength="40" Nullable="false" />
-    <Property Name="Person_Password" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Person_Password" Type="char" MaxLength="32" Nullable="false" />
     <Property Name="Person_Registration_DateTime" Type="datetime" Nullable="false" />
     <Property Name="Person_Type_ID" Type="int" Nullable="false" />
     <Property Name="Title_ID" Type="int" Nullable="false" />

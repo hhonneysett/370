@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="ai.0.22.19-build00125.js" />
+/// <reference path="bootbox.min.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="checkbox.js" />
 /// <reference path="datetimepicker.js" />

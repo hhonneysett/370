@@ -450,15 +450,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Person_Role">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
-        <MappingFragment StoreEntitySet="Person_Role">
-          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
-          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
-          <ScalarProperty Name="Person_Role_ID" ColumnName="Person_Role_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Period_Type">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Period_Type">
         <MappingFragment StoreEntitySet="Period_Type">
@@ -519,6 +510,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Topics">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Topic">
+        <MappingFragment StoreEntitySet="Topic">
+          <ScalarProperty Name="Topic_Description" ColumnName="Topic_Description" />
+          <ScalarProperty Name="Topic_Name" ColumnName="Topic_Name" />
+          <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Registered_Person">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Registered_Person">
         <MappingFragment StoreEntitySet="Registered_Person">
@@ -533,12 +533,12 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Topics">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Topic">
-        <MappingFragment StoreEntitySet="Topic">
-          <ScalarProperty Name="Topic_Description" ColumnName="Topic_Description" />
-          <ScalarProperty Name="Topic_Name" ColumnName="Topic_Name" />
-          <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
+    <EntitySetMapping Name="Person_Role">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
+        <MappingFragment StoreEntitySet="Person_Role">
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+          <ScalarProperty Name="Person_Role_ID" ColumnName="Person_Role_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

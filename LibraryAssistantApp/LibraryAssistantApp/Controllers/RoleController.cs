@@ -205,7 +205,7 @@ namespace LibraryAssistantApp.Controllers
                 var query = (from q in db.Roles
                              where q.Role_Name.ToLower() == roleEdit.role.Role_Name.ToLower()
                              select q);
-                if (query.Count() >= 1)
+                if (query.Count() >= 2)
                 {
                     ViewBag.ErrorMsg = "The role name exists, please provide a different role name";
                     RoleEditModel roleModel = new RoleEditModel();
