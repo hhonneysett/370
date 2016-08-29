@@ -17,6 +17,7 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult employeeViewBookings()
         {
             //get list of campuses
@@ -49,6 +50,7 @@ namespace LibraryAssistantApp.Controllers
         // POST: Book discussion room (student side)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult BookDiscussionRoom(DiscussionRoomBooking model)
         {            
             if (ModelState.IsValid)
@@ -106,6 +108,7 @@ namespace LibraryAssistantApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles="Admin, Employee")]
         public ActionResult employeeBookDiscussionRoom(EmpDiscussionRoomBooking model)
         {
             if (ModelState.IsValid)
@@ -193,6 +196,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Show available discussion room booking venues
         [HttpGet]
+        [Authorize]
         public ActionResult GetDiscussionRoomVenues()
         {
             //set a variable to the matching venues stored in the session data
@@ -218,6 +222,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // POST: Capture the selected venue from the GetDiscussuinRoomVenues view
+        [Authorize]
         public ActionResult venueSelect(int id)
         {
             //get the selected venue object from the database from the provided id
@@ -240,6 +245,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Display the confirm details partial view
         [HttpGet]
+        [Authorize]
         public PartialViewResult confirmDetails()
         {
             return PartialView("confirmDetails");
@@ -247,6 +253,7 @@ namespace LibraryAssistantApp.Controllers
 
         // POST: Capture the confirmed booking details to the database
         [HttpPost]
+        [Authorize]
         public ActionResult captureDetails()
         {
             //assign session variables and cast
@@ -313,6 +320,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Get bookings for fullcalendar
         [HttpGet]
+        [Authorize]
         public JsonResult getBookings()
         {
             //get booking seq of all bookings that belong to the user
@@ -347,6 +355,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Get bookings based on selected criteria
+        [Authorize]
         public JsonResult getEmpBookings(string id, string idType)
         {
             //create local list
@@ -399,6 +408,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Selected booking details
         [HttpGet]
+        [Authorize]
         public PartialViewResult getBookingDetails(int id)
         {
             //get the selected venue booking object
@@ -439,6 +449,7 @@ namespace LibraryAssistantApp.Controllers
 
         //GET: Employee booking details
         [HttpGet]
+        [Authorize]
         public PartialViewResult getEmpBookingDetails(int id)
         {
             //get the selected venue booking object
@@ -489,6 +500,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET : Cancel selected booking
         [HttpGet]
+        [Authorize]
         public ActionResult cancelBooking()
         {
             return View();
@@ -496,6 +508,7 @@ namespace LibraryAssistantApp.Controllers
 
         // POST: Cancel selected booking
         [HttpGet]
+        [Authorize]
         public ActionResult captureCancel()
         {
             var a = (BookingDetailsModel)Session["selectedBookingDetails"];
@@ -523,6 +536,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Get buildings that match selected campus
+        [Authorize]
         public JsonResult getBuildingsList(int id)
         {
             var buildingQuery = db.Buildings.Where(b => b.Campus_ID.Equals(id));
@@ -540,6 +554,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //GET: Get levels of selected building
+        [Authorize]
         public JsonResult getLevelList(int id)
         {
             var levelQuery = db.Building_Floor.Where(l => l.Building_ID.Equals(id));
@@ -557,6 +572,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //GET: Get venues of selected level
+        [Authorize]
         public JsonResult getVenueList(int id)
         {
             var venueQuery = db.Venues.Where(v => v.Building_Floor_ID.Equals(id));
@@ -574,6 +590,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //GET: Get venues for selected building that are available
+        [Authorize]
         public JsonResult getUpdateVenues(DateTime start, DateTime time, int building, int campus, int length)
         {
             //get the time and date components
@@ -608,6 +625,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //GET: Update booking status
+        [Authorize]
         public void updateStatus(string status)
         {
             var a = (BookingDetailsModel)Session["selectedBookingDetails"];
@@ -630,6 +648,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //GET: Filter venues
+        [Authorize]
         public void filterVenues(IEnumerable<int> characteristics, int capacity)
         {
 
@@ -693,6 +712,7 @@ namespace LibraryAssistantApp.Controllers
 
         //GET: Update booking
         [HttpGet]
+        [Authorize]
         public ActionResult updateBookingDetails()
         {
             var bookingDetails = (BookingDetailsModel)Session["selectedBookingDetails"];
@@ -735,6 +755,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public void updateBookingDetails(UpdateBookingModel model)
         {
             var todayDate = DateTime.Today;
@@ -798,6 +819,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult bookTrainingSess()
         {
             var categories = (from c in db.Categories
@@ -809,6 +831,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public PartialViewResult getTopics(int id)
         {
             var topics = db.Topic_Category.Where(t => t.Category_ID == id).Include(t => t.Topic);
@@ -819,11 +842,33 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public PartialViewResult getAvailableTrainingSess(int id)
         {
             var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id).Include(v => v.Venue).ToList();
 
-            var bookings = from a in trainingSessions
+            var filtered = new List<Venue_Booking>();
+
+            foreach(var session in trainingSessions)
+            {
+                var persons = session.Venue_Booking_Person;
+                var check = true;
+
+                foreach(var person in persons)
+                {
+                    if (person.Person_ID == User.Identity.Name)
+                    {
+                        check = false;
+                    }
+                }
+
+                if (check == true)
+                {
+                    filtered.Add(session);
+                }
+            }
+
+            var bookings = from a in filtered
                            select new BookTrainingSessionModel
                            {
                                date = a.DateTime_From.ToShortDateString(),
@@ -844,12 +889,14 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public void sessionSelect(int id)
         {
             Session["studentSelectedSess"] = id;
         }
 
         [HttpGet]
+        [Authorize]
         public PartialViewResult confirmStudentTraining()
         {
             var id = (int)Session["studentSelectedSess"];
@@ -879,6 +926,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public void captureStudentTraining()
         {
             var id = (int)Session["studentSelectedSess"];

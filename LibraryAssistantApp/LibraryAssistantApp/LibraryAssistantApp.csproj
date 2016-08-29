@@ -155,11 +155,16 @@
     <Content Include="Content\imgs_dhx_terrace\resize_dots.png" />
     <Content Include="Content\imgs_dhx_terrace\resizing.png" />
     <Content Include="Content\img\default.gif" />
+    <Content Include="Scripts\base64.js" />
+    <Content Include="Scripts\jquery.base64.js" />
     <Content Include="Content\jquery.timepicker.min.css" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\navbar-style.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\loginForm.css" />
+    <Content Include="Scripts\jspdf.js" />
+    <Content Include="Scripts\sprintf.js" />
+    <Content Include="Scripts\tableExport.js" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -354,6 +359,7 @@
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailJob.cs" />
+    <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\findBookingVenues_Result.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
@@ -556,13 +562,15 @@
     <Content Include="Views\Booking\getAvailableTrainingSess.cshtml" />
     <Content Include="Views\Booking\confirmStudentTraining.cshtml" />
     <Content Include="Views\Shared\_LayoutStudent.cshtml" />
-    <Content Include="Views\Home\studentView.cshtml" />
-    <Content Include="Views\Home\adminView.cshtml" />
     <Content Include="Views\Error\error.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\_LayoutEmp.cshtml" />
     <Content Include="Views\Reporting\personSession.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Reporting\documentAccess.cshtml" />
+    <Content Include="Views\Reporting\personSessionAction.cshtml" />
+    <Content Include="Views\Reporting\venueUsage.cshtml" />
+    <Content Include="Views\Reporting\trainingAttendance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

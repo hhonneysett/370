@@ -22,9 +22,8 @@ namespace LibraryAssistantApp.Models
         }
     
         public int Action_ID { get; set; }
-        public string Action_Command { get; set; }
-        public string Description { get; set; }
-        public string Tooltip { get; set; }
+        public string Action_Name { get; set; }
+        public string Action_Description { get; set; }
     
         public virtual Action Action1 { get; set; }
         public virtual Action Action2 { get; set; }

@@ -15,6 +15,7 @@ using System.Web.UI.WebControls;
 
 namespace LibraryAssistantApp.Controllers
 {
+    [Authorize(Roles ="Admin, Employee")]
     public class TrainerController : Controller
     {
         //initiate instance of database
@@ -971,7 +972,7 @@ namespace LibraryAssistantApp.Controllers
                     return true;
 
                 default:
-                    return true;
+                    return false;
             }
         }
 

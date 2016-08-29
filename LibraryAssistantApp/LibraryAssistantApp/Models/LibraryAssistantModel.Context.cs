@@ -27,7 +27,6 @@ namespace LibraryAssistantApp.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Attendee_Status> Attendee_Status { get; set; }
         public virtual DbSet<Attendee_Type> Attendee_Type { get; set; }
         public virtual DbSet<Booking_Type> Booking_Type { get; set; }
@@ -78,6 +77,7 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<ResetPasswordRequest> ResetPasswordRequests { get; set; }
         public virtual DbSet<Person_Role> Person_Role { get; set; }
         public virtual DbSet<Booking_Status> Booking_Status { get; set; }
+        public virtual DbSet<Action> Actions { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {

@@ -17,6 +17,7 @@ namespace LibraryAssistantApp.Controllers
 
 
         // GET: RegisteredPerson/Details/5
+        [Authorize]
         public ActionResult Details()
         {
             var id = User.Identity.Name;
@@ -45,6 +46,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: RegisteredPerson/RegisterStudent
+        [AllowAnonymous]
         public ActionResult RegisterStudent()
         {
             if (Request.IsAuthenticated)
@@ -59,6 +61,7 @@ namespace LibraryAssistantApp.Controllers
         // POST: RegisteredPerson/RegisterStudent
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult RegisterStudent(CreatePersonModel b)
         {
             if (ModelState.IsValid)
@@ -88,6 +91,7 @@ namespace LibraryAssistantApp.Controllers
 
         //send one time pin to student 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult oneTimePin()
         {
             var newStudent = (Registered_Person)Session["newStudent"];
@@ -120,6 +124,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult oneTimePin(OneTimePin model)
         {
             if (ModelState.IsValid)
@@ -145,6 +150,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: RegisteredPerson/Edit/5
+        [Authorize]
         public ActionResult UpdateDetails()
         {
             var identity = User.Identity.Name;
@@ -173,6 +179,7 @@ namespace LibraryAssistantApp.Controllers
         // POST: RegisteredPerson/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult UpdateDetails(UpdatePersonModel model)
         {
             if (ModelState.IsValid)
@@ -206,6 +213,7 @@ namespace LibraryAssistantApp.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult UpdatePassword()
         {
             var identity = User.Identity.Name;
@@ -228,6 +236,7 @@ namespace LibraryAssistantApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult UpdatePassword(UpdatePasswordModel model)
         {
             if (ModelState.IsValid)
@@ -262,6 +271,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public JsonResult getTopics(int? category)
         {
             if (category == null)
@@ -310,6 +320,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult updateFavTopics()
         {
             //get list of topics student already favourites
@@ -337,6 +348,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public JsonResult getAvailTopics(int? category)
         {
             var availTopics = (IEnumerable<Topic>)Session["availTopics"];
@@ -377,6 +389,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public void addTopic(int id)
         {
             Person_Topic newTopic = new Person_Topic();
@@ -406,6 +419,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public void removeTopic(int id)
         {
             var removeTop = db.Person_Topic.Where(t => t.Person_ID == User.Identity.Name && t.Topic_Seq == id).FirstOrDefault();

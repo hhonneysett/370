@@ -1,11 +1,12 @@
-﻿@model IEnumerable<LibraryAssistantApp.Models.PersonSessionReportModel>
+﻿@model IEnumerable<LibraryAssistantApp.Models.TrainingSessionAttendance>
 
 @{
-    ViewBag.Title = "Report";
+    ViewBag.Title = "trainingAttendance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Person Session Report</h2>
+<h2>Training Session Attendance Report</h2>
+
 <hr />
 
 
@@ -17,16 +18,16 @@
                     <thead>
                         <tr>
                             <th>
-                                Person ID
+                                Training Session
                             </th>
                             <th>
-                                Person
+                                Date 
                             </th>
                             <th>
-                                Total Sessions
+                                Venue Name
                             </th>
                             <th>
-                                Total Session Duration (h)
+                                Attendance
                             </th>
                         </tr>
                     </thead>
@@ -34,11 +35,11 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.person.Person_ID</td>
-                                <td>@item.person.Person_Name @item.person.Person_Surname</td>
-                                <td>@item.count</td>
-                                <td>@item.totalTime</td>
-                                </tr>
+                                <td>@item.training.Description</td>
+                                <td>@item.training.DateTime_From.ToShortDateString()</td>
+                                <td>@item.training.Venue.Venue_Name</td>
+                                <td>@item.attended</td>
+                            </tr>
 
                         }
                     </tbody>
@@ -93,4 +94,6 @@
         $('#report').tableExport({ type: 'pdf', escape: 'false' });
     };
 </script>
+
+
 

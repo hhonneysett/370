@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "manageTrainingSession";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
     var Campus = (IEnumerable<Campus>)ViewBag.Campus;
 }
 

@@ -10,9 +10,8 @@
             <PropertyRef Name="Action_ID" />
           </Key>
           <Property Name="Action_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Action_Command" Type="varchar" MaxLength="40" Nullable="false" />
-          <Property Name="Description" Type="text" />
-          <Property Name="Tooltip" Type="text" />
+          <Property Name="Action_Name" Type="varchar" MaxLength="20" />
+          <Property Name="Action_Description" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Attendee_Status">
           <Key>
@@ -1719,7 +1718,6 @@
             <Parameter Name="venueType" Mode="In" Type="String" />
             <Parameter Name="campusID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="Actions" EntityType="LibraryAssistantModel.Action" />
           <EntitySet Name="Attendee_Status" EntityType="LibraryAssistantModel.Attendee_Status" />
           <EntitySet Name="Attendee_Type" EntityType="LibraryAssistantModel.Attendee_Type" />
           <EntitySet Name="Booking_Type" EntityType="LibraryAssistantModel.Booking_Type" />
@@ -1759,18 +1757,6 @@
           <EntitySet Name="Venue_Characteristic" EntityType="LibraryAssistantModel.Venue_Characteristic" />
           <EntitySet Name="Venue_Problem" EntityType="LibraryAssistantModel.Venue_Problem" />
           <EntitySet Name="Venue_Type" EntityType="LibraryAssistantModel.Venue_Type" />
-          <AssociationSet Name="Action_Action" Association="LibraryAssistantModel.Action_Action">
-            <End Role="Action" EntitySet="Actions" />
-            <End Role="Action1" EntitySet="Actions" />
-          </AssociationSet>
-          <AssociationSet Name="Action_PerSesActionLog" Association="LibraryAssistantModel.Action_PerSesActionLog">
-            <End Role="Action" EntitySet="Actions" />
-            <End Role="Person_Session_Action_Log" EntitySet="Person_Session_Action_Log" />
-          </AssociationSet>
-          <AssociationSet Name="Action_RoleAction" Association="LibraryAssistantModel.Action_RoleAction">
-            <End Role="Action" EntitySet="Actions" />
-            <End Role="Role_Action" EntitySet="Role_Action" />
-          </AssociationSet>
           <AssociationSet Name="AttendeeStatus_VenueBookingPerson" Association="LibraryAssistantModel.AttendeeStatus_VenueBookingPerson">
             <End Role="Attendee_Status" EntitySet="Attendee_Status" />
             <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
@@ -2029,6 +2015,19 @@
             <End Role="Booking_Status" EntitySet="Booking_Status" />
             <End Role="Venue_Booking" EntitySet="Venue_Booking" />
           </AssociationSet>
+          <EntitySet Name="Actions" EntityType="LibraryAssistantModel.Action" />
+          <AssociationSet Name="Action_Action" Association="LibraryAssistantModel.Action_Action">
+            <End Role="Action" EntitySet="Actions" />
+            <End Role="Action1" EntitySet="Actions" />
+          </AssociationSet>
+          <AssociationSet Name="Action_PerSesActionLog" Association="LibraryAssistantModel.Action_PerSesActionLog">
+            <End Role="Action" EntitySet="Actions" />
+            <End Role="Person_Session_Action_Log" EntitySet="Person_Session_Action_Log" />
+          </AssociationSet>
+          <AssociationSet Name="Action_RoleAction" Association="LibraryAssistantModel.Action_RoleAction">
+            <End Role="Action" EntitySet="Actions" />
+            <End Role="Role_Action" EntitySet="Role_Action" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="findBookingVenues_Result">
           <Property Type="Int32" Name="Campus_ID" Nullable="false" />
@@ -2038,19 +2037,6 @@
           <Property Type="String" Name="Venue_Name" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="Venue_Type" Nullable="false" MaxLength="20" />
         </ComplexType>
-        <EntityType Name="Action">
-          <Key>
-            <PropertyRef Name="Action_ID" />
-          </Key>
-          <Property Name="Action_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Action_Command" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Tooltip" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Action1" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action" ToRole="Action1" />
-          <NavigationProperty Name="Action2" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action1" ToRole="Action" />
-          <NavigationProperty Name="Person_Session_Action_Log" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Action" ToRole="Person_Session_Action_Log" />
-          <NavigationProperty Name="Role_Action" Relationship="LibraryAssistantModel.Action_RoleAction" FromRole="Action" ToRole="Role_Action" />
-        </EntityType>
         <EntityType Name="Attendee_Status">
           <Key>
             <PropertyRef Name="Attendee_Status1" />
@@ -2295,8 +2281,8 @@
           <Property Name="Action_DateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Session_ID" Type="Int32" Nullable="false" />
           <Property Name="Action_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Action" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Person_Session_Action_Log" ToRole="Action" />
           <NavigationProperty Name="Person_Session_Log" Relationship="LibraryAssistantModel.PersonSesLog_PerSesActionLog" FromRole="Person_Session_Action_Log" ToRole="Person_Session_Log" />
+          <NavigationProperty Name="Action" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Person_Session_Action_Log" ToRole="Action" />
         </EntityType>
         <EntityType Name="Person_Session_Log">
           <Key>
@@ -2421,8 +2407,8 @@
           <Property Name="Delete_Ind" Type="Int32" Nullable="false" />
           <Property Name="Action_ID" Type="Int32" Nullable="false" />
           <Property Name="Role_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Action" Relationship="LibraryAssistantModel.Action_RoleAction" FromRole="Role_Action" ToRole="Action" />
           <NavigationProperty Name="Role" Relationship="LibraryAssistantModel.Role_RoleAction" FromRole="Role_Action" ToRole="Role" />
+          <NavigationProperty Name="Action" Relationship="LibraryAssistantModel.Action_RoleAction" FromRole="Role_Action" ToRole="Action" />
         </EntityType>
         <EntityType Name="Style_Type">
           <Key>
@@ -2508,42 +2494,6 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Venues" Relationship="LibraryAssistantModel.FK__Venue__Venue_Typ__4AB81AF0" FromRole="Venue_Type" ToRole="Venue" />
         </EntityType>
-        <Association Name="Action_Action">
-          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
-          <End Type="LibraryAssistantModel.Action" Role="Action1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Action">
-              <PropertyRef Name="Action_ID" />
-            </Principal>
-            <Dependent Role="Action1">
-              <PropertyRef Name="Action_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Action_PerSesActionLog">
-          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
-          <End Type="LibraryAssistantModel.Person_Session_Action_Log" Role="Person_Session_Action_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Action">
-              <PropertyRef Name="Action_ID" />
-            </Principal>
-            <Dependent Role="Person_Session_Action_Log">
-              <PropertyRef Name="Action_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Action_RoleAction">
-          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
-          <End Type="LibraryAssistantModel.Role_Action" Role="Role_Action" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Action">
-              <PropertyRef Name="Action_ID" />
-            </Principal>
-            <Dependent Role="Role_Action">
-              <PropertyRef Name="Action_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="AttendeeStatus_VenueBookingPerson">
           <End Type="LibraryAssistantModel.Attendee_Status" Role="Attendee_Status" Multiplicity="1" />
           <End Type="LibraryAssistantModel.Venue_Booking_Person" Role="Venue_Booking_Person" Multiplicity="*" />
@@ -3509,6 +3459,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Action">
+          <Key>
+            <PropertyRef Name="Action_ID" />
+          </Key>
+          <Property Name="Action_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Action_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Action_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Action1" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action" ToRole="Action1" />
+          <NavigationProperty Name="Action2" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action1" ToRole="Action" />
+          <NavigationProperty Name="Person_Session_Action_Log" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Action" ToRole="Person_Session_Action_Log" />
+          <NavigationProperty Name="Role_Action" Relationship="LibraryAssistantModel.Action_RoleAction" FromRole="Action" ToRole="Role_Action" />
+        </EntityType>
+        <Association Name="Action_Action">
+          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Action" Role="Action1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Action">
+              <PropertyRef Name="Action_ID" />
+            </Principal>
+            <Dependent Role="Action1">
+              <PropertyRef Name="Action_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Action_PerSesActionLog">
+          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Person_Session_Action_Log" Role="Person_Session_Action_Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Action">
+              <PropertyRef Name="Action_ID" />
+            </Principal>
+            <Dependent Role="Person_Session_Action_Log">
+              <PropertyRef Name="Action_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Action_RoleAction">
+          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Role_Action" Role="Role_Action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Action">
+              <PropertyRef Name="Action_ID" />
+            </Principal>
+            <Dependent Role="Role_Action">
+              <PropertyRef Name="Action_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3516,16 +3514,6 @@
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="LibraryAssistantModelStoreContainer" CdmEntityContainer="LibraryAssistantEntities">
           <FunctionImportMapping FunctionImportName="findBookingVenuesFunc" FunctionName="LibraryAssistantModel.Store.findBookingVenues" />
-          <EntitySetMapping Name="Actions">
-            <EntityTypeMapping TypeName="LibraryAssistantModel.Action">
-              <MappingFragment StoreEntitySet="Action">
-                <ScalarProperty Name="Tooltip" ColumnName="Tooltip" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Action_Command" ColumnName="Action_Command" />
-                <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Attendee_Status">
             <EntityTypeMapping TypeName="LibraryAssistantModel.Attendee_Status">
               <MappingFragment StoreEntitySet="Attendee_Status">
@@ -4061,6 +4049,15 @@
               <MappingFragment StoreEntitySet="Booking_Status">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Booking_Status1" ColumnName="Booking_Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Actions">
+            <EntityTypeMapping TypeName="LibraryAssistantModel.Action">
+              <MappingFragment StoreEntitySet="Action">
+                <ScalarProperty Name="Action_Description" ColumnName="Action_Description" />
+                <ScalarProperty Name="Action_Name" ColumnName="Action_Name" />
+                <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,0 +1,2 @@
+29-08-2016 01:40:57 	System.Exception: Exception of type 'System.Exception' was thrown.
+   at LibraryAssistantApp.Controllers.RepositoryController.ViewFile() in C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\Controllers\RepositoryController.cs:line 25

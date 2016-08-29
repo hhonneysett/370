@@ -15,6 +15,7 @@
     @Scripts.Render("~/Scripts/jquery-ui-1.12.0.js")
     @Scripts.Render("~/Scripts/datetimePicker.js")
     @Scripts.Render("~/bundles/headScripts")
+    <script type="text/javascript" src="jspdf.debug.js"></script>
 
 </head>
 <body>
@@ -49,15 +50,15 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    @Html.ActionLink("Discussion Room", "BookDiscussionRoom", "Booking")
+                                    @Html.ActionLink("Discussion Room", "employeeBookDiscussionRoom", "Booking")
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Training Room", "bookTrainingSess", "Booking")
+                                    @Html.ActionLink("Training Session", "bookTrainingSess", "Booking")
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            @Html.ActionLink("View Personal Bookings", "ViewBookings", "Booking")
+                            @Html.ActionLink("View Personal Bookings", "employeeViewBookings", "Booking")
                         </li>
                     </ul>
                 </li>
@@ -77,7 +78,7 @@
                                     @Html.ActionLink("Create Training Session", "addTrainingSession", "Trainer")
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Manage Training Session", "manageTrainingSession", "Trainer")
+                                    @Html.ActionLink("Manage Training Sessions", "manageTrainingSession", "Trainer")
                                 </li>
                             </ul>
                         </li>
@@ -118,13 +119,13 @@
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
-                            @Html.ActionLink("Manage Repository", "ViewFiles", "Repository")
+                            @Html.ActionLink("Manage Repository", "ViewFile", "Repository")
                         </li>
                         <li>
                             @Html.ActionLink("View Library Map", "ViewMap", "Repository")
                         </li>
                         <li>
-                            @Html.ActionLink("View Tutorials", "ViewTutorials", "Repository")
+                            <a href="#">View Tutorials</a>
                         </li>
                     </ul>
                 </li>
@@ -149,117 +150,19 @@
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
-                            <a href="#">Session Log</a>
+                            @Html.ActionLink("Session Log", "personSession", "Reporting")
                         </li>
                         <li>
-                            <a href="#">File Access</a>
+                            @Html.ActionLink("Document Access Log", "documentAccess", "Reporting")
                         </li>
                         <li>
-                            <a href="#">Action Log</a>
+                            @Html.ActionLink("Action Log", "personSessionAction", "Reporting")
                         </li>
                         <li>
-                            <a href="#">Questionnaire Feedback</a>
-                        </li>
-                        <li>
-                            <a href="#">View Problem Report</a>
-                        </li>
-                        <li>
-                            <a href="#">Booking Summary</a>
-                        </li>
-                        <li>
-                            <a href="#">Training Attendance</a>
-                        </li>
-                        <li>
-                            <a href="#">Venue Usage</a>
+                            @Html.ActionLink("Venue Usage Log", "venueUsage", "Reporting")
                         </li>
                     </ul>
-                </li>
-                <li>
-                    <a href="#" aria-expanded="false">
-                        <span class="navbar-custom-item-icon fa fa-wrench fa-fw"></span>
-                        Maintenance
-                    </a>
-                    <ul class="nav-second-level" aria-expanded="false">
-                        <li>
-                            <a href="#">Employees</a>
-                        </li>
-                        <li>
-                            <a href="#">Members</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Questionnaire
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav-third-level" aria-expanded="false">
-                                <li>
-                                    <a href="#">Questions</a>
-                                </li>
-                                <li>
-                                    <a href="#">Questionnaire Topics</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Access Control
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav-third-level" aria-expanded="false">
-                                <li>
-                                    @Html.ActionLink("Roles", "Index", "Roles")
-                                </li>
-                                <li>
-                                    <a href="#">Person Types</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Venues
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav-third-level" aria-expanded="false">
-                                <li>
-                                    <a href="#">Maintain Venues</a>
-                                </li>
-                                <li>
-                                    <a href="#">Venue Types</a>
-                                </li>
-                                <li>
-                                    <a href="#">Characteristics</a>
-                                </li>
-                                <li>
-                                    <a href="#">Common Problem Types</a>
-                                </li>
-                                <li>
-                                    <a href="#">Common Problems</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Courses
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav-third-level" aria-expanded="false">
-                                <li>
-                                    <a href="#">Categories</a>
-                                </li>
-                                <li>
-                                    <a href="#">Topics</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">File Types</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    @Html.ActionLink("Home", "Index", "Home")
-                </li>
-                <li>@Html.ActionLink("My Profile", "MyProfile", "Home")</li>
+                </li>              
                 <li>
                     @{
                         if (Request.IsAuthenticated)

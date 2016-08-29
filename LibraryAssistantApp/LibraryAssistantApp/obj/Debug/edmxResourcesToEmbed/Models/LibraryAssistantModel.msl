@@ -2,16 +2,6 @@
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="LibraryAssistantModelStoreContainer" CdmEntityContainer="LibraryAssistantEntities">
     <FunctionImportMapping FunctionImportName="findBookingVenuesFunc" FunctionName="LibraryAssistantModel.Store.findBookingVenues" />
-    <EntitySetMapping Name="Actions">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Action">
-        <MappingFragment StoreEntitySet="Action">
-          <ScalarProperty Name="Tooltip" ColumnName="Tooltip" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Action_Command" ColumnName="Action_Command" />
-          <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Attendee_Status">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Attendee_Status">
         <MappingFragment StoreEntitySet="Attendee_Status">
@@ -547,6 +537,15 @@
         <MappingFragment StoreEntitySet="Booking_Status">
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Booking_Status1" ColumnName="Booking_Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Actions">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Action">
+        <MappingFragment StoreEntitySet="Action">
+          <ScalarProperty Name="Action_Description" ColumnName="Action_Description" />
+          <ScalarProperty Name="Action_Name" ColumnName="Action_Name" />
+          <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

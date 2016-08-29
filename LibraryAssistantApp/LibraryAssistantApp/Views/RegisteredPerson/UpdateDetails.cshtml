@@ -1,7 +1,7 @@
 ﻿@model LibraryAssistantApp.Models.UpdatePersonModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
 }
 
     @using (Html.BeginForm())

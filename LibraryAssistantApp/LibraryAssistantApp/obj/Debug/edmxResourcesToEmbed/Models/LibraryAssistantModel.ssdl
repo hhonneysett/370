@@ -5,9 +5,8 @@
       <PropertyRef Name="Action_ID" />
     </Key>
     <Property Name="Action_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Action_Command" Type="varchar" MaxLength="40" Nullable="false" />
-    <Property Name="Description" Type="text" />
-    <Property Name="Tooltip" Type="text" />
+    <Property Name="Action_Name" Type="varchar" MaxLength="20" />
+    <Property Name="Action_Description" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Attendee_Status">
     <Key>

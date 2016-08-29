@@ -65,13 +65,11 @@ $('#btnRegisterStudent').on('click', function () {
 });
 
 function confirmBooking() {
-    alert("Calling Method");
     $.ajax({
         type: 'POST',
         url: '/Booking/captureDetails',
         success: function (result) {
             window.location.href = result;
-            alert("Captured");
         },
         error: function (err, result) {
             alert("Error in assigning dataToSave" + err.responseText);
@@ -566,7 +564,7 @@ function submitTrainingSession() {
     //initiate validation for form 2
     $("#form2").validate({
         rules: {
-        description: { lettersonly: true },
+        description: "required",
         confirmation: "required",
         privacy: "required",
         attendance: { required:true, number: true },
@@ -578,29 +576,56 @@ function submitTrainingSession() {
     //submit the form details
     if ($("#form2").valid())
     {
-        $.ajax({
-            type: 'GET',
-            url: '/Trainer/captureTrainingSession',
-            data: {
-                description: $('#description').val(),
-                maxAtt: $("#maxAtt").val(),
-                confirmation: $("#confirmationStatus").val(),
-                privacy: $("#privacyStatus").val(),
-                notify: $("#notifySelect").val(),
-                repeatType: $("#repeatType").val(),
-                multiple: $("#repeatTimes").val(),
-            },
-            success: function (result) {
-                if (result) {
-                    
-                } else {
-                    
-                }
-            },
-            error: function (err, result) {
-                alert("Error in assigning dataToSave" + err.responseText);
+        var repeat;
+
+        if ($("#repeatError").hasClass("glyphicon-remove") && $("#repeatType").children(":selected").val() != "none") {
+            if (confirm("Clash booking detected, you can continue with your booking but the booking won't recur as requested. Would you like to continue?") == true) {
+                repeat = "none";
+                $.ajax({
+                    type: 'GET',
+                    url: '/Trainer/captureTrainingSession',
+                    data: {
+                        description: $('#description').val(),
+                        maxAtt: $("#maxAtt").val(),
+                        confirmation: $("#confirmationStatus").val(),
+                        privacy: $("#privacyStatus").val(),
+                        notify: $("#notifySelect").val(),
+                        repeatType: repeat,
+                        multiple: $("#repeatTimes").val(),
+                    },
+                    success: function (result) {
+                        window.location.href = "/Trainer/manageTrainingSession"
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                });
             }
-        });
+            else return;
+            
+        } else {
+
+            repeat = $("#repeatType").children(":selected").val();
+            $.ajax({
+                type: 'GET',
+                url: '/Trainer/captureTrainingSession',
+                data: {
+                    description: $('#description').val(),
+                    maxAtt: $("#maxAtt").val(),
+                    confirmation: $("#confirmationStatus").val(),
+                    privacy: $("#privacyStatus").val(),
+                    notify: $("#notifySelect").val(),
+                    repeatType: repeat,
+                    multiple: $("#repeatTimes").val(),
+                },
+                success: function (result) {
+                    window.location.href = "/Trainer/manageTrainingSession"
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }
     }
 }
 

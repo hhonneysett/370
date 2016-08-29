@@ -11,7 +11,12 @@ namespace LibraryAssistantApp
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.timepicker.min.js",
-                        "~/Scripts/notify.min.js"));
+                        "~/Scripts/notify.min.js",
+                        "~/Scripts/jquery.base64.js",
+                        "~/Scripts/tableExport.js",
+                        "~/Scripts/base64.js",
+                        "~/Scripts/sprintf.js",
+                        "~/Scripts/jspdf.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",

@@ -21,7 +21,7 @@ namespace LibraryAssistantApp.Models
         public int Action_ID { get; set; }
         public int Role_ID { get; set; }
     
-        public virtual Action Action { get; set; }
         public virtual Role Role { get; set; }
+        public virtual Action Action { get; set; }
     }
 }

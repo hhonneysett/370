@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
 		<Diagram DiagramId="58c94540889e405f8cafd6d1c5cf6193" Name="Diagram1" ZoomLevel="61" ShowGrid="true">
-        <EntityTypeShape EntityType="LibraryAssistantModel.Action" Width="1.5" PointX="5.25" PointY="55" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Attendee_Status" Width="1.5" PointX="6" PointY="35.375" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Attendee_Type" Width="1.5" PointX="6" PointY="37.75" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Booking_Type" Width="1.5" PointX="3.75" PointY="34.125" />
@@ -45,9 +44,6 @@
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Characteristic" Width="1.5" PointX="12" PointY="25.25" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Problem" Width="1.5" PointX="8.25" PointY="16" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Venue_Type" Width="1.5" PointX="1.5" PointY="34.75" />
-        <AssociationConnector Association="LibraryAssistantModel.Action_Action" />
-        <AssociationConnector Association="LibraryAssistantModel.Action_PerSesActionLog" />
-        <AssociationConnector Association="LibraryAssistantModel.Action_RoleAction" />
         <AssociationConnector Association="LibraryAssistantModel.AttendeeStatus_VenueBookingPerson" />
         <AssociationConnector Association="LibraryAssistantModel.AttendeeType_VenueBookingPerson" />
         <AssociationConnector Association="LibraryAssistantModel.Building_BuildingFloor" />
@@ -120,6 +116,10 @@
         <AssociationConnector Association="LibraryAssistantModel.Role_PersonRole" />
         <EntityTypeShape EntityType="LibraryAssistantModel.Booking_Status" Width="1.5" PointX="0.75" PointY="2.875" />
         <AssociationConnector Association="LibraryAssistantModel.BookingStatus_VenueBooking" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.Action" Width="1.5" PointX="3.375" PointY="1" />
+        <AssociationConnector Association="LibraryAssistantModel.Action_Action" />
+        <AssociationConnector Association="LibraryAssistantModel.Action_PerSesActionLog" />
+        <AssociationConnector Association="LibraryAssistantModel.Action_RoleAction" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

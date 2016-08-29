@@ -455,4 +455,31 @@ namespace LibraryAssistantApp.Models
         public double totalTime { get; set; }
     }
 
+    public class DocumentAccessReportModel
+    {
+        public Document_Repository document { get; set; }
+        public int access { get; set; }
+    }
+
+    public class ActionAccessModel
+    {
+        public Action action { get; set; }
+        public int access { get; set; }
+    }
+
+    public class VenueUsageModel
+    {
+        public Venue venue { get; set; }
+        public int count { get; set; }
+        public string campus { get; set; }
+        public string building { get; set; }
+    }
+
+    public class TrainingSessionAttendance
+    {
+        public Venue_Booking training { get; set; }
+        public int attended { get; set; }
+        public int total { get; set; }
+    }
+
 }

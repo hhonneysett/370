@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Update Favourite Topics";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
     var categories = (IEnumerable<Category>)Session["categories"];
     var availTopics = (IEnumerable<Topic>)Session["availTopics"];
     var favTopics = (IEnumerable<Person_Topic>)Session["favTopics"];

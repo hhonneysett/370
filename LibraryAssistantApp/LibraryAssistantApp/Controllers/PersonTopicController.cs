@@ -14,6 +14,7 @@ namespace LibraryAssistantApp.Controllers
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
 
+        [Authorize]
         public PartialViewResult StudentTopic()
         {
             var topicList = from a in db.Person_Topic
@@ -22,12 +23,14 @@ namespace LibraryAssistantApp.Controllers
             return PartialView("StudentTopic", topicList);
         }
 
+        [Authorize]
         public ActionResult UpdatePersonTopic()
         {
             return View();
         }
 
         // GET: PersonTopic/Add
+        [Authorize]
         public PartialViewResult AddPersonTopic()
         {
             var topicList = from a in db.Topics
@@ -56,6 +59,7 @@ namespace LibraryAssistantApp.Controllers
         // POST: PersonTopic/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public PartialViewResult AddPersonTopic(AddPersonTopicModel model)
         {
             var topicList = from a in db.Topics
@@ -97,6 +101,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: PersonTopic/Delete
+        [Authorize]
         public PartialViewResult DeletePersonTopic()
         {
             var topicList = from a in db.Topics
@@ -111,6 +116,7 @@ namespace LibraryAssistantApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public PartialViewResult DeletePersonTopic(DeletePersonTopicModel model)
         {
             Person_Topic person_Topic = db.Person_Topic.Find(User.Identity.Name, model.Topic_Sequence);

@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "deleteTopic";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
     var category = (Category)ViewBag.Category;
 }
 

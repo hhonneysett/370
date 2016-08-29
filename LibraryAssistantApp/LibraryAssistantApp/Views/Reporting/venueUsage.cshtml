@@ -1,11 +1,12 @@
-﻿@model IEnumerable<LibraryAssistantApp.Models.PersonSessionReportModel>
+﻿@model IEnumerable<LibraryAssistantApp.Models.VenueUsageModel>
 
 @{
-    ViewBag.Title = "Report";
+    ViewBag.Title = "venueUsage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Person Session Report</h2>
+<h2>Venue Usuage Report</h2>
+
 <hr />
 
 
@@ -16,17 +17,15 @@
                 <table class="table" id="report">
                     <thead>
                         <tr>
+                            <th>Campus</th>
                             <th>
-                                Person ID
+                                Building
                             </th>
                             <th>
-                                Person
+                                Venue Name
                             </th>
                             <th>
-                                Total Sessions
-                            </th>
-                            <th>
-                                Total Session Duration (h)
+                                Bookings Made
                             </th>
                         </tr>
                     </thead>
@@ -34,11 +33,11 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.person.Person_ID</td>
-                                <td>@item.person.Person_Name @item.person.Person_Surname</td>
+                                <td>@item.campus</td>
+                                <td>@item.building</td>
+                                <td>@item.venue.Venue_Name</td>
                                 <td>@item.count</td>
-                                <td>@item.totalTime</td>
-                                </tr>
+                            </tr>
 
                         }
                     </tbody>
@@ -93,4 +92,9 @@
         $('#report').tableExport({ type: 'pdf', escape: 'false' });
     };
 </script>
+
+
+
+
+
 

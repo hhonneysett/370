@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = "logAttendance";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
     var certificates = (List<Document_Repository>)ViewBag.Certificates;
 }
 

@@ -1,11 +1,12 @@
-﻿@model IEnumerable<LibraryAssistantApp.Models.PersonSessionReportModel>
+﻿@model IEnumerable<LibraryAssistantApp.Models.ActionAccessModel>
 
 @{
-    ViewBag.Title = "Report";
+    ViewBag.Title = "personSessionAction";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Person Session Report</h2>
+<h2>Action Usage Report</h2>
+
 <hr />
 
 
@@ -16,17 +17,15 @@
                 <table class="table" id="report">
                     <thead>
                         <tr>
+                            <th>Action ID</th>
                             <th>
-                                Person ID
+                                Action Name
                             </th>
                             <th>
-                                Person
+                                Action Description
                             </th>
                             <th>
-                                Total Sessions
-                            </th>
-                            <th>
-                                Total Session Duration (h)
+                                Access Times
                             </th>
                         </tr>
                     </thead>
@@ -34,11 +33,11 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.person.Person_ID</td>
-                                <td>@item.person.Person_Name @item.person.Person_Surname</td>
-                                <td>@item.count</td>
-                                <td>@item.totalTime</td>
-                                </tr>
+                                <td>@item.action.Action_ID</td>
+                                <td>@item.action.Action_Name</td>
+                                <td>@item.action.Action_Description</td>
+                                <td>@item.access</td>
+                            </tr>
 
                         }
                     </tbody>
@@ -93,4 +92,8 @@
         $('#report').tableExport({ type: 'pdf', escape: 'false' });
     };
 </script>
+
+
+
+
 
