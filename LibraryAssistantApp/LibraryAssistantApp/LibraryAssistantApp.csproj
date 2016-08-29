@@ -73,6 +73,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NotFoundMvc, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NotFoundMvc.1.4.0\lib\net40\NotFoundMvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Quartz, Version=2.4.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.2.4.0\lib\net40\Quartz.dll</HintPath>
       <Private>True</Private>
@@ -150,11 +154,17 @@
     <Content Include="Content\imgs_dhx_terrace\export_pdf.png" />
     <Content Include="Content\imgs_dhx_terrace\resize_dots.png" />
     <Content Include="Content\imgs_dhx_terrace\resizing.png" />
+    <Content Include="Content\img\default.gif" />
+    <Content Include="Scripts\base64.js" />
+    <Content Include="Scripts\jquery.base64.js" />
     <Content Include="Content\jquery.timepicker.min.css" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\navbar-style.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\loginForm.css" />
+    <Content Include="Scripts\jspdf.js" />
+    <Content Include="Scripts\sprintf.js" />
+    <Content Include="Scripts\tableExport.js" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -227,6 +237,7 @@
     </None>
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\datetimePicker.js" />
+    <Content Include="Scripts\notify.min.js" />
     <Content Include="Scripts\Scheduler\dhtmlxscheduler.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.js" />
@@ -265,11 +276,15 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MyAccountController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
     <Compile Include="Controllers\RegisteredPersonController.cs" />
+    <Compile Include="Controllers\ReportingController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
+    <Compile Include="Controllers\TrainerController.cs" />
+    <Compile Include="Controllers\ValidateController.cs" />
     <Compile Include="Controllers\VenueController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -344,6 +359,7 @@
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailJob.cs" />
+    <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\ExtensionMethods.cs" />
     <Compile Include="Models\findBookingVenues_Result.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
@@ -374,9 +390,6 @@
     <Compile Include="Models\PartialClasses.cs" />
     <Compile Include="Models\PartialEntities.cs" />
     <Compile Include="Models\Period_Type.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Person_Level.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Person_Questionnaire.cs">
@@ -421,16 +434,25 @@
     <Compile Include="Models\Registered_Person.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ResetPasswordRequest.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role_Action.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spResetPasswordFunc_Result.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Style_Type.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Topic.cs">
+      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Topic_Category.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Trainer_Topic.cs">
@@ -467,21 +489,15 @@
     <Content Include="Models\LibraryAssistantModel.edmx.diagram">
       <DependentUpon>LibraryAssistantModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\MyProfile.cshtml" />
-    <Content Include="Views\MyAccount\Login.cshtml" />
-    <Content Include="Views\Home\AdminIndex.cshtml" />
-    <Content Include="Views\Home\StudentIndex.cshtml" />
-    <Content Include="Views\RegisteredPerson\RegisterStudent.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\RegisteredPerson\Details.cshtml" />
     <Content Include="Views\RegisteredPerson\UpdateDetails.cshtml" />
     <Content Include="Views\RegisteredPerson\Index.cshtml" />
-    <Content Include="Views\RegisteredPerson\ValidatePerson.cshtml" />
     <Content Include="Views\Shared\_LayoutBlank.cshtml" />
     <Content Include="Views\RegisteredPerson\UpdatePassword.cshtml" />
     <Content Include="Views\PersonTopic\Create.cshtml" />
@@ -516,6 +532,45 @@
     <Content Include="Views\Booking\cancelBooking.cshtml" />
     <Content Include="Views\Booking\employeeViewBookings.cshtml" />
     <Content Include="Views\Booking\employeeBookDiscussionRoom.cshtml" />
+    <Content Include="Views\Booking\getEmpBookingDetails.cshtml" />
+    <Content Include="Views\Booking\updateBookingDetails.cshtml" />
+    <Content Include="Views\Trainer\viewCategory.cshtml" />
+    <Content Include="Views\Trainer\addCategory.cshtml" />
+    <Content Include="Views\Trainer\updateCategory.cshtml" />
+    <Content Include="Views\Trainer\deleteCategory.cshtml" />
+    <Content Include="Views\Trainer\viewTopic.cshtml" />
+    <Content Include="Views\Trainer\updateTopic.cshtml" />
+    <Content Include="Views\Trainer\addTopic.cshtml" />
+    <Content Include="Views\Trainer\deleteTopic.cshtml" />
+    <Content Include="Views\Trainer\addTrainingSession.cshtml" />
+    <Content Include="Views\Trainer\getTrainingVenues.cshtml" />
+    <Content Include="Views\Trainer\addTrainingSessionDetails.cshtml" />
+    <Content Include="Views\Trainer\getTrainers.cshtml" />
+    <Content Include="Views\Trainer\additionalDetails.cshtml" />
+    <Content Include="Views\Trainer\manageTrainingSession.cshtml" />
+    <Content Include="Views\Trainer\trainingSessionDetails.cshtml" />
+    <Content Include="Views\Trainer\logAttendance.cshtml" />
+    <Content Include="Views\RegisteredPerson\RegisterStudent.cshtml" />
+    <Content Include="Views\RegisteredPerson\oneTimePin.cshtml" />
+    <Content Include="Views\RegisteredPerson\updateFavTopics.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\passResetPost.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\invalidReset.cshtml" />
+    <Content Include="Views\Booking\bookTrainingSess.cshtml" />
+    <Content Include="Views\Booking\getTopics.cshtml" />
+    <Content Include="Views\Booking\getAvailableTrainingSess.cshtml" />
+    <Content Include="Views\Booking\confirmStudentTraining.cshtml" />
+    <Content Include="Views\Shared\_LayoutStudent.cshtml" />
+    <Content Include="Views\Error\error.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Shared\_LayoutEmp.cshtml" />
+    <Content Include="Views\Reporting\personSession.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Reporting\documentAccess.cshtml" />
+    <Content Include="Views\Reporting\personSessionAction.cshtml" />
+    <Content Include="Views\Reporting\venueUsage.cshtml" />
+    <Content Include="Views\Reporting\trainingAttendance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -526,6 +581,7 @@
   <ItemGroup>
     <Folder Include="App_Data\Uploads\" />
     <Folder Include="Views\Default\" />
+    <Folder Include="Views\Validate\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

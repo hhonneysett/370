@@ -11,11 +11,13 @@ namespace LibraryAssistantApp.Controllers
     {
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
+        [Authorize]
         public ActionResult ViewBookings()
         {
             return View();
         }
 
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult employeeViewBookings()
         {
             //get list of campuses
@@ -29,6 +31,7 @@ namespace LibraryAssistantApp.Controllers
         
         // GET: Book discussion room (student side)
         [HttpGet]
+        [Authorize]
         public ActionResult BookDiscussionRoom()
         {
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
@@ -37,6 +40,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Book discussion room via helpdesk
         [HttpGet]
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult employeeBookDiscussionRoom()
         {
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
@@ -46,60 +50,16 @@ namespace LibraryAssistantApp.Controllers
         // POST: Book discussion room (student side)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult BookDiscussionRoom(DiscussionRoomBooking model)
         {            
             if (ModelState.IsValid)
             {
-                //get the time and date components
-                var time = model.time.TimeOfDay;
-                var date = model.date.Date;
-
-                //calculate the start time of the new session
-                DateTime startDateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
-
-                //calculate the end time of the new session
-                TimeSpan duration = new TimeSpan(0, model.length, 0);
-                DateTime endDateTime = startDateTime.Add(duration);
-                model.date = startDateTime;
-                model.endDate = endDateTime;
-
-                //get the selected campus name and assign it to the model
-                var campus_name = (from c in db.Campus
-                                   where c.Campus_ID.Equals(model.campus_ID)
-                                   select c.Campus_Name).FirstOrDefault();
-                model.campus_name = campus_name;
-
-                //capture the submitted booking details to a session variable
-                Session["details"] = model;
-
-                //get all available venues according to the submitted criteria
-                var venues = db.findBookingVenuesFunc(startDateTime, endDateTime, "Discussion", model.campus_ID);
-                Session["venues"] = venues.ToList();
-
-                //get all existing characteristics to provide venue filtering on the form, and save it to a session variable
-                var characteristics =   from c in db.Characteristics
-                                        select c;
-                Session["characteristicList"] = characteristics.ToList();
-
-                //load the GetDiscussionRoomVenues view
-                return RedirectToAction("GetDiscussionRoomVenues");
-            }
-            ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult employeeBookDiscussionRoom(DiscussionRoomBooking model)
-        {
-            if (ModelState.IsValid)
-            {
-                //get person object
-                var validPersonId = db.Registered_Person.Where(p => p.Person_ID.Equals(model.person_id));
-
-                //check if the submitted person id is valid
-                if (validPersonId.Any())
+                var dateToday = DateTime.Today;
+                if (model.date > dateToday)
                 {
+                    model.time = Convert.ToDateTime(model.inTime);
+
                     //get the time and date components
                     var time = model.time.TimeOfDay;
                     var date = model.date.Date;
@@ -137,6 +97,94 @@ namespace LibraryAssistantApp.Controllers
                 else
                 {
                     ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+                    TempData["Message"] = "Invalid date selection, date is in the past.";
+                    TempData["classStyle"] = "warning";
+                    return View(model);
+                }
+            }
+            ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles="Admin, Employee")]
+        public ActionResult employeeBookDiscussionRoom(EmpDiscussionRoomBooking model)
+        {
+            if (ModelState.IsValid)
+            {
+                var dateToday = DateTime.Today;
+                if (model.date > dateToday)
+                {
+                    //get person object
+                    var validPersonId = db.Registered_Person.Where(p => p.Person_ID.Equals(model.person_id));
+
+                    //check if the submitted person id is valid
+                    if (validPersonId.Any())
+                    {
+                        //get the time and date components
+                        var dtTime = Convert.ToDateTime(model.time);
+
+                        var time = dtTime.TimeOfDay;
+                        var date = model.date.Date;
+
+                        //calculate the start time of the new session
+                        DateTime startDateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
+
+                        //calculate the end time of the new session
+                        TimeSpan duration = new TimeSpan(0, model.length, 0);
+                        DateTime endDateTime = startDateTime.Add(duration);
+                        model.date = startDateTime;
+                        model.endDate = endDateTime;
+
+                        //get the selected campus name and assign it to the model
+                        var campus_name = (from c in db.Campus
+                                           where c.Campus_ID.Equals(model.campus_ID)
+                                           select c.Campus_Name).FirstOrDefault();
+                        model.campus_name = campus_name;
+
+                        //capture the submitted booking details to a session variable
+
+                        //convert to discussionroombooking
+
+                        DiscussionRoomBooking convert = new DiscussionRoomBooking
+                        {
+                            campus_ID = model.campus_ID,
+                            campus_name = model.campus_name,
+                            date = model.date,
+                            endDate = model.endDate,
+                            inTime = model.inTime,
+                            length = model.length,
+                            person_id = model.person_id,
+                            time = model.time,
+
+                        };
+
+                        Session["details"] = convert;
+
+                        //get all available venues according to the submitted criteria
+                        var venues = db.findBookingVenuesFunc(startDateTime, endDateTime, "Discussion", model.campus_ID);
+                        Session["venues"] = venues.ToList();
+
+                        //get all existing characteristics to provide venue filtering on the form, and save it to a session variable
+                        var characteristics = from c in db.Characteristics
+                                              select c;
+                        Session["characteristicList"] = characteristics.ToList();
+
+                        //load the GetDiscussionRoomVenues view
+                        return RedirectToAction("GetDiscussionRoomVenues");
+                    }
+                    else
+                    {
+                        ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+                        TempData["Message"] = "Invalid date selection, date is in the past.";
+                        TempData["classStyle"] = "warning";
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
                     TempData["Message"] = "Invalid Person ID";
                     TempData["classStyle"] = "warning";
                     return View(model);
@@ -148,6 +196,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Show available discussion room booking venues
         [HttpGet]
+        [Authorize]
         public ActionResult GetDiscussionRoomVenues()
         {
             //set a variable to the matching venues stored in the session data
@@ -173,6 +222,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // POST: Capture the selected venue from the GetDiscussuinRoomVenues view
+        [Authorize]
         public ActionResult venueSelect(int id)
         {
             //get the selected venue object from the database from the provided id
@@ -195,6 +245,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Display the confirm details partial view
         [HttpGet]
+        [Authorize]
         public PartialViewResult confirmDetails()
         {
             return PartialView("confirmDetails");
@@ -202,10 +253,13 @@ namespace LibraryAssistantApp.Controllers
 
         // POST: Capture the confirmed booking details to the database
         [HttpPost]
+        [Authorize]
         public ActionResult captureDetails()
         {
             //assign session variables and cast
+
             var venue = (Venue)Session["venueSelect"];
+
             var details = (DiscussionRoomBooking)Session["details"];
 
             //create instance of new Venue_Booking object
@@ -238,9 +292,8 @@ namespace LibraryAssistantApp.Controllers
             db.SaveChanges();
 
             //get booking seq of booking just created
-            var bookingSeq = (from a in db.Venue_Booking
-                              where a.DateTime_From.Equals(details.date) && a.Venue_ID.Equals(venue.Venue_ID)
-                              select a.Venue_Booking_Seq).FirstOrDefault();
+
+            var bookingSeq = vb.Venue_Booking_Seq;
 
             //set properties of venue booking person object
             vbp.Venue_Booking_Seq = bookingSeq;
@@ -267,6 +320,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Get bookings for fullcalendar
         [HttpGet]
+        [Authorize]
         public JsonResult getBookings()
         {
             //get booking seq of all bookings that belong to the user
@@ -301,6 +355,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Get bookings based on selected criteria
+        [Authorize]
         public JsonResult getEmpBookings(string id, string idType)
         {
             //create local list
@@ -353,6 +408,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Selected booking details
         [HttpGet]
+        [Authorize]
         public PartialViewResult getBookingDetails(int id)
         {
             //get the selected venue booking object
@@ -391,8 +447,60 @@ namespace LibraryAssistantApp.Controllers
             return PartialView(a);
         }
 
+        //GET: Employee booking details
+        [HttpGet]
+        [Authorize]
+        public PartialViewResult getEmpBookingDetails(int id)
+        {
+            //get the selected venue booking object
+            var booking = db.Venue_Booking.Where(v => v.Venue_Booking_Seq.Equals(id)).FirstOrDefault();
+
+            //get building name
+            var buildingName = (from b in db.Buildings
+                                where b.Building_ID.Equals(booking.Building_ID)
+                                select b.Building_Name).FirstOrDefault();
+
+            //get campus name
+            var campusName = (from c in db.Campus
+                              where c.Campus_ID.Equals(booking.Campus_ID)
+                              select c.Campus_Name).FirstOrDefault();
+
+            //get venue name
+            var venueName = (from v in db.Venues
+                             where v.Venue_ID.Equals(booking.Venue_ID)
+                             select v.Venue_Name).FirstOrDefault();
+
+            //get person id
+            var personID = (from p in db.Venue_Booking_Person
+                            where p.Venue_Booking_Seq.Equals(booking.Venue_Booking_Seq)
+                            select p.Person_ID).FirstOrDefault();
+
+            //get available booking status
+            ViewBag.Booking_Status1 = new SelectList(db.Booking_Status, "Booking_Status1", "Booking_Status1");
+
+
+            //create an instance of the view model
+            BookingDetailsModel a = new BookingDetailsModel
+            {
+                booking_seq = booking.Venue_Booking_Seq,
+                person_id = personID,
+                type = booking.Description,
+                building = buildingName,
+                campus = campusName,
+                date = booking.DateTime_From.ToShortDateString(),
+                timeslot = booking.DateTime_From.TimeOfDay + " - " + booking.DateTime_To.TimeOfDay,
+                venue = venueName,
+            };
+
+            //save booking details model to the session data
+            Session["selectedBookingDetails"] = a;
+
+            return PartialView(a);
+        }
+
         // GET : Cancel selected booking
         [HttpGet]
+        [Authorize]
         public ActionResult cancelBooking()
         {
             return View();
@@ -400,6 +508,7 @@ namespace LibraryAssistantApp.Controllers
 
         // POST: Cancel selected booking
         [HttpGet]
+        [Authorize]
         public ActionResult captureCancel()
         {
             var a = (BookingDetailsModel)Session["selectedBookingDetails"];
@@ -427,6 +536,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Get buildings that match selected campus
+        [Authorize]
         public JsonResult getBuildingsList(int id)
         {
             var buildingQuery = db.Buildings.Where(b => b.Campus_ID.Equals(id));
@@ -444,6 +554,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //GET: Get levels of selected building
+        [Authorize]
         public JsonResult getLevelList(int id)
         {
             var levelQuery = db.Building_Floor.Where(l => l.Building_ID.Equals(id));
@@ -461,6 +572,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //GET: Get venues of selected level
+        [Authorize]
         public JsonResult getVenueList(int id)
         {
             var venueQuery = db.Venues.Where(v => v.Building_Floor_ID.Equals(id));
@@ -477,5 +589,360 @@ namespace LibraryAssistantApp.Controllers
             return Json(rows, JsonRequestBehavior.AllowGet);
         }
 
+        //GET: Get venues for selected building that are available
+        [Authorize]
+        public JsonResult getUpdateVenues(DateTime start, DateTime time, int building, int campus, int length)
+        {
+            //get the time and date components
+            var bookingTime = time.TimeOfDay;
+            var booingDate = start.Date;
+
+            //calculate the start time of the new session
+            DateTime startDateTime = new DateTime(booingDate.Year, booingDate.Month, booingDate.Day, bookingTime.Hours, bookingTime.Minutes, bookingTime.Seconds);
+
+            //calculate the end time of the new session
+            TimeSpan duration = new TimeSpan(0, length, 0);
+            DateTime endDateTime = startDateTime.Add(duration);
+
+            var venues = db.findBookingVenuesFunc(startDateTime, endDateTime, "Discussion", campus);
+
+            var venueList = venues.ToList();
+
+            var newVenueList = (from a in venueList
+                                where a.Building_ID.Equals(building)
+                                select a).ToList() ;
+
+            var jsonList = from a in newVenueList
+                           select new
+                           {
+                               id = a.Venue_ID,
+                               text = a.Venue_Name,
+                           };
+
+            var rows = jsonList.ToArray();
+
+            return Json(rows, JsonRequestBehavior.AllowGet);
+        }
+
+        //GET: Update booking status
+        [Authorize]
+        public void updateStatus(string status)
+        {
+            var a = (BookingDetailsModel)Session["selectedBookingDetails"];
+
+            var updatedBooking = (from b in db.Venue_Booking
+                                  where b.Venue_Booking_Seq.Equals(a.booking_seq)
+                                  select b).FirstOrDefault();
+
+            var updatedPersonBooking = (from p in db.Venue_Booking_Person
+                                        where p.Venue_Booking_Seq.Equals(a.booking_seq)
+                                        select p).FirstOrDefault();
+
+            updatedBooking.Booking_Status = status;
+            updatedPersonBooking.Attendee_Status = status;
+
+            db.Entry(updatedBooking).State = EntityState.Modified;
+            db.Entry(updatedPersonBooking).State = EntityState.Modified;
+
+            db.SaveChanges();
+        }
+
+        //GET: Filter venues
+        [Authorize]
+        public void filterVenues(IEnumerable<int> characteristics, int capacity)
+        {
+
+            //local list of all venues available before filtering
+            var details = (DiscussionRoomBooking)Session["details"];
+            var venues = db.findBookingVenuesFunc(details.date, details.endDate, "Discussion", details.campus_ID).ToList();
+
+            if (characteristics.Any())
+            {
+                //get list of all venues venue_id
+                var venueListId = (from a in venues
+                                   select a.Venue_ID).ToList();
+
+                //get all venue characteristic objects relating to the available venues
+                var venueCharacteristics = (from v in db.Venue_Characteristic
+                                            where venueListId.Contains(v.Venue_ID)
+                                            select v).ToList();
+
+                //get all venue characteristics that match the criteria
+                var filteredCharacteristics = (from w in venueCharacteristics
+                                               where characteristics.Contains(w.Characteristic_ID)
+                                               select w.Venue_ID).ToList();
+
+                //get new list of venues that match the characteristics
+                venues = (from venue in db.Venues
+                          where filteredCharacteristics.Contains(venue.Venue_ID)
+                          select venue).ToList();
+
+                var characteristicCounter = characteristics.Count();
+                int loopCounter = 0;
+                List<Venue> loopList = new List<Venue>();
+
+                foreach (var item in venues)
+                {
+                    loopCounter = 0;
+                    foreach (var charac in venueCharacteristics)
+                    {
+                        if (characteristics.Contains(charac.Characteristic_ID) && charac.Venue_ID.Equals(item.Venue_ID))
+                        {
+                            loopCounter = loopCounter + 1;
+                        }
+                    }
+                    if (loopCounter.Equals(characteristicCounter))
+                    {
+                        loopList.Add(item);
+                    }
+                }
+
+                venues = loopList;
+            }
+
+            if (capacity > 0)
+            {
+                venues = (from venue in venues
+                          where venue.Capacity.Equals(capacity)
+                          select venue).ToList();
+            }
+                 
+            Session["venues"] = venues;
+        }
+
+        //GET: Update booking
+        [HttpGet]
+        [Authorize]
+        public ActionResult updateBookingDetails()
+        {
+            var bookingDetails = (BookingDetailsModel)Session["selectedBookingDetails"];
+
+            var booking = db.Venue_Booking.Where(b => b.Venue_Booking_Seq.Equals(bookingDetails.booking_seq)).FirstOrDefault();
+
+            UpdateBookingModel a = new UpdateBookingModel
+            {
+                booking_seq = bookingDetails.booking_seq,
+                building = bookingDetails.building,
+                campus = bookingDetails.campus,
+                date = bookingDetails.date,
+                startDate = booking.DateTime_From,
+                endDate = booking.DateTime_To,
+                person_id = bookingDetails.person_id,
+                time = booking.DateTime_From.TimeOfDay.ToString(),
+                venue = bookingDetails.venue,
+                campus_id = booking.Campus_ID,
+                building_id = booking.Building_ID,
+                building_floor_id = booking.Building_Floor_ID,
+                venue_id = booking.Venue_ID,
+                length = booking.DateTime_To.Subtract(booking.DateTime_From).TotalMinutes,
+            };
+            ViewBag.Campus = from c in db.Campus
+                                select c;
+
+            ViewBag.Building = from b in db.Buildings
+                               where b.Campus_ID.Equals(booking.Campus_ID)
+                               select b;
+
+            var venues = db.findBookingVenuesFunc(booking.DateTime_From, booking.DateTime_To, "Discussion", booking.Campus_ID).ToList();
+            var currentVenue = db.Venues.Where(v => v.Venue_ID.Equals(booking.Venue_ID)).FirstOrDefault();
+            venues.Add(currentVenue);
+
+            ViewBag.Venue = venues;
+
+            ModelState.Clear();
+
+            return View(a);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public void updateBookingDetails(UpdateBookingModel model)
+        {
+            var todayDate = DateTime.Today;
+            DateTime datecheck = new DateTime();
+            datecheck = Convert.ToDateTime(model.date);
+            if (datecheck > todayDate)
+            {
+                var bookingDetails = (BookingDetailsModel)Session["selectedBookingDetails"];
+                var bookingUpdate = db.Venue_Booking.Where(b => b.Venue_Booking_Seq.Equals(bookingDetails.booking_seq)).FirstOrDefault();
+
+                var test = bookingUpdate.Venue_Booking_Seq;
+
+                //get the time and date components
+                DateTime bookingTime = Convert.ToDateTime(model.time);
+                var timeTimespan = bookingTime.TimeOfDay;
+                var bookingDate = datecheck;
+
+                //calculate the start time of the new session
+                DateTime startDateTime = new DateTime(bookingDate.Year, bookingDate.Month, bookingDate.Day, timeTimespan.Hours, timeTimespan.Minutes, timeTimespan.Seconds);
+
+                //calculate the end time of the new session
+                TimeSpan duration = new TimeSpan(0, Convert.ToInt32(model.length), 0);
+                DateTime endDateTime = startDateTime.Add(duration);
+
+                var buildingFloorId = (from b in db.Building_Floor
+                                       where b.Building_ID.Equals(model.building_id) && b.Campus_ID.Equals(model.campus_id)
+                                       select b.Building_Floor_ID).FirstOrDefault();
+
+                bookingUpdate.DateTime_From = startDateTime;
+                bookingUpdate.DateTime_To = endDateTime;
+                bookingUpdate.Campus_ID = model.campus_id;
+                bookingUpdate.Building_ID = model.building_id;
+                bookingUpdate.Building_Floor_ID = buildingFloorId;
+                bookingUpdate.Venue_ID = model.venue_id;
+
+                db.Entry(bookingUpdate).State = EntityState.Modified;
+                db.SaveChanges();
+
+            }
+            else
+            {
+                var bookingDetails = (BookingDetailsModel)Session["selectedBookingDetails"];
+                var bookingUpdate = db.Venue_Booking.Where(b => b.Venue_Booking_Seq.Equals(bookingDetails.booking_seq)).FirstOrDefault();
+
+                TempData["Message"] = "Invalid date entry. Date is in the past";
+                TempData["classStyle"] = "warning";
+                ViewBag.Campus = from c in db.Campus
+                                 select c;
+
+                ViewBag.Building = from b in db.Buildings
+                                   where b.Campus_ID.Equals(bookingUpdate.Campus_ID)
+                                   select b;
+
+                var venues = db.findBookingVenuesFunc(bookingUpdate.DateTime_From, bookingUpdate.DateTime_To, "Discussion", bookingUpdate.Campus_ID).ToList();
+                var currentVenue = db.Venues.Where(v => v.Venue_ID.Equals(bookingUpdate.Venue_ID)).FirstOrDefault();
+                venues.Add(currentVenue);
+
+                ViewBag.Venue = venues;
+                RedirectToAction("updateBookingDetails", "Booking", model);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult bookTrainingSess()
+        {
+            var categories = (from c in db.Categories
+                              select c);
+
+            Session["categories"] = categories;
+
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public PartialViewResult getTopics(int id)
+        {
+            var topics = db.Topic_Category.Where(t => t.Category_ID == id).Include(t => t.Topic);
+
+            TempData["matchingTopics"] = topics;
+
+            return PartialView();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public PartialViewResult getAvailableTrainingSess(int id)
+        {
+            var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id).Include(v => v.Venue).ToList();
+
+            var filtered = new List<Venue_Booking>();
+
+            foreach(var session in trainingSessions)
+            {
+                var persons = session.Venue_Booking_Person;
+                var check = true;
+
+                foreach(var person in persons)
+                {
+                    if (person.Person_ID == User.Identity.Name)
+                    {
+                        check = false;
+                    }
+                }
+
+                if (check == true)
+                {
+                    filtered.Add(session);
+                }
+            }
+
+            var bookings = from a in filtered
+                           select new BookTrainingSessionModel
+                           {
+                               date = a.DateTime_From.ToShortDateString(),
+                               timeslot = a.DateTime_From.ToShortTimeString() + " - " + a.DateTime_To.ToShortTimeString(),
+                               campus = (from c in db.Campus
+                                         where c.Campus_ID == a.Campus_ID
+                                         select c.Campus_Name).FirstOrDefault(),
+                               building = (from b in db.Buildings
+                                           where b.Building_ID == a.Building_ID
+                                           select b.Building_Name).FirstOrDefault(),
+                               venue = a.Venue.Venue_Name,
+                               id = a.Venue_Booking_Seq,
+                           };
+
+            TempData["trainingSessions"] = bookings;
+
+            return PartialView();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public void sessionSelect(int id)
+        {
+            Session["studentSelectedSess"] = id;
+        }
+
+        [HttpGet]
+        [Authorize]
+        public PartialViewResult confirmStudentTraining()
+        {
+            var id = (int)Session["studentSelectedSess"];
+
+            var trainingSession = db.Venue_Booking.Where(b => b.Venue_Booking_Seq == id).ToList();
+
+            var bookings = from a in trainingSession
+                           select new BookTrainingSessionModel
+                           {
+                               date = a.DateTime_From.ToShortDateString(),
+                               timeslot = a.DateTime_From.ToShortTimeString() + " - " + a.DateTime_To.ToShortTimeString(),
+                               campus = (from c in db.Campus
+                                         where c.Campus_ID == a.Campus_ID
+                                         select c.Campus_Name).FirstOrDefault(),
+                               building = (from b in db.Buildings
+                                           where b.Building_ID == a.Building_ID
+                                           select b.Building_Name).FirstOrDefault(),
+                               venue = a.Venue.Venue_Name,
+                               id = a.Venue_Booking_Seq,
+                           };
+
+            var booking = bookings.FirstOrDefault();
+
+            TempData["booking"] = booking;
+
+            return PartialView();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public void captureStudentTraining()
+        {
+            var id = (int)Session["studentSelectedSess"];
+
+            Venue_Booking_Person a = new Venue_Booking_Person
+            {
+                Person_ID = User.Identity.Name,
+                Venue_Booking_Seq = id,
+                Certificate_Ind = 0,
+                Attendee_Type = "Student",
+                Attendee_Status = "Active",
+            };
+
+            db.Venue_Booking_Person.Add(a);
+
+            db.SaveChanges();
+        }
     }
 }

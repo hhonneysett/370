@@ -46,4 +46,9 @@ namespace LibraryAssistantApp.Models
     public partial class Campus
     {
     }
+
+    [MetadataType(typeof(CategoryMetadata))]
+    public partial class Category
+    {
+    }
 }

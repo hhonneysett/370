@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "ViewBookings";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
 }
 
 <h2>View Bookings</h2>
@@ -76,6 +76,13 @@
                             buttons: {
                                 "Cancel Booking": function () {
                                     window.location.href = '@Url.Action("cancelBooking", "Booking")';
+                                },
+                                "Update Booking": {
+                                    text: "Update Booking",
+                                    id: "btnUpdateBooking",
+                                    click: function () {
+                                        location = "/Booking/updateBookingDetails";
+                                    }
                                 },
                                 Cancel: function () {
                                     $(this).dialog("close");

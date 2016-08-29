@@ -1,0 +1,125 @@
+﻿@using LibraryAssistantApp.Models
+
+@{
+    ViewBag.Title = "Update Favourite Topics";
+    Layout = (string)Session["layout"];
+    var categories = (IEnumerable<Category>)Session["categories"];
+    var availTopics = (IEnumerable<Topic>)Session["availTopics"];
+    var favTopics = (IEnumerable<Person_Topic>)Session["favTopics"];
+}
+
+<h2>Update Favourite Topics</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <text class="control-label"><b>Filter By Category</b></text>
+                    <select class="form-control" id="favouriteCategorySelect">
+                        <option selected value="all">All</option>
+                        @foreach (var item in categories)
+                        {
+                            <option value="@item.Category_ID">@item.Category_Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <hr />
+                    <text><b>Available Topics</b></text>
+                    <select size="5"class="form-control" id="availTopicsSelect">
+                        @foreach (var topic in availTopics)
+                        {
+                            <option value="@topic.Topic_Seq">@topic.Topic_Name</option>
+                        }
+                    </select>
+                    <input type="button" value="Add Topic" class="btn btn-default" style="margin-top:5px" id="btnAddFavTop"/>
+                </div>
+                <div class="col-md-6">
+                    <hr />
+                    <text><b>Favourite Topics</b></text>
+                    <select size="5" class="form-control" id="favouriteTopicSelect">
+                        @foreach (var topic in favTopics)
+                        {
+                            <option value="@topic.Topic_Seq">@topic.Topic.Topic_Name</option>
+                        }
+                    </select>
+                    <input type="button" value="Remove Topic" class="btn btn-default" style="margin-top:5px" id="btnRemFavTop"/>
+                </div>
+            </div>
+        </div>
+        @Html.ActionLink("Back", "Details", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-default" })
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#favouriteCategorySelect").change(function () {
+            var category = $("#favouriteCategorySelect").children(":selected").val();
+
+            $.ajax({
+                type: 'GET',
+                url: '/RegisteredPerson/getAvailTopics',
+                data: { category: category },
+                success: function (result) {
+                    var options = $("#availTopicsSelect");
+
+                    //remove existing options from the select to add new options
+                    options.children().remove();
+
+
+                    if (result.length == 0) {
+                        options.children().remove();
+                        options.append($("<option disabled selected value />").text("-- no topics --"));
+                    }
+
+                    //add an option to the select for each building
+                    result.forEach(function (entry) {
+                        options.append($("<option />").val(entry.id).text(entry.text));
+                    });
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+
+        $("#btnAddFavTop").click(function () {
+            var id = $("#availTopicsSelect").children(":selected").val();
+            var text = $("#availTopicsSelect").children(":selected").text();
+            $.ajax({
+                type: 'GET',
+                url: '/RegisteredPerson/addTopic',
+                data: { id: id },
+                success: function (result) {
+                    //remove selected topic from available list and add it to the favourites list
+                    $("#availTopicsSelect option[value='" + id + "']").remove();
+                    $("#favouriteTopicSelect").append($("<option />").val(id).text(text));
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+
+        $("#btnRemFavTop").click(function () {
+            var id = $("#favouriteTopicSelect").children(":selected").val();
+            var text = $("#favouriteTopicSelect").children(":selected").text();
+            $.ajax({
+                type: 'GET',
+                url: '/RegisteredPerson/removeTopic',
+                data: { id: id },
+                success: function (result) {
+                    //remove selected topic from available list and add it to the favourites list
+                    $("#favouriteTopicSelect option[value='" + id + "']").remove();
+                    $("#availTopicsSelect").append($("<option />").val(id).text(text));
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+    })
+</script>
+

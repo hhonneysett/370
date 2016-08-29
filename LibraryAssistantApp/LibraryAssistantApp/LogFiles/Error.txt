@@ -1,0 +1,12 @@
+Message :Exception of type 'System.Exception' was thrown.<br/>
+StackTrace :   at LibraryAssistantApp.Controllers.RepositoryController.ViewFile() in C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\Controllers\RepositoryController.cs:line 25
+Date :2016/08/29 1:45:42 AM
+
+-----------------------------------------------------------------------------
+
+Message :Exception of type 'System.Exception' was thrown.<br/>
+StackTrace :   at LibraryAssistantApp.Controllers.RepositoryController.ViewFile() in C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\Controllers\RepositoryController.cs:line 25
+Date :2016/08/29 1:50:26 AM
+
+-----------------------------------------------------------------------------
+

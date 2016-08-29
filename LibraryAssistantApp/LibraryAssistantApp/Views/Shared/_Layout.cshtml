@@ -15,6 +15,7 @@
     @Scripts.Render("~/Scripts/jquery-ui-1.12.0.js")
     @Scripts.Render("~/Scripts/datetimePicker.js")
     @Scripts.Render("~/bundles/headScripts")
+    <script type="text/javascript" src="jspdf.debug.js"></script>
 
 </head>
 <body>
@@ -49,17 +50,15 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    <a href="#">Discussion Room</a>
+                                    @Html.ActionLink("Discussion Room", "employeeBookDiscussionRoom", "Booking")
                                 </li>
                                 <li>
-                                    <a href="#">Training Room</a>
+                                    @Html.ActionLink("Training Session", "bookTrainingSess", "Booking")
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">
-                                View Personal Bookings
-                            </a>
+                            @Html.ActionLink("View Personal Bookings", "employeeViewBookings", "Booking")
                         </li>
                     </ul>
                 </li>
@@ -76,16 +75,10 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    <a href="#">Create Training Session</a>
+                                    @Html.ActionLink("Create Training Session", "addTrainingSession", "Trainer")
                                 </li>
                                 <li>
-                                    <a href="#">Manage Training Session</a>
-                                </li>
-                                <li>
-                                    <a href="#">Attendance Register</a>
-                                </li>
-                                <li>
-                                    <a href="#">Log Attendants</a>
+                                    @Html.ActionLink("Manage Training Sessions", "manageTrainingSession", "Trainer")
                                 </li>
                             </ul>
                         </li>
@@ -96,7 +89,7 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    <a href="#">Manage Sessions</a>
+                                    @Html.ActionLink("Manage Sessions", "employeeViewBookings", "Booking")
                                 </li>
                             </ul>
                         </li>
@@ -126,7 +119,7 @@
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
-                            <a href="#">Manage Tutorials</a>
+                            @Html.ActionLink("Manage Repository", "ViewFile", "Repository")
                         </li>
                         <li>
                             @Html.ActionLink("View Library Map", "ViewMap", "Repository")
@@ -157,28 +150,16 @@
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
-                            <a href="#">Session Log</a>
+                            @Html.ActionLink("Session Log", "personSession", "Reporting")
                         </li>
                         <li>
-                            <a href="#">File Access</a>
+                            @Html.ActionLink("Document Access Log", "documentAccess", "Reporting")
                         </li>
                         <li>
-                            <a href="#">Action Log</a>
+                            @Html.ActionLink("Action Log", "personSessionAction", "Reporting")
                         </li>
                         <li>
-                            <a href="#">Questionnaire Feedback</a>
-                        </li>
-                        <li>
-                            <a href="#">View Problem Report</a>
-                        </li>
-                        <li>
-                            <a href="#">Booking Summary</a>
-                        </li>
-                        <li>
-                            <a href="#">Training Attendance</a>
-                        </li>
-                        <li>
-                            <a href="#">Venue Usage</a>
+                            @Html.ActionLink("Venue Usage Log", "venueUsage", "Reporting")
                         </li>
                     </ul>
                 </li>
@@ -252,34 +233,30 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    <a href="#">Categories</a>
+                                    @Html.ActionLink("Courses", "viewCategory", "Trainer")
                                 </li>
                                 <li>
-                                    <a href="#">Topics</a>
+                                    @Html.ActionLink("Courses", "viewTopic", "Trainer")
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">File Types</a>
+                            @Html.ActionLink("File Types", "ViewFileType", "Repository")
                         </li>
                     </ul>
                 </li>
                 <li>
-                    @Html.ActionLink("Home", "Index", "Home")
-                </li>
-                <li>@Html.ActionLink("My Profile", "MyProfile", "Home")</li>
-                <li>
                     @{
                         if (Request.IsAuthenticated)
                         {
-                            using (Html.BeginForm("Logout", "MyAccount", FormMethod.Post, new { id = "logoutForm" }))
+                            using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
                                 <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
                             }
                         }
                         else
                         {
-                            @Html.ActionLink("Login", "Login", "MyAccount")
+                            @Html.ActionLink("Login", "Login", "Account")
                         }
                     }
                 </li>
@@ -300,6 +277,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/metisMenu")
     @Scripts.Render("~/Scripts/jquery-ui-1.12.0.min.js")
+    @Scripts.Render("~/bundles/jqueryval")
 
     <!--Metis menu scripts-->
 

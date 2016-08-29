@@ -1,0 +1,66 @@
+﻿@model LibraryAssistantApp.Models.CategoryModel
+
+@{
+    ViewBag.Title = "viewCategory";
+    Layout = (string)Session["layout"];
+}
+
+<h2>Categories</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Manage Categories
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.categoryName, htmlAttributes: new {})
+                    <div>
+                        @Html.ListBox("Category_ID", null, htmlAttributes: new { @class = "form-control", @id = "categoryList" })
+                        @Html.ValidationMessageFor(model => model.categoryName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <input type="submit" id="btnAddCat" class="btn btn-default" value="Add Category"/>
+                <input type="submit" id="btnUpdateCat" class="btn btn-default" value="Update Category" />
+                <input type="submit" id="btnDeleteCat" class="btn btn-default" value="Delete Category" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            //disable update and delete buttons on page load
+            $("#btnUpdateCat").prop('disabled', true);
+            $("#btnDeleteCat").prop('disabled', true);
+
+            //enable update and add buttons on category selection
+            $("#categoryList").change(function () {
+                $("#btnUpdateCat").prop('disabled', false);
+                $("#btnDeleteCat").prop('disabled', false);
+            });
+
+            //go to add category form on add click
+            $("#btnAddCat").click(function () {
+                window.location.href = "/Trainer/addCategory"
+            });
+
+            //go to update category on update click
+            $("#btnUpdateCat").click(function () {
+                var id = $("#categoryList").children(":selected").val();
+                window.location.href = "/Trainer/updateCategory/?id=" + id;
+            });
+
+            //go to delete category on delete click
+            $("#btnDeleteCat").click(function () {
+                var id = $("#categoryList").children(":selected").val();
+                window.location.href = "/Trainer/deleteCategory/?id=" + id;
+            });
+        })
+    </script>
+    }

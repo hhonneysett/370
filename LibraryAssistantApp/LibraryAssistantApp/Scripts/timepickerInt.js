@@ -6,7 +6,7 @@ $('.timepicker').timepicker({
     interval: 30,
     minTime: '08:00am',
     maxTime: '5:00pm',
-    defaultTime: '8',
+    //defaultTime: '8',
     startTime: '10:00',
     dynamic: true,
     dropdown: true,
