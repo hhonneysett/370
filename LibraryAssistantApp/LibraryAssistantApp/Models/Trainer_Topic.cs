@@ -14,9 +14,9 @@ namespace LibraryAssistantApp.Models
     
     public partial class Trainer_Topic
     {
+        public int Trainer_Topic_ID { get; set; }
         public string Person_ID { get; set; }
         public int Topic_Seq { get; set; }
-        public int Active_Ind { get; set; }
     
         public virtual Topic Topic { get; set; }
         public virtual Registered_Person Registered_Person { get; set; }

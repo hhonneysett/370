@@ -17,6 +17,7 @@ namespace LibraryAssistantApp.Models
         public int Topic_Category_ID { get; set; }
         public int Topic_Seq { get; set; }
         public int Category_ID { get; set; }
+
     
         public virtual Category Category { get; set; }
         public virtual Topic Topic { get; set; }

@@ -174,6 +174,7 @@ F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\System.Web.M
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.csprojResolveAssemblyReference.cache
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.dll
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.pdb
+<<<<<<< HEAD
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\Common.Logging.Core.dll
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\Common.Logging.dll
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\Quartz.dll
@@ -237,3 +238,5 @@ C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj
 C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.dll
 C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.pdb
 C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\NotFoundMvc.dll
+
+

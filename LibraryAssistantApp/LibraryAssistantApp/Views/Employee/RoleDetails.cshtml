@@ -1,0 +1,60 @@
+﻿@model LibraryAssistantApp.Models.EmployeeIndexModel
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <label class="panel-title">Actions</label>
+    </div>
+        <table id="result-table-5" class="table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <td>
+                        <span class="text-info">Actions assigned to the selected role</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Action
+                    </th>
+                    <th>
+                        Create
+                    </th>
+                    <th>
+                        Read
+                    </th>
+                    <th>
+                        Update
+                    </th>
+                    <th>
+                        Delete
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.role_action.Count() != 0)
+                {
+                    foreach (var item in Model.role_action)
+                    {
+                        <tr id="@item.Action_ID">
+                            <td>
+                                @item.Action.Action_Name
+                            </td>
+                            <td>
+                                @item.Create_Ind
+                            </td>
+                            <td>
+                                @item.Read_Ind
+                            </td>
+                            <td>
+                                @item.Update_Ind
+                            </td>
+                            <td>
+                                @item.Delete_Ind
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+</div>
+
+

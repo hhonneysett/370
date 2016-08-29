@@ -1,0 +1,58 @@
+﻿@model LibraryAssistantApp.Models.EmployeeAddModel
+
+
+<div class="col-md-8">
+    <div class="panel panel-default">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Topic
+                    </th>
+                    <th>
+                        Topic Description
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.topic_category.Count(); i++)
+            {
+                    <tr id="@Model.topic_category[i].Topic.Topic_Seq">
+                        @Html.HiddenFor(m => m.topic_check[i].topic_sec)
+                        <td>
+                            @Html.DisplayFor(m => Model.topic_category[i].Topic.Topic_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => Model.topic_category[i].Topic.Topic_Description)
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => Model.topic_check[i].topic_ind)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#category-dropdown').change(function () {
+                var a = $('#category-dropdown').children(':selected').attr('id');
+                $.ajax({
+                    type: 'GET',
+                    //data: { id: a },
+                    url: '@Url.Action("Topics", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        $('#div-topics').html(result);
+                    }
+                }).done(function () {
+                    $('.loading').hide();
+                });
+        })
+        })
+</script>
+    

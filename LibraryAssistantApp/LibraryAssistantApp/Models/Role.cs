@@ -18,7 +18,11 @@ namespace LibraryAssistantApp.Models
         public Role()
         {
             this.Role_Action = new HashSet<Role_Action>();
+
             this.Venues = new HashSet<Venue>();
+
+            this.Venue_Role = new HashSet<Venue_Role>();
+	
             this.Person_Role = new HashSet<Person_Role>();
         }
     
@@ -29,7 +33,11 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role_Action> Role_Action { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<Venue> Venues { get; set; }
+
+        public virtual ICollection<Venue_Role> Venue_Role { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Role> Person_Role { get; set; }
     }
