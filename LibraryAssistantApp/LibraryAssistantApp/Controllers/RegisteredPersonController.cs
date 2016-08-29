@@ -15,6 +15,12 @@ namespace LibraryAssistantApp.Controllers
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
 
+        // GET: RegisteredPerson
+        public ActionResult Index()
+        {
+            var registered_Person = db.Registered_Person.Include(r => r.Person_Title).Include(r => r.Person_Type);
+            return View(registered_Person.ToList());
+        }
 
         // GET: RegisteredPerson/Details/5
         [Authorize]
@@ -53,7 +59,6 @@ namespace LibraryAssistantApp.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
             ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
             return View();
         }
@@ -167,7 +172,7 @@ namespace LibraryAssistantApp.Controllers
             }
 
             UpdatePersonModel b = new UpdatePersonModel();
-            b.Person_Title = registered_Person.Person_Title;
+            b.Title_ID = registered_Person.Title_ID;
             b.Person_Name = registered_Person.Person_Name;
             b.Person_Surname = registered_Person.Person_Surname;
             b.Person_Email = registered_Person.Person_Email;
@@ -198,18 +203,22 @@ namespace LibraryAssistantApp.Controllers
                     registered_Person.Person_Email = model.Person_Email;
                     registered_Person.Person_Title = model.Person_Title;
 
+
                     db.Entry(registered_Person).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Details");
                 }
                 else
                 {
+
                     ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Person_Title);
+
                     TempData["Message"] = "Email address already exists on the system";
                     return View(model);
                 }              
             }
             ViewBag.Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", model.Person_Title);
+
             return View(model);
         }
 

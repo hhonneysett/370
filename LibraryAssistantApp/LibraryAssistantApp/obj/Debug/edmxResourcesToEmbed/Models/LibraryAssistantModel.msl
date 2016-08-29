@@ -79,9 +79,13 @@
           <ScalarProperty Name="Day_Of_Week_ID" ColumnName="Day_Of_Week_ID" />
           <ScalarProperty Name="Period_Type_ID" ColumnName="Period_Type_ID" />
           <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+
           <ScalarProperty Name="Time_Closed" ColumnName="Time_Closed" />
           <ScalarProperty Name="Time_Open" ColumnName="Time_Open" />
           <ScalarProperty Name="Calender_Rules_Seq" ColumnName="Calender_Rules_Seq" />
+
+          <ScalarProperty Name="Campus_Name" ColumnName="Campus_Name" />
+
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -164,6 +168,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Document_Repository">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Document_Repository">
         <MappingFragment StoreEntitySet="Document_Repository">
@@ -178,6 +183,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Document_Type">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Document_Type">
         <MappingFragment StoreEntitySet="Document_Type">
@@ -187,6 +193,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+<<<<<<< HEAD
     <EntitySetMapping Name="Period_Type">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Period_Type">
         <MappingFragment StoreEntitySet="Period_Type">
@@ -196,6 +203,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Person_Questionnaire">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Questionnaire">
         <MappingFragment StoreEntitySet="Person_Questionnaire">
@@ -210,9 +218,11 @@
       <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Questionnaire_Result">
         <MappingFragment StoreEntitySet="Person_Questionnaire_Result">
           <ScalarProperty Name="Question_Answer" ColumnName="Question_Answer" />
+
           <ScalarProperty Name="Question_Seq" ColumnName="Question_Seq" />
           <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
           <ScalarProperty Name="Questionnaire_ID" ColumnName="Questionnaire_ID" />
+
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -236,6 +246,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Person_Title">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Title">
         <MappingFragment StoreEntitySet="Person_Title">
@@ -252,6 +263,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Possible_Answer">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Possible_Answer">
         <MappingFragment StoreEntitySet="Possible_Answer">
@@ -312,6 +324,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Roles">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Role">
         <MappingFragment StoreEntitySet="Role">
@@ -346,6 +359,29 @@
       <EntityTypeMapping TypeName="LibraryAssistantModel.Trainer_Topic">
         <MappingFragment StoreEntitySet="Trainer_Topic">
           <ScalarProperty Name="Active_Ind" ColumnName="Active_Ind" />
+
+    <EntitySetMapping Name="Style_Type">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Style_Type">
+        <MappingFragment StoreEntitySet="Style_Type">
+          <ScalarProperty Name="Style_Type_ID" ColumnName="Style_Type_ID" />
+          <ScalarProperty Name="Preview" ColumnName="Preview" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Venue_Booking">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Booking">
+        <MappingFragment StoreEntitySet="Venue_Booking">
+          <ScalarProperty Name="Venue_Booking_Seq" ColumnName="Venue_Booking_Seq" />
+          <ScalarProperty Name="Venue_Booking_Name" ColumnName="Venue_Booking_Name" />
+          <ScalarProperty Name="DateTime_From" ColumnName="DateTime_From" />
+          <ScalarProperty Name="DateTime_To" ColumnName="DateTime_To" />
+          <ScalarProperty Name="Send_Email_To_Topic_Person_Ind" ColumnName="Send_Email_To_Topic_Person_Ind" />
+          <ScalarProperty Name="Max_Bookings" ColumnName="Max_Bookings" />
+          <ScalarProperty Name="Exclusive_ind" ColumnName="Exclusive_ind" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Booking_Type_Seq" ColumnName="Booking_Type_Seq" />
+
           <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
           <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
         </MappingFragment>
@@ -363,6 +399,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Venue_Characteristic">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Characteristic">
         <MappingFragment StoreEntitySet="Venue_Characteristic">
@@ -376,6 +413,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Venue_Problem">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Problem">
         <MappingFragment StoreEntitySet="Venue_Problem">
@@ -420,11 +458,59 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Campus">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Campus">
         <MappingFragment StoreEntitySet="Campus">
           <ScalarProperty Name="Campus_Name" ColumnName="Campus_Name" />
           <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Document_Repository">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Document_Repository">
+        <MappingFragment StoreEntitySet="Document_Repository">
+          <ScalarProperty Name="Document_Status" ColumnName="Document_Status" />
+          <ScalarProperty Name="Document_Type_ID" ColumnName="Document_Type_ID" />
+          <ScalarProperty Name="Category_ID" ColumnName="Category_ID" />
+          <ScalarProperty Name="Document_Extension_ID" ColumnName="Document_Extension_ID" />
+          <ScalarProperty Name="Directory_Path" ColumnName="Directory_Path" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Document_Name" ColumnName="Document_Name" />
+          <ScalarProperty Name="Document_Seq" ColumnName="Document_Seq" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Venue_Characteristic">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Characteristic">
+        <MappingFragment StoreEntitySet="Venue_Characteristic">
+          <ScalarProperty Name="Additional_Information" ColumnName="Additional_Information" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
+          <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
+          <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
+          <ScalarProperty Name="Characteristic_ID" ColumnName="Characteristic_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="findBookingVenuesFunc" FunctionName="LibraryAssistantModel.Store.findBookingVenues" />
+    <EntitySetMapping Name="Actions">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Action">
+        <MappingFragment StoreEntitySet="Action">
+          <ScalarProperty Name="Action_Description" ColumnName="Action_Description" />
+          <ScalarProperty Name="Action_Name" ColumnName="Action_Name" />
+          <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
+
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -437,6 +523,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Topic_Category">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Topic_Category">
         <MappingFragment StoreEntitySet="Topic_Category">
@@ -474,10 +561,42 @@
       <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Booking">
         <MappingFragment StoreEntitySet="Venue_Booking">
           <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
+
+    <EntitySetMapping Name="Role_Action">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Role_Action">
+        <MappingFragment StoreEntitySet="Role_Action">
+          <ScalarProperty Name="RoleAction_ID" ColumnName="RoleAction_ID" />
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+          <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
+          <ScalarProperty Name="Delete_Ind" ColumnName="Delete_Ind" />
+          <ScalarProperty Name="Update_Ind" ColumnName="Update_Ind" />
+          <ScalarProperty Name="Read_Ind" ColumnName="Read_Ind" />
+          <ScalarProperty Name="Create_Ind" ColumnName="Create_Ind" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Venues">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue">
+        <MappingFragment StoreEntitySet="Venue">
+          <ScalarProperty Name="Venue_Type" ColumnName="Venue_Type" />
+          <ScalarProperty Name="Venue_Name" ColumnName="Venue_Name" />
+          <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
+          <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
+          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
+          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Venue_Role">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Role">
+        <MappingFragment StoreEntitySet="Venue_Role">
+          <ScalarProperty Name="Venue_Role_ID" ColumnName="Venue_Role_ID" />
+
           <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
           <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
           <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
           <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
+
           <ScalarProperty Name="Booking_Status" ColumnName="Booking_Status" />
           <ScalarProperty Name="Booking_Type_Seq" ColumnName="Booking_Type_Seq" />
           <ScalarProperty Name="Description" ColumnName="Description" />
@@ -488,14 +607,91 @@
           <ScalarProperty Name="DateTime_From" ColumnName="DateTime_From" />
           <ScalarProperty Name="Venue_Booking_Name" ColumnName="Venue_Booking_Name" />
           <ScalarProperty Name="Venue_Booking_Seq" ColumnName="Venue_Booking_Seq" />
+
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Period_Type">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Period_Type">
+        <MappingFragment StoreEntitySet="Period_Type">
+          <ScalarProperty Name="Period_Type_Description" ColumnName="Period_Type_Description" />
+          <ScalarProperty Name="Period_Type_ID" ColumnName="Period_Type_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="Category_Description" ColumnName="Category_Description" />
+          <ScalarProperty Name="Category_Name" ColumnName="Category_Name" />
+          <ScalarProperty Name="Category_ID" ColumnName="Category_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Person_Title">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Title">
+        <MappingFragment StoreEntitySet="Person_Title">
+          <ScalarProperty Name="Person_Title1" ColumnName="Person_Title" />
+          <ScalarProperty Name="Title_ID" ColumnName="Title_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Topic_Category">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Topic_Category">
+        <MappingFragment StoreEntitySet="Topic_Category">
+          <ScalarProperty Name="Topic_Category_ID" ColumnName="Topic_Category_ID" />
+          <ScalarProperty Name="Category_ID" ColumnName="Category_ID" />
+          <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Person_Topic">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Topic">
+        <MappingFragment StoreEntitySet="Person_Topic">
+          <ScalarProperty Name="Active_Ind" ColumnName="Active_Ind" />
+          <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trainer_Topic">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Trainer_Topic">
+        <MappingFragment StoreEntitySet="Trainer_Topic">
+          <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+          <ScalarProperty Name="Trainer_Topic_ID" ColumnName="Trainer_Topic_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Person_Type">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Type">
+        <MappingFragment StoreEntitySet="Person_Type">
+          <ScalarProperty Name="Person_Type1" ColumnName="Person_Type" />
+          <ScalarProperty Name="Person_Type_ID" ColumnName="Person_Type_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Topics">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Topic">
+        <MappingFragment StoreEntitySet="Topic">
+          <ScalarProperty Name="Topic_Description" ColumnName="Topic_Description" />
+          <ScalarProperty Name="Topic_Name" ColumnName="Topic_Name" />
+          <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
+
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Registered_Person">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Registered_Person">
         <MappingFragment StoreEntitySet="Registered_Person">
+
           <ScalarProperty Name="Person_Title" ColumnName="Person_Title" />
           <ScalarProperty Name="Person_Type" ColumnName="Person_Type" />
+
+          <ScalarProperty Name="Title_ID" ColumnName="Title_ID" />
+          <ScalarProperty Name="Person_Type_ID" ColumnName="Person_Type_ID" />
+
           <ScalarProperty Name="Person_Registration_DateTime" ColumnName="Person_Registration_DateTime" />
           <ScalarProperty Name="Person_Password" ColumnName="Person_Password" />
           <ScalarProperty Name="Person_Email" ColumnName="Person_Email" />
@@ -505,6 +701,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="ResetPasswordRequests">
       <EntityTypeMapping TypeName="LibraryAssistantModel.ResetPasswordRequest">
         <MappingFragment StoreEntitySet="ResetPasswordRequests">
@@ -523,6 +720,7 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+
     <EntitySetMapping Name="Person_Role">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
         <MappingFragment StoreEntitySet="Person_Role">
@@ -532,6 +730,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
     <EntitySetMapping Name="Booking_Status">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Booking_Status">
         <MappingFragment StoreEntitySet="Booking_Status">
@@ -549,5 +748,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
   </EntityContainerMapping>
 </Mapping>

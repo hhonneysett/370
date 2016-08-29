@@ -17,6 +17,7 @@ namespace LibraryAssistantApp
                         "~/Scripts/base64.js",
                         "~/Scripts/sprintf.js",
                         "~/Scripts/jspdf.js"));
+                        "~/Script/bootbox.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",
@@ -32,7 +33,8 @@ namespace LibraryAssistantApp
                         "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/metisMenu").Include(
-                        "~/Scripts/metisMenu.js"));
+                        "~/Scripts/metisMenu.js",
+                        "~/Scripts/metisMenuScripts.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/bootstrap.css",
@@ -47,6 +49,16 @@ namespace LibraryAssistantApp
                 "~/Scripts/Scheduler/dhtmlxscheduler.js",
                 "~/Scripts/Scheduler/dhtmlxscheduler_agenda_view.js",
                 "~/Scripts/moment.min.js"));
+
+            //checkbox scripts
+            bundles.Add(new ScriptBundle("~/bundles/checkboxjs").Include(
+                "~/Scripts/checkbox.js"));
+            //select rows script
+            bundles.Add(new ScriptBundle("~/bundles/selectrowjs").Include(
+                "~/Script/selectrow.js"));
+            //model script
+            bundles.Add(new ScriptBundle("~/bundles/bootbox").Include(
+                "~/Script/bootbox.js"));
         }
     }
 }

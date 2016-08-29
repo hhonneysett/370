@@ -70,3 +70,13 @@ table tbody tr :hover {
   opacity: 0.4;
   filter: alpha(opacity=40); /* For IE8 and earlier */
 }
+
+/*temporary css for rtable rows*/
+.selectedrow {
+    background-color: #a4d4e6;
+}
+
+.loading {
+    display:none;
+    float: right;
+}
