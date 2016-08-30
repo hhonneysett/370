@@ -2,13 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-<<<<<<< HEAD
-=======
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
->>>>>>> refs/remotes/origin/Gabriel
 using System.Web;
-using System.Web.Mvc;
 
 
 namespace LibraryAssistantApp.Models
@@ -572,7 +568,7 @@ namespace LibraryAssistantApp.Models
         public List<TopicCheck> topic_check { get; set; }
         [Required(ErrorMessage = "Title is required")]
         [Display(Name = "Title")]
-        public int Person_Title { get; set; }
+        public string Person_Title { get; set; }
         [Remote("UserExists", "Employee", ErrorMessage = "Employee does not exists at the university")]
         [Required(ErrorMessage = "Username is required")]
         //[RegularExpression(@"/^([p])([0-9]{8})+$/", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
@@ -592,7 +588,7 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Email Address")]
         public string person_email { get; set; }
         [Display(Name = "Person Type")]
-        public int Person_Type { get; set; }
+        public string Person_Type { get; set; }
     }
     public class RoleCheck
     {

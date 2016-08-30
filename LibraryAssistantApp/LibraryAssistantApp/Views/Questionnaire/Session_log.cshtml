@@ -1,0 +1,50 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.SessionLog>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Person session log</h2>
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Details</div>
+    <div class="panel-body">      
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.Display("Person")
+                </th>
+                <th>
+                    @Html.Display("Amount of session")
+                </th>
+                <th>
+                    @Html.Display("System usage (hours)");
+                </th>
+                <th>Actions</th>
+            </tr>
+
+            
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                           1
+                        </td>
+                        <td>
+                           1
+                        </td>
+                        <td>
+                           1
+                        </td>
+                    </tr>
+                
+            }
+        </table>
+        <input type="button" class="btn btn-default" value="Done" onclick="location.href='@Url.Action("Home", "Index")'" />
+
+    </div>
+</div>

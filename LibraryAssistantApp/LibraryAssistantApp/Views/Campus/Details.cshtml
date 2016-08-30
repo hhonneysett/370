@@ -1,0 +1,26 @@
+﻿@model LibraryAssistantApp.Models.Campus
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Campus</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Campus_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Campus_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <input type="submit" value="Create Building for this campus" class="btn btn-default" onclick="location.href='@Url.Action("Create","Buildings", new { Model.Campus_ID})'" /> | <input type="submit" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index")'" /> 
+</p>

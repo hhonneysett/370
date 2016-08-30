@@ -22,11 +22,13 @@ namespace LibraryAssistantApp.Models
         }
     
         public int Period_Type_ID { get; set; }
-        public string Period_Type_Description { get; set; }
+        public string Description { get; set; }
+        public int HEX_Value { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Calender> Calenders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Calender_Rules> Calender_Rules { get; set; }
+        public virtual Colour Colour { get; set; }
     }
 }

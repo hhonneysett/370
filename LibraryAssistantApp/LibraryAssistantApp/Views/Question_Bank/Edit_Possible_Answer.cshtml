@@ -1,0 +1,247 @@
+﻿@model LibraryAssistantApp.Models.Possible_Answer
+
+@{
+    ViewBag.Title = "Edit_Possible_Answer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Possible Answers</h2>
+
+@Html.Hidden("Question_Seq", (int)ViewBag.Question_Seq, new { id = "Question_Seq" })
+@Html.Hidden("Style_Type_ID", (string)ViewBag.Style_Type_ID, new { id = "Style_Type_ID" })
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h4></h4>Possible answers of existing question</div>
+    <div class="panel-body">
+
+        <div class="col-md-10">
+            @Html.TextBox("QuestionText", (string)ViewBag.Question_Text, htmlAttributes: new { @class = "form-control", id = "QuestionText", @readonly = true })
+
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            <h4>Display Order</h4>
+        </th>
+        <th>
+            <h4>Answer Text</h4>
+        </th>
+    </tr>
+
+    @if (ViewBag.Style_Type_ID == "True or False")
+    {        
+            <tr>
+                <td>
+                    1
+                    @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
+                </td>
+                <td>
+                    @Html.TextBox("Answer_Text1", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1 } })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    2
+                    @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
+                </td>
+                <td>
+                    @Html.TextBox("Answer_Text2", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2 } })
+                </td>
+            </tr>
+
+    }
+    else
+    {
+        <tr>
+            <td>
+                1
+                @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
+            </td>
+            <td>
+                @Html.TextBox("Answer_Text1", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1 } })
+            </td>
+        </tr>
+
+            <tr>
+                <td>
+                    2
+                    @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
+                </td>
+                <td>
+                    @Html.TextBox("Answer_Text2", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2 } })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    3
+                    @Html.Hidden("Display_Order3", 3, new { id = "Display_Order3" })
+                </td>
+                <td>
+                    @Html.TextBox("Answer_Text3", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text3", @value = ViewBag.Answer_Text3 } })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    4
+                    @Html.Hidden("Display_Order4", 4, new { id = "Display_Order4" })
+                </td>
+                <td>
+                    @Html.TextBox("Answer_Text4", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text4", @value = ViewBag.Answer_Text4 } })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    5
+                    @Html.Hidden("Display_Order5", 5, new { id = "Display_Order5" })
+                </td>
+                <td>
+                    @Html.TextBox("Answer_Text5", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text5", @value = ViewBag.Answer_Text5 } })
+                </td>
+            </tr>
+
+    }
+</table>
+
+<input type="submit" value="Submit" class="btn btn-default" onclick="validateInput();" />
+
+<input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Edit", new {ViewBag.id})'" /> <label class="text-danger" id="Error_Topic_Seq"></label>
+
+<script>
+    function RunURL() {
+        var Style_Type_ID = document.getElementById("Style_Type_ID").value;
+
+        if (Style_Type_ID == "True or False") {
+            var Question_Seq = document.getElementById("Question_Seq").value;
+            var Display_Order1 = document.getElementById("Display_Order1").value;
+            var Display_Order2 = document.getElementById("Display_Order2").value;
+            var Answer_Text1 = document.getElementById("Answer_Text1").value;
+            var Answer_Text2 = document.getElementById("Answer_Text2").value;            
+
+            window.location.href = "/Question_Bank/Possible_Answer_Edit_2?Question_Seq=" + Question_Seq + "&Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Answer_Text1=" + Answer_Text1 + "&Answer_Text2=" + Answer_Text2;
+
+        }
+        else {
+
+            var Question_Seq = document.getElementById("Question_Seq").value;
+            var Display_Order1 = document.getElementById("Display_Order1").value;
+            var Display_Order2 = document.getElementById("Display_Order2").value;
+            var Display_Order3 = document.getElementById("Display_Order3").value;
+            var Display_Order4 = document.getElementById("Display_Order4").value;
+            var Display_Order5 = document.getElementById("Display_Order5").value;
+            var Answer_Text1 = document.getElementById("Answer_Text1").value;
+            var Answer_Text2 = document.getElementById("Answer_Text2").value;
+            var Answer_Text3 = document.getElementById("Answer_Text3").value;
+            var Answer_Text4 = document.getElementById("Answer_Text4").value;
+            var Answer_Text5 = document.getElementById("Answer_Text5").value;            
+
+            window.location.href = "/Question_Bank/Possible_Answer_Edit_5?Question_Seq=" + Question_Seq + "&Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Display_Order3=" + Display_Order3 + "&Display_Order4=" + Display_Order4 + "&Display_Order5=" + Display_Order5 + "&Answer_Text1=" + Answer_Text1 + "&Answer_Text2=" + Answer_Text2 + "&Answer_Text3=" + Answer_Text3 + "&Answer_Text4=" + Answer_Text4 + "&Answer_Text5=" + Answer_Text5;
+        }
+    }
+</script>
+
+<script>
+    function validateInput() {
+
+        var Style_Type_ID = document.getElementById("Style_Type_ID").value;
+
+        if (Style_Type_ID == "True or False") {
+            document.getElementById("Error_Topic_Seq").innerHTML = "";
+            var Answer_Text1 = document.getElementById("Answer_Text1").value;
+            var Answer_Text2 = document.getElementById("Answer_Text2").value;
+            if (Answer_Text1 == "" && Answer_Text2 == "") {
+                document.getElementById("Error_Topic_Seq").innerHTML = "Answer text required";
+            }
+            else if (Answer_Text1 == "") {
+                document.getElementById("Error_Topic_Seq").innerHTML = "Answer text required";
+            }
+            else if (Answer_Text2 == "") {
+                document.getElementById("Error_Topic_Seq").innerHTML = "Answer text required";
+            }
+            else {
+                if (Answer_Text1 == Answer_Text2) {
+                    document.getElementById("Error_Topic_Seq").innerHTML = "Answer text required";
+                }
+                else {
+                    RunURL();
+                }
+            }
+        }
+        else {
+            document.getElementById("Error_Topic_Seq").innerHTML = "";
+            var Answer_Text1 = document.getElementById("Answer_Text1").value;
+            var Answer_Text2 = document.getElementById("Answer_Text2").value;
+            var Answer_Text3 = document.getElementById("Answer_Text3").value;
+            var Answer_Text4 = document.getElementById("Answer_Text4").value;
+            var Answer_Text5 = document.getElementById("Answer_Text5").value;
+
+            if (Answer_Text2 != "" && (Answer_Text1 == "")) {
+                document.getElementById("Error_Topic_Seq").innerHTML = "There is a break in list sequence, please revist.";
+            }
+            else if (Answer_Text3 != "" && (Answer_Text2 == "" || Answer_Text1 == "")) {
+                document.getElementById("Error_Topic_Seq").innerHTML = "There is a break in list sequence, please revist.";
+            }
+            else if (Answer_Text4 != "" && (Answer_Text2 == "" || Answer_Text1 == "" || Answer_Text3 == "")) {
+                document.getElementById("Error_Topic_Seq").innerHTML = "There is a break in list sequence, please revist.";
+            }
+            else if (Answer_Text5 != "" && (Answer_Text2 == "" || Answer_Text1 == "" || Answer_Text3 == "" || Answer_Text4 == "")) {
+                document.getElementById("Error_Topic_Seq").innerHTML = "There is a break in list sequence, please revist.";
+            }
+            else {
+                if (Answer_Text1 == "" && Answer_Text2 == "") {
+                    document.getElementById("Error_Topic_Seq").innerHTML = "At least two possible answers are required";
+                }
+                else if (Answer_Text1 != "" && Answer_Text2 == "" && Answer_Text3 == "" && Answer_Text4 == "" && Answer_Text5 == "") {
+                    document.getElementById("Error_Topic_Seq").innerHTML = "At least two possible answers are required";
+                }
+                else {
+                    var unique = "Yes";
+                    if (Answer_Text4 != "" || Answer_Text5 != "") {
+
+                        if (Answer_Text1 == Answer_Text2 || Answer_Text1 == Answer_Text3 || Answer_Text1 == Answer_Text4 || Answer_Text1 == Answer_Text5) {
+                            unique = "No"
+                        }
+                        if (Answer_Text2 == Answer_Text3 || Answer_Text2 == Answer_Text4 || Answer_Text2 == Answer_Text5) {
+                            unique = "No"
+                        }
+                        if (Answer_Text3 == Answer_Text2 || Answer_Text3 == Answer_Text4 || Answer_Text3 == Answer_Text5) {
+                            unique = "No"
+                        }
+                        if (Answer_Text4 == Answer_Text2 || Answer_Text4 == Answer_Text3 || Answer_Text4 == Answer_Text5) {
+                            unique = "No"
+                        }
+                        if (Answer_Text5 == Answer_Text2 || Answer_Text5 == Answer_Text3 || Answer_Text5 == Answer_Text4) {
+                            unique = "No"
+                        }
+                    }
+                    else if (Answer_Text1 != "" && Answer_Text2 != "" && Answer_Text3 == "") {
+                        if (Answer_Text1 == Answer_Text2) {
+                            unique = "No"
+                        }
+                    }
+                    else {
+                        if (Answer_Text1 == Answer_Text2 || Answer_Text1 == Answer_Text3) {
+                            unique = "No"
+                        }
+                        if (Answer_Text2 == Answer_Text3) {
+                            unique = "No"
+                        }
+                    }
+                    if (unique == "Yes") {
+                        RunURL();
+                    }
+                    else {
+                        document.getElementById("Error_Topic_Seq").innerHTML = "All supplied possible answers should be unique";
+                    }
+                }
+
+            }
+        }
+    }
+</script>

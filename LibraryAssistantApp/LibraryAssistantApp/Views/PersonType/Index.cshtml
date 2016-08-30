@@ -7,11 +7,12 @@
 }
 <script>
     $(document).ready(function () {
+        
         $('#result-table-3 tr').click(function () {
             $('#result-table-3 tr').removeClass('selectedrow');
             $(this).addClass('selectedrow');
-            $('.btn-edit').attr('href', '/PersonType/Edit/' + $(this).attr('id'));
-            $('.btn-delete').attr('href', '/PersonType/Delete/' + $(this).attr('id'));
+            $('.btn-edit').attr('href', '/PersonType/Edit/?id=' + $(this).attr('id'));
+            $('.btn-delete').attr('href', '/PersonType/Delete/?id=' + $(this).attr('id'));
         });
     });
 </script>
@@ -42,8 +43,8 @@
     </tr>
 
 @foreach (var item in Model.person_types) {
-    <tr id=@item.Person_Type_ID>
-        <td >
+    <tr id="@item.Person_Type1">
+        <td>
             @Html.DisplayFor(x => item.Person_Type1)
         </td>
     </tr>

@@ -96,7 +96,7 @@
                         </li>
                     </ul>
                 </li>
-                <li>
+                @*<li>
                     <a href="#" aria-expanded="false">
                         <span class="navbar-custom-item-icon fa fa-hospital-o fa-fw"></span>
                         Venues
@@ -112,7 +112,7 @@
                             <a href="#">Update Problem Status</a>
                         </li>
                     </ul>
-                </li>
+                </li>*@
                 <li>
                     <a href="#" aria-expanded="false">
                         <span class="navbar-custom-item-icon fa fa-graduation-cap fa-fw"></span>
@@ -125,9 +125,9 @@
                         <li>
                             @Html.ActionLink("View Library Map", "ViewMap", "Repository")
                         </li>
-                        <li>
+                        @*<li>
                             <a href="#">View Tutorials</a>
-                        </li>
+                        </li>*@
                     </ul>
                 </li>
                 <li>
@@ -137,10 +137,10 @@
                     </a>
                     <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            <a href="#">Create Questionnaire</a>
+                            @Html.ActionLink("Create Questionnaire", "Create", "Questionnaire")
                         </li>
                         <li>
-                            <a href="#">Manage Questionnaires</a>
+                            @Html.ActionLink("Create Questionnaire", "Index", "Questionnaire")
                         </li>
                     </ul>
                 </li>
@@ -171,10 +171,7 @@
                     </a>
                     <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            <a href="#">Employees</a>
-                        </li>
-                        <li>
-                            <a href="#">Members</a>
+                            @Html.ActionLink("Employees", "Index", "Employee")
                         </li>
                         <li>
                             <a href="#">
@@ -183,10 +180,10 @@
                             </a>
                             <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    <a href="#">Questions</a>
+                                    @Html.ActionLink("Questions", "Index", "Question_Bank")
                                 </li>
                                 <li>
-                                    <a href="#">Questionnaire Topics</a>
+                                    @Html.ActionLink("Question Topic", "Index", "Question_Topic")
                                 </li>
                             </ul>
                         </li>
@@ -211,20 +208,20 @@
                             </a>
                             <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    <a href="#">Maintain Venues</a>
+                                    @Html.ActionLink("Maintain Venues", "Index", "Venues")
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="#">Venue Types</a>
-                                </li>
-                                <li>
+                                </li>*@
+                                @*<li>
                                     <a href="#">Characteristics</a>
-                                </li>
-                                <li>
+                                </li>*@
+                                @*<li>
                                     <a href="#">Common Problem Types</a>
                                 </li>
                                 <li>
                                     <a href="#">Common Problems</a>
-                                </li>
+                                </li>*@
                             </ul>
                         </li>
                         <li>
@@ -252,7 +249,7 @@
                         {
                             using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
-                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>                             
                             }
                         }
                         else

@@ -15,6 +15,7 @@ namespace LibraryAssistantApp.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            
             return View();                  
         }
     }

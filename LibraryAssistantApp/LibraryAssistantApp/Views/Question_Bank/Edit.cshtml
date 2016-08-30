@@ -5,50 +5,72 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>Edit Question </h3></div>
+    <div class="panel-body">
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Question_Bank</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Question_Seq)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Question_Text, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" })
+        @using (Html.BeginForm())
+        {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Question Details</h4>
+            <hr />
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Question_Seq)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Question_Text, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Topic_Seq", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Style_Type_ID, "Style Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Style_Type_ID", null, htmlAttributes: new { @class = "form-control" , id = "StyleType_Dropdown"})
+                    @Html.ValidationMessageFor(model => model.Style_Type_ID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Topic_Seq, "Topic_Seq", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Topic_Seq", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Style_Type_ID, "Style_Type_ID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Style_Type_ID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Style_Type_ID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+        <div>
+            <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index")'" /> <label id="Warning"></label>
 </div>
+        }
+    </div>
+</div>
+       
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    
+    $("#StyleType_Dropdown").mouseenter(function () {
+        document.getElementById("Warning").innerHTML = "If the style type is changed then all previously saved possible answers will be deleted and new possible answers must be created."
+        document.getElementById("Warning").style.color = "red";
+    });
+
+        
+        $("#StyleType_Dropdown"). mouseout(function () {
+            document.getElementById("Warning").innerHTML = ""});    
+});
+</script>

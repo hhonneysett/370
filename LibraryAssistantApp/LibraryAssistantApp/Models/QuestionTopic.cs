@@ -14,7 +14,12 @@ namespace LibraryAssistantApp.Models
     public class Question_TopicMetadata
     {
         [Display(Name = "Topic")]
+        [Required]
         public string Topic_Name;
+
+        [Display(Name = "Description")]
+        [Required]
+        public string Description;
 
         [Display(Name = "Topic")]
         public int Topic_Seq { get; set; }

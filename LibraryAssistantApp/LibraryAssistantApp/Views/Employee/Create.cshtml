@@ -160,7 +160,7 @@
                 }).done(function () {
                     $('.loading').hide();
                 });
-                if (a == 31) {
+                if (a == 7) {
                     $.ajax({
                         type: 'GET',
                         url: '@Url.Action("Topics", "Employee")',
@@ -172,7 +172,7 @@
             });
         });
         function myFunction (e) {
-            if ($(e).attr('id') == 31)
+            if ($(e).attr('id') == 7)
             {
                 $('#topic-parent').toggle(400);
             }
