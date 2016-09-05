@@ -185,7 +185,7 @@ namespace LibraryAssistantApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult UpdateDetails(UpdatePersonModel model)
+        public ActionResult UpdateDetails(UpdatePersonModel model, string Title)
         {
             if (ModelState.IsValid)
             {
@@ -201,7 +201,7 @@ namespace LibraryAssistantApp.Controllers
                     registered_Person.Person_Name = model.Person_Name;
                     registered_Person.Person_Surname = model.Person_Surname;
                     registered_Person.Person_Email = model.Person_Email;
-                    registered_Person.Person_Title = model.Person_Title;
+                    registered_Person.Person_Title = Title;
 
 
                     db.Entry(registered_Person).State = EntityState.Modified;

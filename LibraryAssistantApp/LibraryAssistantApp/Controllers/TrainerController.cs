@@ -853,7 +853,7 @@ namespace LibraryAssistantApp.Controllers
                                     select a.Person_ID).ToList();
 
 
-            var trainerTopics = (from a in db.Person_Topic
+            var trainerTopics = (from a in db.Trainer_Topic
                                 where a.Topic_Seq.Equals(session.Topic_ID)
                                 select a.Registered_Person).ToList();
 

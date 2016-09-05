@@ -10,19 +10,20 @@ using LibraryAssistantApp.Models;
 
 namespace LibraryAssistantApp.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class QuestionnaireController : Controller
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
 
         // GET: Questionnaire
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
             var questionnaires = db.Questionnaires.Include(q => q.Question_Topic);
             return View(questionnaires.ToList());
         }
-        [Authorize(Roles ="Admin, Employee, Student")]
+        [Authorize]
         public ActionResult Respond_to_questionnaire()
         {
             ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
@@ -36,7 +37,7 @@ namespace LibraryAssistantApp.Controllers
         //    var questionnaires = db.Questionnaires.Include(q => q.Question_Topic);
         //    return View(questionnaires.ToList());
         //}
-        [Authorize(Roles = "Admin, Employee, Student")]
+        [Authorize]
         public ActionResult Respond_to_questionnaire_Search(string Search, int? Topic, string Assessment_Type)
         {
             ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic);
@@ -179,7 +180,7 @@ namespace LibraryAssistantApp.Controllers
                 return View("Index", questionnaires.ToList());
             }
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Questionnaire/Details/5
         public ActionResult Details(int? id)
         {
@@ -449,7 +450,7 @@ namespace LibraryAssistantApp.Controllers
 
             return View("Answer_Questionnaire");
         }
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Preview(string Name)
         {
             Questionnaire questionnaire = db.Questionnaires.Where(X => X.Name == Name).Single();
@@ -693,7 +694,7 @@ namespace LibraryAssistantApp.Controllers
             return View("Preview");
         }
 
-
+        [Authorize(Roles = "Admin")]
         // GET: Questionnaire/Create
         public ActionResult Create()
         {
@@ -830,7 +831,7 @@ namespace LibraryAssistantApp.Controllers
 
 
 
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Create_Questionnaire_Questions(int Display_Order1, int Display_Order2, int Display_Order3, int Display_Order4, int Display_Order5, string SelectedQuestion1, string SelectedQuestion2, string SelectedQuestion3, string SelectedQuestion4, string SelectedQuestion5, string SelectedQ_Checkbox1, string SelectedQ_Checkbox2, string SelectedQ_Checkbox3, string SelectedQ_Checkbox4, string SelectedQ_Checkbox5, int Questionnaire_ID)
         {
 
@@ -924,7 +925,7 @@ namespace LibraryAssistantApp.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Search_QQuestions(string A_New_Name, string Name, string Description, DateTime Active_From, DateTime Active_To, string Assessment_Type, int Topic, string SelectedQuestion1, string SelectedQuestion2, string SelectedQuestion3, string SelectedQuestion4, string SelectedQuestion5, string SelectedQ_Checkbox1, string SelectedQ_Checkbox2, string SelectedQ_Checkbox3, string SelectedQ_Checkbox4, string SelectedQ_Checkbox5, int Questionnaire_ID)
         {
             IEnumerable<Question_Bank> questions = db.Question_Bank.Where(X => X.Topic_Seq == Topic && X.Question_Text.Contains(A_New_Name)).ToList();
@@ -952,7 +953,7 @@ namespace LibraryAssistantApp.Controllers
 
             return View("Questionnaire_Questions");
         }
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Search_Edit_QQuestions(string A_New_Name, int Topic, string SelectedQuestion1, string SelectedQuestion2, string SelectedQuestion3, string SelectedQuestion4, string SelectedQuestion5, string SelectedQ_Checkbox1, string SelectedQ_Checkbox2, string SelectedQ_Checkbox3, string SelectedQ_Checkbox4, string SelectedQ_Checkbox5, int Questionnaire_ID, string Edit_or_New)
         {
             IEnumerable<Question_Bank> questions = db.Question_Bank.Where(X => X.Topic_Seq == Topic && X.Question_Text.Contains(A_New_Name)).ToList();
@@ -980,7 +981,7 @@ namespace LibraryAssistantApp.Controllers
         // POST: Questionnaire/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Creating(string Name, string Description, DateTime Active_From, DateTime Active_To, string Assessment_Type, int Topic)
         {
 
@@ -1051,7 +1052,7 @@ namespace LibraryAssistantApp.Controllers
                 }
             }
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Questionnaire/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -1074,7 +1075,7 @@ namespace LibraryAssistantApp.Controllers
             return View("Edit", questionnaire);
 
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Questionnaire/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.      
@@ -1344,7 +1345,7 @@ namespace LibraryAssistantApp.Controllers
             }
             
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Questionnaire/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -1372,7 +1373,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.id = id;
             return View(questionnaire);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Questionnaire/Delete/5        
         public ActionResult DeleteConfirmed(int id)
         {

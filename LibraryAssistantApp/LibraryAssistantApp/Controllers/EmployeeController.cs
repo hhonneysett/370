@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using LibraryAssistantApp.Models;
 using System.Web.Security;
+using System.Net.Mail;
 
 namespace LibraryAssistantApp.Controllers
 {
@@ -230,10 +231,23 @@ namespace LibraryAssistantApp.Controllers
                 {
 
                 }
-                   
 
-                
-                    db.SaveChanges();
+                MailMessage message = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;
+
+                message.From = new MailAddress("uplibraryassistant@gmail.com");
+                message.To.Add(viewModel.person_email);
+                message.Subject = "Employee Register";
+                message.Body = "Hi, you have been registered to UP Library Assistant by an Admin, use your UP username to login, your password is: " + password;
+                message.IsBodyHtml = true;
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = true;
+                client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+                client.Send(message);
+
+                db.SaveChanges();
                     TempData["SuccessMsg"] = "New employee created successfully";
                     return RedirectToAction("Index");
                 }
@@ -415,7 +429,7 @@ namespace LibraryAssistantApp.Controllers
                     TempData["Disabled"] = true;
                 }
                 var admin = from p in db.Person_Role
-                                  where p.Person_ID == id && p.Role_ID == 1
+                                  where p.Person_ID == id && p.Role_ID == 5
                                   select p;
                 if (admin != null)
                 {
@@ -424,7 +438,7 @@ namespace LibraryAssistantApp.Controllers
                 }
 
                 var superadmin = from s in db.Person_Role
-                                  where s.Person_ID == id && s.Role_ID == 1
+                                  where s.Person_ID == id && s.Role_ID == 5
                                   select s;
 
                 if (superadmin != null)
@@ -465,8 +479,6 @@ namespace LibraryAssistantApp.Controllers
             {
                 return View(viewModel);
             }
-
-            return View("Index");
         }
     }
 }

@@ -80,7 +80,7 @@
                     });
                 },
                 error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
+                    alert("No Topic Selected");
                 }
             });
         })
@@ -98,7 +98,7 @@
                     $("#favouriteTopicSelect").append($("<option />").val(id).text(text));
                 },
                 error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
+                    alert("No Topic Selected" + err.responseText);
                 }
             });
         })
@@ -116,7 +116,7 @@
                     $("#availTopicsSelect").append($("<option />").val(id).text(text));
                 },
                 error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
+                    alert("No Topic Selected");
                 }
             });
         })

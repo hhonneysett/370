@@ -149,13 +149,11 @@ function displayCalendar(inputId, inputType) {
                         "Update Booking Status": {
                             click: function () {
                                 var selectList = $("#bookingStatusList").val();
-                                alert(selectList);
                                 $.ajax({
                                     type: 'GET',
                                     url: '/Booking/updateStatus',
                                     data: "status=" + selectList,
                                     success: function (result) {
-                                        alert("Captured");
                                         $("#bookingDetailsForm").dialog("close");
                                         displayCalendar(inputId, inputType);
                                     },
@@ -342,7 +340,7 @@ $(document).ready(function () {
                     $('#availableVenues').replaceWith(result);
 
                     //toggle the session details section
-                    $("#toggleMain").toggle(800);
+                    $("#toggleMain").hide(800);
                     $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-bottom");
                     $("#detailsTop span").addClass("glyphicon glyphicon-triangle-right");
 
@@ -409,7 +407,7 @@ $(document).ready(function () {
 
     //toggle details when clicked
     $("#detailsTop").click(function () {
-        $("#toggleMain").toggle(800);
+        $("#toggleMain").show(800);
         if ($("#detailsTop span").hasClass("glyphicon glyphicon-triangle-right")) {
             $("#detailsTop span").removeClass("glyphicon glyphicon-triangle-right");
             $("#detailsTop span").addClass("glyphicon glyphicon-triangle-bottom");

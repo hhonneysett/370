@@ -140,7 +140,7 @@
                             @Html.ActionLink("Create Questionnaire", "Create", "Questionnaire")
                         </li>
                         <li>
-                            @Html.ActionLink("Create Questionnaire", "Index", "Questionnaire")
+                            @Html.ActionLink("View All Questionnaires", "Index", "Questionnaire")
                         </li>
                     </ul>
                 </li>
@@ -161,6 +161,9 @@
                         </li>
                         <li>
                             @Html.ActionLink("Venue Usage Log", "venueUsage", "Reporting")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Training Attendance Log", "trainingAttendance", "Reporting")
                         </li>
                     </ul>
                 </li>
@@ -231,10 +234,10 @@
                             </a>
                             <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    @Html.ActionLink("Courses", "viewCategory", "Trainer")
+                                    @Html.ActionLink("Manage Categories", "viewCategory", "Trainer")
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Courses", "viewTopic", "Trainer")
+                                    @Html.ActionLink("Manage Topics", "viewTopic", "Trainer")
                                 </li>
                             </ul>
                         </li>
