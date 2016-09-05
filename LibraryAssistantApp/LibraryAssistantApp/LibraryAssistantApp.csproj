@@ -251,7 +251,6 @@
     <Content Include="Scripts\jquery-ui-1.12.0.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.min.js" />
     <Content Include="Scripts\jquery.timepicker.min.js" />
-	
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\lang-all.js" />
@@ -303,7 +302,6 @@
     <Content Include="Scripts\lang\vi.js" />
     <Content Include="Scripts\lang\zh-cn.js" />
     <Content Include="Scripts\lang\zh-tw.js" />
-
     <Content Include="Scripts\loginForm.js" />
     <Content Include="Scripts\metisMenuScripts.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
@@ -327,11 +325,8 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
-
     <Content Include="Scripts\Scheduler\dhtmlxscheduler_agenda_view.js" />
-
     <Content Include="Scripts\selectrow.js" />
-
     <Content Include="Scripts\siteScripts.js" />
     <Content Include="Scripts\timepickerInt.js" />
     <Content Include="Web.config" />
@@ -341,25 +336,25 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookingController.cs" />
-
+    <Compile Include="Controllers\BuildingsController.cs" />
+    <Compile Include="Controllers\Building_FloorController.cs" />
+    <Compile Include="Controllers\CampusController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
-
     <Compile Include="Controllers\EmployeeController.cs" />
-
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
     <Compile Include="Controllers\PersonTypeController.cs" />
+    <Compile Include="Controllers\QuestionnaireController.cs" />
+    <Compile Include="Controllers\Question_BankController.cs" />
+    <Compile Include="Controllers\Question_TopicController.cs" />
     <Compile Include="Controllers\RegisteredPersonController.cs" />
     <Compile Include="Controllers\ReportingController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
-
     <Compile Include="Controllers\TrainerController.cs" />
     <Compile Include="Controllers\ValidateController.cs" />
-
     <Compile Include="Controllers\RoleController.cs" />
-
-    <Compile Include="Controllers\VenueController.cs" />
+    <Compile Include="Controllers\VenuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -438,9 +433,6 @@
     <Compile Include="Models\findBookingVenues_Result.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\findBookingVenues_Result1.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\HtmlExtensions.cs" />
     <Compile Include="Models\JobScheduler.cs" />
     <Compile Include="Models\LibraryAssistantModel.Context.cs">
@@ -493,15 +485,18 @@
     <Compile Include="Models\Person_Type.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PossibleAnswer.cs" />
     <Compile Include="Models\Possible_Answer.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuestionBank.cs" />
     <Compile Include="Models\Questionnaire.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Questionnaire_Questions.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuestionTopic.cs" />
     <Compile Include="Models\Question_Bank.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
@@ -523,10 +518,8 @@
     <Compile Include="Models\spResetPasswordFunc_Result.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StyleType.cs" />
     <Compile Include="Models\Style_Type.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Topic.cs">
@@ -553,13 +546,11 @@
     <Compile Include="Models\Venue_Problem.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Venue_Role.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Venue_Type.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels.cs" />
+    <Compile Include="Models\_Questionnaire.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -604,14 +595,9 @@
     <Content Include="Views\Repository\GetTutorials.cshtml" />
     <Content Include="Views\Booking\ViewBookings.cshtml" />
     <Content Include="Views\Booking\BookDiscussionRoom.cshtml" />
-    <Content Include="Views\Venue\ViewCampus.cshtml" />
-    <Content Include="Views\Venue\AddCampus.cshtml" />
-    <Content Include="Views\Venue\UpdateCampus.cshtml" />
-    <Content Include="Views\Venue\DeleteCampus.cshtml" />
     <Content Include="Views\Booking\GetDiscussionRoomVenues.cshtml" />
     <Content Include="Views\Booking\confirmDetails.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-
     <Content Include="Views\Booking\getBookingDetails.cshtml" />
     <Content Include="Views\Booking\cancelBooking.cshtml" />
     <Content Include="Views\Booking\employeeViewBookings.cshtml" />
@@ -655,7 +641,6 @@
     <Content Include="Views\Reporting\personSessionAction.cshtml" />
     <Content Include="Views\Reporting\venueUsage.cshtml" />
     <Content Include="Views\Reporting\trainingAttendance.cshtml" />
-
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\Edit.cshtml" />
@@ -674,7 +659,50 @@
     <Content Include="Views\Employee\Topics.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\Delete.cshtml" />
-
+    <Content Include="Views\Venues\Create.cshtml" />
+    <Content Include="Views\Venues\Delete.cshtml" />
+    <Content Include="Views\Venues\Details.cshtml" />
+    <Content Include="Views\Venues\Edit.cshtml" />
+    <Content Include="Views\Venues\Index.cshtml" />
+    <Content Include="Views\Building_Floor\Create.cshtml" />
+    <Content Include="Views\Building_Floor\Delete.cshtml" />
+    <Content Include="Views\Building_Floor\Details.cshtml" />
+    <Content Include="Views\Building_Floor\Edit.cshtml" />
+    <Content Include="Views\Building_Floor\Index.cshtml" />
+    <Content Include="Views\Buildings\Create.cshtml" />
+    <Content Include="Views\Buildings\Delete.cshtml" />
+    <Content Include="Views\Buildings\Details.cshtml" />
+    <Content Include="Views\Buildings\Edit.cshtml" />
+    <Content Include="Views\Buildings\Index.cshtml" />
+    <Content Include="Views\Campus\Create.cshtml" />
+    <Content Include="Views\Campus\Delete.cshtml" />
+    <Content Include="Views\Campus\Details.cshtml" />
+    <Content Include="Views\Campus\Edit.cshtml" />
+    <Content Include="Views\Campus\Index.cshtml" />
+    <Content Include="Views\Question_Bank\Create.cshtml" />
+    <Content Include="Views\Question_Bank\Delete.cshtml" />
+    <Content Include="Views\Question_Bank\Edit.cshtml" />
+    <Content Include="Views\Question_Bank\Edit_Possible_Answer.cshtml" />
+    <Content Include="Views\Question_Bank\Index.cshtml" />
+    <Content Include="Views\Question_Bank\Possible_Answer.cshtml" />
+    <Content Include="Views\Question_Bank\_Create.cshtml" />
+    <Content Include="Views\Question_Bank\_PossibleAnswer.cshtml" />
+    <Content Include="Views\Question_Topic\Create.cshtml" />
+    <Content Include="Views\Question_Topic\Delete.cshtml" />
+    <Content Include="Views\Question_Topic\Edit.cshtml" />
+    <Content Include="Views\Question_Topic\Edit_Some_More.cshtml" />
+    <Content Include="Views\Question_Topic\Index.cshtml" />
+    <Content Include="Views\Questionnaire\Answer_Questionnaire.cshtml" />
+    <Content Include="Views\Questionnaire\Create.cshtml" />
+    <Content Include="Views\Questionnaire\Delete.cshtml" />
+    <Content Include="Views\Questionnaire\Details.cshtml" />
+    <Content Include="Views\Questionnaire\Edit.cshtml" />
+    <Content Include="Views\Questionnaire\Edit_Questionnaire_Questions.cshtml" />
+    <Content Include="Views\Questionnaire\Index.cshtml" />
+    <Content Include="Views\Questionnaire\Preview.cshtml" />
+    <Content Include="Views\Questionnaire\Questionnaire_Questions.cshtml" />
+    <Content Include="Views\Questionnaire\Respond_to_questionnaire.cshtml" />
+    <Content Include="Views\Questionnaire\Session_log.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

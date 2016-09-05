@@ -6,9 +6,11 @@ using System.Web;
 using System.Web.Mvc;
 using LibraryAssistantApp.Models;
 using System.Web.Security;
+using System.Net.Mail;
 
 namespace LibraryAssistantApp.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class EmployeeController : Controller
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
@@ -16,15 +18,14 @@ namespace LibraryAssistantApp.Controllers
         {
             var viewModel = new EmployeeIndexModel();
             viewModel.registered_person = db.Registered_Person
-                .Include(i => i.Person_Title).Include(t => t.Person_Type)
-                    .Where(t => t.Person_Type.Person_Type1.ToLower() == "employee");
+                    .Where(t => t.Person_Type.ToLower() == "employee");
             ViewBag.personTitle = db.Person_Title;
             viewModel.registered_person = from q in viewModel.registered_person
                             where ((string.IsNullOrEmpty(username) ? true : q.Person_ID.ToLower().StartsWith(username.ToLower())) &&
                                     (string.IsNullOrEmpty(name) ? true : q.Person_Name.ToLower().StartsWith(name.ToLower())) &&
                                     (string.IsNullOrEmpty(surname) ? true : q.Person_Surname.ToLower().StartsWith(surname.ToLower())) &&
                                     (string.IsNullOrEmpty(email) ? true : q.Person_Email.ToLower().StartsWith(email.ToLower())) &&
-                                    (string.IsNullOrEmpty(title) ? true : q.Person_Title.Person_Title1.ToLower().StartsWith(title.ToLower())))
+                                    (string.IsNullOrEmpty(title) ? true : q.Person_Title.ToLower().StartsWith(title.ToLower())))
                             select q;
             return View(viewModel);
         }
@@ -55,8 +56,8 @@ namespace LibraryAssistantApp.Controllers
         {
             TempData["_Categories"] = from c in db.Categories
                                       select c;
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1");
-            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
             ViewBag.Check1 = false;
             if (!db.Registered_Person.Any(x => x.Person_ID.StartsWith("p")))
             {
@@ -197,8 +198,8 @@ namespace LibraryAssistantApp.Controllers
                     emp.Person_ID = viewModel.person_id;
                     emp.Person_Name = viewModel.person_name;
                     emp.Person_Surname = viewModel.person_surname;
-                    emp.Title_ID = viewModel.Person_Title;
-                    emp.Person_Type_ID = viewModel.Person_Type;
+                    emp.Person_Title = viewModel.Person_Title;
+                    emp.Person_Type = "Employee";
                     emp.Person_Password = hashed;
                     emp.Person_Registration_DateTime = DateTime.Now;
                     emp.Person_Email = viewModel.person_email;
@@ -213,6 +214,8 @@ namespace LibraryAssistantApp.Controllers
                             db.Person_Role.Add(prole);
                         }
                     }
+                try
+                {
                     foreach (var item in viewModel.topic_check)
                     {
                         var trainertopic = new Trainer_Topic();
@@ -223,8 +226,28 @@ namespace LibraryAssistantApp.Controllers
                             db.Trainer_Topic.Add(trainertopic);
                         }
                     }
-                
-                    db.SaveChanges();
+                }
+                catch
+                {
+
+                }
+
+                MailMessage message = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;
+
+                message.From = new MailAddress("uplibraryassistant@gmail.com");
+                message.To.Add(viewModel.person_email);
+                message.Subject = "Employee Register";
+                message.Body = "Hi, you have been registered to UP Library Assistant by an Admin, use your UP username to login, your password is: " + password;
+                message.IsBodyHtml = true;
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = true;
+                client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
+                client.Send(message);
+
+                db.SaveChanges();
                     TempData["SuccessMsg"] = "New employee created successfully";
                     return RedirectToAction("Index");
                 }
@@ -240,8 +263,8 @@ namespace LibraryAssistantApp.Controllers
                 rolechecklist.Add(roleCheck);
             }
             viewModel.role_check = rolechecklist;
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1", viewModel.Person_Title);
-            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", viewModel.Person_Title);
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
             return View(viewModel);
         }
 
@@ -291,7 +314,7 @@ namespace LibraryAssistantApp.Controllers
                     var topiccheck = new TrainerTopicCheck();
                     topiccheck.topic_seq = item.Topic_Seq;
                     topiccheck.topic_name = item.Topic_Name;
-                    topiccheck.topic_description = item.Topic_Description;
+                    topiccheck.topic_description = item.Description;
                     foreach (var tt in viewModel.trainer_topic)
                     {
                        topiccheck.personid = id;
@@ -306,13 +329,13 @@ namespace LibraryAssistantApp.Controllers
                                               select t).ToList();
                 TempData["Check1"] = true;
             }
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1");
-            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(string id, EmployeeEditModel viewModel, string Password_, int Person_Title)
+        public ActionResult Edit(string id, EmployeeEditModel viewModel, string Password_, string Person_Title)
         {
 
             TempData["ErrorMsg"] = "Not enough permissionb to update employee roles";
@@ -324,8 +347,8 @@ namespace LibraryAssistantApp.Controllers
                 rp.Person_Name = viewModel.registered_person.Person_Name;
                 rp.Person_Surname = viewModel.registered_person.Person_Surname;
                 rp.Person_Email = viewModel.registered_person.Person_Email;
-                rp.Title_ID = Person_Title;
-                rp.Person_Type_ID = 2;
+                rp.Person_Title = Person_Title;
+                rp.Person_Type = "Employee";
                 if (Password_.Equals("true"))
                 {
                     string password = Membership.GeneratePassword(8, 1);
@@ -357,8 +380,8 @@ namespace LibraryAssistantApp.Controllers
                 db.SaveChanges();
             }
             TempData["Check2"] = false;
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Title_ID", "Person_Title1");
-            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type_ID", "Person_Type1", 2);
+            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
+            ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
             return RedirectToAction("Index");
         }
 
@@ -406,7 +429,7 @@ namespace LibraryAssistantApp.Controllers
                     TempData["Disabled"] = true;
                 }
                 var admin = from p in db.Person_Role
-                                  where p.Person_ID == id && p.Role_ID == 1
+                                  where p.Person_ID == id && p.Role_ID == 5
                                   select p;
                 if (admin != null)
                 {
@@ -415,7 +438,7 @@ namespace LibraryAssistantApp.Controllers
                 }
 
                 var superadmin = from s in db.Person_Role
-                                  where s.Person_ID == id && s.Role_ID == 1
+                                  where s.Person_ID == id && s.Role_ID == 5
                                   select s;
 
                 if (superadmin != null)
@@ -425,7 +448,7 @@ namespace LibraryAssistantApp.Controllers
                 }
 
                 Registered_Person rp = db.Registered_Person.Find(id);
-                if (viewModel.registered_person == null)
+                if (rp == null)
                 {
                     return HttpNotFound();
                 }
@@ -445,6 +468,8 @@ namespace LibraryAssistantApp.Controllers
                     Trainer_Topic trainer = db.Trainer_Topic.Find(a.Trainer_Topic_ID);
                     db.Trainer_Topic.Remove(trainer);
                 }
+                    Registered_Person regperson = db.Registered_Person.Find(id);
+                    db.Registered_Person.Remove(regperson);
 
                 db.SaveChanges();
 
@@ -454,8 +479,6 @@ namespace LibraryAssistantApp.Controllers
             {
                 return View(viewModel);
             }
-
-            return View("Index");
         }
     }
 }

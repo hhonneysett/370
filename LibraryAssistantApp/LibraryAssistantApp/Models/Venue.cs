@@ -21,12 +21,8 @@ namespace LibraryAssistantApp.Models
             this.Questionnaires = new HashSet<Questionnaire>();
             this.Venue_Characteristic = new HashSet<Venue_Characteristic>();
             this.Venue_Problem = new HashSet<Venue_Problem>();
-
             this.Roles = new HashSet<Role>();
             this.Venue_Booking = new HashSet<Venue_Booking>();
-
-            this.Venue_Role = new HashSet<Venue_Role>();
-
         }
     
         public int Campus_ID { get; set; }
@@ -35,6 +31,7 @@ namespace LibraryAssistantApp.Models
         public int Venue_ID { get; set; }
         public string Venue_Name { get; set; }
         public string Venue_Type { get; set; }
+        public int Capacity { get; set; }
     
         public virtual Building_Floor Building_Floor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -47,12 +44,8 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Problem> Venue_Problem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
         public virtual ICollection<Role> Roles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Booking> Venue_Booking { get; set; }
-
-        public virtual ICollection<Venue_Role> Venue_Role { get; set; }
-
     }
 }

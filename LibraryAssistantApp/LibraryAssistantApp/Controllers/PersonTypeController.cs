@@ -8,6 +8,7 @@ using System.Data.Entity;
 
 namespace LibraryAssistantApp.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class PersonTypeController : Controller
     {
         LibraryAssistantEntities db = new LibraryAssistantEntities();
@@ -16,7 +17,7 @@ namespace LibraryAssistantApp.Controllers
             TempData["ErrorMsg"] = "";
             var model = new PersonTypeModel();
             model.person_types = (from t in db.Person_Type
-                     select t);
+                     select t).ToList();
 
             if (search != null)
             {
@@ -71,7 +72,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
             TempData["ErrorMsg"] = "";
             if (id == null)
@@ -89,7 +90,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, PersonTypeEditModel model)
+        public ActionResult Edit(string id, PersonTypeEditModel model)
         {
             TempData["ErrorMsg"] = "";
             TempData["SuccessMsg"] = "";
@@ -117,7 +118,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(string id)
         {
             TempData["ErrorMsg"] = "";
             TempData["Disabled"] = false;
@@ -135,7 +136,7 @@ namespace LibraryAssistantApp.Controllers
                 return HttpNotFound();
             }
             var query = from q in db.Registered_Person
-                        where q.Person_Type_ID == id
+                        where q.Person_Type == id
                         select q;
             if (query.Count() != 0)
             {
@@ -148,7 +149,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id, PersonTypeEditModel model)
+        public ActionResult DeleteConfirmed(string id, PersonTypeEditModel model)
         {
             TempData["SuccessMsg"] = "";
             TempData["Disabled"] = false;
@@ -160,7 +161,7 @@ namespace LibraryAssistantApp.Controllers
                 return HttpNotFound();
             }
             var query = from q in db.Registered_Person
-                        where q.Person_Type_ID == id
+                        where q.Person_Type == id
                         select q;
             if (query.Count() != 0)
             {

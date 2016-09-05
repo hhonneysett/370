@@ -1,0 +1,30 @@
+﻿@model LibraryAssistantApp.Models.Possible_Answer
+
+@{
+    ViewBag.Title = "Possible_Answer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Possible Answers</h2>
+
+@Html.Hidden("Topic_Name", (string)ViewBag.Topic_Name, new { id = "Topic_Name" })
+@Html.Hidden("Topic_Des", (string)ViewBag.Topic_Des, new { id = "Topic_Des" })
+@Html.Hidden("Question_Seq", (int)ViewBag.Question_Seq, new { id = "Question_Seq" })
+@Html.Hidden("Style_Type_ID", (string)ViewBag.Style_Type_ID, new { id = "Style_Type_ID" })
+@Html.Hidden("NewTopic", (string)ViewBag.NewTopic, new { id = "NewTopic" })
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>Add possible answers</h4></div>
+    <div class="panel-body">
+      
+                <div class="col-md-10">
+                    @Html.TextBox("QuestionText", (string)ViewBag.Question_Text, htmlAttributes: new { @class = "form-control", id = "QuestionText", @readonly = true })
+
+                </div>
+            </div>
+        </div>
+              
+        @Html.Partial("_PossibleAnswer")
+
+
+

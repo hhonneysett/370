@@ -16,7 +16,7 @@ namespace LibraryAssistantApp
                         "~/Scripts/tableExport.js",
                         "~/Scripts/base64.js",
                         "~/Scripts/sprintf.js",
-                        "~/Scripts/jspdf.js"));
+                        "~/Scripts/jspdf.js",
                         "~/Script/bootbox.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

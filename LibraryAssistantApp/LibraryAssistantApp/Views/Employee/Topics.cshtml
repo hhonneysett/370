@@ -10,7 +10,7 @@
                         Topic
                     </th>
                     <th>
-                        Topic Description
+                        Select
                     </th>
                 </tr>
             </thead>
@@ -21,9 +21,6 @@
                         @Html.HiddenFor(m => m.topic_check[i].topic_sec)
                         <td>
                             @Html.DisplayFor(m => Model.topic_category[i].Topic.Topic_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => Model.topic_category[i].Topic.Topic_Description)
                         </td>
                         <td>
                             @Html.CheckBoxFor(m => Model.topic_check[i].topic_ind)

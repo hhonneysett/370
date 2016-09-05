@@ -10,6 +10,7 @@ using System.Net;
 
 namespace LibraryAssistantApp.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class RoleController : Controller
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
@@ -319,9 +320,6 @@ namespace LibraryAssistantApp.Controllers
                              where p.Role_ID == id
                              select p;
 
-            var venueRole = from v in db.Venue_Role
-                            where v.Role_ID == id
-                            select v;
 
             if (rolePerson.Count() != 0)
             {
@@ -329,13 +327,8 @@ namespace LibraryAssistantApp.Controllers
                 TempData["Disabled"] = true;
                 return View(roleModel);
             }
-            if (venueRole.Count() != 0)
-            {
-                ViewBag.ErrorMsg = "Role cannot be deleted becuase there are venues assigned to the role";
-                TempData["Disabled"] = true;
-                return View(roleModel);
-            }
-            return View(roleModel);
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost, ActionName("Delete")]
@@ -347,10 +340,6 @@ namespace LibraryAssistantApp.Controllers
                                  where p.Role_ID == id
                                  select p;
 
-                var venueRole = from v in db.Venue_Role
-                                where v.Role_ID == id
-                                select v;
-
                 ViewBag.ErrorMsg = "Are you sure you want to delete?";
                 TempData["Disabled"] = false;
                 if (rolePerson.Count() != 0)
@@ -359,12 +348,7 @@ namespace LibraryAssistantApp.Controllers
                     TempData["Disabled"] = true;
                     return View(roleEdit);
                 }
-                if (venueRole.Count() != 0)
-                {
-                    ViewBag.ErrorMsg = "Role cannot be deleted becuase there are venues assigned to the role";
-                    TempData["Disabled"] = true;
-                    return View(roleEdit);
-                }
+
                 Role r = db.Roles.Find(id);
 
                 if (roleEdit.role == null)
