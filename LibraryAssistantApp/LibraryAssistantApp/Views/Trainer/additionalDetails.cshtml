@@ -1,0 +1,100 @@
+﻿@using LibraryAssistantApp.Models
+
+@{ 
+    var venue = (Venue)Session["venueSelect"];
+}
+
+<div id="additionalDetails" class="row col-md-12">
+
+    <div id="addDetailsTop"><span id="venueArrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Addition Details:</b></div>
+
+    <hr />
+
+    <form id="form2">
+        <div class="col-md-6">
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Training Session Description</b>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="description" placeholder="Enter Description" name="description" />
+                </div>                
+            </div>
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Maximum Attendees</b>
+                <div class="col-md-8">
+                    <input type="number" min="1" max="@venue.Capacity" id="maxAtt" class="form-control" placeholder="Enter Max Attendees" value="@venue.Capacity" name="attendance"/>
+                </div>               
+            </div>
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Confirmation Status</b>
+                <div class="col-md-8">
+                    <select id="confirmationStatus" class="form-control" name="confirmation">
+                        <option disabled selected value>--select status--</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Tentative">Tentative</option>
+                    </select>
+                </div>               
+            </div>
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Privacy Status</b>
+                <div class="col-md-8">
+                    <select id="privacyStatus" class="form-control" name="privacy">
+                        <option disabled selected value>--select privacy status--</option>
+                        <option value="Public">Public</option>
+                        <option value="Private">Private</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <b class="control-label col-md-4">Notify Students of Training Session Addition</b>
+                <div class="col-md-8">
+                    <select id="notifySelect" class="form-control" name="notify">
+                        <option disabled selected value>--select notificaiton--</option>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+ 
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Repeat Type
+            </div>
+            <div class="panel-body">
+                <select id="repeatType" class="form-control" onchange="getRepeatType()">
+                    <option value="none">None</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+
+                <div id="repeatToggle" style="display:none">
+                    <hr />
+
+                    <div class="" id="repeatTimesPanel">
+                        <text class="control-label">Times To Repeat</text>
+                        <input type="number" class="form-control" min="2" max="54" id="repeatTimes" onkeyup="checkRepeat()" onmouseup="checkRepeat()" />
+
+                        <div style="display:none" id="repeatErrorDiv" class="text-center">
+                            <hr />
+                            <span id="repeatError"></span><text id="repeatText" class="success text-center"></text>
+                        </div>                       
+                    </div>
+                </div>                
+            </div>           
+        </div>
+    </div>
+
+    <div class="row col-md-12">
+        <input id="btnFinal" type="button" class="btn btn-default" value="Submit" onclick="submitTrainingSession()" />
+    </div>
+
+</div>

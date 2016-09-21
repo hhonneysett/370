@@ -1,0 +1,31 @@
+﻿@model LibraryAssistantApp.Models.PersonTypeAddModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Create Person Type</h3>
+<hr/>
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.person_type, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.person_type, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.person_type, "", new { @class = "text-danger" })
+                <span class="text-danger">@ViewBag.ErrorMsg</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" /> 
+            </div>
+        </div>
+    </div>
+    @Html.ActionLink("Back to List", "Index")
+}

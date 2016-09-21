@@ -23,3 +23,12 @@
     });
 })(jQuery);
 
+$(document).on('click', function (event) {
+    var container = $("#menu");
+    if (!container.is(event.target)
+        && container.has(event.target).length === 0) {
+        $("li").removeClass("active");
+        $("ul").removeClass("in");
+        $("li").attr("aria-expanded", "false");
+    }
+});

@@ -77,7 +77,7 @@
     this.init();
   };
 
-  MetisMenu.TRANSITION_DURATION = 350;
+  MetisMenu.TRANSITION_DURATION = 200;
 
   MetisMenu.DEFAULTS = {
     toggle: true,
@@ -214,7 +214,7 @@
         .addClass(collapseClass + ' ' + collapseInClass)
         .height('')
         .attr('aria-expanded', true);
-      this.transitioning = 0;
+      this.transitioning =0;
     };
     if (!$transition) {
       return complete.call(this);

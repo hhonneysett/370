@@ -20,6 +20,7 @@ namespace LibraryAssistantApp.Models
         public bool Delete_Ind { get; set; }
         public int Action_ID { get; set; }
         public int Role_ID { get; set; }
+        public int RoleAction_ID { get; set; }
     
         public virtual Action Action { get; set; }
         public virtual Role Role { get; set; }

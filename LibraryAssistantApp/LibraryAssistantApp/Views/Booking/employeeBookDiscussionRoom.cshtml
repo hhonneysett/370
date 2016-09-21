@@ -1,8 +1,8 @@
-﻿@model LibraryAssistantApp.Models.DiscussionRoomBooking
+﻿@model LibraryAssistantApp.Models.EmpDiscussionRoomBooking
 
 @{
     ViewBag.Title = "BookDiscussionRoom";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
 }
 
 <h2>Discussion Room Booking</h2>
@@ -32,10 +32,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.time, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.inTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.time, new { htmlAttributes = new { @class = "form-control timepicker", @id = "timepicker" } })
-                @Html.ValidationMessageFor(model => model.time, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.inTime, new { htmlAttributes = new { @class = "form-control timepicker", @id = "timepicker", @placeholder = "Select Time" } })
+                @Html.ValidationMessageFor(model => model.inTime, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -66,3 +66,10 @@
         </div>
     </div>
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#datepicker").attr('readonly', true)
+        $("#timepicker").attr('readonly', true)
+    })
+</script>

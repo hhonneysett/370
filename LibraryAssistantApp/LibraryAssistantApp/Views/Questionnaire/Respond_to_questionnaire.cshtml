@@ -1,0 +1,113 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Questionnaire>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Select a questionnaire to respond to</h2>
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Search Criteria</div>
+    <div class="panel-body">
+        <p>
+            <b>Search by Questionnaire Name</b>
+            <br />
+            @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value = (string)ViewBag.Search })
+            <br />
+        </p>
+
+        <p>
+            <b>Search by Topic</b>
+            <br />
+            @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
+        </p>
+
+        <p>
+            <b>Search by Assessment Type</b>
+            <br />
+            @Html.DropDownList("Assessment_Type", new List<SelectListItem>
+                     {
+                        new SelectListItem{ Text="Other", Value = "Other" },
+                        new SelectListItem{ Text="Venue", Value = "Venue" },
+                        new SelectListItem{ Text="Employee", Value = "Employee" },
+                        new SelectListItem{ Text="Training Session", Value = "Training Session" }
+                     }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
+        </p>
+        
+
+        <input type="submit" class="btn btn-default" value="Search" onclick="Search();" /> | <input type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Respond_to_questionnaire","Questionnaire")'" />
+
+    </div>
+</div>
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Results</div>
+    <div class="panel-body">
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Assessment_Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Question_Topic.Topic_Name)
+                </th>
+                <th>Actions</th>
+            </tr>
+
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="4">No rows match search criteria</td>
+                </tr>
+            }
+            else
+            {
+
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Assessment_Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Question_Topic.Topic_Name)
+                        </td>
+                        <td>
+                            <input type="button" class="btn btn-default" value="Respond to" onclick="location.href='@Url.Action("Answering_Questionnaire", "Questionnaire", new { id = item.Questionnaire_ID })'" />
+                         </td>
+                    </tr>
+                }
+            }
+        </table>
+        <input type="button" class="btn btn-default" value="Respond to Random" onclick="RespondToRandom();" />
+
+    </div>
+</div>
+
+<script>
+    function Search() {
+        var Search = document.getElementById("Search").value;
+        var Topic = document.getElementById("Topic").value;
+        var Assessment_Type = document.getElementById("Assessment_Type").value;        
+
+        window.location.href = "/Questionnaire/Respond_to_questionnaire_Search?Search=" + Search + "&Topic=" + Topic + "&Assessment_Type=" + Assessment_Type;
+    }
+    function RespondToRandom() {
+   //     Math.random() * 100) + 1
+
+    }
+
+
+</script>

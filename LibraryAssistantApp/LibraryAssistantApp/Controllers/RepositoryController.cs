@@ -13,15 +13,19 @@ namespace LibraryAssistantApp.Controllers
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
         // GET: Repository
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult ViewFile()
         {
             var files = from a in db.Document_Repository
                         where a.Document_Status.Equals("Active")
                         select a;
+
+
             return View(files);
         }
 
         // GET: Add file
+        [Authorize(Roles="Admin, Employee")]
         public ActionResult AddFile()
         {
             ViewBag.Category_ID = new SelectList(db.Document_Category, "Category_ID", "Category_Name");
@@ -70,6 +74,17 @@ namespace LibraryAssistantApp.Controllers
                         a.Document_Status = "Active";
                         db.Document_Repository.Add(a);
                         db.SaveChanges();
+
+                        var sessionLog = (Person_Session_Log)Session["loginSession"];
+
+                        Document_Access_Log ac = new Document_Access_Log();
+                        ac.Access_DateTime = DateTime.Now;
+                        ac.Document_Seq = a.Document_Seq;
+                        ac.Session_ID = sessionLog.Session_ID;
+
+                        db.Document_Access_Log.Add(ac);
+                        db.SaveChanges();
+
                         //save file to server
                         model.uploadFile.SaveAs(path);
                         TempData["Message"] = "File successfully uploaded";
@@ -90,6 +105,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Update file
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult UpdateFile(int id)
         {
             //get details of file to be updated
@@ -112,6 +128,7 @@ namespace LibraryAssistantApp.Controllers
         // Post: Update file
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult UpdateFile(UpdateFileModel model)
         {
             if (ModelState.IsValid)
@@ -150,6 +167,17 @@ namespace LibraryAssistantApp.Controllers
                 }
                 db.Entry(updatedfile).State = EntityState.Modified;
                 db.SaveChanges();
+
+                var sessionLog = (Person_Session_Log)Session["loginSession"];
+
+                Document_Access_Log ac = new Document_Access_Log();
+                ac.Access_DateTime = DateTime.Now;
+                ac.Document_Seq = updatedfile.Document_Seq;
+                ac.Session_ID = sessionLog.Session_ID;
+
+                db.Document_Access_Log.Add(ac);
+                db.SaveChanges();
+
                 TempData["Message"] = "File successfuly updated";
                 return RedirectToAction("ViewFile");
             }
@@ -162,17 +190,31 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Download file
+        [Authorize]
         public FilePathResult DownloadFile(int id)
         {
             var file = db.Document_Repository.Where(f => f.Document_Seq.Equals(id)).FirstOrDefault();
+
+            var sessionLog = (Person_Session_Log)Session["loginSession"];
+
+            Document_Access_Log ac = new Document_Access_Log();
+            ac.Access_DateTime = DateTime.Now;
+            ac.Document_Seq = file.Document_Seq;
+            ac.Session_ID = sessionLog.Session_ID;
+
+            db.Document_Access_Log.Add(ac);
+            db.SaveChanges();
+
             var virtualDirectoryPath = file.Directory_Path;
             return File(virtualDirectoryPath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(virtualDirectoryPath));
         }
 
         // GET: Delete file
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult DeleteFile(int id)
         {
             var file = db.Document_Repository.Where(m => m.Document_Seq.Equals(id)).FirstOrDefault();
+
             //create an instance of a deletefilemodel
             DeleteFileModel a = new DeleteFileModel
             {
@@ -194,10 +236,22 @@ namespace LibraryAssistantApp.Controllers
         // POST: Delete file
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult DeleteFile()
         {
             DeleteFileModel tempdatafile = (DeleteFileModel)TempData["FileDelete"];
             var deleteFile = db.Document_Repository.Where(f => f.Document_Seq.Equals(tempdatafile.Document_Seq)).FirstOrDefault();
+
+            var sessionLog = (Person_Session_Log)Session["loginSession"];
+
+            Document_Access_Log ac = new Document_Access_Log();
+            ac.Access_DateTime = DateTime.Now;
+            ac.Document_Seq = deleteFile.Document_Seq;
+            ac.Session_ID = sessionLog.Session_ID;
+
+            db.Document_Access_Log.Add(ac);
+            db.SaveChanges();
+
             deleteFile.Document_Status = "Deleted";
             var virtualDirectoryPath = deleteFile.Directory_Path;
             if (System.IO.File.Exists(virtualDirectoryPath))
@@ -212,6 +266,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: View file type
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult ViewFileType()
         {
             var fileType = (from a in db.Document_Type
@@ -220,6 +275,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Add file type
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult AddFileType()
         {
             return View();
@@ -228,6 +284,7 @@ namespace LibraryAssistantApp.Controllers
         // POST: Add file tpye
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult AddFileType(AddFileTypeModel model)
         {
             if (ModelState.IsValid)
@@ -250,6 +307,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: Update file type
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult UpdateFileType(int id)
         {
             var fileType = db.Document_Type.Where(m => m.Document_Type_ID.Equals(id)).FirstOrDefault();
@@ -265,6 +323,7 @@ namespace LibraryAssistantApp.Controllers
         // POST: Update file type
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult UpdateFileType(AddFileTypeModel model)
         {
             if (ModelState.IsValid)
@@ -300,6 +359,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: View library map file
+        [Authorize]
         public FilePathResult ViewMap()
         {
             var file = db.Document_Repository.Where(f => f.Document_Name.Equals("Library Map")).FirstOrDefault();
@@ -310,6 +370,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // GET: View tutorials
+        [Authorize]
         public ActionResult ViewTutorials()
         {
             return View();
@@ -317,15 +378,17 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Get document types
         [HttpGet]
+        [Authorize]
         public PartialViewResult GetTypes()
         {
-            ViewBag.Category_ID = new SelectList(db.Document_Category, "Category_ID", "Category_Name");
+            ViewBag.Category_ID = new SelectList(db.Document_Type, "Document_Type_ID", "Document_Type_Name");
             return PartialView();
         }
 
         // POST: Get tutorials from selected drop down list
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult GetTypes(GetTypesModel model)
         {
             if (ModelState.IsValid)
@@ -348,6 +411,7 @@ namespace LibraryAssistantApp.Controllers
 
         // GET: Get tutorials
         [HttpGet]
+        [Authorize]
         public ActionResult GetTutorials()
         {
             string sSessionCat;

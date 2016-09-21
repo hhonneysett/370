@@ -1,0 +1,58 @@
+﻿@model LibraryAssistantApp.Models.EmployeeIndexModel
+
+<script>
+    $(document).ready(function () {
+        $('#result-table-5 tbody tr').click(function () {
+            $('#result-table-5 tr').removeClass('selectedrow');
+            $(this).addClass('selectedrow');
+            var a = $(this).attr('id');
+            $.ajax({
+                type: 'GET',
+                data: { id: a },
+                url: '@Url.Action("RoleDetails", "Employee")',
+                beforeSend: function (){
+                    $('.loading').show();
+                },
+                success: function (result) {
+                    $('#emp-action').html(result);
+                }
+            }).done(function () {
+                $('.loading').hide();
+            });
+        });
+    });
+</script> 
+
+@{ var error = ViewBag.ErroMsg="";}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <label class="panel-title">
+            Roles
+        </label>
+    </div>
+    <table id="result-table-5" class="table">
+        <thead>
+            <tr>
+                <td>
+                    <span class="text-info">Roles assigned to the selected employee:</span>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.person_role.Count() != 0)
+            {
+                ViewBag.ErrorMsg = "No employee selected";
+                foreach (var item in Model.person_role)
+                {
+                    <tr id="@item.Role_ID">
+                        <td>
+                            @item.Role.Role_Name
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -4,67 +4,175 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+    <h2>Create Question</h2>
 
-<h2>Create Question</h2>
 
-@using (Html.BeginForm())
-{
     @Html.AntiForgeryToken()
-
+    @Html.Hidden("NewTopic", (string)ViewBag.NewTopic, new { id = "NewTopic" })
+    @Html.Hidden("Topic_Name", (string)ViewBag.Topic_Name, new { id = "Topic_Name" })
+    @Html.Hidden("Topic_Des", (string)ViewBag.Topic_Des, new { id = "Topic_Des" })
     <div class="panel panel-default">
         <div class="panel-heading"><h4>New Question</h4></div>
         <div class="panel-body">
 
-
-
-
-
             <div class="form-horizontal">
-
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Question_Text, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Question_Text, new
+                   {
+                       htmlAttributes = new
+                       {
+                           @class = "form-control",
+                           id = "Question_TextBox",
+                           @Value = (string)ViewBag.Question_Text
+                       }
+                   })
+                        <label class = "text-danger" id = "Error_Question_Text"></label>
+
+                        @*@Html.Label("",new { @class = "text-danger", id = "Error_Question_Text" }))*@
+                        @*@Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" , id = "Error_Question_Text" })*@
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("Topic_Seq", null, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger" })
+
+                        @if (ViewBag.NewTopic == "YES")
+                        {
+                            @Html.DropDownList("Topic_Seq", null, "Select a topic", htmlAttributes: new { @class = "form-control", id = "Topic_Dropdownlist", @disabled = "disabled" })
+                            <label class="text-danger" id="Error_Topic_Seq"></label>
+                            @*@Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger", id = "Error_Topic_Seq" })*@
+                        }
+                        else
+                        {
+                            @Html.DropDownList("Topic_Seq", null, "Select a topic", htmlAttributes: new { @class = "form-control", id = "Topic_Dropdownlist" })
+                            <label class="text-danger" id="Error_Topic_Seq"></label>
+                            @*@Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger", id = "Error_Topic_Seq" })*@
+                        }
+
+
                     </div>
                 </div>
-                <input type="button" class="btn btn-default" value="Add Topic" @*onclick="location.href='@Url.Action("Index")'"*@ />
 
-
+                @if (ViewBag.NewTopic == "YES")
+                {
+                    <input type="button" value="Add Topic" class="btn btn-default" onclick="location.href='@Url.Action("Create","Question_Topic")'" disabled="disabled" />
+                }
+                else
+                {
+                    <input type="button" value="Add Topic" class="btn btn-default" onclick="location.href='@Url.Action("Create","Question_Topic")'" />
+                }
 
 
             </div>
-
-
-
         </div>
     </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><h4>Possible Answers</h4></div>
-        <div class="panel-body">
+    @Html.Partial("_Create")
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Style_Type_ID, "Style Type", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("Style_Type_ID", "Select a style type")
-                        @*@Html.DropDownList("Style_Type_ID", null, htmlAttributes: new { @class = "form-control" })*@
-                        @Html.ValidationMessageFor(model => model.Style_Type_ID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <input type="submit" value="Create" class="btn btn-default" /> <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index")'" />
-        </div>
-    </div>
+    @if (ViewBag.NewTopic == "YES")
+    {
+        <input type="submit" value="Create" class="btn btn-default" onclick="EnableDropDown(); validateInput();" /> <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Create_Back_From_Create_Question", "Question_Topic", new {ViewBag.Topic_Name, ViewBag.Topic_Des })'" />
+    }
+    else
+    {
+        <input type="submit" value="Create" class="btn btn-default" onclick="EnableDropDown(); validateInput();" /> <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index")'" />
+    }
+
+
+<script>
+    function RunURL() {
+        var Question_Text = document.getElementById("Question_TextBox").value;
+        var Topic_Seq = document.getElementById("Topic_Dropdownlist").value;
+        var Style_Type_ID = document.getElementById("Style_Type_ID").value;
+        var Topic_Name = document.getElementById("Topic_Name").value;
+        var Topic_Des = document.getElementById("Topic_Des").value;
+        var NewTopic = document.getElementById("NewTopic").value;
+        window.location.href = "/Question_Bank/Creating?Question_Text=" + Question_Text + "&Topic_Seq=" + Topic_Seq + "&Style_Type_ID=" + Style_Type_ID + "&Topic_Name=" + Topic_Name + "&Topic_Des=" + Topic_Des + "&NewTopic=" + NewTopic;
+    }
+</script>
+
+
+<script>
+    function EnableDropDown() {
+        document.getElementById("Topic_Dropdownlist").disabled = false;
+    }
+</script>
+
+<script>
+    function DisableDropDown() {
+        document.getElementById("Topic_Dropdownlist").disabled = true;
+    }
+</script>
+
+<script>
+    function validateInput() {
+
+        document.getElementById("Error_Style_Type_ID").innerHTML = "";
+        document.getElementById("Error_Question_Text").innerHTML = "";
+        document.getElementById("Error_Topic_Seq").innerHTML = "";
+
+    var x = document.getElementById("Style_Type_ID").value;
+    var y = document.getElementById("Question_TextBox").value;
+    var z = document.getElementById("Topic_Dropdownlist").value;
+    var NewTopic = document.getElementById("NewTopic").value;
+    if (x == "" && y == "" && z == "")
+    {       
+        document.getElementById("Error_Style_Type_ID").innerHTML = "Style type required";
+        document.getElementById("Error_Question_Text").innerHTML = "Question required";
+        document.getElementById("Error_Topic_Seq").innerHTML = "Topic required";
+        if (NewTopic == "YES")
+        {
+            DisableDropDown();
+        }
+        
+    }   
+    else if (x == "" && y == "") {
+        document.getElementById("Error_Style_Type_ID").innerHTML = "Style type required";
+        document.getElementById("Error_Question_Text").innerHTML = "Question required";
+        if (NewTopic == "YES") {
+            DisableDropDown();
+        }
+    }
+    else if (y == "" && z == "") {
+        document.getElementById("Error_Question_Text").innerHTML = "Question required";
+        document.getElementById("Error_Topic_Seq").innerHTML = "Topic required";
+        if (NewTopic == "YES") {
+            DisableDropDown();
+        }
+    }
+    else if ( x == "" && z == "") {
+        document.getElementById("Error_Topic_Seq").innerHTML = "Topic required";
+        document.getElementById("Error_Style_Type_ID").innerHTML = "Style type required";
+        if (NewTopic == "YES") {
+            DisableDropDown();
+        }
+    }
+    else if (x == "") {
+        document.getElementById("Error_Style_Type_ID").innerHTML = "Style type required";
+        if (NewTopic == "YES") {
+            DisableDropDown();
+        }
+    }
+    else if (y == "") {
+        document.getElementById("Error_Question_Text").innerHTML = "Question required";
+        if (NewTopic == "YES") {
+            DisableDropDown();
+        }
+    }
+    else if (z == "") {
+        document.getElementById("Error_Topic_Seq").innerHTML = "Topic required";
+        if (NewTopic == "YES") {
+            DisableDropDown();
+        }
+    }
+    else 
+    {
+        RunURL();
+    }
 }
+</script>

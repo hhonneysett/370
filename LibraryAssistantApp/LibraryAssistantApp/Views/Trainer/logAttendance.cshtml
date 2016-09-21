@@ -1,0 +1,163 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.AttendanceModel>
+
+@using LibraryAssistantApp.Models
+
+@{
+    ViewBag.Title = "logAttendance";
+    Layout = (string)Session["layout"];
+    var certificates = (List<Document_Repository>)ViewBag.Certificates;
+}
+
+<h2>Log Attendance</h2>
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Student Number
+                                    </th>
+                                    <th>
+                                        Student Name
+                                    </th>
+                                    <th>
+                                        Attended
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr id="@item.student.Person_ID">
+                                        <td>
+                                            @item.student.Person_ID
+                                        </td>
+                                        <td>
+                                            @item.student.Person_Name @item.student.Person_Surname
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" value="@item.student.Person_ID" name="attCheck" class="attended"/>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="text-center">
+                        <text><b>Send Certificates</b></text>
+                        <hr />
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control center-block" id="certificateSend">
+                            <option selected value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    @{
+                        if (certificates.Any())
+                        {
+                            <div id="certificateToggle">
+                                <hr />
+                                <div class="text-center">
+                                    <text class="text-center"><b>Select Certificate File</b></text>
+                                </div>
+                                <table class="table text-center" id="certificateTable">
+                                    <tbody>
+                                        @foreach (var certificate in certificates)
+                                        {
+                                            <tr id="@certificate.Document_Seq">
+                                                <td>@certificate.Document_Name</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="certificateToggle" class="text-center">
+                                <text>No Certificates Exist</text>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row col-md-12">
+                <input type="submit" value="Save" class="btn btn-default" id="btnLogAtt" />
+        </div>
+    </div>
+
+<div id="loadingDiv"></div>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#certificateToggle").hide();
+
+            $("#certificateSend").change(function () {
+                $("#certificateToggle").toggle(800);
+            })
+
+            //highlight file selected
+            $("#certificateTable tbody tr").click(function () {
+                var selected = $(this).hasClass("alert-info");
+                $("#certificateTable tr").removeClass("alert-info");
+
+                if (!selected) {
+                    $(this).addClass("alert-info");
+                }
+            });
+
+            $("#btnLogAtt").click(function () {
+                //check if document has been selected
+                var docCheck = $('.alert-info').attr('id');
+                var document;
+                var sendCert;
+                var certCheck = $("#certificateSend").val();
+
+                if (docCheck != undefined && certCheck == "yes")
+                {
+                    document = docCheck;
+                }
+
+                var checked = [];
+
+                $("input[name=attCheck]:checked").each(function () {
+                    checked.push($(this).val());
+                })
+
+                $("#btnLogAtt").hide();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/Trainer/submitAttendance',
+                    data: { attended: JSON.stringify(checked), document: document },
+                    success: function (result) {                       
+                        window.location.href = "/Trainer/manageTrainingSession";                        
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                });                
+            })
+        })
+    </script>
+    }
