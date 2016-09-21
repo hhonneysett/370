@@ -1,4 +1,4 @@
-﻿@model LibraryAssistantApp.Models.Login
+﻿@*@model LibraryAssistantApp.Models.Login
 
 @using System.Web.Optimization
 
@@ -49,4 +49,54 @@
 
        
     </div>
+}*@
+
+@{ 
+    Layout = null;
 }
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login - UP Library Asssistant</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="~/Content/font-awesome.css">
+
+    <link rel="stylesheet" href="~/Content/normalize.css">
+
+    <link rel="stylesheet" href="~/Content/loginStyle.css">
+
+    <script src="~/Scripts/Login/prefixfree.min.js"></script>
+
+</head>
+<body>
+    <div class="wrapper">
+        <form class="login">
+            <p class="title">Log in</p>
+            <input type="text" placeholder="Username" autofocus id="loginUsername" />
+            <i class="fa fa-user"></i>
+            <input type="password" placeholder="Password" id="loginPassword" />
+            <i class="fa fa-key"></i>
+            @Html.ActionLink("Forgot Password", "ForgotPassword", "Account") |
+            @Html.ActionLink("Register", "RegisterStudent", "RegisteredPerson")
+            <button>
+                <i class="spinner"></i>
+                <span class="state" id="btnLogin">Log in</span>
+            </button>
+        </form>
+    </div>
+
+    <script src='~/Scripts/jquery-3.1.0.min.js'></script>
+    <script src="~/Scripts/Login/index.js"></script>
+
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("btnLogin").click(function () {
+                    $("#loginForm").submit();
+                })
+            })
+    </script>
+
+</body>
+</html>    
+
+
