@@ -18,8 +18,9 @@ namespace LibraryAssistantApp.Models
         public Topic()
         {
             this.Person_Topic = new HashSet<Person_Topic>();
+            this.Topic_Category = new HashSet<Topic_Category>();
+            this.Venue_Booking = new HashSet<Venue_Booking>();
             this.Trainer_Topic = new HashSet<Trainer_Topic>();
-            this.Categories = new HashSet<Category>();
         }
     
         public int Topic_Seq { get; set; }
@@ -29,8 +30,10 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Topic> Person_Topic { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Trainer_Topic> Trainer_Topic { get; set; }
+        public virtual ICollection<Topic_Category> Topic_Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Venue_Booking> Venue_Booking { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Trainer_Topic> Trainer_Topic { get; set; }
     }
 }

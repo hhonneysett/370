@@ -1,0 +1,41 @@
+﻿@model LibraryAssistantApp.Models.Building_Floor
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h3>Are you sure you want to delete this building floor?</h3>
+<div>
+    @Html.ValidationMessageFor(model => model.Building_Floor_ID, "", new { @class = "text-danger" })
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Floor_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Floor_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Building.Building_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Building.Building_Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -250,3 +250,10 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+LibraryAssistantApp/.vs/LibraryAssistantApp/v14/.suo
+LibraryAssistantApp/LibraryAssistantApp/bin/LibraryAssistantApp.dll
+LibraryAssistantApp/LibraryAssistantApp/bin/LibraryAssistantApp.pdb
+LibraryAssistantApp/LibraryAssistantApp/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+LibraryAssistantApp/LibraryAssistantApp/obj/Debug/LibraryAssistantApp.csprojResolveAssemblyReference.cache
+LibraryAssistantApp/LibraryAssistantApp/obj/Debug/LibraryAssistantApp.pdb
+LibraryAssistantApp/LibraryAssistantApp/obj/Debug/TempPE/Models.LibraryAssistantModel.Designer.cs.dll

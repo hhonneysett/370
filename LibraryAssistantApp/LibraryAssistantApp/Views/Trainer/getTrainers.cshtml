@@ -1,0 +1,44 @@
+﻿@using LibraryAssistantApp.Models
+
+@{ 
+    var availableTrainers = (IEnumerable<Registered_Person>)Session["availableTrainers"];
+}
+
+<div class="col-md-9" id="possibleTrainers">
+    @if (availableTrainers.Any())
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>(Optional) Assign Trainer</b>
+            </div>
+            <div class="panel-body">
+                <table class="table" id="trainerTable">
+                    <thead>
+                        <tr>
+                            <th>Person ID</th>
+                            <th>Full Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Registered_Person rp in availableTrainers)
+                        {
+                            <tr onclick="trainerSelect(this)" data-assigned-id="@rp.Person_ID">
+                                <td>@rp.Person_ID</td>
+                                <td>@rp.Person_Name @rp.Person_Surname</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4 class="text-center"><b>No Trainers Available</b></h4>
+            </div>
+        </div>
+    }
+
+</div>

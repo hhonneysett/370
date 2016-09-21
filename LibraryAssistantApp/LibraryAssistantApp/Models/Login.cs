@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace LibraryAssistantApp.Models
 {
     public class Login
     {
-        [Required(ErrorMessage ="Student number required.", AllowEmptyStrings =false), Display(Name ="Student Number")]
+        [Required(ErrorMessage ="Student number required.", AllowEmptyStrings =false), Display(Name ="Person ID")]
+        [Remote("loginCheckPerson", "Validate", ErrorMessage ="Not a registered person ID")]
         public string Person_ID { get; set; }
 
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]

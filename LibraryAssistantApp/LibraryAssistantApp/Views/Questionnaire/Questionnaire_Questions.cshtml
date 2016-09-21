@@ -1,0 +1,390 @@
+﻿@model LibraryAssistantApp.Models.Questionnaire_Questions
+
+@{
+    ViewBag.Title = "Questionnaire_Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Questionnaire Questions</h2>
+
+@Html.Hidden("Name", (string)ViewBag.Name, new { id = "Name" })
+@Html.Hidden("Description", (string)ViewBag.Description, new { id = "Description" })
+@Html.Hidden("Active_From", (DateTime)ViewBag.Active_From, new { id = "Active_From" })
+@Html.Hidden("Active_To", (DateTime)ViewBag.Active_To, new { id = "Active_To" })
+@Html.Hidden("Assessment_Type", (string)ViewBag.Assessment_Type, new { id = "Assessment_Type" })
+@Html.Hidden("Topic", (int)ViewBag.Topic, new { id = "Topic" })
+@Html.Hidden("Questionnaire_ID", (int)ViewBag.Questionnaire_ID, new { id = "Questionnaire_ID" })
+
+<div class="panel panel-default">
+    <div class="panel-heading">Select Questions</div>
+    <div class="panel-body">
+
+        <div>
+            <label>Filter questions by name</label><button type="button" class="btn btn-default pull-right" onclick="Search();">Search</button>
+            <br />
+            @Html.Editor("A_New_Name", new { htmlAttributes = new { @class = "form-control", id = "A_New_Name" } })
+        </div>
+
+
+        <p>
+            <div>
+                <label>Questions related to selected topic</label>
+                <br />
+
+                @if (ViewBag.Count == 0)
+                {
+                    @Html.ListBox("Listbox", new List<SelectListItem>
+                     {
+                        new SelectListItem{ Text="No results where found", Value = "No results where found" }
+               }, new { htmlAttributes = new { @class = "form-control" } })
+                }
+                else
+                {
+                    @Html.ListBox("Listbox", (SelectList)ViewBag.Questions, new { htmlAttributes = new { @class = "form-control" } })
+                }
+
+            </div>
+        </p>
+
+       
+            @if (ViewBag.Count == 0)
+            {
+                <div>
+                    <button disabled id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="SelectQuestion();">Select</button>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <button  id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="SelectQuestion();">Select</button>
+                </div>
+            }
+        
+    </div>
+</div>
+
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Selected Questions</div>
+    <div class="panel-body">
+
+        <p>
+            <input type="submit" value="Remove" class="btn btn-default" onclick="RemoveQuestion();" /> <label class="text-danger" id="Warning"></label>
+        </p>
+
+        <table class="table">
+            <tr>
+                <th style="text-align:center;">
+                    <h4>Display Order</h4>
+                </th>
+                <th style="text-align:center;">
+                    <h4>Selected Question</h4>
+                </th>
+                <th style="text-align:center;">
+                    <h4>Optional answer</h4>
+                </th>
+            </tr>
+
+            <tr>
+                <td style="text-align:center;">
+                    1
+                    @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
+                </td>
+                <td style="text-align:center;">
+                    <label class="form-control" id="SelectedQuestion 1">@ViewBag.SelectedQuestion1</label>
+                </td>
+
+                @if (ViewBag.SelectedQ_Checkbox1 == "true")
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox1", true)
+                    </td>
+
+                }
+                else
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox1", false)
+                    </td>
+
+                }
+            </tr>
+
+            <tr>
+                <td style="text-align:center;">
+                    2
+                    @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
+                </td>
+                <td style="text-align:center;">
+                    <label class="form-control" id="SelectedQuestion 2">@ViewBag.SelectedQuestion2</label>
+
+
+                </td>
+                @if (ViewBag.SelectedQ_Checkbox2 == "true")
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox2", true)
+                    </td>
+
+                }
+                else
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox2", false)
+                    </td>
+
+                }
+            </tr>
+
+            <tr>
+                <td style="text-align:center;">
+                    3
+                    @Html.Hidden("Display_Order3", 3, new { id = "Display_Order3" })
+                </td>
+                <td style="text-align:center;">
+                    <label class="form-control" id="SelectedQuestion 3">@ViewBag.SelectedQuestion3</label>
+
+
+                </td>
+                @if (ViewBag.SelectedQ_Checkbox3 == "true")
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox3", true)
+                    </td>
+
+                }
+                else
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox3", false)
+                    </td>
+
+                }
+            </tr>
+
+            <tr>
+                <td style="text-align:center;">
+                    4
+                    @Html.Hidden("Display_Order4", 4, new { id = "Display_Order4" })
+                </td>
+                <td style="text-align:center;">
+                    <label class="form-control" id="SelectedQuestion 4">@ViewBag.SelectedQuestion4</label>
+
+
+                </td>
+                @if (ViewBag.SelectedQ_Checkbox4 == "true")
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox4", true)
+                    </td>
+
+                }
+                else
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox4", false)
+                    </td>
+
+                }
+            </tr>
+
+            <tr>
+                <td style="text-align:center;">
+                    5
+                    @Html.Hidden("Display_Order5", 5, new { id = "Display_Order5" })
+                </td>
+                <td style="text-align:center;">
+                    <label class="form-control" id="SelectedQuestion 5">@ViewBag.SelectedQuestion5</label>
+
+
+                </td>
+                @if (ViewBag.SelectedQ_Checkbox5 == "true")
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox5", true)
+                    </td>
+
+                }
+                else
+                {
+                    <td style="text-align:center;">
+                        @Html.CheckBox("SelectedQ_Checkbox5", false)
+                    </td>
+
+                }
+            </tr>
+
+        </table>
+
+        <p>
+            <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" *@ /> <input type="submit" value="Submit" class="btn btn-default pull-right" onclick="Submit()" />
+        </p>
+
+    </div>
+</div>
+
+
+<script>
+    function SelectQuestion() {
+        var e = document.getElementById("Listbox");
+        var SelectedQuestion = e.options[e.selectedIndex].value;
+
+        var SelectedQuestion1 = document.getElementById("SelectedQuestion 1").innerHTML;
+        var SelectedQuestion2 = document.getElementById("SelectedQuestion 2").innerHTML;
+        var SelectedQuestion3 = document.getElementById("SelectedQuestion 3").innerHTML;
+        var SelectedQuestion4 = document.getElementById("SelectedQuestion 4").innerHTML;
+        var SelectedQuestion5 = document.getElementById("SelectedQuestion 5").innerHTML;
+
+        document.getElementById("Warning").innerHTML = "";
+
+        if (SelectedQuestion1 != "" && SelectedQuestion2 != "" && SelectedQuestion3 != "" && SelectedQuestion4 != "") {
+
+            if (SelectedQuestion1 == SelectedQuestion || SelectedQuestion2 == SelectedQuestion || SelectedQuestion3 == SelectedQuestion || SelectedQuestion4 == SelectedQuestion || SelectedQuestion5 == SelectedQuestion) {
+                document.getElementById("Warning").innerHTML = "This question has already been chosen. Please choose another one.";
+            }
+            else {
+
+                document.getElementById("SelectedQuestion 5").innerHTML = SelectedQuestion;
+                document.getElementById("Select_Button").disabled = true;
+
+            }
+        }
+        else if (SelectedQuestion1 != "" && SelectedQuestion2 != "" && SelectedQuestion3 != "") {
+
+            if (SelectedQuestion1 == SelectedQuestion || SelectedQuestion2 == SelectedQuestion || SelectedQuestion3 == SelectedQuestion || SelectedQuestion4 == SelectedQuestion || SelectedQuestion5 == SelectedQuestion) {
+                document.getElementById("Warning").innerHTML = "This question has already been chosen. Please choose another one.";
+            }
+            else {
+                document.getElementById("SelectedQuestion 4").innerHTML = SelectedQuestion;
+            }
+        }
+        else if (SelectedQuestion1 != "" && SelectedQuestion2 != "") {
+            if (SelectedQuestion1 == SelectedQuestion || SelectedQuestion2 == SelectedQuestion || SelectedQuestion3 == SelectedQuestion || SelectedQuestion4 == SelectedQuestion || SelectedQuestion5 == SelectedQuestion) {
+                document.getElementById("Warning").innerHTML = "This question has already been chosen. Please choose another one.";
+            }
+            else {
+
+                document.getElementById("SelectedQuestion 3").innerHTML = SelectedQuestion;
+            }
+        }
+        else if (SelectedQuestion1 != "") {
+            if (SelectedQuestion1 == SelectedQuestion || SelectedQuestion2 == SelectedQuestion || SelectedQuestion3 == SelectedQuestion || SelectedQuestion4 == SelectedQuestion || SelectedQuestion5 == SelectedQuestion) {
+                document.getElementById("Warning").innerHTML = "This question has already been chosen. Please choose another one.";
+            }
+            else {
+                document.getElementById("SelectedQuestion 2").innerHTML = SelectedQuestion;
+            }
+        }
+        else {
+            if (SelectedQuestion1 == SelectedQuestion || SelectedQuestion2 == SelectedQuestion || SelectedQuestion3 == SelectedQuestion || SelectedQuestion4 == SelectedQuestion || SelectedQuestion5 == SelectedQuestion) {
+                document.getElementById("Warning").innerHTML = "This question has already been chosen. Please choose another one.";
+            }
+            else {
+                document.getElementById("SelectedQuestion 1").innerHTML = SelectedQuestion;
+            }
+        }
+
+
+    }
+</script>
+
+<script>
+    function RemoveQuestion() {
+
+        var SelectedQuestion1 = document.getElementById("SelectedQuestion 1").innerHTML;
+        var SelectedQuestion2 = document.getElementById("SelectedQuestion 2").innerHTML;
+        var SelectedQuestion3 = document.getElementById("SelectedQuestion 3").innerHTML;
+        var SelectedQuestion4 = document.getElementById("SelectedQuestion 4").innerHTML;
+        var SelectedQuestion5 = document.getElementById("SelectedQuestion 5").innerHTML;
+        document.getElementById("Warning").innerHTML = "";
+
+        if (SelectedQuestion1 != "" && SelectedQuestion2 != "" && SelectedQuestion3 != "" && SelectedQuestion4 != "" && SelectedQuestion5 != "") {
+            document.getElementById("SelectedQuestion 5").innerHTML = "";
+            document.getElementById("Select_Button").disabled = false;
+        }
+        else if (SelectedQuestion1 != "" && SelectedQuestion2 != "" && SelectedQuestion3 != "" && SelectedQuestion4 != "") {
+            document.getElementById("SelectedQuestion 4").innerHTML = "";
+        }
+        else if (SelectedQuestion1 != "" && SelectedQuestion2 != "" && SelectedQuestion3 != "") {
+            document.getElementById("SelectedQuestion 3").innerHTML = "";
+        }
+        else if (SelectedQuestion1 != "" && SelectedQuestion2 != "") {
+            document.getElementById("SelectedQuestion 2").innerHTML = "";
+        }
+        else {
+            document.getElementById("SelectedQuestion 1").innerHTML = "";
+        }
+
+
+    }
+</script>
+
+
+<script>
+    function Search() {
+
+        var A_New_Name = document.getElementById("A_New_Name").value;
+        var Name = document.getElementById("Name").value;
+        var Description = document.getElementById("Description").value;
+        var Active_From = document.getElementById("Active_From").value;
+        var Active_To = document.getElementById("Active_To").value;
+        var Assessment_Type = document.getElementById("Assessment_Type").value;
+        var Topic = document.getElementById("Topic").value;
+        var SelectedQuestion1 = document.getElementById("SelectedQuestion 1").innerHTML;
+        var SelectedQuestion2 = document.getElementById("SelectedQuestion 2").innerHTML;
+        var SelectedQuestion3 = document.getElementById("SelectedQuestion 3").innerHTML;
+        var SelectedQuestion4 = document.getElementById("SelectedQuestion 4").innerHTML;
+        var SelectedQuestion5 = document.getElementById("SelectedQuestion 5").innerHTML;
+        var SelectedQ_Checkbox1 = document.getElementById("SelectedQ_Checkbox1").checked;
+        var SelectedQ_Checkbox2 = document.getElementById("SelectedQ_Checkbox2").checked;
+        var SelectedQ_Checkbox3 = document.getElementById("SelectedQ_Checkbox3").checked;
+        var SelectedQ_Checkbox4 = document.getElementById("SelectedQ_Checkbox4").checked;
+        var SelectedQ_Checkbox5 = document.getElementById("SelectedQ_Checkbox5").checked;
+        var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
+
+
+        window.location.href = "/Questionnaire/Search_QQuestions?A_New_Name=" + A_New_Name + "&Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic=" + Topic + "&SelectedQuestion1=" + SelectedQuestion1 + "&SelectedQuestion2=" + SelectedQuestion2 + "&SelectedQuestion3=" + SelectedQuestion3 + "&SelectedQuestion4=" + SelectedQuestion4 + "&SelectedQuestion5=" + SelectedQuestion5 + "&SelectedQ_Checkbox1=" + SelectedQ_Checkbox1 + "&SelectedQ_Checkbox2=" + SelectedQ_Checkbox2 + "&SelectedQ_Checkbox3=" + SelectedQ_Checkbox3 + "&SelectedQ_Checkbox4=" + SelectedQ_Checkbox4 + "&SelectedQ_Checkbox5=" + SelectedQ_Checkbox5 + "&Questionnaire_ID=" + Questionnaire_ID;;
+
+    }
+</script>
+
+<script>
+    function Submit() {
+
+        var SelectedQuestion1 = document.getElementById("SelectedQuestion 1").innerHTML;
+        var SelectedQuestion2 = document.getElementById("SelectedQuestion 2").innerHTML;
+        var SelectedQuestion3 = document.getElementById("SelectedQuestion 3").innerHTML;
+        var SelectedQuestion4 = document.getElementById("SelectedQuestion 4").innerHTML;
+        var SelectedQuestion5 = document.getElementById("SelectedQuestion 5").innerHTML;
+        var Display_Order1 = document.getElementById("Display_Order1").value;
+        var Display_Order2 = document.getElementById("Display_Order2").value;
+        var Display_Order3 = document.getElementById("Display_Order3").value;
+        var Display_Order4 = document.getElementById("Display_Order4").value;
+        var Display_Order5 = document.getElementById("Display_Order5").value;
+        var SelectedQ_Checkbox1 = document.getElementById("SelectedQ_Checkbox1").checked;
+        var SelectedQ_Checkbox2 = document.getElementById("SelectedQ_Checkbox2").checked;
+        var SelectedQ_Checkbox3 = document.getElementById("SelectedQ_Checkbox3").checked;
+        var SelectedQ_Checkbox4 = document.getElementById("SelectedQ_Checkbox4").checked;
+        var SelectedQ_Checkbox5 = document.getElementById("SelectedQ_Checkbox5").checked;
+        var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
+
+
+        if (SelectedQuestion1 == "") {
+            document.getElementById("Warning").innerHTML = "At least one question must be assigned to a questionnaire.";
+        }
+        else {
+            window.location.href = "/Questionnaire/Create_Questionnaire_Questions?Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Display_Order3=" + Display_Order3 + "&Display_Order4=" + Display_Order4 + "&Display_Order5=" + Display_Order5 + "&SelectedQuestion1=" + SelectedQuestion1 + "&SelectedQuestion2=" + SelectedQuestion2 + "&SelectedQuestion3=" + SelectedQuestion3 + "&SelectedQuestion4=" + SelectedQuestion4 + "&SelectedQuestion5=" + SelectedQuestion5 + "&SelectedQ_Checkbox1=" + SelectedQ_Checkbox1 + "&SelectedQ_Checkbox2=" + SelectedQ_Checkbox2 + "&SelectedQ_Checkbox3=" + SelectedQ_Checkbox3 + "&SelectedQ_Checkbox4=" + SelectedQ_Checkbox4 + "&SelectedQ_Checkbox5=" + SelectedQ_Checkbox5 + "&Questionnaire_ID=" + Questionnaire_ID;
+        }
+
+
+
+    }
+</script>
+
+
+
+
+
+

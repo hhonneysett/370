@@ -1,17 +1,9 @@
 ﻿@model LibraryAssistantApp.Models.UpdatePersonModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = (string)Session["layout"];
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -52,15 +44,7 @@
                     @Html.ValidationMessageFor(model => model.Person_Email, "", new { @class = "text-danger" })
                 </div>
             </div>
-             
-            <div class="form-group">
-                @Html.LabelFor(model => model.Level_ID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("Level", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Level_ID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-           
+                       
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     @Html.ActionLink("Back", "Details", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-default" })
@@ -70,5 +54,3 @@
             </div>
         </div>
     }
-</body>
-</html>

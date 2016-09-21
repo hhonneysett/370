@@ -1,0 +1,182 @@
+﻿@using System.Web.Optimization
+@model LibraryAssistantApp.Models.EmployeeEditModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Update Employee</h3>
+<hr />
+<h4>Update employee details below</h4>
+<br />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_ID, new { htmlAttributes = new { @class = "form-control", @disabled= true }})
+                @Html.ValidationMessageFor(model => model.registered_person.Person_ID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_Surname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Surname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.registered_person.Person_Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.registered_person.Person_Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.registered_person.Person_Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+                @Html.LabelFor(model => model.registered_person.Person_Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Person_Title", null, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.registered_person.Person_Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btn-reset" type="button" value="Reset Password" class="btn btn-default" />
+                @Html.Hidden("Password_", null, htmlAttributes: new { @class="password-reset"})
+            </div>
+        </div>
+        @*<div class="form-group" hidden>
+                <div class="col-md-10">
+                    @Html.HiddenFor(model => model.registered_person, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>*@
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <table class="table" id="emp-roles">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Role
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.emprolecheckeditlist.Count(); ++i)
+                            {
+                                <tr id="@Model.emprolecheckeditlist[i].role_id">
+                                    <td>
+                                        @Html.DisplayFor(m => m.emprolecheckeditlist[i].role_name)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.emprolecheckeditlist[i].role_ind)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="div-emp-actions" class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="table">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if ((bool)TempData["Check1"])
+        {
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Topic
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                            </tr>
+                        </thead>
+                        @for (int i = 0; i < Model.trainertopiccheck.Count(); i++)
+                        {
+                            <tbody>
+                                <tr>
+                                    @Html.HiddenFor(m => m.trainertopiccheck[i].topic_seq)
+                                    @Html.HiddenFor(m => m.trainertopiccheck[i].personid)
+                                    <td>
+                                        @Html.DisplayFor(m => m.trainertopiccheck[i].topic_name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.trainertopiccheck[i].topic_description)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.trainertopiccheck[i].topic_ind)
+                                    </td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+        }
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section script {
+    <script src="~/Scripts/bootbox.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#emp-roles tbody tr').click(function () {
+                $('#emp-roles tr').removeClass('selectedrow');
+                $(this).addClass('selectedrow');
+                var a = $(this).attr('id');
+                $.ajax({
+                    type: 'GET',
+                    data: { id: a },
+                    url: '@Url.Action("GetActions", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        $('#div-emp-actions').html(result);
+                    }
+                }).done(function () {
+                    $('.loading').hide();
+                });
+            });
+            $('#btn-reset').click(function () {
+                bootbox.confirm("Are you sure you want to reset password?", function (result) {
+                    alert("Password will be reset and employee will be notified when 'save' is pressed.")
+                    $('.password-reset').attr('value', result)
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿
+@using LibraryAssistantApp.Models
+
+<form id="myForm">
+    <div id="confirmDetailsForm">
+        @{
+            var booking = (BookTrainingSessionModel)TempData["booking"];
+        }
+        <table>
+            <tbody>
+                <tr>
+                    <td style="padding-right:5em"><strong>Date:</strong></td>
+                    <td>@booking.date</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Timeslot:</strong></td>
+                    <td>@booking.timeslot</td>
+                </tr>
+                <tr>
+                    <td><strong>Campus:</strong></td>
+                    <td>@booking.campus</td>
+                </tr>
+                <tr>
+                    <td><strong>Building:</strong></td>
+                    <td>@booking.building</td>
+                </tr>
+                <tr>
+                    <td><strong>Venue:</strong></td>
+                    <td>@booking.venue</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>

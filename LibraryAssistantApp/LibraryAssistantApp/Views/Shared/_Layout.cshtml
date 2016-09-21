@@ -15,6 +15,8 @@
     @Scripts.Render("~/Scripts/jquery-ui-1.12.0.js")
     @Scripts.Render("~/Scripts/datetimePicker.js")
     @Scripts.Render("~/bundles/headScripts")
+    <script type="text/javascript" src="jspdf.debug.js"></script>
+    <link href="~/Content/animate.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -41,25 +43,23 @@
                         <span class="navbar-custom-item-icon fa fa-book fa-fw"></span>
                         Personal Bookings
                     </a>
-                    <ul class="nav-second-level" aria-expanded="false">
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
                             <a href="#">
                                 Create Booking
                                 <span class="fa arrow"></span>
                             </a>
-                            <ul class="nav-third-level" aria-expanded="false">
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    <a href="#">Discussion Room</a>
+                                    @Html.ActionLink("Discussion Room", "employeeBookDiscussionRoom", "Booking")
                                 </li>
                                 <li>
-                                    <a href="#">Training Room</a>
+                                    @Html.ActionLink("Training Session", "bookTrainingSess", "Booking")
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">
-                                View Personal Bookings
-                            </a>
+                            @Html.ActionLink("View Personal Bookings", "employeeViewBookings", "Booking")
                         </li>
                     </ul>
                 </li>
@@ -68,24 +68,18 @@
                         <span class="navbar-custom-item-icon fa fa-table fa-fw"></span>
                         Manage Bookings
                     </a>
-                    <ul class="nav-second-level" aria-expanded="false">
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
                             <a href="#">
                                 Training Sessions
                                 <span class="fa arrow"></span>
                             </a>
-                            <ul class="nav-third-level" aria-expanded="false">
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    <a href="#">Create Training Session</a>
+                                    @Html.ActionLink("Create Training Session", "addTrainingSession", "Trainer")
                                 </li>
                                 <li>
-                                    <a href="#">Manage Training Session</a>
-                                </li>
-                                <li>
-                                    <a href="#">Attendance Register</a>
-                                </li>
-                                <li>
-                                    <a href="#">Log Attendants</a>
+                                    @Html.ActionLink("Manage Training Sessions", "manageTrainingSession", "Trainer")
                                 </li>
                             </ul>
                         </li>
@@ -94,20 +88,20 @@
                                 Discussion Rooms
                                 <span class="fa arrow"></span>
                             </a>
-                            <ul class="nav-third-level" aria-expanded="false">
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    <a href="#">Manage Sessions</a>
+                                    @Html.ActionLink("Manage Sessions", "employeeViewBookings", "Booking")
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </li>
-                <li>
+                @*<li>
                     <a href="#" aria-expanded="false">
                         <span class="navbar-custom-item-icon fa fa-hospital-o fa-fw"></span>
                         Venues
                     </a>
-                    <ul class="nav-second-level" aria-expanded="false">
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
                             <a href="#">View Problems</a>
                         </li>
@@ -118,22 +112,22 @@
                             <a href="#">Update Problem Status</a>
                         </li>
                     </ul>
-                </li>
+                </li>*@
                 <li>
                     <a href="#" aria-expanded="false">
                         <span class="navbar-custom-item-icon fa fa-graduation-cap fa-fw"></span>
                         Tutorials
                     </a>
-                    <ul class="nav-second-level" aria-expanded="false">
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            <a href="#">Manage Tutorials</a>
+                            @Html.ActionLink("Manage Repository", "ViewFile", "Repository")
                         </li>
                         <li>
                             @Html.ActionLink("View Library Map", "ViewMap", "Repository")
                         </li>
-                        <li>
+                        @*<li>
                             <a href="#">View Tutorials</a>
-                        </li>
+                        </li>*@
                     </ul>
                 </li>
                 <li>
@@ -141,12 +135,12 @@
                         <span class="navbar-custom-item-icon fa fa-files-o fa-fw"></span>
                         Questionnaires
                     </a>
-                    <ul class="nav-second-level" aria-expanded="false">
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            <a href="#">Create Questionnaire</a>
+                            @Html.ActionLink("Create Questionnaire", "Create", "Questionnaire")
                         </li>
                         <li>
-                            <a href="#">Manage Questionnaires</a>
+                            @Html.ActionLink("View All Questionnaires", "Index", "Questionnaire")
                         </li>
                     </ul>
                 </li>
@@ -155,30 +149,21 @@
                         <span class="navbar-custom-item-icon fa fa-bar-chart fa-fw"></span>
                         Reporting
                     </a>
-                    <ul class="nav-second-level" aria-expanded="false">
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            <a href="#">Session Log</a>
+                            @Html.ActionLink("Session Log", "personSession", "Reporting")
                         </li>
                         <li>
-                            <a href="#">File Access</a>
+                            @Html.ActionLink("Document Access Log", "documentAccess", "Reporting")
                         </li>
                         <li>
-                            <a href="#">Action Log</a>
+                            @Html.ActionLink("Action Log", "personSessionAction", "Reporting")
                         </li>
                         <li>
-                            <a href="#">Questionnaire Feedback</a>
+                            @Html.ActionLink("Venue Usage Log", "venueUsage", "Reporting")
                         </li>
                         <li>
-                            <a href="#">View Problem Report</a>
-                        </li>
-                        <li>
-                            <a href="#">Booking Summary</a>
-                        </li>
-                        <li>
-                            <a href="#">Training Attendance</a>
-                        </li>
-                        <li>
-                            <a href="#">Venue Usage</a>
+                            @Html.ActionLink("Training Attendance Log", "trainingAttendance", "Reporting")
                         </li>
                     </ul>
                 </li>
@@ -187,24 +172,21 @@
                         <span class="navbar-custom-item-icon fa fa-wrench fa-fw"></span>
                         Maintenance
                     </a>
-                    <ul class="nav-second-level" aria-expanded="false">
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            <a href="#">Employees</a>
-                        </li>
-                        <li>
-                            <a href="#">Members</a>
+                            @Html.ActionLink("Employees", "Index", "Employee")
                         </li>
                         <li>
                             <a href="#">
                                 Questionnaire
                                 <span class="fa arrow"></span>
                             </a>
-                            <ul class="nav-third-level" aria-expanded="false">
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    <a href="#">Questions</a>
+                                    @Html.ActionLink("Questions", "Index", "Question_Bank")
                                 </li>
                                 <li>
-                                    <a href="#">Questionnaire Topics</a>
+                                    @Html.ActionLink("Question Topic", "Index", "Question_Topic")
                                 </li>
                             </ul>
                         </li>
@@ -213,12 +195,12 @@
                                 Access Control
                                 <span class="fa arrow"></span>
                             </a>
-                            <ul class="nav-third-level" aria-expanded="false">
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    @Html.ActionLink("Roles", "Index", "Roles")
+                                    @Html.ActionLink("Roles", "Index", "Role")
                                 </li>
                                 <li>
-                                    <a href="#">Person Types</a>
+                                    @Html.ActionLink("Person Types", "Index", "PersonType")
                                 </li>
                             </ul>
                         </li>
@@ -227,22 +209,22 @@
                                 Venues
                                 <span class="fa arrow"></span>
                             </a>
-                            <ul class="nav-third-level" aria-expanded="false">
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    <a href="#">Maintain Venues</a>
+                                    @Html.ActionLink("Maintain Venues", "Index", "Venues")
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="#">Venue Types</a>
-                                </li>
-                                <li>
+                                </li>*@
+                                @*<li>
                                     <a href="#">Characteristics</a>
-                                </li>
-                                <li>
+                                </li>*@
+                                @*<li>
                                     <a href="#">Common Problem Types</a>
                                 </li>
                                 <li>
                                     <a href="#">Common Problems</a>
-                                </li>
+                                </li>*@
                             </ul>
                         </li>
                         <li>
@@ -250,36 +232,32 @@
                                 Courses
                                 <span class="fa arrow"></span>
                             </a>
-                            <ul class="nav-third-level" aria-expanded="false">
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    <a href="#">Categories</a>
+                                    @Html.ActionLink("Manage Categories", "viewCategory", "Trainer")
                                 </li>
                                 <li>
-                                    <a href="#">Topics</a>
+                                    @Html.ActionLink("Manage Topics", "viewTopic", "Trainer")
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">File Types</a>
+                            @Html.ActionLink("File Types", "ViewFileType", "Repository")
                         </li>
                     </ul>
                 </li>
                 <li>
-                    @Html.ActionLink("Home", "Index", "Home")
-                </li>
-                <li>@Html.ActionLink("My Profile", "MyProfile", "Home")</li>
-                <li>
                     @{
                         if (Request.IsAuthenticated)
                         {
-                            using (Html.BeginForm("Logout", "MyAccount", FormMethod.Post, new { id = "logoutForm" }))
+                            using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
-                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>                             
                             }
                         }
                         else
                         {
-                            @Html.ActionLink("Login", "Login", "MyAccount")
+                            @Html.ActionLink("Login", "Login", "Account")
                         }
                     }
                 </li>
@@ -300,6 +278,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/metisMenu")
     @Scripts.Render("~/Scripts/jquery-ui-1.12.0.min.js")
+    @Scripts.Render("~/bundles/jqueryval")
 
     <!--Metis menu scripts-->
 
@@ -349,6 +328,11 @@
     @Scripts.Render("~/Scripts/timepickerInt.js")
     @Scripts.Render("~/Scripts/siteScripts.js")
 
+    @Scripts.Render("~/Scripts/timepickerInt.js")
+    @Scripts.Render("~/Scripts/siteScripts.js")
+    @Scripts.Render("~/Scripts/bundles/bootbox")
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     @RenderSection("script", required: false)
 </body>
 </html>

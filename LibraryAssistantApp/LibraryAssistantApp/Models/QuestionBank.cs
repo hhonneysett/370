@@ -13,12 +13,18 @@ namespace LibraryAssistantApp.Models
 
     public class Question_BankMetadata
     {
-        [Display(Name = "Question")]
+        [Display(Name = "Question")]        
         [Required]
         public string Question_Text { get; set; }
 
-        [Required]
+        
         [Display(Name = "Topic")]
+        [Required]
         public int Topic_Seq { get; set; }
+
+        
+        [Display(Name = "Style Type")]
+        [Required]
+        public int Style_Type_ID { get; set; }
     }
 }

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Campus>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Campuses</h2>
+
+<p>  
+    <input type="submit" value="Create new campus" class="btn btn-default" onclick="location.href='@Url.Action("Create", "Campus")'" /> 
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Campus_Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Campus_Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Campus_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Campus_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Campus_ID })
+        </td>
+    </tr>
+}
+
+</table>
+<input type="submit" value="Campuses" class="btn btn-default" onclick="location.href='@Url.Action("Index","Campus")'" /> <input type="submit" value="Buildings" class="btn btn-default" onclick="location.href='@Url.Action("Index","Buildings")'" /> <input type="submit" value="Building floors" class="btn btn-default" onclick="location.href='@Url.Action("Index","Building_Floor")'" /> <input type="submit" value="Venues" class="btn btn-default" onclick="location.href='@Url.Action("Index","Venues")'" />

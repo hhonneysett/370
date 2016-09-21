@@ -1,25 +1,28 @@
-﻿using System;
+﻿using System.Web.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+
 
 namespace LibraryAssistantApp.Models
 {
     public class UpdatePersonModel
     {
         [Required(ErrorMessage = "Please provide a name", AllowEmptyStrings = false), StringLength(30), Display(Name = "Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Person_Name { get; set; }
 
         [Required(ErrorMessage = "Please provide a surname", AllowEmptyStrings = false), StringLength(30), Display(Name = "Surname")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Person_Surname { get; set; }
 
         [Required(ErrorMessage = "Please provide an email address"), StringLength(254), Display(Name = "Email Address"), RegularExpression(@"^([0-9a-zA-Z]([\+\-_\.][0-9a-zA-Z]+)*)+@(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]*\.)+[a-zA-Z0-9]{2,3})$",
         ErrorMessage = "Please provide valid email id")]
+        [Remote("checkUpdateEmail", "Validate", ErrorMessage = "Email is already in use")]
         public string Person_Email { get; set; }
-
-        [Display(Name ="Level")]
-        public int Level_ID { get; set; }
 
         [Display(Name ="Title")]
         public string Person_Title { get; set; }
@@ -27,14 +30,23 @@ namespace LibraryAssistantApp.Models
 
     public class CreatePersonModel
     {
+        [Display(Name ="Student Number")]
+        [Required(ErrorMessage ="Please provide a student number")]
+        [RegularExpression(@"[u][0-9]{8}", ErrorMessage ="Invalid student number")]
+        [Remote("validateStudentNumber", "Validate", ErrorMessage ="You are not a student at TUKS or are already registered")]
+        public string Person_ID { get; set; }
+
         [Required(ErrorMessage = "Please provide a name", AllowEmptyStrings = false), StringLength(30), Display(Name = "Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Person_Name { get; set; }
 
         [Required(ErrorMessage = "Please provide a surname", AllowEmptyStrings = false), StringLength(30), Display(Name = "Surname")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Person_Surname { get; set; }
 
         [Required(ErrorMessage = "Please provide an email address"), StringLength(254), Display(Name = "Email Address"), RegularExpression(@"^([0-9a-zA-Z]([\+\-_\.][0-9a-zA-Z]+)*)+@(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]*\.)+[a-zA-Z0-9]{2,3})$",
-        ErrorMessage = "Please provide valid email id")]
+        ErrorMessage = "Please provide valid email address")]
+        [Remote("checkEmail", "Validate", ErrorMessage ="Email is already in use")]
         public string Person_Email { get; set; }
 
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
@@ -43,19 +55,21 @@ namespace LibraryAssistantApp.Models
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
         public string Person_Password { get; set; }
 
-        [Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
+        [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [Required(ErrorMessage ="Please confirm password")]
         public string Confirm_Password { get; set; }
 
-        public int Level_ID { get; set; }
-
+        [Display(Name ="Title")]
         public string Person_Title { get; set; }
+
     }
 
     public class UpdatePasswordModel
     {
-        [Required(ErrorMessage ="Please provide current password"), Display(Name ="Current Password")]
+        [Required(ErrorMessage = "Please provide current password"), Display(Name = "Current Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [Remote("currentPass", "Validate", ErrorMessage ="Password does not match your current password")]
         public string CurrentPassword { get; set; }
 
         [Required(ErrorMessage = "Please provide new password", AllowEmptyStrings = false)]
@@ -64,27 +78,27 @@ namespace LibraryAssistantApp.Models
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
         public string NewPassword { get; set; }
 
-        [Compare("NewPassword", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm New Password")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm New Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string ConfirmNewPassword { get; set; }
     }
 
     public class AddPersonTopicModel
     {
-        [Required, Display(Name ="Topic")]
+        [Required, Display(Name = "Topic")]
         public int Topic_Seq { get; set; }
     }
 
     public class DeletePersonTopicModel
     {
-        [Display(Name ="Topic")]
+        [Display(Name = "Topic")]
         public int Topic_Sequence { get; set; }
     }
 
     public class AddFileModel
     {
-        [Required(ErrorMessage ="Please provide a file name")]
-        [Display(Name ="File Name")]
+        [Required(ErrorMessage = "Please provide a file name")]
+        [Display(Name = "File Name")]
         public string Document_Name { get; set; }
 
         public string Description { get; set; }
@@ -92,10 +106,10 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Category")]
         public int Category_ID { get; set; }
 
-        [Display(Name ="Type")]
+        [Display(Name = "Type")]
         public int Document_Type_ID { get; set; }
 
-        [Display(Name ="Upload File"), Required(ErrorMessage ="Please provide a file")]
+        [Display(Name = "Upload File"), Required(ErrorMessage = "Please provide a file")]
         public HttpPostedFileBase uploadFile { get; set; }
     }
 
@@ -137,11 +151,11 @@ namespace LibraryAssistantApp.Models
 
     public class AddFileTypeModel
     {
-        [Required(ErrorMessage ="Please provide a file type name")]
-        [Display(Name ="File Type Name")]
+        [Required(ErrorMessage = "Please provide a file type name")]
+        [Display(Name = "File Type Name")]
         public string Type_Name { get; set; }
 
-        [Display(Name ="File Type Description")]
+        [Display(Name = "File Type Description")]
         public string Description { get; set; }
     }
 
@@ -154,6 +168,7 @@ namespace LibraryAssistantApp.Models
     public class DiscussionRoomBooking
     {
         [Display(Name ="Person ID")]
+        [Remote("loginCheckPerson", "Validate", ErrorMessage ="Invalid person ID")]
         public string person_id { get; set; }
 
         [Required(ErrorMessage ="Please provide a date selection")]
@@ -164,14 +179,44 @@ namespace LibraryAssistantApp.Models
 
         [Required(ErrorMessage ="Please provide a time selection")]
         [Display(Name ="Time")]
+        public string inTime { get; set; }
         public DateTime time { get; set; }
 
-        [Required(ErrorMessage ="Please provide a length selection")]
-        [Display(Name ="Duration (Minutes)")]
+        [Required(ErrorMessage = "Please provide a length selection")]
+        [Display(Name = "Duration (Minutes)")]
         public int length { get; set; }
 
-        [Required(ErrorMessage ="Please provide a campus selection")]
-        [Display(Name ="Campus")]
+        [Required(ErrorMessage = "Please provide a campus selection")]
+        [Display(Name = "Campus")]
+        public int campus_ID { get; set; }
+
+        public string campus_name { get; set; }
+    }
+
+    public class EmpDiscussionRoomBooking
+    {
+        [Display(Name = "Person ID")]
+        [Remote("loginCheckPerson", "Validate", ErrorMessage = "Not a registered person ID")]
+        [Required(ErrorMessage ="Please enter a person ID")]
+        public string person_id { get; set; }
+
+        [Required(ErrorMessage = "Please provide a date selection")]
+        [Display(Name = "Date")]
+        public DateTime date { get; set; }
+
+        public DateTime endDate { get; set; }
+
+        [Required(ErrorMessage = "Please provide a time selection")]
+        [Display(Name = "Time")]
+        public string inTime { get; set; }
+        public DateTime time { get; set; }
+
+        [Required(ErrorMessage = "Please provide a length selection")]
+        [Display(Name = "Duration (Minutes)")]
+        public int length { get; set; }
+
+        [Required(ErrorMessage = "Please provide a campus selection")]
+        [Display(Name = "Campus")]
         public int campus_ID { get; set; }
 
         public string campus_name { get; set; }
@@ -181,22 +226,28 @@ namespace LibraryAssistantApp.Models
     {
         public int Campus_ID { get; set; }
 
-        [Required(ErrorMessage ="Please provide a campus name")]
-        [RegularExpression("^[a-zA-Z ]*$", ErrorMessage ="Only alphabet characters allowed")]
-        [Display(Name ="Campus Name")]
+        [Required(ErrorMessage = "Please provide a campus name")]
+        [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Only alphabet characters allowed")]
+        [Display(Name = "Campus Name")]
         public string Campus_Name { get; set; }
     }
 
     public class OneTimePinModel
     {
-        [Required(ErrorMessage ="Please provide one time pin")]
-        [Display(Name ="One Time Pin")]
+        [Required(ErrorMessage = "Please provide one time pin")]
+        [Display(Name = "One Time Pin")]
         public string pin { get; set; }
     }
 
     public class BookingDetailsModel
     {
         public int booking_seq { get; set; }
+
+        [Display(Name ="Booking Status")]
+        public string booking_status { get; set; }
+
+        [Display(Name = "Person ID")]
+        public string person_id { get; set; }
 
         [Display(Name ="Type")]
         public string type { get; set; }
@@ -215,5 +266,374 @@ namespace LibraryAssistantApp.Models
 
         [Display(Name ="Venue")]
         public string venue { get; set; }
+    }
+
+    public class UpdateBookingModel
+    {
+        public int booking_seq { get; set; }
+
+        [Display(Name = "Person ID")]
+        public string person_id { get; set; }
+
+        [Display(Name = "Date")]
+        [Required(ErrorMessage ="Please provide a date")]
+        public string date { get; set; }
+
+        public DateTime startDate { get; set; }
+
+        public DateTime endDate { get; set; }
+
+        [Required(ErrorMessage = "Please provide a time selection")]
+        [Display(Name = "Time")]
+        public string time { get; set; }
+
+        [Required(ErrorMessage = "Please provide a length selection")]
+        [Display(Name = "Duration (Minutes)")]
+        public double length { get; set; }
+
+        [Display(Name = "Campus")]
+        [Required(ErrorMessage ="Please select a campus")]
+        public string campus { get; set; }
+
+        [Display(Name = "Building")]
+        [Required(ErrorMessage = "Please select a building")]
+        public string building { get; set; }
+
+        [Display(Name = "Venue")]
+        [Required(ErrorMessage = "Please select a venue")]
+        public string venue { get; set; }
+
+        public int campus_id { get; set; }
+
+        public int venue_id { get; set; }
+
+        public int building_id { get; set; }
+
+        public int building_floor_id { get; set; }
+    }
+
+    public class CategoryModel
+    {
+        public int categoryId { get; set; }
+
+        [Display(Name ="Category Name")]
+        [Required(ErrorMessage ="Please provide a category name")]
+        public string categoryName { get; set; }
+
+        [Display(Name ="Description")]
+        public string description { get; set; }
+  
+    }
+
+    public class TrainingSessionModel
+    {
+        [Required(ErrorMessage ="Please provide a category selection")]
+        [Display(Name ="Category")]
+        public int Category_ID { get; set; }
+
+        [Required(ErrorMessage ="Please provide a topic selection")]
+        [Display(Name ="Topic")]
+        public int Topic_ID { get; set; }
+
+        [Required(ErrorMessage ="Please provide a duration")]
+        [Display(Name ="Duration (Minutes)")]
+        public int duration { get; set; }
+
+        [Required(ErrorMessage ="Please provide a start date")]
+        [Display(Name ="Date")]
+        public string startDate { get; set; }
+
+        [Required(ErrorMessage = "Please provide a campus")]
+        [Display(Name = "Campus")]
+        public int Campus_ID { get; set; }
+    }
+
+    public class timeslot
+    {
+        public int id { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+    }
+
+    public class venueTimeslot
+    {
+        public timeslot timeslot { get; set; }
+        public IEnumerable<Venue> venues { get; set; }
+    }
+
+    public class venueRating
+    {
+        public Venue venue { get; set; }
+        public double rating { get; set; }
+        public string characteristics { get; set; }
+    }
+
+    public class TrainingDetailsModel
+    {
+        [Display(Name ="Person ID")]
+        public string personId { get; set; }
+
+        [Display(Name ="Booking Type")]
+        public string bookingType { get; set; }
+
+        [Display(Name ="Category")]
+        public string category { get; set; }
+
+        [Display(Name ="Topic")]
+        public string topic { get; set; }
+
+        [Display(Name ="Date")]
+        public string date { get; set; }
+
+        [Display(Name ="Timeslot")]
+        public string timeslot { get; set; }
+
+        [Display(Name ="Campus")]
+        public string campus { get; set; }
+
+        [Display(Name ="Building")]
+        public string building { get; set; }
+
+        [Display(Name ="Venue")]
+        public string venue { get; set; }
+
+        public bool attendance { get; set; }
+    }
+
+    public class AttendanceModel
+    {
+        public Registered_Person student { get; set; }
+        public bool attended { get; set; }
+    }
+
+    public class StudentModel
+    {
+        [Display(Name ="Student Number")]
+        [RegularExpression(@"[u][0-9]{8}", ErrorMessage = "Invalid student number")]
+        public string personId { get; set; }
+    }
+
+    public class OneTimePin
+    {
+        [Display(Name ="One Time Pin")]
+        [Remote("checkOTP", "Validate", ErrorMessage ="Invalid OTP")]
+        public int OTP { get; set; }
+    }
+
+    public class LostPasswordModel
+    {
+        [Remote("checkRegPerson", "Validate", ErrorMessage ="Student number is not registered")]
+        [RegularExpression(@"[u][0-9]{8}", ErrorMessage = "Invalid student number")]
+        [Display(Name ="Student Number")]
+        public string personId { get; set; }
+    }
+
+    public class ResetPassModel
+    {
+        [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
+        [Display(Name = "Password")]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 6 char long")]
+        public string Person_Password { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [Required(ErrorMessage = "Please confirm password")]
+        public string Confirm_Password { get; set; }
+    }
+
+    public class BookTrainingSessionModel
+    {
+        public int id { get; set; }
+        public string date { get; set; }
+        public string timeslot { get; set; }
+        public string campus { get; set; }
+        public string building { get; set; }            
+        public string venue { get; set; }
+    }
+
+    public class PersonSessionReportModel
+    {
+        public Registered_Person person { get; set; }
+        public int count { get; set; }
+        public double totalTime { get; set; }
+    }
+
+    public class DocumentAccessReportModel
+    {
+        public Document_Repository document { get; set; }
+        public int access { get; set; }
+    }
+
+    public class ActionAccessModel
+    {
+        public Action action { get; set; }
+        public int access { get; set; }
+    }
+
+    public class VenueUsageModel
+    {
+        public Venue venue { get; set; }
+        public int count { get; set; }
+        public string campus { get; set; }
+        public string building { get; set; }
+    }
+
+    public class TrainingSessionAttendance
+    {
+        public Venue_Booking training { get; set; }
+        public int attended { get; set; }
+        public int total { get; set; }
+    }
+
+    public class RoleModel
+    {
+        [Required]
+        public int RoleId { get; set; }
+        [Required(ErrorMessage = "Role name is required")]
+        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage = "Role name must be alphabetic and can only include one space")]
+        public string RoleName { get; set; }
+        public List<RoleActionModel> RoleActions { get; set; }
+    }
+
+    public class RoleActionModel
+    {
+        [Display(Name = "Create")]
+        public bool CreateInd { get; set; }
+        [Display(Name = "Read")]
+        public bool ReadInd { get; set; }
+        [Display(Name = "Update")]
+        public bool UpdateInd { get; set; }
+        [Display(Name = "Delete")]
+        public bool DeleteInd { get; set; }
+        public int ActionId { get; set; }
+        public int RoleId { get; set; }
+        [Display(Name = "Action")]
+        public string ActionName { get; set; }
+
+        public virtual RoleModel Role { get; set; }
+        public virtual ActionModel Action { get; set; }
+    }
+
+    public class ActionModel
+    {
+        public string ActionName { get; set; }
+        public string ActionDescription { get; set; }
+        public List<RoleActionModel> ActionRoles { get; set; }
+    }
+
+    public class RoleIndexModel
+    {
+        public IEnumerable<Role> Roles { get; set; }
+        public IEnumerable<Action> Actions { get; set; }
+        public IEnumerable<Role_Action> RoleActions { get; set; }
+    }
+
+    public class RoleEditModel
+    {
+        public Role role { get; set; }
+        public List<Role_Action> actionList { get; set; }
+    }
+
+    public class PersonTypeModel
+    {
+        public IEnumerable<Person_Type> person_types { get; set; }
+    }
+
+    public class PersonTypeAddModel
+    {
+        [Required(ErrorMessage = "Person Type is required")]
+        [Display(Name = "Person Type")]
+        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage = "Person Type must be alphabetic and can only include one space")]
+        public string person_type { get; set; }
+    }
+
+    public class PersonTypeEditModel
+    {
+        public Person_Type person_type { get; set; }
+    }
+
+    public class EmployeeIndexModel
+    {
+        public IEnumerable<Registered_Person> registered_person { get; set; }
+        public IEnumerable<Person_Role> person_role { get; set; }
+        public IEnumerable<Role_Action> role_action { get; set; }
+    }
+    public class EmployeeAddModel
+    {
+        public IEnumerable<Role_Action> role_action { get; set; }
+        public List<Role> role { get; set; }
+        public List<Topic_Category> topic_category { get; set; }
+        public List<RoleCheck> role_check { get; set; }
+        public List<TopicCheck> topic_check { get; set; }
+        [Required(ErrorMessage = "Title is required")]
+        [Display(Name = "Title")]
+        public string Person_Title { get; set; }
+        [Remote("UserExists", "Employee", ErrorMessage = "Employee does not exists at the university")]
+        [Required(ErrorMessage = "Username is required")]
+        //[RegularExpression(@"/^([p])([0-9]{8})+$/", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [Required(ErrorMessage = "Name is required")]
+        //[RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage = "Invalid name, please ensure the surname is alphabetic")]
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [Required(ErrorMessage = "Surname is required")]
+        //[RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage ="Invalid surname, please ensure the name is alphabetic")]
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Remote("EmailExists", "Employee", ErrorMessage = "Email address is already in use")]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address, please try again. Example: example@example.co.za")]
+        [Display(Name = "Email Address")]
+        public string person_email { get; set; }
+        [Display(Name = "Person Type")]
+        public string Person_Type { get; set; }
+    }
+    public class RoleCheck
+    {
+        public int role_id { get; set; }
+        public bool role_ind { get; set; }
+    }
+
+    public class TopicCheck
+    {
+        public int topic_sec { get; set; }
+        public int person_id { get; set; }
+        public bool topic_ind { get; set; }
+    }
+    public class EmployeeEditModel
+    {
+        public Registered_Person registered_person { get; set; }
+        public List<Person_Role> person_role { get; set; }
+        //public IEnumerable<Role_Action> role_action { get; set; }
+        //public List<Role> role { get; set; }
+        public List<Trainer_Topic> trainer_topic { get; set; }
+        //public List<RoleCheck> role_check { get; set; }
+        //public List<TopicCheck> topic_check { get; set; }
+        //public EmpRoleCheckEdit emprole { get; set; }
+        public List<EmpRoleCheckEdit> emprolecheckeditlist { get; set; }
+        public List<TrainerTopicCheck> trainertopiccheck { get; set; }
+    }
+
+    public class EmpRoleCheckEdit
+    {
+        public int role_id;
+        public string person_ID;
+        public string role_name;
+        public bool role_ind;
+    }
+    public class TrainerTopicCheck
+    {
+        public int topic_seq;
+        public string personid;
+        public string topic_name;
+        public string topic_description;
+        public bool topic_ind;
+    }
+
+    public class EmployeeDeleteModel
+    {
+        public Registered_Person registered_person { get; set; }
     }
 }

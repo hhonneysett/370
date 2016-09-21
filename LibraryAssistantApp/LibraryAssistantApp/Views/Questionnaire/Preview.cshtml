@@ -1,0 +1,1145 @@
+﻿
+@{
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Preview</title>
+</head>
+<body>
+    <div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                
+                <h3>Questionnaire details</h3>
+            </div>
+            <div class="panel-body">
+
+                <p>
+                    <b>Name</b>
+                    @*<br />*@
+                    <label class="form-control">@ViewBag.Questionnaire_Name</label>
+                </p>
+
+                <p>
+                    <b>Topic</b>
+                    @*<br />*@
+                    <label class="form-control">@ViewBag.Questionnaire_Topic</label>
+                </p>
+
+                <p>
+                    <b>Instructions</b>
+                    @*<br />*@
+                    <label class="form-control">Please answers the questions below. Questions that are mandatory are indicated by the '*' sign next to the question.</label>
+                </p>
+
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3>Questionnaire</h3></div>
+            <div class="panel-body">
+
+                @if (ViewBag.Count_Q_Questions > 0)
+                {
+                    <div class="panel panel-default">
+                      
+                            @if (ViewBag.AsnwerOptional_Q1 == 0)
+                            {
+                                <div class="panel-heading">* 1) @ViewBag.Question1
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="panel-heading">
+                                    1) @ViewBag.Question1
+                                </div>
+                            }
+
+                        <div class="panel-body">
+                            @if (ViewBag.Question1_StyleType == "Free Text")
+                            {
+                                <div class="form-group">
+                                    <textarea id="Question1_TextArea" maxlength="300" class="form-control" rows="3"></textarea>
+                                </div>
+                            }
+                            else if (ViewBag.Question1_StyleType == "Multiple Select list")
+                            {
+                                <div class="form-group">
+
+                                    @if (ViewBag.Count1 > 0)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer1_Q1" type="checkbox" value="">@ViewBag.PossibleAnswer1_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count1 > 1)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer2_Q1" type="checkbox" value="">@ViewBag.PossibleAnswer2_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count1 > 2)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer3_Q1" type="checkbox" value="">@ViewBag.PossibleAnswer3_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count1 > 3)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer4_Q1" type="checkbox" value="">@ViewBag.PossibleAnswer4_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count1 > 4)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer5_Q1" type="checkbox" value="">@ViewBag.PossibleAnswer5_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                </div>
+                            }
+                            else if (ViewBag.Question1_StyleType == "Range")
+                            {
+
+                                <div id="checkboxes">
+
+                                    @if (ViewBag.Count1 > 0)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer1_Q1</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer1_Q1" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count1 > 1)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer2_Q1</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer2_Q1" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count1 > 2)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer3_Q1</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer3_Q1" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count1 > 3)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer4_Q1</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer4_Q1" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count1 > 4)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer5_Q1</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer5_Q1" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                </div>
+
+
+                                <style>
+                                    .checkboxgroup {
+                                        display: inline-block;
+                                        text-align: center;
+                                    }
+
+                                        .checkboxgroup label {
+                                            display: block;
+                                        }
+                                </style>
+
+                            }
+                            else if (ViewBag.Question1_StyleType == "True or False")
+                            {
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q1" value="option2">@ViewBag.PossibleAnswer1_Q1
+                                        </label>
+                                    </div>
+
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q1" value="option2">@ViewBag.PossibleAnswer2_Q1
+                                        </label>
+                                    </div>
+
+
+                                </div>
+                            }
+                            else if (ViewBag.Question1_StyleType == "Single Select list")
+                            {
+                                <div class="form-group">
+                                    @if (ViewBag.Count1 > 0)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q1" value="option2">@ViewBag.PossibleAnswer1_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count1 > 1)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q1" value="option2">@ViewBag.PossibleAnswer2_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count1 > 2)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer3_Q1" value="option2">@ViewBag.PossibleAnswer3_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count1 > 3)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer4_Q1" value="option2">@ViewBag.PossibleAnswer4_Q1
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count1 > 4)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer5_Q1" value="option2">@ViewBag.PossibleAnswer5_Q1
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                }
+
+
+                @if (ViewBag.Count_Q_Questions > 1)
+                {
+                    <div class="panel panel-default">
+                        @if (ViewBag.AsnwerOptional_Q2 == 0)
+                        {
+                            <div class="panel-heading">
+                                * 2) @ViewBag.Question2
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="panel-heading">
+                                2) @ViewBag.Question2
+                            </div>
+                        }
+                        <div class="panel-body">
+                            @if (ViewBag.Question2_StyleType == "Free Text")
+                            {
+                                <div class="form-group">
+                                    <textarea id="Question2_TextArea" maxlength="300" class="form-control" rows="3"></textarea>
+                                </div>
+                            }
+                            else if (ViewBag.Question2_StyleType == "Multiple Select list")
+                            {
+                                <div class="form-group">
+
+                                    @if (ViewBag.Count2 > 0)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer1_Q2" type="checkbox" value="">@ViewBag.PossibleAnswer1_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count2 > 1)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer2_Q2" type="checkbox" value="">@ViewBag.PossibleAnswer2_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count2 > 2)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer3_Q2" type="checkbox" value="">@ViewBag.PossibleAnswer3_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count2 > 3)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer4_Q2" type="checkbox" value="">@ViewBag.PossibleAnswer4_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count2 > 4)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer5_Q2" type="checkbox" value="">@ViewBag.PossibleAnswer5_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                </div>
+                            }
+                            else if (ViewBag.Question2_StyleType == "Range")
+                            {
+
+                                <div id="checkboxes">
+
+                                    @if (ViewBag.Count2 > 0)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label>@ViewBag.PossibleAnswer1_Q2</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer1_Q2" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count2 > 1)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label>@ViewBag.PossibleAnswer2_Q2</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer2_Q2" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count2 > 2)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer3_Q2</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer3_Q2" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count2 > 3)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer4_Q2</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer4_Q2" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count2 > 4)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer5_Q2</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer5_Q2" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                </div>
+
+
+                                <style>
+                                    .checkboxgroup {
+                                        display: inline-block;
+                                        text-align: center;
+                                    }
+
+                                        .checkboxgroup label {
+                                            display: block;
+                                        }
+                                </style>
+
+                            }
+                            else if (ViewBag.Question2_StyleType == "True or False")
+                            {
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q2" value="option2">@ViewBag.PossibleAnswer1_Q2
+                                        </label>
+                                    </div>
+
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q2" value="option2">@ViewBag.PossibleAnswer2_Q2
+                                        </label>
+                                    </div>
+
+
+                                </div>
+                            }
+                            else if (ViewBag.Question2_StyleType == "Single Select list")
+                            {
+                                <div class="form-group">
+                                    @if (ViewBag.Count2 > 0)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q2" value="option2">@ViewBag.PossibleAnswer1_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count2 > 1)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q2" value="option2">@ViewBag.PossibleAnswer2_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count2 > 2)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer3_Q2" value="option2">@ViewBag.PossibleAnswer3_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count2 > 3)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer4_Q2" value="option2">@ViewBag.PossibleAnswer4_Q2
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count2 > 4)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer5_Q2" value="option2">@ViewBag.PossibleAnswer5_Q2
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                }
+
+                @if (ViewBag.Count_Q_Questions > 2)
+                {
+                    <div class="panel panel-default">
+                        @if (ViewBag.AsnwerOptional_Q3 == 0)
+                        {
+                            <div class="panel-heading">
+                                * 3) @ViewBag.Question3
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="panel-heading">
+                                3) @ViewBag.Question3
+                            </div>
+                        }
+                        <div class="panel-body">
+                            @if (ViewBag.Question3_StyleType == "Free Text")
+                            {
+                                <div class="form-group">
+                                    <textarea id="Question3_TextArea" maxlength="300" class="form-control" rows="3"></textarea>
+                                </div>
+                            }
+                            else if (ViewBag.Question3_StyleType == "Multiple Select list")
+                            {
+                                <div class="form-group">
+
+                                    @if (ViewBag.Count3 > 0)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer1_Q3" type="checkbox" value="">@ViewBag.PossibleAnswer1_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count3 > 1)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer2_Q3" type="checkbox" value="">@ViewBag.PossibleAnswer2_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count3 > 2)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer3_Q3" type="checkbox" value="">@ViewBag.PossibleAnswer3_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count3 > 3)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer4_Q3" type="checkbox" value="">@ViewBag.PossibleAnswer4_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count3 > 4)
+                                    {
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="PossibleAnswer5_Q3" type="checkbox" value="">@ViewBag.PossibleAnswer5_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                </div>
+                            }
+                            else if (ViewBag.Question3_StyleType == "Range")
+                            {
+
+                                <div id="checkboxes">
+
+                                    @if (ViewBag.Count3 > 0)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer1_Q3</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer1_Q3" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count3 > 1)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer2_Q3</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer2_Q3" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count3 > 2)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer3_Q3</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer3_Q3" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count3 > 3)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer4_Q3</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer4_Q3" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                    @if (ViewBag.Count3 > 4)
+                                    {
+                                        <span style="padding-right: 1em">
+                                            <div class="checkboxgroup">
+                                                <label for="my_radio_button_id3">@ViewBag.PossibleAnswer5_Q3</label>
+                                                <input type="radio" name="radio" id="PossibleAnswer5_Q3" />
+                                            </div>
+                                        </span>
+                                    }
+
+                                </div>
+
+
+                                <style>
+                                    .checkboxgroup {
+                                        display: inline-block;
+                                        text-align: center;
+                                    }
+
+                                        .checkboxgroup label {
+                                            display: block;
+                                        }
+                                </style>
+
+                            }
+                            else if (ViewBag.Question3_StyleType == "True or False")
+                            {
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q3" value="option2">@ViewBag.PossibleAnswer1_Q3
+                                        </label>
+                                    </div>
+
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q3" value="option2">@ViewBag.PossibleAnswer2_Q3
+                                        </label>
+                                    </div>
+
+
+                                </div>
+                            }
+                            else if (ViewBag.Question3_StyleType == "Single Select list")
+                            {
+                                <div class="form-group">
+                                    @if (ViewBag.Count3 > 0)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q3" value="option2">@ViewBag.PossibleAnswer1_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count3 > 1)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q3" value="option2">@ViewBag.PossibleAnswer2_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count3 > 2)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer3_Q3" value="option2">@ViewBag.PossibleAnswer3_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count3 > 3)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer4_Q3" value="option2">@ViewBag.PossibleAnswer4_Q3
+                                            </label>
+                                        </div>
+                                    }
+
+                                    @if (ViewBag.Count3 > 4)
+                                    {
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="PossibleAnswer5_Q3" value="option2">@ViewBag.PossibleAnswer5_Q3
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+
+
+
+
+                        </div>
+                    </div>
+                }
+
+                @if (ViewBag.Count_Q_Questions > 3)
+                {
+                    <div class="panel panel-default">
+                        @if (ViewBag.AsnwerOptional_Q4 == 0)
+                        {
+                            <div class="panel-heading">
+                                * 4) @ViewBag.Question4
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="panel-heading">
+                                4) @ViewBag.Question4
+                            </div>
+                        }
+                        <div class="panel-body">
+
+                          @if (ViewBag.Question4_StyleType == "Free Text")
+                          {
+                            <div class="form-group">
+                                <textarea id="Question4_TextArea" maxlength="300" class="form-control" rows="3"></textarea>
+                            </div>
+                          }
+                          else if (ViewBag.Question4_StyleType == "Multiple Select list")
+                          {
+                            <div class="form-group">
+
+                                @if (ViewBag.Count4 > 0)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer1_Q4" type="checkbox" value="">@ViewBag.PossibleAnswer1_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count4 > 1)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer2_Q4" type="checkbox" value="">@ViewBag.PossibleAnswer2_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count4 > 2)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer3_Q4" type="checkbox" value="">@ViewBag.PossibleAnswer3_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count4 > 3)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer4_Q4" type="checkbox" value="">@ViewBag.PossibleAnswer4_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count4 > 4)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer5_Q4" type="checkbox" value="">@ViewBag.PossibleAnswer5_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                            </div>
+                          }
+                          else if (ViewBag.Question4_StyleType == "Range")
+                          {
+
+                            <div id="checkboxes">
+
+                                @if (ViewBag.Count4 > 0)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer1_Q4</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer1_Q4" />
+                                        </div>
+                                    </span>
+                                }
+
+                                @if (ViewBag.Count4 > 1)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer2_Q4</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer2_Q4" />
+                                        </div>
+                                    </span>
+                                }
+
+                                @if (ViewBag.Count4 > 2)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer3_Q4</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer3_Q4" />
+                                        </div>
+                                    </span>
+                                }
+
+                                @if (ViewBag.Count4 > 3)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer4_Q4</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer4_Q4" />
+                                        </div>
+                                    </span>
+                                }
+
+                                @if (ViewBag.Count4 > 4)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer5_Q4</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer5_Q4" />
+                                        </div>
+                                    </span>
+                                }
+
+                            </div>
+
+
+                                <style>
+                                    .checkboxgroup {
+                                        display: inline-block;
+                                        text-align: center;
+                                    }
+
+                                        .checkboxgroup label {
+                                            display: block;
+                                        }
+                                </style>
+
+                          }
+                          else if (ViewBag.Question4_StyleType == "True or False")
+                          {
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q4" value="option2">@ViewBag.PossibleAnswer1_Q4
+                                    </label>
+                                </div>
+
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q4" value="option2">@ViewBag.PossibleAnswer2_Q4
+                                    </label>
+                                </div>
+
+
+                            </div>
+                          }
+                          else if (ViewBag.Question1_StyleType == "Single Select list")
+                          {
+                            <div class="form-group">
+                                @if (ViewBag.Count4 > 0)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q4" value="option2">@ViewBag.PossibleAnswer1_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count4 > 1)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q4" value="option2">@ViewBag.PossibleAnswer2_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count4 > 2)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer3_Q4" value="option2">@ViewBag.PossibleAnswer3_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count4 > 3)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer4_Q4" value="option2">@ViewBag.PossibleAnswer4_Q4
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count4 > 4)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer5_Q4" value="option2">@ViewBag.PossibleAnswer5_Q4
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                          }
+
+
+                        </div>
+                    </div>
+                }
+
+                @if (ViewBag.Count_Q_Questions > 4)
+                {
+                    <div class="panel panel-default">
+                        @if (ViewBag.AsnwerOptional_Q5 == 0)
+                        {
+                            <div class="panel-heading">
+                                * 5) @ViewBag.Question5
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="panel-heading">
+                                5) @ViewBag.Question5
+                            </div>
+                        }
+                        <div class="panel-body">
+
+                        @if (ViewBag.Question5_StyleType == "Free Text")
+                        {
+                            <div class="form-group">
+                                <textarea id="Question5_TextArea" maxlength="300" class="form-control" rows="3"></textarea>
+                            </div>
+                        }
+                        else if (ViewBag.Question5_StyleType == "Multiple Select list")
+                        {
+                            <div class="form-group">
+
+                                @if (ViewBag.Count5 > 0)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer1_Q5" type="checkbox" value="">@ViewBag.PossibleAnswer1_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count5 > 1)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer2_Q5" type="checkbox" value="">@ViewBag.PossibleAnswer2_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count5 > 2)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer3_Q5" type="checkbox" value="">@ViewBag.PossibleAnswer3_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count5 > 3)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer4_Q5" type="checkbox" value="">@ViewBag.PossibleAnswer4_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count5 > 4)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="PossibleAnswer5_Q5" type="checkbox" value="">@ViewBag.PossibleAnswer5_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                            </div>
+                        }
+                        else if (ViewBag.Question5_StyleType == "Range")
+                        {
+
+                            <div id="checkboxes">
+
+                                @if (ViewBag.Count5 > 0)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer1_Q5</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer1_Q5" />
+                                        </div>
+                                    </span>
+                                }
+
+                                @if (ViewBag.Count5 > 1)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer2_Q5</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer2_Q5" />
+                                        </div>
+                                    </span>
+                                }
+
+                                @if (ViewBag.Count5 > 2)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer3_Q5</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer3_Q5" />
+                                        </div>
+                                    </span>
+                                }
+
+                                @if (ViewBag.Count5 > 3)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer4_Q5</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer4_Q5" />
+                                        </div>
+                                    </span>
+                                }
+
+                                @if (ViewBag.Count5 > 4)
+                                {
+                                    <span style="padding-right: 1em">
+                                        <div class="checkboxgroup">
+                                            <label for="my_radio_button_id3">@ViewBag.PossibleAnswer5_Q5</label>
+                                            <input type="radio" name="radio" id="PossibleAnswer5_Q5" />
+                                        </div>
+                                    </span>
+                                }
+
+                            </div>
+
+
+                                <style>
+                                    .checkboxgroup {
+                                        display: inline-block;
+                                        text-align: center;
+                                    }
+
+                                        .checkboxgroup label {
+                                            display: block;
+                                        }
+                                </style>
+
+                        }
+                        else if (ViewBag.Question5_StyleType == "True or False")
+                        {
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q5" value="option2">@ViewBag.PossibleAnswer1_Q5
+                                    </label>
+                                </div>
+
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q5" value="option2">@ViewBag.PossibleAnswer2_Q5
+                                    </label>
+                                </div>
+
+
+                            </div>
+                        }
+                        else if (ViewBag.Question5_StyleType == "Single Select list")
+                        {
+                            <div class="form-group">
+                                @if (ViewBag.Count5 > 0)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer1_Q5" value="option2">@ViewBag.PossibleAnswer1_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count5 > 1)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer2_Q5" value="option2">@ViewBag.PossibleAnswer2_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count5 > 2)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer3_Q5" value="option2">@ViewBag.PossibleAnswer3_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count5 > 3)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer4_Q5" value="option2">@ViewBag.PossibleAnswer4_Q5
+                                        </label>
+                                    </div>
+                                }
+
+                                @if (ViewBag.Count5 > 4)
+                                {
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="PossibleAnswer5_Q5" value="option2">@ViewBag.PossibleAnswer5_Q5
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+
+
+
+
+                        </div>
+                    </div>
+                }
+
+                <div>
+                    <button id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="location.href='@Url.Action("Details", "Questionnaire", new { id= ViewBag.Questionnaire_ID})'">Done</button>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

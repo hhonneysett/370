@@ -4,7 +4,9 @@ namespace LibraryAssistantApp.Models
 {
     public class RegisteredPersonMetadata
     {
-        [Display(Name = "Student Number")]
+
+        [Display(Name = "Username")]
+
         public string Person_ID;
 
         [Display(Name = "Name")]
@@ -19,11 +21,11 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Password")]
         public string Person_Password;
 
-        [Display(Name = "Level")]
-        public int Level_ID;
-
         [Display(Name = "Title")]
-        public string Person_Title;
+        public int Person_Title;
+
+        [Display(Name = "Type")]
+        public string Person_Type;
     }
 
     public class PersonLevelMetadata
@@ -31,7 +33,7 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Level")]
         public string Level_Name;
 
-        [Display(Name ="Level")]
+        [Display(Name = "Level")]
         public int Level_ID;
     }
 
@@ -44,51 +46,79 @@ namespace LibraryAssistantApp.Models
     public class TopicMetadata
     {
         [Display(Name = "Topic")]
+        [Required(ErrorMessage = "Please provide a topic name")]
         public string Topic_Name;
     }
 
     public class DocumentRepositoryMetadata
     {
-        [Display(Name ="File Name")]
+        [Display(Name = "File Name")]
         public string Document_Name;
 
-        [Display(Name ="Directory Path")]
+        [Display(Name = "Directory Path")]
         public string Directory_Path;
 
-        [Display(Name ="Category")]
+        [Display(Name = "Category")]
         public string Category_ID;
 
-        [Display(Name ="Extension Type")]
+        [Display(Name = "Extension Type")]
         public string Document_Extension_ID;
 
-        [Display(Name ="Type")]
+        [Display(Name = "Type")]
         public string Document_Type_ID;
     }
 
     public class DocumentCategoryMetadate
     {
-        [Display(Name ="Category")]
+        [Display(Name = "Category")]
         public string Category_Name;
     }
 
     public class DocumentExtensionMetadata
     {
-        [Display(Name ="Extension Type")]
+        [Display(Name = "Extension Type")]
         public string Extension_Type;
     }
 
     public class DocumentTypeMetadata
     {
-        [Display(Name ="Type")]
+        [Display(Name = "Type")]
         public string Document_Type_Name;
     }
 
     public class CampusMetadata
     {
-        [Display(Name ="Campus Name")]
+        [Display(Name = "Campus Name")]
         public string Campus_Name;
     }
+
+
+    public class CategoryMetadata
+    {
+        [Display(Name = "Category Name")]
+        [Required(ErrorMessage = "Please provide a category name")]
+        public string Category_Name;
+    }
+
+    public class RoleMetadata
+    {
+        [Required(ErrorMessage = "Role name is required")]
+        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage = "Role name must be alphabetic and can only include one space")]
+        [Display(Name = "Role")]
+        public string Role_Name;
+    }
+
+    public class PersonTypeMetadata
+    {
+        [Display(Name = "Type")]
+        [Required(ErrorMessage = "Person Type required")]
+        [RegularExpression(@"^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$", ErrorMessage = "Person Type must be alphabetic and can only include one space")]
+        public string Person_Type1 { get; set; }
+
+    }
 }
+    
+
 
 //    //public class PersonTitleMetadata
 //    //{
