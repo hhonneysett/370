@@ -34,7 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -157,6 +157,8 @@
     <Content Include="Content\imgs_dhx_terrace\resize_dots.png" />
     <Content Include="Content\imgs_dhx_terrace\resizing.png" />
     <Content Include="Content\img\default.gif" />
+    <Content Include="Content\Login\normalize.css" />
+    <Content Include="Content\Login\style.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\loginStyle.css" />
     <Content Include="Scripts\base64.js" />
@@ -165,10 +167,8 @@
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\navbar-style.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Content\loginForm.css" />
     <Content Include="Scripts\jspdf.js" />
     <Content Include="Scripts\Login\index.js" />
-    <Content Include="Scripts\Login\prefixfree.min.js" />
     <Content Include="Scripts\sprintf.js" />
     <Content Include="Scripts\tableExport.js" />
     <Content Include="Content\themes\base\accordion.css" />
