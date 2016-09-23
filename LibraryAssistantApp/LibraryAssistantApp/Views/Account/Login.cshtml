@@ -1,102 +1,115 @@
-﻿@*@model LibraryAssistantApp.Models.Login
-
-@using System.Web.Optimization
-
-@{
-    ViewBag.Title = "Login";
-    Layout = "~/Views/Shared/_LayoutBlank.cshtml";
-}
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-
-
-    <div class="form-horizontal" style="margin-top:10px">
-        <h4>Login</h4>
-        <hr />    
-
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Person_ID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Person_ID, new { htmlAttributes = new { @class = "form-control", @placeholder = "Example: u12345678" } })
-                @Html.ValidationMessageFor(model => model.Person_ID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Person_Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Person_Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Person_Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-default" />
-            </div>
-        </div>
-
-
-        <hr />
-
-        <div class="col-md-offset-2 col-md-">
-            @Html.ActionLink("Forgot Password", "ForgotPassword", "Account") |
-            @Html.ActionLink("Register", "RegisterStudent", "RegisteredPerson")
-        </div>
-
-       
-    </div>
-}*@
-
-@{ 
+﻿@{ 
     Layout = null;
 }
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Login - UP Library Asssistant</title>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="~/Content/font-awesome.css">
+    <title>Sign-Up/Login Form</title>
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" href="~/Content/normalize.css">
+    <link rel="stylesheet" href="~/Content/Login/normalize.css">
 
-    <link rel="stylesheet" href="~/Content/loginStyle.css">
+    <link rel="stylesheet" href="~/Content/Login/style.css">
 
-    <script src="~/Scripts/Login/prefixfree.min.js"></script>
+
 
 </head>
 <body>
-    <div class="wrapper">
-        <form class="login">
-            <p class="title">Log in</p>
-            <input type="text" placeholder="Username" autofocus id="loginUsername" />
-            <i class="fa fa-user"></i>
-            <input type="password" placeholder="Password" id="loginPassword" />
-            <i class="fa fa-key"></i>
-            @Html.ActionLink("Forgot Password", "ForgotPassword", "Account") |
-            @Html.ActionLink("Register", "RegisterStudent", "RegisteredPerson")
-            <button>
-                <i class="spinner"></i>
-                <span class="state" id="btnLogin">Log in</span>
-            </button>
-        </form>
-    </div>
+    <div class="form">
 
+        <ul class="tab-group">
+            <li class="tab active"><a href="#login">Log In</a></li>
+            <li class="tab"><a href="#signup">Sign Up</a></li>
+        </ul>
+
+        <div class="tab-content">
+
+            <div id="login">
+                <h1>Welcome Back!</h1>
+
+                <form action="/" method="post">
+
+                    <div class="field-wrap">
+                        <label>
+                            Username<span class="req">*</span>
+                        </label>
+                        <input type="text" required autocomplete="off" />
+                    </div>
+
+                    <div class="field-wrap">
+                        <label>
+                            Password<span class="req">*</span>
+                        </label>
+                        <input type="password" required autocomplete="off" />
+                    </div>
+
+                    <p class="forgot">@Html.ActionLink("Forgot Password", "ForgotPassword", "Account")</p>
+
+                    <button class="button button-block" />Log In</button>
+
+                </form>
+            </div>
+
+            <div id="signup">
+                <h1>Sign Up for Free</h1>
+
+                <form action="/" method="post">
+                    
+                    <div class="field-wrap">
+                        <label>
+                            Student Number<span class="req">*</span>
+                        </label>
+                        <input type="text" required autocomplete="off" />
+                    </div>
+
+                    <div class="top-row">
+                        <div class="field-wrap">
+                            <label>
+                                First Name<span class="req">*</span>
+                            </label>
+                            <input type="text" required autocomplete="off" />
+                        </div>
+
+                        <div class="field-wrap">
+                            <label>
+                                Last Name<span class="req">*</span>
+                            </label>
+                            <input type="text" required autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="field-wrap">
+                        <label>
+                            Email Address<span class="req">*</span>
+                        </label>
+                        <input type="email" required autocomplete="off" />
+                    </div>
+
+                    <div class="field-wrap">
+                        <label>
+                            Set A Password<span class="req">*</span>
+                        </label>
+                        <input type="password" required autocomplete="off" />
+                    </div>
+
+                    <div class="field-wrap">
+                        <label>
+                            Confirm Password<span class="req">*</span>
+                        </label>
+                        <input type="password" required autocomplete="off" />
+                    </div>
+
+                    <button type="submit" class="button button-block" />Get Started</button>
+
+                </form>
+            </div>          
+
+        </div><!-- tab-content -->
+
+    </div> <!-- /form -->
     <script src='~/Scripts/jquery-3.1.0.min.js'></script>
     <script src="~/Scripts/Login/index.js"></script>
 
-    <script type="text/javascript">
-            $(document).ready(function () {
-                $("btnLogin").click(function () {
-                    $("#loginForm").submit();
-                })
-            })
-    </script>
-
 </body>
-</html>    
-
-
+</html>

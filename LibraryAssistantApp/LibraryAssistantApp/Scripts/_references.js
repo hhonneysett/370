@@ -16,7 +16,6 @@
 /// <reference path="jquery-ui-1.12.0.min.js" />
 /// <reference path="jspdf.js" />
 /// <reference path="login/index.js" />
-/// <reference path="login/prefixfree.min.js" />
 /// <reference path="loginform.js" />
 /// <reference path="metismenu.js" />
 /// <reference path="metismenuscripts.js" />
