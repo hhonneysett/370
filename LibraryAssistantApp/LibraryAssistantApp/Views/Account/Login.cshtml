@@ -1,9 +1,9 @@
-﻿@{ 
+﻿@model LibraryAssistantApp.Models.Login
+
+@{
     Layout = null;
 }
 
-<!DOCTYPE html>
-<html>
 <head>
     <meta charset="UTF-8">
     <title>Sign-Up/Login Form</title>
@@ -13,103 +13,51 @@
 
     <link rel="stylesheet" href="~/Content/Login/style.css">
 
-
-
 </head>
-<body>
-    <div class="form">
 
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form">
         <ul class="tab-group">
             <li class="tab active"><a href="#login">Log In</a></li>
             <li class="tab"><a href="#signup">Sign Up</a></li>
         </ul>
 
         <div class="tab-content">
-
+            
             <div id="login">
                 <h1>Welcome Back!</h1>
 
-                <form action="/" method="post">
-
+                <form id="loginForm">
                     <div class="field-wrap">
                         <label>
                             Username<span class="req">*</span>
                         </label>
-                        <input type="text" required autocomplete="off" />
+                        @Html.EditorFor(model => model.Person_ID)
+                        @Html.ValidationMessageFor(model => model.Person_ID, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="field-wrap">
                         <label>
                             Password<span class="req">*</span>
                         </label>
-                        <input type="password" required autocomplete="off" />
+                        @Html.EditorFor(model => model.Person_Password, new { htmlAttributes = new { } })
+                        @Html.ValidationMessageFor(model => model.Person_Password, "", new { @class = "text-danger" })
                     </div>
 
                     <p class="forgot">@Html.ActionLink("Forgot Password", "ForgotPassword", "Account")</p>
 
-                    <button class="button button-block" />Log In</button>
-
+                    <input type="submit" value="Log In" class="button button-block" />
                 </form>
             </div>
 
-            <div id="signup">
-                <h1>Sign Up for Free</h1>
 
-                <form action="/" method="post">
-                    
-                    <div class="field-wrap">
-                        <label>
-                            Student Number<span class="req">*</span>
-                        </label>
-                        <input type="text" required autocomplete="off" />
-                    </div>
 
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                First Name<span class="req">*</span>
-                            </label>
-                            <input type="text" required autocomplete="off" />
-                        </div>
+        </div>
+    </div>
 
-                        <div class="field-wrap">
-                            <label>
-                                Last Name<span class="req">*</span>
-                            </label>
-                            <input type="text" required autocomplete="off" />
-                        </div>
-                    </div>
-                    <div class="field-wrap">
-                        <label>
-                            Email Address<span class="req">*</span>
-                        </label>
-                        <input type="email" required autocomplete="off" />
-                    </div>
-
-                    <div class="field-wrap">
-                        <label>
-                            Set A Password<span class="req">*</span>
-                        </label>
-                        <input type="password" required autocomplete="off" />
-                    </div>
-
-                    <div class="field-wrap">
-                        <label>
-                            Confirm Password<span class="req">*</span>
-                        </label>
-                        <input type="password" required autocomplete="off" />
-                    </div>
-
-                    <button type="submit" class="button button-block" />Get Started</button>
-
-                </form>
-            </div>          
-
-        </div><!-- tab-content -->
-
-    </div> <!-- /form -->
     <script src='~/Scripts/jquery-3.1.0.min.js'></script>
     <script src="~/Scripts/Login/index.js"></script>
-
-</body>
-</html>
+}
