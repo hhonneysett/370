@@ -29,7 +29,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpPost]
-        public string Login(Login l, string ReturnUrl = "")
+        public ActionResult Login(Login l, string ReturnUrl = "")
         {
             if (ModelState.IsValid)
             {
@@ -88,17 +88,17 @@ namespace LibraryAssistantApp.Controllers
 
                         if (ReturnUrl != "")
                         {
-                            return ReturnUrl;
+                            return RedirectToAction(ReturnUrl);
                         }
                         else
                         {
-                            return Url.Action("Index", "Home");
+                            return RedirectToAction("Index", "Home");
                         }                      
                     }                    
                 }
             }
             ModelState.Remove("Person_Password");
-            return "TEST FAILURE";
+            return View();
         }
 
         [Authorize]
