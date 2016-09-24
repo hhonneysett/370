@@ -559,6 +559,7 @@ namespace LibraryAssistantApp.Models
         public IEnumerable<Person_Role> person_role { get; set; }
         public IEnumerable<Role_Action> role_action { get; set; }
     }
+
     public class EmployeeAddModel
     {
         public IEnumerable<Role_Action> role_action { get; set; }
@@ -590,6 +591,7 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Person Type")]
         public string Person_Type { get; set; }
     }
+
     public class RoleCheck
     {
         public int role_id { get; set; }
@@ -602,6 +604,7 @@ namespace LibraryAssistantApp.Models
         public int person_id { get; set; }
         public bool topic_ind { get; set; }
     }
+
     public class EmployeeEditModel
     {
         public Registered_Person registered_person { get; set; }
@@ -623,6 +626,7 @@ namespace LibraryAssistantApp.Models
         public string role_name;
         public bool role_ind;
     }
+
     public class TrainerTopicCheck
     {
         public int topic_seq;

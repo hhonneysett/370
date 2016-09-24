@@ -9,8 +9,7 @@ namespace LibraryAssistantApp.Models
 {
     public class Login
     {
-        [Required(ErrorMessage ="Student number required.", AllowEmptyStrings =false), Display(Name ="Person ID")]
-        [Remote("loginCheckPerson", "Validate", ErrorMessage ="Not a registered person ID")]
+        [Required(ErrorMessage = "Student number required.", AllowEmptyStrings = false), Display(Name = "Student Number")]
         public string Person_ID { get; set; }
 
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
@@ -19,7 +18,7 @@ namespace LibraryAssistantApp.Models
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
         public string Person_Password { get; set; }
 
-        [Display(Name ="Remember Me?")]
+        [Display(Name = "Remember Me?")]
         public bool RememberMe { get; set; }
     }
 }
