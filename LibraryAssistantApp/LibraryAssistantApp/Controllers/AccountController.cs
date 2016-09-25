@@ -1,7 +1,9 @@
 ﻿using LibraryAssistantApp.Models;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -27,11 +29,8 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Login(Login l, string ReturnUrl = "")
         {
-
-
             if (ModelState.IsValid)
             {
                 var hashedPass = FormsAuthentication.HashPasswordForStoringInConfigFile(l.Person_Password, "MD5");
@@ -53,7 +52,7 @@ namespace LibraryAssistantApp.Controllers
 
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         string data = js.Serialize(passablePerson);
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, registered_person.Person_ID, DateTime.Now, DateTime.Now.AddMinutes(30), l.RememberMe, data);
+                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, registered_person.Person_ID, DateTime.Now, DateTime.Now.AddMinutes(30), false, data);
                         string encToken = FormsAuthentication.Encrypt(ticket);
                         HttpCookie authCookies = new HttpCookie(FormsAuthentication.FormsCookieName, encToken);
                         Response.Cookies.Add(authCookies);
@@ -89,18 +88,13 @@ namespace LibraryAssistantApp.Controllers
 
                         if (ReturnUrl != "")
                         {
-                            return Redirect(ReturnUrl);
+                            return RedirectToAction(ReturnUrl);
                         }
                         else
                         {
                             return RedirectToAction("Index", "Home");
                         }                      
                     }                    
-                }
-                else
-                {
-                        TempData["classStyle"] = "warning";
-                        TempData["Message"] = "Invalid Login Details";
                 }
             }
             ModelState.Remove("Person_Password");
@@ -249,6 +243,15 @@ namespace LibraryAssistantApp.Controllers
         public ActionResult invalidReset()
         {
             return View();
+        }
+
+        private T Deserialise<T>(string json)
+        {
+            using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+            {
+                var serialiser = new DataContractJsonSerializer(typeof(T));
+                return (T)serialiser.ReadObject(ms);
+            }
         }
     }
 }
