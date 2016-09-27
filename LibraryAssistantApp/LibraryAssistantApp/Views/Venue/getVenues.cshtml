@@ -1,0 +1,34 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Venue>
+
+@using LibraryAssistantApp.Models
+
+<div class="row" id="venues">
+    <div id="venueDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select A Venue:</b></div>
+    <hr />
+    <div class="row" id="toggleVenues">
+        <div class="col-md-6">
+            @if (Model.Any())
+            {
+                <div class="panel panel-default">
+                    <table class="table table-hover" id="venueTable">
+                        <tbody>
+                            @foreach (Venue venue in Model)
+                            {
+                                <tr id="@venue.Venue_ID">
+                                    <td>
+                                        @venue.Venue_Name
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p>No Matching Venues</p>
+            }
+        </div>
+    </div>
+</div>
+

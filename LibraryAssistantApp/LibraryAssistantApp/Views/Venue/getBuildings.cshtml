@@ -1,0 +1,41 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Building>
+
+@using LibraryAssistantApp.Models;
+
+<div class="row" id="buildings">
+    <div id="buildingDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select A Building:</b></div>
+    <hr />
+    <div class="row" id="toggleBuilding">
+        <div class="col-md-6">
+
+            <div id="search" style="padding-bottom:10px">
+                <input id="searchBuilding" type="text" placeholder="Search Building" /><button id="btnSearchBuilding">
+                    <span class="fa fa-search" />
+                </button>
+            </div>
+
+            @if (Model.Any())
+            {
+                <div class="panel panel-default">
+                    <table class="table table-hover" id="buildingTable">
+                        <tbody>
+                            @foreach (Building building in Model)
+                            {
+                                <tr id="@building.Building_ID">
+                                    <td>
+                                        @building.Building_Name
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p>No Matching Buildings</p>
+            }
+        </div>
+    </div>
+</div>
+
