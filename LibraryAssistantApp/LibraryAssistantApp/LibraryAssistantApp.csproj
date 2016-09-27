@@ -333,6 +333,7 @@
     <Content Include="Scripts\selectrow.js" />
     <Content Include="Scripts\siteScripts.js" />
     <Content Include="Scripts\timepickerInt.js" />
+    <Content Include="Scripts\venueMaintainence.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -340,9 +341,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookingController.cs" />
-    <Compile Include="Controllers\BuildingsController.cs" />
-    <Compile Include="Controllers\Building_FloorController.cs" />
-    <Compile Include="Controllers\CampusController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -358,7 +356,7 @@
     <Compile Include="Controllers\TrainerController.cs" />
     <Compile Include="Controllers\ValidateController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
-    <Compile Include="Controllers\VenuesController.cs" />
+    <Compile Include="Controllers\VenueController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -707,6 +705,11 @@
     <Content Include="Views\Questionnaire\Respond_to_questionnaire.cshtml" />
     <Content Include="Views\Questionnaire\Session_log.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Venue\venueMaintainence.cshtml" />
+    <Content Include="Views\Venue\addCampus.cshtml" />
+    <Content Include="Views\Venue\getBuildings.cshtml" />
+    <Content Include="Views\Venue\getBuildingFloors.cshtml" />
+    <Content Include="Views\Venue\getVenues.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

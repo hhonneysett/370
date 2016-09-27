@@ -1,0 +1,33 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Building_Floor>
+
+@using LibraryAssistantApp.Models;
+
+<div class="row" id="buildingFloors">
+    <div id="buildingFloorDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select A Building Floor:</b></div>
+    <hr />
+    <div class="row" id="toggleBuildingFloor">
+        <div class="col-md-6">
+            @if (Model.Any())
+            {
+                <div class="panel panel-default">
+                    <table class="table table-hover" id="buildingFloorTable">
+                        <tbody>
+                            @foreach (Building_Floor buildingFloor in Model)
+                            {
+                                <tr id="@buildingFloor.Building_Floor_ID">
+                                    <td>
+                                        @buildingFloor.Floor_Name
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p>No Matching Building Floors</p>
+            }
+        </div>
+    </div>
+</div>
