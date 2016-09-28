@@ -1,8 +1,75 @@
-﻿@model LibraryAssistantApp.Models.Campus
+﻿<form id="addCampusForm" name="addCampusForm" class="form-group">
+    <label class="control-label">Campus Name:</label>
+    <input type="text" required id="campusName" name="campusName" class="form-control"/>
+</form>
+<button class="btn btn-default" id="btnAddCampusModal">Add Campus</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<hr />
 
-<div id="addForm">
-    <form id="addCampus">
-        <label class="control-label">Campus Name</label>
-        <input class="form-control" type="text"/>
-    </form>
-</div>
+<script src="~/Scripts/jquery.ambiance.js"></script>
+
+<script type="text/javascript">
+
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+     
+    jQuery.validator.addMethod("lettersonly", function (value, element) {
+        return this.optional(element) || /^[a-z]+$/i.test(value);
+    }, "Letters only please");
+
+    //validate form
+    $("#addCampusForm").validate({
+        rules: {
+            campusName: {
+                required: true,
+                lettersonly: true,
+                remote: {
+                    url: "/Venue/checkCampus",
+                    type: "get"
+                }
+            }
+        },
+        
+        messages: {
+            campusName: {
+                remote: "Campus already exists"
+            }
+        },
+
+        errorClass: "my-error-class",
+    })
+
+    //add campus button
+    $("#btnAddCampusModal").click(function () {
+        var check = $("#addCampusForm").valid();
+
+        if (check) {
+            
+            $.ajax({
+                type: 'POST',
+                url: '/Venue/addCampus',
+                data: { campus: $("#campusName").val() },
+                success: function (result) {
+
+                    $('#myModal').modal('toggle');
+
+                    $('#campusTable tbody').append('<tr id="' + $("#campusName").val() + '"><td>' + $("#campusName").val() + '</td></tr>');
+
+                    $.ambiance({
+                        message: "Campus Successfully Added!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+
+        }
+    })
+
+</script>

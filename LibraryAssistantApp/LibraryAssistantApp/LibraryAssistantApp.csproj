@@ -157,11 +157,14 @@
     <Content Include="Content\imgs_dhx_terrace\resize_dots.png" />
     <Content Include="Content\imgs_dhx_terrace\resizing.png" />
     <Content Include="Content\img\default.gif" />
+    <Content Include="Content\jquery.ambiance.css" />
     <Content Include="Content\Login\normalize.css" />
     <Content Include="Content\Login\style.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\loginStyle.css" />
     <Content Include="Scripts\base64.js" />
+    <Content Include="Scripts\dynamicUnobtrusive.js" />
+    <Content Include="Scripts\jquery.ambiance.js" />
     <Content Include="Scripts\jquery.base64.js" />
     <Content Include="Content\jquery.timepicker.min.css" />
     <Content Include="Content\metisMenu.css" />
@@ -710,6 +713,8 @@
     <Content Include="Views\Venue\getBuildings.cshtml" />
     <Content Include="Views\Venue\getBuildingFloors.cshtml" />
     <Content Include="Views\Venue\getVenues.cshtml" />
+    <Content Include="Views\Venue\deleteCampus.cshtml" />
+    <Content Include="Views\Venue\updateCampus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
