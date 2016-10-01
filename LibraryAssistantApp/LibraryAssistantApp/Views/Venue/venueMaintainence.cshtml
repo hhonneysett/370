@@ -1,0 +1,268 @@
+﻿@using LibraryAssistantApp.Models
+
+@{
+    ViewBag.Title = "Venue Maintainence";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var campuses = (IEnumerable<Campus>)ViewBag.Campuses;
+}
+
+<h2>Venue Maintainance</h2>
+
+<hr class="col-md-12" />
+
+<div class="col-md-12">
+    <div class="row">
+        <div id="campusDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="campusSummary">Select A Campus:</b></div>
+        <hr />
+        <div class="row" id="toggleCampus">
+
+            
+
+            <div class="col-md-6">
+
+                <label class="control-label">Results:</label>
+
+                <div class="panel panel-default">
+                    <table class="table table-hover" id="campusTable">
+                        <tbody>
+                            @foreach (Campus campus in campuses)
+                            {
+                                <tr id="@campus.Campus_ID">
+                                    <td>
+                                        @campus.Campus_Name
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-md-offset-1">
+                <div id="search" style="padding-bottom:10px">
+                    <input id="searchCampus" type="text" placeholder="Search Campus" /><button id="btnSearchCampus">
+                        <span class="fa fa-search" />
+                    </button>
+                </div>
+
+                <div style="padding-bottom:5px; width:80%">
+                    <button class="btn btn-default btn-block">Add Campus</button>
+                </div>
+
+                <div style="padding-bottom:5px; width:80%">
+                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled>Update Campus</button>
+                </div>
+
+                <div style="padding-bottom:5px; width:80%">
+                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled>Delete Campus</button>
+                </div>
+
+                <div style="padding-bottom:5px; width:80%">
+                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled>View Buildings</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row" id="buildings" hidden></div>
+
+    <div class="row" id="buildingFloors"></div>
+
+    <div class="row" id="venues"></div>
+
+    <hr />
+</div>
+
+<script type="text/javascript">
+    //toggle arrow and div
+    function toggleArrow(div, span) {
+        $(div).toggle(800);
+        if ($(span).hasClass("glyphicon glyphicon-triangle-right")) {
+            $(span).removeClass("glyphicon glyphicon-triangle-right");
+            $(span).addClass("glyphicon glyphicon-triangle-bottom");
+        } else {
+            $(span).removeClass("glyphicon glyphicon-triangle-bottom");
+            $(span).addClass("glyphicon glyphicon-triangle-right");
+        }
+    }
+
+    //get venues
+    function getVenues() {
+        $("#buildingFloorTable tbody tr").click(function () {
+            var selected = $(this).hasClass("alert-info");
+            $("#buildingFloorTable tbody tr").removeClass("alert-info");
+
+            if (!selected) {
+                $(this).addClass("alert-info");
+            }
+
+            var buildingFloorId = $(this).prop('id');
+
+            var buildingFloorName = $(this).html();
+
+            $.ajax({
+                type: 'GET',
+                url: '/Venue/getVenues',
+                data: { id: buildingFloorId },
+                success: function (result) {
+
+                    //replace html with partial view
+                    $('#venues').replaceWith(result);
+                    $("#venues").show(800);
+                    $("#toggleBuildingFloor").hide(800);
+
+                    //add building to selection summary
+                    $('#buildingFloorSummary').html(buildingFloorName);
+                    $('#venueSummary').html("");
+
+                    //toggle tab
+                    $("#venueDetails").click(function () {
+                        toggleArrow("#toggleVenues", "#venueDetails span");
+                    })
+
+                    getSelectedVenue();
+
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        });
+    }
+
+    //get building floors
+    function getBuildingFloors() {
+        $("#buildingTable tbody tr").click(function () {
+            var selected = $(this).hasClass("alert-info");
+            $("#buildingTable tbody tr").removeClass("alert-info");
+
+            if (!selected) {
+                $(this).addClass("alert-info");
+            }
+
+            var buildingId = $(this).prop('id');
+
+            var buildingName = $(this).html();
+
+            $.ajax({
+                type: 'GET',
+                url: '/Venue/getBuildingFloors',
+                data: { id: buildingId },
+                success: function (result) {
+
+                    //replace html with partial view
+                    $('#buildingFloors').replaceWith(result);
+                    $("#buildingFloors").show(800);
+                    $("#toggleBuilding").hide(800);
+                    $("#venues").hide();
+
+                    //add building to selection summary
+                    $('#buildingSummary').html(buildingName);
+                    $('#buildingFloorSummary').html("");
+                    $('#venueSummary').html("");
+
+                    //toggle tab
+                    $("#buildingFloorDetails").click(function () {
+                        toggleArrow("#toggleBuildingFloor", "#buildingFloorDetails span");
+                    });
+
+                    getVenues();
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        });
+    }
+
+    //get buildings
+    function getBuildings() {
+        $("#campusTable tbody tr").click(function () {
+            var selected = $(this).hasClass("alert-info");
+            $("#campusTable tbody tr").removeClass("alert-info");
+
+            if (!selected) {
+                $(this).addClass("alert-info");
+            }
+
+            var campusId = $(this).prop('id');
+
+            var campusName = $(this).text();
+
+            $.ajax({
+                type: 'GET',
+                url: '/Venue/getBuildings',
+                data: { id: campusId },
+                success: function (result) {
+
+                    //replace html with partial view
+                    $('#buildings').replaceWith(result);
+                    $("#buildings").show(800);
+                    $("#toggleCampus").hide(800);
+                    $("#buildingFloors").hide();
+                    $("#venues").hide();
+
+                    //add campus to selection 
+                    var s1 = "Select A Campus: ";
+
+                    $('#campusSummary').html(s1.concat(String(campusName)));
+                    $('#buildingSummary').html("");
+                    $('#buildingFloorSummary').html("");
+                    $('#venueSummary').html("");
+
+                    //toggle tab
+                    $("#buildingDetails").click(function () {
+                        toggleArrow("#toggleBuilding", "#buildingDetails span");
+                    });
+
+                    getBuildingFloors();
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+    }
+
+    //capture venue selection
+    function getSelectedVenue() {
+        $("#venueTable tbody tr").click(function () {
+            var selected = $(this).hasClass("alert-info");
+            $("#venueTable tbody tr").removeClass("alert-info");
+
+            if (!selected) {
+                $(this).addClass("alert-info");
+            }
+
+            var venueId = $(this).prop('id');
+
+            var venueName = $(this).html();
+
+            $.ajax({
+                type: 'GET',
+                url: '/Venue/captureVenue',
+                data: { id: venueId },
+                success: function (result) {
+
+                    //add campus to selection summary
+                    $('#venueSummary').html(venueName);
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+    }
+
+    $(document).ready(function () {
+
+        //start function
+        getBuildings();
+
+        //toggle tab
+        $("#campusDetails").click(function () {
+            toggleArrow("#toggleCampus", "#campusDetails span");
+        })
+    })
+</script>
