@@ -715,6 +715,13 @@
     <Content Include="Views\Venue\getVenues.cshtml" />
     <Content Include="Views\Venue\deleteCampus.cshtml" />
     <Content Include="Views\Venue\updateCampus.cshtml" />
+    <Content Include="Views\Venue\addBuilding.cshtml" />
+    <Content Include="Views\Venue\deleteBuilding.cshtml" />
+    <Content Include="Views\Venue\updateBuilding.cshtml" />
+    <Content Include="Views\Venue\addBuildingFloor.cshtml" />
+    <Content Include="Views\Venue\deleteFloor.cshtml" />
+    <Content Include="Views\Venue\updateFloor.cshtml" />
+    <Content Include="Views\Venue\addVenue.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

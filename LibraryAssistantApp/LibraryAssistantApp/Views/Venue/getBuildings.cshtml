@@ -2,8 +2,8 @@
 
 @using LibraryAssistantApp.Models;
 
-<div class="row col-md-12" id="buildings">
-    <div id="buildingDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="campusSummary">Select A Building:</b></div>
+<div id="buildings">
+    <div id="buildingDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingSummary">Select Building:</b></div>
     <hr />
     <div class="row" id="toggleBuildings">
 
@@ -15,10 +15,11 @@
 
             <div class="panel panel-default">
                 <table class="table table-hover" id="buildingTable">
+                    <thead></thead>
                     <tbody>
                         @foreach (Building building in Model)
                         {
-                            <tr id="@building.Building_Name">
+                            <tr id="@building.Building_ID">
                                 <td>
                                     @building.Building_Name
                                 </td>
@@ -30,7 +31,19 @@
             }
             else
             {
-                <p>No Matching Buildings</p>
+                <div class="panel panel-default">
+                    <table class="table table-hover" id="buildingTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No Matching Buildings
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             }
         </div>
 
@@ -62,3 +75,47 @@
 
 </div>
 
+<script type="text/javascript">
+
+    //toggle tab
+    $("#buildingDetails").click(function () {
+        toggleArrow("#toggleBuildings", "#buildingDetails span");
+    });
+
+    //add a building modal
+    $("#btnAddBuilding").click(function () {
+        var target = '/Venue/addBuilding'
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //delete a building modal
+    $("#btnDeleteBuilding").click(function () {
+        var target = '/Venue/deleteBuilding/?id=' + $("#buildingTable tbody tr.alert-info").prop('id')
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //delete a building modal
+    $("#btnUpdateBuilding").click(function () {
+        var target = '/Venue/updateBuilding/?id=' + $("#buildingTable tbody tr.alert-info").prop('id')
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //show building floors for selected building
+    $("#btnViewBuildingFloors").click(function () {
+        var target = '/Venue/getBuildingFloors/?id=' + $("#buildingTable tbody tr.alert-info").prop('id');
+        $("#buildingFloors").load(target);
+        $("#buildingFloors").show(800);
+        $("#toggleBuildings").hide(800);
+        $("#buildingSummary").text("Select Building: " + $("#buildingTable tbody tr.alert-info").find('td:eq(0)').text());
+    })
+
+</script>

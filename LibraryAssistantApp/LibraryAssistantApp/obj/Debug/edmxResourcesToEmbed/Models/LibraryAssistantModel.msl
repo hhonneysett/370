@@ -27,25 +27,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Buildings">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Building">
-        <MappingFragment StoreEntitySet="Building">
-          <ScalarProperty Name="Building_Name" ColumnName="Building_Name" />
-          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
-          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Building_Floor">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Building_Floor">
-        <MappingFragment StoreEntitySet="Building_Floor">
-          <ScalarProperty Name="Floor_Name" ColumnName="Floor_Name" />
-          <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
-          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
-          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Calenders">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Calender">
         <MappingFragment StoreEntitySet="Calender">
@@ -399,14 +380,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Campus">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Campus">
-        <MappingFragment StoreEntitySet="Campus">
-          <ScalarProperty Name="Campus_Name" ColumnName="Campus_Name" />
-          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Categories">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Category">
         <MappingFragment StoreEntitySet="Category">
@@ -547,6 +520,33 @@
           <ScalarProperty Name="Trainer_Topic_ID" ColumnName="Trainer_Topic_ID" />
           <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
           <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Campus">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Campus">
+        <MappingFragment StoreEntitySet="Campus">
+          <ScalarProperty Name="Campus_Name" ColumnName="Campus_Name" />
+          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Buildings">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Building">
+        <MappingFragment StoreEntitySet="Building">
+          <ScalarProperty Name="Building_Name" ColumnName="Building_Name" />
+          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Building_Floor">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Building_Floor">
+        <MappingFragment StoreEntitySet="Building_Floor">
+          <ScalarProperty Name="Floor_Name" ColumnName="Floor_Name" />
+          <ScalarProperty Name="Building_ID" ColumnName="Building_ID" />
+          <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+          <ScalarProperty Name="Building_Floor_ID" ColumnName="Building_Floor_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

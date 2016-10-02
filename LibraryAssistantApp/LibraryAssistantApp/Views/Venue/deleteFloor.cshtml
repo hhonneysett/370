@@ -1,0 +1,78 @@
+﻿@using LibraryAssistantApp.Models
+
+@{ 
+    var campus = (Campus)ViewBag.Campus;
+    var building = (Building)ViewBag.Building;
+    var buildingFloor = (Building_Floor)ViewBag.BuildingFloor;
+}
+
+<form id="deleteBuildingFloorForm" name="deleteBuildingFloorForm" class="form-group">
+    <p>Are you sure you want to delete the <b>@buildingFloor.Floor_Name</b> floor, from the @building.Building_Name building?</p>
+</form>
+<button class="btn btn-default" id="btnConfirmDeleteBuildingFloor">Yes</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<hr />
+
+<script src="~/Scripts/jquery.ambiance.js"></script>
+
+<script type="text/javascript">
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+
+    //confirm deletion
+    $("#btnConfirmDeleteBuildingFloor").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '/Venue/deleteFloor',
+            success: function (result) {
+
+                if (result == "CLASH") {
+
+                    //toggle modal
+                    $('#myModal').modal('toggle');
+
+                    //show error notification
+                    $.ambiance({
+                        message: "Building Floor Has Existing Dependencies!",
+                        title: "Error!",
+                        type: "error",
+                        timeout: 5
+                    });
+                } else {
+
+                    //toggle modal
+                    $('#myModal').modal('toggle');
+
+                    $("#buildingFloorTable tbody").empty();
+
+                    if (!$.isArray(result) || !result.length) {
+                        $("#buildingFloorTable tbody").empty();
+                        $("#buildingFloorTable thead").append('<tr><th>No Matching Building Floors</th></tr>')
+                    } else {
+                        result.forEach(function (entry) {
+                            $('#buildingFloorTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                        });
+                    }
+
+                    //show notification
+                    $.ambiance({
+                        message: "Building Floor Successfully Deleted!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+
+                    //disable buttons
+                    $("#btnUpdateBuildingFloor").prop('disabled', true);
+                    $("#btnDeleteBuildingFloor").prop('disabled', true);
+                    $("#btnViewVenues").prop('disabled', true)
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    })
+</script>

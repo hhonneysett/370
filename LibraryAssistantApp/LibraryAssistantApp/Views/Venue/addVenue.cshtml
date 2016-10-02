@@ -1,0 +1,116 @@
+﻿@using LibraryAssistantApp.Models
+
+@{
+    var campus = (Campus)ViewBag.Campus;
+    var building = (Building)ViewBag.Building;
+    var building_floor = (Building_Floor)ViewBag.Building_Floor;
+    var characteristics = (IEnumerable<Characteristic>)ViewBag.Characteristics;
+}
+
+<form id="addVenueForm" class="form-group">
+    <table>
+        <tr>
+            <td><b>Campus Name:</b></td>
+            <td style="padding-left:5px">@campus.Campus_Name</td>
+        </tr>
+        <tr>
+            <td><b>Building Name:</b></td>
+            <td style="padding-left:5px">@building.Building_Name</td>
+        </tr>
+        <tr>
+            <td><b>Floor Name:</b></td>
+            <td style="padding-left:5px">@building_floor.Floor_Name</td>
+        </tr>
+        <tr>
+            <td><b>Venue Name:</b></td>
+            <td style="padding-left:5px"><input type="text" id="venueName" name="venueName" /></td>
+        </tr>
+    </table>
+</form>
+
+<div class="form-group">
+
+    <label class="control-label">Venue Characteristics:</label>
+
+    @foreach (Characteristic characteristic in characteristics)
+    {
+        <div class="checkbox">
+            <label><input type="checkbox" id="@characteristic.Characteristic_ID" />@characteristic.Characteristic_Name</label>
+        </div>
+    }
+</div>
+<button class="btn btn-default" id="btnAddVenueModal">Add Venue</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<hr />
+
+<script src="~/Scripts/jquery.ambiance.js"></script>
+
+<script type="text/javascript">
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+
+    //add validation method for alphanumeric characters
+    jQuery.validator.addMethod("alphanumeric", function (value, element) {
+        return this.optional(element) || /^\w+$/i.test(value);
+    }, "Letters, numbers, and underscores only please");
+
+    //initiate form validation
+    $("#addVenueForm").validate({
+        rules: {
+            venueName: {
+                required: true,
+                alphanumeric: true,
+                remote: {
+                    url: '/Venue/checkVenue',
+                    type: 'get'
+                }
+            }
+        },
+
+        messages: {
+            venueName: {
+                remote: 'Venue already exists for the selected building floor'
+            }
+        },
+
+        errorClass: "my-error-class",
+    })
+
+    //add venue
+    $("#btnAddVenueModal").click(function () {
+        var check = $("#addVenueForm").valid();
+
+        if (check) {
+            $.ajax({
+                type: 'POST',
+                url: '/Venue/addVenue',
+                data: { floorName: $("#floorName").val() },
+                success: function (result) {
+
+                    $("#btnAddBuildingFloorModal").prop('disabled', true);
+
+                    $('#myModal').modal('toggle');
+
+                    $("#buildingFloorTable tbody").empty();
+                    $("#buildingFloorTable thead").empty();
+
+                    result.forEach(function (entry) {
+                        $('#buildingFloorTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                    });
+
+                    $.ambiance({
+                        message: "Building Floor Successfully Added!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }
+    })
+</script>

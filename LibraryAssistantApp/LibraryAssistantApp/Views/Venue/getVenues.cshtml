@@ -1,16 +1,20 @@
-﻿@model IEnumerable<LibraryAssistantApp.Models.Venue>
+﻿@using LibraryAssistantApp.Models;
+@model IEnumerable<LibraryAssistantApp.Models.Venue>
 
-@using LibraryAssistantApp.Models
-
-<div class="row" id="venues">
-    <div id="venueDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select A Venue:</b></div>
+<div id="venues">
+    <div id="venueDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingFloorSummary">Select Venue:</b></div>
     <hr />
-    <div class="row" id="toggleVenues">
+    <div class="row" id="toggleVenue">
+
         <div class="col-md-6">
+
             @if (Model.Any())
             {
+                <label class="control-label">Results:</label>
+
                 <div class="panel panel-default">
                     <table class="table table-hover" id="venueTable">
+                        <thead></thead>
                         <tbody>
                             @foreach (Venue venue in Model)
                             {
@@ -26,9 +30,52 @@
             }
             else
             {
-                <p>No Matching Venues</p>
+                <div class="panel panel-default">
+                    <table class="table table-hover" id="venueTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No Matching Venues
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             }
         </div>
+
+        <div class="col-md-3 col-md-offset-1">
+            <div id="search" style="padding-bottom:10px">
+                <input id="searchVenue" type="text" placeholder="Search Venues" /><button id="btnSearchVenues">
+                    <span class="fa fa-search" />
+                </button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" id="btnAddVenue" data-toggle="modal" data-target="#myModal">Add Venue</button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnUpdateVenue">Update Venue</button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnDeleteVenue">Delete Venue</button>
+            </div>
+        </div>
+
     </div>
+
 </div>
 
+<script type="text/javascript">
+    //add venue modal
+    $("#btnAddVenue").click(function () {
+        var target = '/Venue/addVenue'
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+</script>

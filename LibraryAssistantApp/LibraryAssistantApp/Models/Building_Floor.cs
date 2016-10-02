@@ -14,19 +14,12 @@ namespace LibraryAssistantApp.Models
     
     public partial class Building_Floor
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Building_Floor()
-        {
-            this.Venues = new HashSet<Venue>();
-        }
-    
-        public int Campus_ID { get; set; }
-        public int Building_ID { get; set; }
         public int Building_Floor_ID { get; set; }
-        public int Floor_Name { get; set; }
+        public Nullable<int> Campus_ID { get; set; }
+        public Nullable<int> Building_ID { get; set; }
+        public string Floor_Name { get; set; }
     
         public virtual Building Building { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Venue> Venues { get; set; }
+        public virtual Campus Campu { get; set; }
     }
 }

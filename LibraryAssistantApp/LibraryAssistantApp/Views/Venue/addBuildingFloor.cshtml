@@ -1,0 +1,96 @@
+﻿
+@using LibraryAssistantApp.Models
+
+@{ 
+    var campus = (Campus)ViewBag.Campus;
+    var building = (Building)ViewBag.Building;
+}
+
+<form id="addBuildingFloorForm" class="form-group">
+    <table>
+        <tr>
+            <td><b>Campus Name:</b></td>
+            <td style="padding-left:5px">@campus.Campus_Name</td>
+        </tr>
+        <tr>
+            <td><b>Building Name:</b></td>
+            <td style="padding-left:5px">@building.Building_Name</td>
+        </tr>
+        <tr>
+            <td><b>Floor Name:</b></td>
+            <td style="padding-left:5px"><input type="text" name="floorName" id="floorName" /></td>
+        </tr>
+    </table>
+</form>
+<button class="btn btn-default" id="btnAddBuildingFloorModal">Add Building Floor</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<hr />
+
+<script src="~/Scripts/jquery.ambiance.js"></script>
+
+<script type="text/javascript">
+
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+
+    //initiate form validation
+    $("#addBuildingFloorForm").validate({
+        rules: {
+            floorName: {
+                required: true,
+                remote: {
+                    url: '/Venue/checkFloor',
+                    type: 'get'
+                }
+            }
+        },
+
+        messages: {
+            floorName: {
+                remote: 'Floor already exists for the selected building'
+            }
+        },
+
+        errorClass: "my-error-class",
+    })
+
+    //add building floor
+    $("#btnAddBuildingFloorModal").click(function () {
+        var check = $("#addBuildingFloorForm").valid();
+
+        if (check) {
+            $.ajax({
+                type: 'POST',
+                url: '/Venue/addBuildingFloor',
+                data: { floorName: $("#floorName").val() },
+                success: function (result) {
+
+                    $("#btnAddBuildingFloorModal").prop('disabled', true);
+
+                    $('#myModal').modal('toggle');
+
+                    $("#buildingFloorTable tbody").empty();
+                    $("#buildingFloorTable thead").empty();
+
+                    result.forEach(function (entry) {
+                        $('#buildingFloorTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                    });
+
+                    $.ambiance({
+                        message: "Building Floor Successfully Added!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }
+    })
+
+
+</script>
