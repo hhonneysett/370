@@ -12,7 +12,7 @@
 
 <div class="col-md-12">
     <div class="row">
-        <div id="campusDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="campusSummary">Select A Campus:</b></div>
+        <div id="campusDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="campusSummary">Select Campus:</b></div>
         <hr />
         <div class="row" id="toggleCampus">
 
@@ -27,7 +27,7 @@
                         <tbody>
                             @foreach (Campus campus in campuses)
                             {
-                                <tr id="@campus.Campus_ID">
+                                <tr id="@campus.Campus_Name">
                                     <td>
                                         @campus.Campus_Name
                                     </td>
@@ -46,19 +46,19 @@
                 </div>
 
                 <div style="padding-bottom:5px; width:80%">
-                    <button class="btn btn-default btn-block">Add Campus</button>
+                    <button class="btn btn-default btn-block" id="btnAddCampus" data-toggle="modal" data-target="#myModal">Add Campus</button>
                 </div>
 
                 <div style="padding-bottom:5px; width:80%">
-                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled>Update Campus</button>
+                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnUpdateCampus">Update Campus</button>
                 </div>
 
                 <div style="padding-bottom:5px; width:80%">
-                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled>Delete Campus</button>
+                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnDeleteCampus">Delete Campus</button>
                 </div>
 
                 <div style="padding-bottom:5px; width:80%">
-                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled>View Buildings</button>
+                    <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnViewBuildings">View Buildings</button>
                 </div>
             </div>
 
@@ -67,11 +67,26 @@
 
     <div class="row" id="buildings" hidden></div>
 
-    <div class="row" id="buildingFloors"></div>
+    <div class="row" id="buildingFloors" hidden></div>
 
-    <div class="row" id="venues"></div>
+    <div class="row" id="venues" hidden></div>
 
     <hr />
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <hr />
+            <div class="modal-body">
+
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -87,182 +102,104 @@
         }
     }
 
-    //get venues
-    function getVenues() {
-        $("#buildingFloorTable tbody tr").click(function () {
-            var selected = $(this).hasClass("alert-info");
-            $("#buildingFloorTable tbody tr").removeClass("alert-info");
-
-            if (!selected) {
-                $(this).addClass("alert-info");
-            }
-
-            var buildingFloorId = $(this).prop('id');
-
-            var buildingFloorName = $(this).html();
-
-            $.ajax({
-                type: 'GET',
-                url: '/Venue/getVenues',
-                data: { id: buildingFloorId },
-                success: function (result) {
-
-                    //replace html with partial view
-                    $('#venues').replaceWith(result);
-                    $("#venues").show(800);
-                    $("#toggleBuildingFloor").hide(800);
-
-                    //add building to selection summary
-                    $('#buildingFloorSummary').html(buildingFloorName);
-                    $('#venueSummary').html("");
-
-                    //toggle tab
-                    $("#venueDetails").click(function () {
-                        toggleArrow("#toggleVenues", "#venueDetails span");
-                    })
-
-                    getSelectedVenue();
-
-                },
-                error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
-                }
-            });
-        });
-    }
-
-    //get building floors
-    function getBuildingFloors() {
-        $("#buildingTable tbody tr").click(function () {
-            var selected = $(this).hasClass("alert-info");
-            $("#buildingTable tbody tr").removeClass("alert-info");
-
-            if (!selected) {
-                $(this).addClass("alert-info");
-            }
-
-            var buildingId = $(this).prop('id');
-
-            var buildingName = $(this).html();
-
-            $.ajax({
-                type: 'GET',
-                url: '/Venue/getBuildingFloors',
-                data: { id: buildingId },
-                success: function (result) {
-
-                    //replace html with partial view
-                    $('#buildingFloors').replaceWith(result);
-                    $("#buildingFloors").show(800);
-                    $("#toggleBuilding").hide(800);
-                    $("#venues").hide();
-
-                    //add building to selection summary
-                    $('#buildingSummary').html(buildingName);
-                    $('#buildingFloorSummary').html("");
-                    $('#venueSummary').html("");
-
-                    //toggle tab
-                    $("#buildingFloorDetails").click(function () {
-                        toggleArrow("#toggleBuildingFloor", "#buildingFloorDetails span");
-                    });
-
-                    getVenues();
-                },
-                error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
-                }
-            });
-        });
-    }
-
-    //get buildings
-    function getBuildings() {
-        $("#campusTable tbody tr").click(function () {
-            var selected = $(this).hasClass("alert-info");
-            $("#campusTable tbody tr").removeClass("alert-info");
-
-            if (!selected) {
-                $(this).addClass("alert-info");
-            }
-
-            var campusId = $(this).prop('id');
-
-            var campusName = $(this).text();
-
-            $.ajax({
-                type: 'GET',
-                url: '/Venue/getBuildings',
-                data: { id: campusId },
-                success: function (result) {
-
-                    //replace html with partial view
-                    $('#buildings').replaceWith(result);
-                    $("#buildings").show(800);
-                    $("#toggleCampus").hide(800);
-                    $("#buildingFloors").hide();
-                    $("#venues").hide();
-
-                    //add campus to selection 
-                    var s1 = "Select A Campus: ";
-
-                    $('#campusSummary').html(s1.concat(String(campusName)));
-                    $('#buildingSummary').html("");
-                    $('#buildingFloorSummary').html("");
-                    $('#venueSummary').html("");
-
-                    //toggle tab
-                    $("#buildingDetails").click(function () {
-                        toggleArrow("#toggleBuilding", "#buildingDetails span");
-                    });
-
-                    getBuildingFloors();
-                },
-                error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
-                }
-            });
-        })
-    }
-
-    //capture venue selection
-    function getSelectedVenue() {
-        $("#venueTable tbody tr").click(function () {
-            var selected = $(this).hasClass("alert-info");
-            $("#venueTable tbody tr").removeClass("alert-info");
-
-            if (!selected) {
-                $(this).addClass("alert-info");
-            }
-
-            var venueId = $(this).prop('id');
-
-            var venueName = $(this).html();
-
-            $.ajax({
-                type: 'GET',
-                url: '/Venue/captureVenue',
-                data: { id: venueId },
-                success: function (result) {
-
-                    //add campus to selection summary
-                    $('#venueSummary').html(venueName);
-                },
-                error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
-                }
-            });
-        })
-    }
-
     $(document).ready(function () {
-
-        //start function
-        getBuildings();
 
         //toggle tab
         $("#campusDetails").click(function () {
             toggleArrow("#toggleCampus", "#campusDetails span");
+        })
+
+        //select campus from table and enable/disable buttons
+        $(document).on("click", "#campusTable tbody tr", function (e) {
+
+            var selected = $(this).hasClass("alert-info");
+            $("#campusTable tbody tr").removeClass("alert-info");
+            $("#btnUpdateCampus").prop('disabled', true);
+            $("#btnDeleteCampus").prop('disabled', true);
+            $("#btnViewBuildings").prop('disabled', true)
+
+            if (!selected) {
+                $(this).addClass("alert-info");
+                $("#btnUpdateCampus").prop('disabled', false);
+                $("#btnDeleteCampus").prop('disabled', false);
+                $("#btnViewBuildings").prop('disabled', false);
+            }
+        })
+
+        //view buildings relating to selected campus
+        $("#btnViewBuildings").click(function () {
+            var target = '/Venue/getBuildings/?campusName=' + $("#campusTable tbody tr.alert-info").prop('id');
+            $("#buildings").load(target);
+            $("#buildings").show();
+            $("#toggleCampus").hide(800);
+            $("#campusSummary").text("Select Campus: " + $("#campusTable tbody tr.alert-info").prop('id'));
+        })
+
+        //add campus modal
+        $('#btnAddCampus').on('click', function () {
+            var target = '/Venue/addCampus'
+
+            $("#myModal .modal-body").load(target, function () {
+                $("#myModal").modal("show");
+            });
+        });
+
+        //delete campus modal
+        $("#btnDeleteCampus").on('click', function () {
+
+            var target = '/Venue/deleteCampus/?campusName=' + $("#campusTable tbody tr.alert-info").prop('id');
+
+            $("#myModal .modal-body").load(target, function () {
+                $("#myModal").modal("show");
+            });
+        })
+
+        //cancel modal
+        $("#btnCancel").click(function () {
+            $('#myModal').modal('toggle');
+        })
+
+        //update campus 
+        $("#btnUpdateCampus").on('click', function () {
+            var target = '/Venue/updateCampus/?campusName=' + $("#campusTable tbody tr.alert-info").prop('id');
+
+            $("#myModal .modal-body").load(target, function () {
+                $("#myModal").modal("show");
+            });
+        })
+
+        //select building from table and enable/disable buttons
+        $(document).on("click", "#buildingTable tbody tr", function (e) {
+
+            var selected = $(this).hasClass("alert-info");
+            $("#buildingTable tbody tr").removeClass("alert-info");
+            $("#btnUpdateBuilding").prop('disabled', true);
+            $("#btnDeleteBuilding").prop('disabled', true);
+            $("#btnViewBuildingFloors").prop('disabled', true)
+
+            if (!selected) {
+                $(this).addClass("alert-info");
+                $("#btnUpdateBuilding").prop('disabled', false);
+                $("#btnDeleteBuilding").prop('disabled', false);
+                $("#btnViewBuildingFloors").prop('disabled', false);
+            }
+        })
+
+        //select building from table and enable/disable buttons
+        $(document).on("click", "#buildingFloorTable tbody tr", function (e) {
+
+            var selected = $(this).hasClass("alert-info");
+            $("#buildingFloorTable tbody tr").removeClass("alert-info");
+            $("#btnUpdateBuildingFloor").prop('disabled', true);
+            $("#btnDeleteBuildingFloor").prop('disabled', true);
+            $("#btnViewVenues").prop('disabled', true)
+
+            if (!selected) {
+                $(this).addClass("alert-info");
+                $("#btnUpdateBuildingFloor").prop('disabled', false);
+                $("#btnDeleteBuildingFloor").prop('disabled', false);
+                $("#btnViewVenues").prop('disabled', false);
+            }
         })
     })
 </script>

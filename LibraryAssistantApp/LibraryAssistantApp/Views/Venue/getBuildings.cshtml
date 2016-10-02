@@ -2,40 +2,120 @@
 
 @using LibraryAssistantApp.Models;
 
-<div class="row" id="buildings">
-    <div id="buildingDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select A Building:</b></div>
+<div id="buildings">
+    <div id="buildingDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingSummary">Select Building:</b></div>
     <hr />
-    <div class="row" id="toggleBuilding">
+    <div class="row" id="toggleBuildings">
+
         <div class="col-md-6">
 
+            @if (Model.Any())
+            {
+            <label class="control-label">Results:</label>
+
+            <div class="panel panel-default">
+                <table class="table table-hover" id="buildingTable">
+                    <thead></thead>
+                    <tbody>
+                        @foreach (Building building in Model)
+                        {
+                            <tr id="@building.Building_ID">
+                                <td>
+                                    @building.Building_Name
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+            else
+            {
+                <div class="panel panel-default">
+                    <table class="table table-hover" id="buildingTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No Matching Buildings
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-3 col-md-offset-1">
             <div id="search" style="padding-bottom:10px">
                 <input id="searchBuilding" type="text" placeholder="Search Building" /><button id="btnSearchBuilding">
                     <span class="fa fa-search" />
                 </button>
             </div>
 
-            @if (Model.Any())
-            {
-                <div class="panel panel-default">
-                    <table class="table table-hover" id="buildingTable">
-                        <tbody>
-                            @foreach (Building building in Model)
-                            {
-                                <tr id="@building.Building_ID">
-                                    <td>
-                                        @building.Building_Name
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-            else
-            {
-                <p>No Matching Buildings</p>
-            }
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" id="btnAddBuilding" data-toggle="modal" data-target="#myModal">Add Building</button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnUpdateBuilding">Update Building</button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnDeleteBuilding">Delete Building</button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnViewBuildingFloors">View Building Floors</button>
+            </div>
         </div>
+
     </div>
+
 </div>
 
+<script type="text/javascript">
+
+    //toggle tab
+    $("#buildingDetails").click(function () {
+        toggleArrow("#toggleBuildings", "#buildingDetails span");
+    });
+
+    //add a building modal
+    $("#btnAddBuilding").click(function () {
+        var target = '/Venue/addBuilding'
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //delete a building modal
+    $("#btnDeleteBuilding").click(function () {
+        var target = '/Venue/deleteBuilding/?id=' + $("#buildingTable tbody tr.alert-info").prop('id')
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //delete a building modal
+    $("#btnUpdateBuilding").click(function () {
+        var target = '/Venue/updateBuilding/?id=' + $("#buildingTable tbody tr.alert-info").prop('id')
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //show building floors for selected building
+    $("#btnViewBuildingFloors").click(function () {
+        var target = '/Venue/getBuildingFloors/?id=' + $("#buildingTable tbody tr.alert-info").prop('id');
+        $("#buildingFloors").load(target);
+        $("#buildingFloors").show(800);
+        $("#toggleBuildings").hide(800);
+        $("#buildingSummary").text("Select Building: " + $("#buildingTable tbody tr.alert-info").find('td:eq(0)').text());
+    })
+
+</script>

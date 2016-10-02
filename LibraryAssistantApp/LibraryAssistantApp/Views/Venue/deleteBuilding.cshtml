@@ -1,0 +1,79 @@
+﻿@using LibraryAssistantApp.Models
+
+@{ 
+    var campus = (Campus)ViewBag.Campus;
+    var building = (Building)ViewBag.Building;
+}
+
+<form id="deleteBuildingForm" name="deleteBuildingForm" class="form-group">
+    <p>Are you sure you want to delete the <b>@building.Building_Name</b> building, from the @campus.Campus_Name campus?</p>
+</form>
+<button class="btn btn-default" id="btnConfirmDeleteBuilding">Yes</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<hr />
+
+<script src="~/Scripts/jquery.ambiance.js"></script>
+
+<script type="text/javascript">
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+
+    //confirm cancelation
+    $("#btnConfirmDeleteBuilding").on('click', function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '/Venue/deleteBuilding',
+            success: function (result) {
+
+                if (result == "CLASH") {
+
+                    //toggle modal
+                    $('#myModal').modal('toggle');
+
+                    //show error notification
+                    $.ambiance({
+                        message: "Building Has Existing Dependencies!",
+                        title: "Error!",
+                        type: "error",
+                        timeout: 5
+                    });
+                } else {
+
+                    //toggle modal
+                    $('#myModal').modal('toggle');
+
+                    $("#buildingTable tbody").empty();
+
+                    if (!$.isArray(result) || !result.length) {
+                        $("#buildingTable tbody").empty();
+                        $("#buildingTable thead").append('<tr><th>No Matching Buildings</th></tr>')
+                    } else {
+                        result.forEach(function (entry) {
+                            $('#buildingTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                        });
+                    }
+
+                    //show notification
+                    $.ambiance({
+                        message: "Building Successfully Deleted!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+
+                    //disable buttons
+                    $("#btnUpdateBuilding").prop('disabled', true);
+                    $("#btnDeleteBuilding").prop('disabled', true);
+                    $("#btnViewBuildingFloors").prop('disabled', true)
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+
+    })
+</script>

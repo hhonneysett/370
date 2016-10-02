@@ -20,8 +20,8 @@ namespace LibraryAssistantApp.Models
             this.Building_Floor = new HashSet<Building_Floor>();
         }
     
-        public int Campus_ID { get; set; }
         public int Building_ID { get; set; }
+        public Nullable<int> Campus_ID { get; set; }
         public string Building_Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

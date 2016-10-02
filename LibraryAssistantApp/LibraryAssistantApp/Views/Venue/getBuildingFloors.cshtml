@@ -1,22 +1,26 @@
-﻿@model IEnumerable<LibraryAssistantApp.Models.Building_Floor>
+﻿@using LibraryAssistantApp.Models;
+@model IEnumerable<LibraryAssistantApp.Models.Building_Floor>
 
-@using LibraryAssistantApp.Models;
-
-<div class="row" id="buildingFloors">
-    <div id="buildingFloorDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select A Building Floor:</b></div>
+<div id="buildingFloors">
+    <div id="buildingFloorDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingFloorSummary">Select Building Floor:</b></div>
     <hr />
-    <div class="row" id="toggleBuildingFloor">
+    <div class="row" id="toggleBuildingFloors">
+
         <div class="col-md-6">
+
             @if (Model.Any())
             {
+                <label class="control-label">Results:</label>
+
                 <div class="panel panel-default">
                     <table class="table table-hover" id="buildingFloorTable">
+                        <thead></thead>
                         <tbody>
-                            @foreach (Building_Floor buildingFloor in Model)
+                            @foreach (Building_Floor building_floor in Model)
                             {
-                                <tr id="@buildingFloor.Building_Floor_ID">
+                                <tr id="@building_floor.Building_Floor_ID">
                                     <td>
-                                        @buildingFloor.Floor_Name
+                                        @building_floor.Floor_Name
                                     </td>
                                 </tr>
                             }
@@ -26,8 +30,86 @@
             }
             else
             {
-                <p>No Matching Building Floors</p>
+                <div class="panel panel-default">
+                    <table class="table table-hover" id="buildingFloorTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No Matching Building Floors
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             }
         </div>
+
+        <div class="col-md-3 col-md-offset-1">
+            <div id="search" style="padding-bottom:10px">
+                <input id="searchBuildingFloor" type="text" placeholder="Search Building Floors" /><button id="btnSearchBuildingFloors">
+                    <span class="fa fa-search" />
+                </button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" id="btnAddBuildingFloor" data-toggle="modal" data-target="#myModal">Add Building Floor</button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnUpdateBuildingFloor">Update Building Floor</button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnDeleteBuildingFloor">Delete Building Floor</button>
+            </div>
+
+            <div style="padding-bottom:5px; width:80%">
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnViewVenues">View Venues</button>
+            </div>
+        </div>
+
     </div>
+
 </div>
+
+<script type="text/javascript">
+    
+    //add building floor modal
+    $("#btnAddBuildingFloor").click(function () {
+        var target = '/Venue/addBuildingFloor'
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //delete building floor modals
+    $("#btnDeleteBuildingFloor").click(function () {
+        var target = '/Venue/deleteFloor/?id=' + $("#buildingFloorTable tbody tr.alert-info").prop('id');
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //update building floor modals
+    $("#btnUpdateBuildingFloor").click(function () {
+        var target = '/Venue/updateFloor/?id=' + $("#buildingFloorTable tbody tr.alert-info").prop('id');
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //show venues for selected building floor
+    $("#btnViewVenues").click(function () {
+        var target = '/Venue/getVenues/?id=' + $("#buildingFloorTable tbody tr.alert-info").prop('id');
+        $("#venues").load(target);
+        $("#venues").show(800);
+        $("#toggleBuildingFloors").hide(800);
+        $("#buildingFloorSummary").text("Select Building: " + $("#buildingFloorTable tbody tr.alert-info").find('td:eq(0)').text());
+    })
+
+</script>
+

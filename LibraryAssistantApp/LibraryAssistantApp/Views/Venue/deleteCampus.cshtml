@@ -1,0 +1,68 @@
+﻿@model LibraryAssistantApp.Models.Campus
+
+<form id="deleteCampusForm" name="deleteCampusForm" class="form-group">
+    <p>Are you sure you want to delete the <b>@Model.Campus_Name</b> campus?</p>
+</form>
+<button class="btn btn-default" id="btnConfirmDelete">Yes</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<hr />
+
+<script src="~/Scripts/jquery.ambiance.js"></script>
+
+<script type="text/javascript">
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+
+    //confirm cancelation
+    $("#btnConfirmDelete").on('click', function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '/Venue/confirmDelete',
+            success: function (result) {
+
+                if (result == "CLASH") {
+
+                    //toggle modal
+                    $('#myModal').modal('toggle');
+
+                    //show error notification
+                    $.ambiance({
+                        message: "Campus Has Existing Dependencies!",
+                        title: "Error!",
+                        type: "error",
+                        timeout: 5
+                    });
+                } else {
+
+                    //toggle modal
+                    $('#myModal').modal('toggle');
+
+                    //remove entry from table
+                    $('#campusTable tr#' + result).remove();
+
+                    //show notification
+                    $.ambiance({
+                        message: "Campus Successfully Deleted!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+
+                    //disable buttons
+                    $("#btnUpdateCampus").prop('disabled', true);
+                    $("#btnDeleteCampus").prop('disabled', true);
+                    $("#btnViewBuildings").prop('disabled', true)
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+
+    })
+
+</script>
+

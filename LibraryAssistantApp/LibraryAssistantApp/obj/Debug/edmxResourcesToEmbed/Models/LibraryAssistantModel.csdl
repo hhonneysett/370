@@ -10,8 +10,6 @@
     <EntitySet Name="Attendee_Status" EntityType="LibraryAssistantModel.Attendee_Status" />
     <EntitySet Name="Attendee_Type" EntityType="LibraryAssistantModel.Attendee_Type" />
     <EntitySet Name="Booking_Type" EntityType="LibraryAssistantModel.Booking_Type" />
-    <EntitySet Name="Buildings" EntityType="LibraryAssistantModel.Building" />
-    <EntitySet Name="Building_Floor" EntityType="LibraryAssistantModel.Building_Floor" />
     <EntitySet Name="Calenders" EntityType="LibraryAssistantModel.Calender" />
     <EntitySet Name="Calender_Exception" EntityType="LibraryAssistantModel.Calender_Exception" />
     <EntitySet Name="Calender_Rules" EntityType="LibraryAssistantModel.Calender_Rules" />
@@ -51,10 +49,6 @@
     <AssociationSet Name="AttendeeType_VenueBookingPerson" Association="LibraryAssistantModel.AttendeeType_VenueBookingPerson">
       <End Role="Attendee_Type" EntitySet="Attendee_Type" />
       <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
-    </AssociationSet>
-    <AssociationSet Name="Building_BuildingFloor" Association="LibraryAssistantModel.Building_BuildingFloor">
-      <End Role="Building" EntitySet="Buildings" />
-      <End Role="Building_Floor" EntitySet="Building_Floor" />
     </AssociationSet>
     <AssociationSet Name="PeriodType_Calender" Association="LibraryAssistantModel.PeriodType_Calender">
       <End Role="Period_Type" EntitySet="Period_Type" />
@@ -158,15 +152,6 @@
       <End Role="Topic" EntitySet="Topics" />
       <End Role="Person_Topic" EntitySet="Person_Topic" />
     </AssociationSet>
-    <EntitySet Name="Campus" EntityType="LibraryAssistantModel.Campus" />
-    <AssociationSet Name="Campus_Building" Association="LibraryAssistantModel.Campus_Building">
-      <End Role="Campu" EntitySet="Campus" />
-      <End Role="Building" EntitySet="Buildings" />
-    </AssociationSet>
-    <AssociationSet Name="Campus_CalenderRules" Association="LibraryAssistantModel.Campus_CalenderRules">
-      <End Role="Campu" EntitySet="Campus" />
-      <End Role="Calender_Rules" EntitySet="Calender_Rules" />
-    </AssociationSet>
     <EntitySet Name="Categories" EntityType="LibraryAssistantModel.Category" />
     <EntitySet Name="Topic_Category" EntityType="LibraryAssistantModel.Topic_Category" />
     <AssociationSet Name="Category_TopicCategory" Association="LibraryAssistantModel.Category_TopicCategory">
@@ -178,10 +163,6 @@
       <End Role="Topic_Category" EntitySet="Topic_Category" />
     </AssociationSet>
     <EntitySet Name="Venues" EntityType="LibraryAssistantModel.Venue" />
-    <AssociationSet Name="BuildingFloor_Venue" Association="LibraryAssistantModel.BuildingFloor_Venue">
-      <End Role="Building_Floor" EntitySet="Building_Floor" />
-      <End Role="Venue" EntitySet="Venues" />
-    </AssociationSet>
     <AssociationSet Name="Venue_CalenderException" Association="LibraryAssistantModel.Venue_CalenderException">
       <End Role="Venue" EntitySet="Venues" />
       <End Role="Calender_Exception" EntitySet="Calender_Exception" />
@@ -317,6 +298,25 @@
       <End Role="Topic" EntitySet="Topics" />
       <End Role="Trainer_Topic" EntitySet="Trainer_Topic" />
     </AssociationSet>
+    <EntitySet Name="Campus" EntityType="LibraryAssistantModel.Campus" />
+    <AssociationSet Name="Campus_CalenderRules" Association="LibraryAssistantModel.Campus_CalenderRules">
+      <End Role="Campu" EntitySet="Campus" />
+      <End Role="Calender_Rules" EntitySet="Calender_Rules" />
+    </AssociationSet>
+    <EntitySet Name="Buildings" EntityType="LibraryAssistantModel.Building" />
+    <EntitySet Name="Building_Floor" EntityType="LibraryAssistantModel.Building_Floor" />
+    <AssociationSet Name="FK__Building___Build__4D5F7D71" Association="LibraryAssistantModel.FK__Building___Build__4D5F7D71">
+      <End Role="Building" EntitySet="Buildings" />
+      <End Role="Building_Floor" EntitySet="Building_Floor" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Building__Campus__46B27FE2" Association="LibraryAssistantModel.FK__Building__Campus__46B27FE2">
+      <End Role="Campus" EntitySet="Campus" />
+      <End Role="Building" EntitySet="Buildings" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Building___Campu__4C6B5938" Association="LibraryAssistantModel.FK__Building___Campu__4C6B5938">
+      <End Role="Campus" EntitySet="Campus" />
+      <End Role="Building_Floor" EntitySet="Building_Floor" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="findBookingVenues_Result">
     <Property Type="Int32" Name="Campus_ID" Nullable="false" />
@@ -350,30 +350,6 @@
     <Property Name="Booking_Type_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.BookingType_VenueBooking" FromRole="Booking_Type" ToRole="Venue_Booking" />
-  </EntityType>
-  <EntityType Name="Building">
-    <Key>
-      <PropertyRef Name="Campus_ID" />
-      <PropertyRef Name="Building_ID" />
-    </Key>
-    <Property Name="Campus_ID" Type="Int32" Nullable="false" />
-    <Property Name="Building_ID" Type="Int32" Nullable="false" />
-    <Property Name="Building_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Building_Floor" Relationship="LibraryAssistantModel.Building_BuildingFloor" FromRole="Building" ToRole="Building_Floor" />
-    <NavigationProperty Name="Campu" Relationship="LibraryAssistantModel.Campus_Building" FromRole="Building" ToRole="Campu" />
-  </EntityType>
-  <EntityType Name="Building_Floor">
-    <Key>
-      <PropertyRef Name="Campus_ID" />
-      <PropertyRef Name="Building_ID" />
-      <PropertyRef Name="Building_Floor_ID" />
-    </Key>
-    <Property Name="Campus_ID" Type="Int32" Nullable="false" />
-    <Property Name="Building_ID" Type="Int32" Nullable="false" />
-    <Property Name="Building_Floor_ID" Type="Int32" Nullable="false" />
-    <Property Name="Floor_Name" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Building" Relationship="LibraryAssistantModel.Building_BuildingFloor" FromRole="Building_Floor" ToRole="Building" />
-    <NavigationProperty Name="Venues" Relationship="LibraryAssistantModel.BuildingFloor_Venue" FromRole="Building_Floor" ToRole="Venue" />
   </EntityType>
   <EntityType Name="Calender">
     <Key>
@@ -544,7 +520,7 @@
     <Property Name="Questionnaire_ID" Type="Int32" Nullable="false" />
     <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
     <Property Name="Answer_Date" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="Status" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+    <Property Name="Status" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
     <NavigationProperty Name="Person_Questionnaire_Result" Relationship="LibraryAssistantModel.PersonQues_PersonQuesResult" FromRole="Person_Questionnaire" ToRole="Person_Questionnaire_Result" />
     <NavigationProperty Name="Questionnaire" Relationship="LibraryAssistantModel.Questionnaire_PersonQues" FromRole="Person_Questionnaire" ToRole="Questionnaire" />
     <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_PersonQues" FromRole="Person_Questionnaire" ToRole="Registered_Person" />
@@ -558,7 +534,7 @@
     <Property Name="Questionnaire_ID" Type="Int32" Nullable="false" />
     <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
     <Property Name="Question_Seq" Type="Int32" Nullable="false" />
-    <Property Name="Question_Answer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Question_Answer" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Person_Questionnaire" Relationship="LibraryAssistantModel.PersonQues_PersonQuesResult" FromRole="Person_Questionnaire_Result" ToRole="Person_Questionnaire" />
     <NavigationProperty Name="Questionnaire_Questions" Relationship="LibraryAssistantModel.QuesQuestions_PersonQuesResult" FromRole="Person_Questionnaire_Result" ToRole="Questionnaire_Questions" />
   </EntityType>
@@ -616,7 +592,7 @@
       <PropertyRef Name="Question_Seq" />
     </Key>
     <Property Name="Question_Seq" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Question_Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Question_Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="Topic_Seq" Type="Int32" Nullable="false" />
     <Property Name="Style_Type_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Possible_Answer" Relationship="LibraryAssistantModel.QuestionBank_PossibleAnswer" FromRole="Question_Bank" ToRole="Possible_Answer" />
@@ -779,20 +755,6 @@
       </Principal>
       <Dependent Role="Venue_Booking_Person">
         <PropertyRef Name="Attendee_Type" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Building_BuildingFloor">
-    <End Type="LibraryAssistantModel.Building" Role="Building" Multiplicity="1" />
-    <End Type="LibraryAssistantModel.Building_Floor" Role="Building_Floor" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Building">
-        <PropertyRef Name="Campus_ID" />
-        <PropertyRef Name="Building_ID" />
-      </Principal>
-      <Dependent Role="Building_Floor">
-        <PropertyRef Name="Campus_ID" />
-        <PropertyRef Name="Building_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1142,41 +1104,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="Campus">
-    <Key>
-      <PropertyRef Name="Campus_ID" />
-    </Key>
-    <Property Name="Campus_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Campus_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Buildings" Relationship="LibraryAssistantModel.Campus_Building" FromRole="Campu" ToRole="Building" />
-    <NavigationProperty Name="Calender_Rules" Relationship="LibraryAssistantModel.Campus_CalenderRules" FromRole="Campu" ToRole="Calender_Rules" />
-  </EntityType>
-  <Association Name="Campus_Building">
-    <End Type="LibraryAssistantModel.Campus" Role="Campu" Multiplicity="1" />
-    <End Type="LibraryAssistantModel.Building" Role="Building" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Campu">
-        <PropertyRef Name="Campus_ID" />
-      </Principal>
-      <Dependent Role="Building">
-        <PropertyRef Name="Campus_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Campus_CalenderRules">
-    <End Type="LibraryAssistantModel.Campus" Role="Campu" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="LibraryAssistantModel.Calender_Rules" Role="Calender_Rules" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Campu">
-        <PropertyRef Name="Campus_ID" />
-      </Principal>
-      <Dependent Role="Calender_Rules">
-        <PropertyRef Name="Campus_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="Category">
     <Key>
       <PropertyRef Name="Category_ID" />
@@ -1238,7 +1165,6 @@
     <Property Name="Venue_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="Venue_Type" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="Capacity" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Building_Floor" Relationship="LibraryAssistantModel.BuildingFloor_Venue" FromRole="Venue" ToRole="Building_Floor" />
     <NavigationProperty Name="Calender_Exception" Relationship="LibraryAssistantModel.Venue_CalenderException" FromRole="Venue" ToRole="Calender_Exception" />
     <NavigationProperty Name="Questionnaires" Relationship="LibraryAssistantModel.Venue_Questionnaire" FromRole="Venue" ToRole="Questionnaire" />
     <NavigationProperty Name="Venue_Type1" Relationship="LibraryAssistantModel.FK__Venue__Venue_Typ__4AB81AF0" FromRole="Venue" ToRole="Venue_Type" />
@@ -1247,22 +1173,6 @@
     <NavigationProperty Name="Roles" Relationship="LibraryAssistantModel.Venue_Role" FromRole="Venue" ToRole="Role" />
     <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.Venue_VenueBooking" FromRole="Venue" ToRole="Venue_Booking" />
   </EntityType>
-  <Association Name="BuildingFloor_Venue">
-    <End Type="LibraryAssistantModel.Building_Floor" Role="Building_Floor" Multiplicity="1" />
-    <End Type="LibraryAssistantModel.Venue" Role="Venue" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Building_Floor">
-        <PropertyRef Name="Campus_ID" />
-        <PropertyRef Name="Building_ID" />
-        <PropertyRef Name="Building_Floor_ID" />
-      </Principal>
-      <Dependent Role="Venue">
-        <PropertyRef Name="Campus_ID" />
-        <PropertyRef Name="Building_ID" />
-        <PropertyRef Name="Building_Floor_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="Venue_CalenderException">
     <End Type="LibraryAssistantModel.Venue" Role="Venue" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -1689,7 +1599,7 @@
     </Key>
     <Property Name="Action_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Action_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Action_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Action_Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Action1" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action" ToRole="Action1" />
     <NavigationProperty Name="Action2" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action1" ToRole="Action" />
     <NavigationProperty Name="Person_Session_Action_Log" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Action" ToRole="Person_Session_Action_Log" />
@@ -1792,6 +1702,87 @@
       </Principal>
       <Dependent Role="Trainer_Topic">
         <PropertyRef Name="Topic_Seq" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Campus">
+    <Key>
+      <PropertyRef Name="Campus_ID" />
+    </Key>
+    <Property Name="Campus_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Campus_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Calender_Rules" Relationship="LibraryAssistantModel.Campus_CalenderRules" FromRole="Campu" ToRole="Calender_Rules" />
+    <NavigationProperty Name="Buildings" Relationship="LibraryAssistantModel.FK__Building__Campus__46B27FE2" FromRole="Campus" ToRole="Building" />
+    <NavigationProperty Name="Building_Floor" Relationship="LibraryAssistantModel.FK__Building___Campu__4C6B5938" FromRole="Campus" ToRole="Building_Floor" />
+  </EntityType>
+  <Association Name="Campus_CalenderRules">
+    <End Type="LibraryAssistantModel.Campus" Role="Campu" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="LibraryAssistantModel.Calender_Rules" Role="Calender_Rules" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Campu">
+        <PropertyRef Name="Campus_ID" />
+      </Principal>
+      <Dependent Role="Calender_Rules">
+        <PropertyRef Name="Campus_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Building">
+    <Key>
+      <PropertyRef Name="Building_ID" />
+    </Key>
+    <Property Name="Building_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Campus_ID" Type="Int32" />
+    <Property Name="Building_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Building_Floor" Relationship="LibraryAssistantModel.FK__Building___Build__4D5F7D71" FromRole="Building" ToRole="Building_Floor" />
+    <NavigationProperty Name="Campu" Relationship="LibraryAssistantModel.FK__Building__Campus__46B27FE2" FromRole="Building" ToRole="Campus" />
+  </EntityType>
+  <EntityType Name="Building_Floor">
+    <Key>
+      <PropertyRef Name="Building_Floor_ID" />
+    </Key>
+    <Property Name="Building_Floor_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Campus_ID" Type="Int32" />
+    <Property Name="Building_ID" Type="Int32" />
+    <Property Name="Floor_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Building" Relationship="LibraryAssistantModel.FK__Building___Build__4D5F7D71" FromRole="Building_Floor" ToRole="Building" />
+    <NavigationProperty Name="Campu" Relationship="LibraryAssistantModel.FK__Building___Campu__4C6B5938" FromRole="Building_Floor" ToRole="Campus" />
+  </EntityType>
+  <Association Name="FK__Building___Build__4D5F7D71">
+    <End Type="LibraryAssistantModel.Building" Role="Building" Multiplicity="0..1" />
+    <End Type="LibraryAssistantModel.Building_Floor" Role="Building_Floor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Building">
+        <PropertyRef Name="Building_ID" />
+      </Principal>
+      <Dependent Role="Building_Floor">
+        <PropertyRef Name="Building_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Building__Campus__46B27FE2">
+    <End Type="LibraryAssistantModel.Campus" Role="Campus" Multiplicity="0..1" />
+    <End Type="LibraryAssistantModel.Building" Role="Building" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Campus">
+        <PropertyRef Name="Campus_ID" />
+      </Principal>
+      <Dependent Role="Building">
+        <PropertyRef Name="Campus_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Building___Campu__4C6B5938">
+    <End Type="LibraryAssistantModel.Campus" Role="Campus" Multiplicity="0..1" />
+    <End Type="LibraryAssistantModel.Building_Floor" Role="Building_Floor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Campus">
+        <PropertyRef Name="Campus_ID" />
+      </Principal>
+      <Dependent Role="Building_Floor">
+        <PropertyRef Name="Campus_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
