@@ -18,7 +18,6 @@ namespace LibraryAssistantApp.Models
         public Document_Repository()
         {
             this.Document_Access_Log = new HashSet<Document_Access_Log>();
-            this.Venue_Booking_Person = new HashSet<Venue_Booking_Person>();
         }
     
         public int Document_Seq { get; set; }
@@ -34,8 +33,6 @@ namespace LibraryAssistantApp.Models
         public virtual ICollection<Document_Access_Log> Document_Access_Log { get; set; }
         public virtual Document_Category Document_Category { get; set; }
         public virtual Document_Extension Document_Extension { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Venue_Booking_Person> Venue_Booking_Person { get; set; }
         public virtual Document_Type Document_Type { get; set; }
     }
 }

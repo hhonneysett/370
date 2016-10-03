@@ -1037,7 +1037,6 @@ namespace LibraryAssistantApp.Controllers
                         sendTrainerMail(trainer.Person_ID, a);
                     }                   
                     c.Venue_Booking_Seq = bookingSeq;
-                    c.Certificate_Ind = 0;
                     c.Attendee_Type = "Trainer";
                     c.Attendee_Status = "Active";
 
@@ -1101,7 +1100,6 @@ namespace LibraryAssistantApp.Controllers
                             dailyVBP.Person_ID = trainer.Person_ID;
                             sendTrainerMail(trainer.Person_ID, daily);
                         }
-                        dailyVBP.Certificate_Ind = 0;
                         dailyVBP.Attendee_Type = "Trainer";
                         dailyVBP.Attendee_Status = "Active";
 
@@ -1171,7 +1169,6 @@ namespace LibraryAssistantApp.Controllers
                             dailyVBP.Person_ID = trainer.Person_ID;
                             sendTrainerMail(trainer.Person_ID, daily);
                         }
-                        dailyVBP.Certificate_Ind = 0;
                         dailyVBP.Attendee_Type = "Trainer";
                         dailyVBP.Attendee_Status = "Active";
 
@@ -1241,7 +1238,6 @@ namespace LibraryAssistantApp.Controllers
                             dailyVBP.Person_ID = trainer.Person_ID;
                             sendTrainerMail(trainer.Person_ID, daily);
                         }
-                        dailyVBP.Certificate_Ind = 0;
                         dailyVBP.Attendee_Type = "Trainer";
                         dailyVBP.Attendee_Status = "Active";
 
@@ -1311,7 +1307,6 @@ namespace LibraryAssistantApp.Controllers
                             dailyVBP.Person_ID = trainer.Person_ID;
                             sendTrainerMail(trainer.Person_ID, daily);
                         }
-                        dailyVBP.Certificate_Ind = 0;
                         dailyVBP.Attendee_Type = "Trainer";
                         dailyVBP.Attendee_Status = "Active";
 
@@ -1522,7 +1517,7 @@ namespace LibraryAssistantApp.Controllers
 
             var venue_booking = (from v in db.Venue_Booking
                                  where v.Venue_Booking_Seq.Equals(id)
-                                 select v).Include(r => r.Venue_Booking_Person).Include(t => t.Booking_Type).Include(to => to.Topic).Include(c => c.Venue).FirstOrDefault();
+                                 select v).Include(r => r.Venue_Booking_Person).Include(t => t.Booking_Type).Include(to => to.Topic).FirstOrDefault();
 
             var vbp = (from v in db.Venue_Booking_Person
                        where v.Venue_Booking_Seq.Equals(id)
@@ -1544,6 +1539,10 @@ namespace LibraryAssistantApp.Controllers
                            where vb.Venue_Booking_Seq.Equals(id) && vb.Attendee_Type.Equals("Student")
                            select vb).Include(r => r.Registered_Person).Any();
 
+            var venue = (from v in db.Venues
+                         where v.Venue_ID == venue_booking.Venue_ID
+                         select v.Venue_Name).FirstOrDefault();
+
             //assing values to view model
             details.personId = vbp;
             details.bookingType = venue_booking.Booking_Type.Booking_Type_Name;
@@ -1553,7 +1552,7 @@ namespace LibraryAssistantApp.Controllers
             details.timeslot = venue_booking.DateTime_From.ToShortTimeString() + " - " + venue_booking.DateTime_To.ToShortTimeString();
             details.campus = campus;
             details.building = building;
-            details.venue = venue_booking.Venue.Venue_Name;
+            details.venue = venue;
             details.attendance = sessionAtt;
 
 

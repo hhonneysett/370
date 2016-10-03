@@ -19,7 +19,7 @@ namespace LibraryAssistantApp.Models
         public int Session_ID { get; set; }
         public int Action_ID { get; set; }
     
-        public virtual Person_Session_Log Person_Session_Log { get; set; }
         public virtual Action Action { get; set; }
+        public virtual Person_Session_Log Person_Session_Log { get; set; }
     }
 }

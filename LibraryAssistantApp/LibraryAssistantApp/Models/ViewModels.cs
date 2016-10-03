@@ -640,4 +640,25 @@ namespace LibraryAssistantApp.Models
     {
         public Registered_Person registered_person { get; set; }
     }
+
+    //characteristics list
+    public class checkedCharacteristics
+    {
+        public Characteristic characteristic;
+        public bool has;
+    }
+
+    //usage graph
+    public class monthList
+    {
+        public string month;
+        public int count;
+    }
+
+    //booking type graph
+    public class typeList
+    {
+        public string type;
+        public int count;
+    }
 }

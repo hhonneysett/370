@@ -21,6 +21,9 @@ namespace LibraryAssistantApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //invoke RegisterGlobalFilters method
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            Application.Lock();
+            Application["OnlineUsers"] = 0;
+            Application.UnLock();
             //start scheduled jobs
             JobScheduler.Start();
         }
@@ -37,6 +40,23 @@ namespace LibraryAssistantApp
                 MyPrincipal myPrincipal = new MyPrincipal(myIdentity);
                 HttpContext.Current.User = myPrincipal;
             }
+        }
+
+        void Session_Start(object sender, EventArgs e)
+        {
+            HttpContext.Current.Application.Lock();
+            var online = (int)HttpContext.Current.Application["OnlineUsers"];
+            HttpContext.Current.Application["OnlineUsers"] = online + 1;
+            HttpContext.Current.Application.UnLock();
+            Session["Start"] = 1;
+        }
+
+        void Session_End(object sender, EventArgs e)
+        {
+            Application.Lock();
+            var online = (int)Application["OnlineUsers"];
+            Application["OnlineUsers"] = online - 1;
+            Application.UnLock();
         }
     }
 }

@@ -160,6 +160,7 @@
     <Content Include="Content\jquery.ambiance.css" />
     <Content Include="Content\Login\normalize.css" />
     <Content Include="Content\Login\style.css" />
+    <Content Include="Content\morris.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\loginStyle.css" />
     <Content Include="Scripts\base64.js" />
@@ -172,6 +173,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jspdf.js" />
     <Content Include="Scripts\Login\index.js" />
+    <Content Include="Scripts\Morris Charts\morris.min.js" />
+    <Content Include="Scripts\Morris Charts\raphael-min.js" />
     <Content Include="Scripts\sprintf.js" />
     <Content Include="Scripts\tableExport.js" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -344,6 +347,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -411,9 +415,6 @@
     <Compile Include="Models\Common_Problem_Type.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Current_UP_Person.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Day_Of_Week.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
@@ -479,9 +480,6 @@
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Person_Session_Log.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Person_Title.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Person_Topic.cs">
@@ -663,26 +661,6 @@
     <Content Include="Views\Employee\Topics.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\Delete.cshtml" />
-    <Content Include="Views\Venues\Create.cshtml" />
-    <Content Include="Views\Venues\Delete.cshtml" />
-    <Content Include="Views\Venues\Details.cshtml" />
-    <Content Include="Views\Venues\Edit.cshtml" />
-    <Content Include="Views\Venues\Index.cshtml" />
-    <Content Include="Views\Building_Floor\Create.cshtml" />
-    <Content Include="Views\Building_Floor\Delete.cshtml" />
-    <Content Include="Views\Building_Floor\Details.cshtml" />
-    <Content Include="Views\Building_Floor\Edit.cshtml" />
-    <Content Include="Views\Building_Floor\Index.cshtml" />
-    <Content Include="Views\Buildings\Create.cshtml" />
-    <Content Include="Views\Buildings\Delete.cshtml" />
-    <Content Include="Views\Buildings\Details.cshtml" />
-    <Content Include="Views\Buildings\Edit.cshtml" />
-    <Content Include="Views\Buildings\Index.cshtml" />
-    <Content Include="Views\Campus\Create.cshtml" />
-    <Content Include="Views\Campus\Delete.cshtml" />
-    <Content Include="Views\Campus\Details.cshtml" />
-    <Content Include="Views\Campus\Edit.cshtml" />
-    <Content Include="Views\Campus\Index.cshtml" />
     <Content Include="Views\Question_Bank\Create.cshtml" />
     <Content Include="Views\Question_Bank\Delete.cshtml" />
     <Content Include="Views\Question_Bank\Edit.cshtml" />
@@ -722,6 +700,9 @@
     <Content Include="Views\Venue\deleteFloor.cshtml" />
     <Content Include="Views\Venue\updateFloor.cshtml" />
     <Content Include="Views\Venue\addVenue.cshtml" />
+    <Content Include="Views\Venue\deleteVenue.cshtml" />
+    <Content Include="Views\Venue\updateVenue.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

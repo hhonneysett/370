@@ -23,9 +23,6 @@ namespace LibraryAssistantApp.Models
         public System.DateTime DateTime_Closed { get; set; }
         public string Person_ID_Closed { get; set; }
         public int Venue_ID { get; set; }
-        public int Building_Floor_ID { get; set; }
-        public int Building_ID { get; set; }
-        public int Campus_ID { get; set; }
     
         public virtual Common_Problem_Type Common_Problem_Type { get; set; }
         public virtual Venue Venue { get; set; }

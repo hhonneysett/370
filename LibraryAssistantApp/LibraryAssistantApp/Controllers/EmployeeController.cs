@@ -19,13 +19,11 @@ namespace LibraryAssistantApp.Controllers
             var viewModel = new EmployeeIndexModel();
             viewModel.registered_person = db.Registered_Person
                     .Where(t => t.Person_Type.ToLower() == "employee");
-            ViewBag.personTitle = db.Person_Title;
             viewModel.registered_person = from q in viewModel.registered_person
                             where ((string.IsNullOrEmpty(username) ? true : q.Person_ID.ToLower().StartsWith(username.ToLower())) &&
                                     (string.IsNullOrEmpty(name) ? true : q.Person_Name.ToLower().StartsWith(name.ToLower())) &&
                                     (string.IsNullOrEmpty(surname) ? true : q.Person_Surname.ToLower().StartsWith(surname.ToLower())) &&
-                                    (string.IsNullOrEmpty(email) ? true : q.Person_Email.ToLower().StartsWith(email.ToLower())) &&
-                                    (string.IsNullOrEmpty(title) ? true : q.Person_Title.ToLower().StartsWith(title.ToLower())))
+                                    (string.IsNullOrEmpty(email) ? true : q.Person_Email.ToLower().StartsWith(email.ToLower())))
                             select q;
             return View(viewModel);
         }
@@ -56,7 +54,6 @@ namespace LibraryAssistantApp.Controllers
         {
             TempData["_Categories"] = from c in db.Categories
                                       select c;
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
             ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
             ViewBag.Check1 = false;
             if (!db.Registered_Person.Any(x => x.Person_ID.StartsWith("p")))
@@ -94,7 +91,7 @@ namespace LibraryAssistantApp.Controllers
 
         public JsonResult UserExists(string person_id)
         {
-            return Json(db.Current_UP_Person.Any(x => x.Person_ID.ToLower() == person_id.ToLower()), JsonRequestBehavior.AllowGet);
+            return Json(db.Registered_Person.Any(x => x.Person_ID.ToLower() == person_id.ToLower()), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult EmailExists(string person_email)
@@ -198,7 +195,6 @@ namespace LibraryAssistantApp.Controllers
                     emp.Person_ID = viewModel.person_id;
                     emp.Person_Name = viewModel.person_name;
                     emp.Person_Surname = viewModel.person_surname;
-                    emp.Person_Title = viewModel.Person_Title;
                     emp.Person_Type = "Employee";
                     emp.Person_Password = hashed;
                     emp.Person_Registration_DateTime = DateTime.Now;
@@ -263,7 +259,6 @@ namespace LibraryAssistantApp.Controllers
                 rolechecklist.Add(roleCheck);
             }
             viewModel.role_check = rolechecklist;
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1", viewModel.Person_Title);
             ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
             return View(viewModel);
         }
@@ -329,7 +324,6 @@ namespace LibraryAssistantApp.Controllers
                                               select t).ToList();
                 TempData["Check1"] = true;
             }
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
             ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
             return View(viewModel);
         }
@@ -347,7 +341,6 @@ namespace LibraryAssistantApp.Controllers
                 rp.Person_Name = viewModel.registered_person.Person_Name;
                 rp.Person_Surname = viewModel.registered_person.Person_Surname;
                 rp.Person_Email = viewModel.registered_person.Person_Email;
-                rp.Person_Title = Person_Title;
                 rp.Person_Type = "Employee";
                 if (Password_.Equals("true"))
                 {
@@ -380,7 +373,6 @@ namespace LibraryAssistantApp.Controllers
                 db.SaveChanges();
             }
             TempData["Check2"] = false;
-            ViewBag.Person_Title = new SelectList(db.Person_Title, "Person_Title1", "Person_Title1");
             ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
             return RedirectToAction("Index");
         }

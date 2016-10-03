@@ -24,6 +24,8 @@
 /// <reference path="modernizr-2.8.3.js" />
 /// <reference path="moment.min.js" />
 /// <reference path="moment-with-locales.min.js" />
+/// <reference path="morris charts/morris.min.js" />
+/// <reference path="morris charts/raphael-min.js" />
 /// <reference path="notify.min.js" />
 /// <reference path="respond.js" />
 /// <reference path="respond.matchmedia.addlistener.js" />

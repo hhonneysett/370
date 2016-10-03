@@ -52,7 +52,7 @@ namespace LibraryAssistantApp.Controllers
 
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         string data = js.Serialize(passablePerson);
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, registered_person.Person_ID, DateTime.Now, DateTime.Now.AddMinutes(30), false, data);
+                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, registered_person.Person_ID, DateTime.Now, DateTime.Now.AddMinutes(1), false, data);
                         string encToken = FormsAuthentication.Encrypt(ticket);
                         HttpCookie authCookies = new HttpCookie(FormsAuthentication.FormsCookieName, encToken);
                         Response.Cookies.Add(authCookies);

@@ -18,7 +18,7 @@ namespace LibraryAssistantApp
                         "~/Scripts/sprintf.js",
                         "~/Scripts/jspdf.js",
                         "~/Script/bootbox.js",
-                        "~/Script/jquery.ambiance.js"));
+                        "~/Scripts/jquery.ambiance.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",

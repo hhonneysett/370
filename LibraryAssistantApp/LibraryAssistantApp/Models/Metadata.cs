@@ -21,9 +21,6 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Password")]
         public string Person_Password;
 
-        [Display(Name = "Title")]
-        public int Person_Title;
-
         [Display(Name = "Type")]
         public string Person_Type;
     }

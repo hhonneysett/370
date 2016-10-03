@@ -11,7 +11,7 @@
 
             @if (Model.Any())
             {
-            <label class="control-label">Results:</label>
+            <label id="buildingResults" class="control-label">Results:</label>
 
             <div class="panel panel-default">
                 <table class="table table-hover" id="buildingTable">
@@ -31,6 +31,8 @@
             }
             else
             {
+                <label id="buildingResults" class="control-label">Results:</label>
+
                 <div class="panel panel-default">
                     <table class="table table-hover" id="buildingTable">
                         <thead>
@@ -100,7 +102,7 @@
         });
     })
 
-    //delete a building modal
+    //update a building modal
     $("#btnUpdateBuilding").click(function () {
         var target = '/Venue/updateBuilding/?id=' + $("#buildingTable tbody tr.alert-info").prop('id')
 
@@ -113,9 +115,40 @@
     $("#btnViewBuildingFloors").click(function () {
         var target = '/Venue/getBuildingFloors/?id=' + $("#buildingTable tbody tr.alert-info").prop('id');
         $("#buildingFloors").load(target);
-        $("#buildingFloors").show(800);
+        $("#buildingFloors").show();
         $("#toggleBuildings").hide(800);
         $("#buildingSummary").text("Select Building: " + $("#buildingTable tbody tr.alert-info").find('td:eq(0)').text());
+        $("#venues").hide();
+    })
+
+    //search buildings
+    $("#btnSearchBuilding").click(function () {
+        $.ajax({
+            type: 'GET',
+            url: '/Venue/searchBuilding',
+            data: { search: $("#searchBuilding").val() },
+            success: function (result) {
+
+                $("#buildingTable tbody").empty();
+                $("#buildingTable thead").empty();
+
+                if (!$.isArray(result) || !result.length) {
+                    $("#buildingTable tbody").empty();
+                    $("#buildingTable thead").append('<tr><th>No Matching Buildings</th></tr>')
+                    $("#buildingResults").text("Results: '" + $("#searchBuilding").val() + "'");
+                    $("#searchBuilding").val('');
+                } else {
+                    $("#buildingResults").text("Results: '" + $("#searchBuilding").val() + "'");
+                    $("#searchBuilding").val('');
+                    result.forEach(function (entry) {
+                        $('#buildingTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                    });
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
     })
 
 </script>

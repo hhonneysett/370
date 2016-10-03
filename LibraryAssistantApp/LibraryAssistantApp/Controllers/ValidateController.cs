@@ -16,10 +16,9 @@ namespace LibraryAssistantApp.Controllers
         //check if person id is valid
         public JsonResult validateStudentNumber(string Person_ID)
         {
-            var currentUP = db.Current_UP_Person.Any(student => student.Person_ID == Person_ID);
             var alreadyReg = db.Registered_Person.Any(student => student.Person_ID == Person_ID);
 
-            if (currentUP.Equals(true) && alreadyReg.Equals(false))
+            if (alreadyReg.Equals(false))
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }

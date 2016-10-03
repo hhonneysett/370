@@ -1,0 +1,81 @@
+﻿@using LibraryAssistantApp.Models
+
+@{
+    var campus = (Campus)ViewBag.Campus;
+    var building = (Building)ViewBag.Building;
+    var floor = (Building_Floor)ViewBag.Floor;
+    var venue = (Venue)ViewBag.Venue;
+}
+
+<form id="deleteVenueForm" class="form-group">
+    <p>Are you sure you want to delete the <b>@venue.Venue_Name</b> building, from the <b>@floor.Floor_Name</b> floor in the <b>@building.Building_Name</b> building on <b>@campus.Campus_Name</b> campus ?</p>
+</form>
+<button class="btn btn-default" id="btnConfirmDeleteVenue">Yes</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<hr />
+
+<script src="~/Scripts/jquery.ambiance.js"></script>
+
+<script type="text/javascript">
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+
+    //confirm deletion
+    $("#btnConfirmDeleteVenue").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '/Venue/deleteVenue',
+            success: function (result) {
+
+                if (result == "CLASH") {
+
+                    //toggle modal
+                    $('#myModal').modal('toggle');
+
+                    //show error notification
+                    $.ambiance({
+                        message: "Venue Has Existing Dependencies!",
+                        title: "Error!",
+                        type: "error",
+                        timeout: 5
+                    });
+                } else {
+
+                    //toggle modal
+                    $('#myModal').modal('toggle');
+
+                    $("#venueTable tbody").empty();
+
+                    if (!$.isArray(result) || !result.length) {
+                        $("#venueTable tbody").empty();
+                        $("#venueTable thead").empty();
+                        $("#venueTable thead").append('<tr><th>No Matching Building Floors</th></tr>')
+                    } else {
+                        $("#venueTable thead").empty();
+                        $("#venueTable thead").append('<tr><th>Venue Name</th><th>Type</th><th>Capacity</th></tr>')
+                        result.forEach(function (entry) {
+                            $('#venueTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td><td>' + entry.vtype + '</td><td>' + entry.vcapacity + '</tr>');
+                        });
+                    }
+
+                    //show notification
+                    $.ambiance({
+                        message: "Venue Successfully Deleted!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+
+                    //disable buttons
+                    $("#btnUpdateVenue").prop('disabled', true);
+                    $("#btnDeleteVenue").prop('disabled', true);
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    })
+</script>
