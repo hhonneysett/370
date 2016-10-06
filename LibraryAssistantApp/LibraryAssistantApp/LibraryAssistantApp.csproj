@@ -162,6 +162,8 @@
     <Content Include="Content\normalize.css" />
     <Content Include="Content\loginStyle.css" />
     <Content Include="Scripts\base64.js" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\jquery.base64.js" />
     <Content Include="Content\jquery.timepicker.min.css" />
     <Content Include="Content\metisMenu.css" />
@@ -169,6 +171,22 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jspdf.js" />
     <Content Include="Scripts\Login\index.js" />
+    <Content Include="Scripts\noty\jquery.noty.js" />
+    <Content Include="Scripts\noty\layouts\bottom.js" />
+    <Content Include="Scripts\noty\layouts\bottomCenter.js" />
+    <Content Include="Scripts\noty\layouts\bottomLeft.js" />
+    <Content Include="Scripts\noty\layouts\bottomRight.js" />
+    <Content Include="Scripts\noty\layouts\center.js" />
+    <Content Include="Scripts\noty\layouts\centerLeft.js" />
+    <Content Include="Scripts\noty\layouts\centerRight.js" />
+    <Content Include="Scripts\noty\layouts\inline.js" />
+    <Content Include="Scripts\noty\layouts\top.js" />
+    <Content Include="Scripts\noty\layouts\topCenter.js" />
+    <Content Include="Scripts\noty\layouts\topLeft.js" />
+    <Content Include="Scripts\noty\layouts\topRight.js" />
+    <Content Include="Scripts\noty\themes\bootstrap.js" />
+    <Content Include="Scripts\noty\themes\default.js" />
+    <Content Include="Scripts\noty\themes\relax.js" />
     <Content Include="Scripts\sprintf.js" />
     <Content Include="Scripts\tableExport.js" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -230,8 +248,6 @@
     </Content>
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
-    <Content Include="Scripts\bootbox.js" />
-    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -408,9 +424,6 @@
     <Compile Include="Models\Common_Problem_Type.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Current_UP_Person.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Day_Of_Week.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
@@ -476,9 +489,6 @@
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Person_Session_Log.cs">
-      <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Person_Title.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Person_Topic.cs">
@@ -572,7 +582,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\RegisteredPerson\Details.cshtml" />
     <Content Include="Views\RegisteredPerson\UpdateDetails.cshtml" />
-    <Content Include="Views\RegisteredPerson\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutBlank.cshtml" />
     <Content Include="Views\RegisteredPerson\UpdatePassword.cshtml" />
     <Content Include="Views\PersonTopic\Create.cshtml" />
@@ -659,7 +668,7 @@
     <Content Include="Views\Employee\GetActions.cshtml" />
     <Content Include="Views\Employee\Topics.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
-    <Content Include="Views\Employee\Delete.cshtml" />
+    <Content Include="Views\Employee\Delete_.cshtml" />
     <Content Include="Views\Venues\Create.cshtml" />
     <Content Include="Views\Venues\Delete.cshtml" />
     <Content Include="Views\Venues\Details.cshtml" />
@@ -710,6 +719,10 @@
     <Content Include="Views\Venue\getBuildings.cshtml" />
     <Content Include="Views\Venue\getBuildingFloors.cshtml" />
     <Content Include="Views\Venue\getVenues.cshtml" />
+    <Content Include="Views\Employee\Delete.cshtml" />
+    <Content Include="Views\Employee\Employees.cshtml" />
+    <Content Include="Views\Employee\Categories.cshtml" />
+    <Content Include="Views\Employee\Categories_edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

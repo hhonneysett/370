@@ -7,28 +7,6 @@
 
 <script>
     $(document).ready(function () {
-        $('#result-table-4 tbody tr').click(function () {
-            $('#result-table-4 tr').removeClass('selectedrow');
-            $(this).addClass('selectedrow');
-            $('.btn-edit').attr('href', '/Employee/Edit/' + $(this).attr('id'));
-            $('.btn-delete').attr('href', '/Employee/Delete/' + $(this).attr('id'));
-            var a = $(this).attr('id');
-            $.ajax({
-                type: 'GET',
-                data: { id: a },
-                url: '@Url.Action("EmployeeDetails", "Employee")',
-                beforeSend: function (){
-                    $('.loading').show();
-                },
-                success: function (result) {
-                    $('#emp-roles').html(result);
-                }
-            }).done(function () {
-                $('.loading').hide();
-            });
-        });
-    });
-    $(document).ready(function () {
         $('#search-emp').click(function () {
             $('#search-header').toggleClass('col-md-2 col-sm-4');
             $('#search-header').toggleClass('col-md-4 col-sm-6');
@@ -49,40 +27,18 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <label class="panel-title">Details</label>
-                </div>
-                <table id="result-table-4" class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Email</th>
-                            <th>Title</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.registered_person)
-            {
-                            <tr id="@item.Person_ID">
-                                <td>
-                                    @item.Person_ID
-                                </td>
-                                <td>
-                                    @item.Person_Name
-                                </td>
-                                <td>
-                                    @item.Person_Surname
-                                </td>
-                                <td>
-                                    @item.Person_Email
-                                </td>
-                                <td>
-                                    @item.Person_Title
-                                </td>
-                            </tr>
+                    <select id="rolesList" class="form-control">
+                        <option selected>All Roles</option>
+                        @foreach (var item in ViewBag.Roles)
+                        {
+                            <option id="@item.Value">@item.Text</option>
                         }
-                    </tbody>
-                </table>
+                    </select>
+                </div>
+                <div id="emp-partial">
+                    @{Html.RenderPartial("Employees");}
+                </div>
+
                 <div class="panel-body">
                     <div class="btn-group" role="group" aria-label="...">
                         @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-default" })
@@ -96,7 +52,6 @@
                     <div class="btn-group">
                         @Html.ActionLink("Manage Trainers", "Trainers", null, htmlAttributes: new { @class = "btn btn-default btn-delete" })
                     </div>
-                    @Html.ActionLink("View all", "Index")
                     <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
                 </div>
             </div>
@@ -108,91 +63,125 @@
                     <label class="panel-title">Search</label>
                 </div>
                 <div id="search-panel" class="panel-body" style="display:none">
-                    @using (Html.BeginForm("Index", "Employee", FormMethod.Get))
-            {
+
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label class="control-label">Username:</label>
                                 <div class="form-group-sm">
-                                    <input class="form-control" name="username" value="@Request["username"]"/>
+                                    <input id="username" class="form-control" name="username" value="@Request["username"]"/>
                                 </div>
                             </div>
-
                         </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
 
                                     <label class="control-label">Name:</label>
                                     <div class="form-group-sm">
-                                        <input class="form-control" name="name" value="@Request["name"]"/>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6">
-
-                                    <label class="control-label">Surname:</label>
-                                    <div class="form-group-sm">
-                                        <input class="form-control" name="surname" value="@Request["surname"]"/>
+                                        <input id="name" class="form-control" name="name" value="@Request["name"]"/>
                                     </div>
 
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-
+                                <div class="col-md-12">
+                                    <label class="control-label">Surname:</label>
+                                    <div class="form-group-sm">
+                                        <input id="surname" class="form-control" name="surname" value="@Request["surname"]" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <label class="control-label">Email:</label>
                                     <div class="form-group-sm">
-                                        <input class="form-control" name="email" value="@Request["email"]"/>
+                                        <input id="email" class="form-control" name="email" value="@Request["email"]"/>
                                     </div>
-
-                                </div>
-                                <div class="col-md-6">
-
-                                    <label class="control-label">Title:</label>
-                                    <div class="form-group-sm">
-                                        @Html.DropDownList("title", new SelectList(ViewBag.personTitle, "Person_Title1", "Person_Title1", "select a title"), htmlAttributes: new { @class="form-control"})
-                                    </div>
-
                                 </div>
                             </div>
                             <hr/>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group-sm">
-                                        <button type="submit" class="btn btn-default">Search</button>
-                                        <button type="reset" class="btn btn-default">Clear</button>
+                                        <button id="btn-search" class="btn btn-default">Search</button>
+                                        <button id="btn-reset" class="btn btn-default">Clear</button>
+                                        @Html.ActionLink("View all", "Index")
                                     </div>
                                 </div>
                             </div>
-                    }
+                    
                 </div>
+            </div>
+        </div>
+        </div>
+</div>
+
+<div id="emp-roles">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <label class="panel-title">
+                    Employee Details
+                </label>
+            </div>
+            <div class="panel-body">
+                <span class="field-validation-error text-warning">No employee selected</span>
             </div>
         </div>
     </div>
 </div>
 
-<div id="emp-roles" class="col-md-4">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <label class="panel-title">
-                Roles
-            </label>
-        </div>
-        <div class="panel-body">
-            <span class="field-validation-error text-warning">No employee selected</span>
-        </div>
-    </div>
-</div>
+@section script {
 
-<div id="emp-action" class="col-md-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <label class="panel-title">
-                Actions
-            </label>
-        </div>
-        <div class="panel-body">
-            <span class="field-validation-error text-warning">No role selected</span>
-        </div>
-    </div>
-</div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#rolesList').change(function () {
+                var a = $(this).children(':selected').attr('id');
+                var b = $('#username').val();
+                var c = $('#name').val();
+                var d = $('#surname').val();
+                var e = $('#email').val();
+                $.ajax({
+                    type: 'GET',
+                    data: { roleid: a, username: b, name: c, surname: d, email: e },
+                    url: '@Url.Action("Employees", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        $('#emp-partial').html(result);
+                    }
+                }).done(function () {
+                    $('.loading').hide();
+                });
+            });
+            $('#btn-search').click(function () {
+                var a = $(this).children(':selected').attr('id');
+                var b = $('#username').val();
+                var c = $('#name').val();
+                var d = $('#surname').val();
+                var e = $('#email').val();
+                $.ajax({
+                    type: 'GET',
+                    data: { roleid: a, username: b, name: c, surname: d, email: e },
+                    url: '@Url.Action("Employees", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        $('#emp-partial').html(result);
+                    }
+                }).done(function () {
+                    $('.loading').hide();
+                });
+            });
+            $('#btn-reset').click(function () {
+                $('#username').val('');
+                $('#name').val('');
+                $('#surname').val('');
+                $('#email').val('');
+            });
+        });
+    </script>
+
+
+    }

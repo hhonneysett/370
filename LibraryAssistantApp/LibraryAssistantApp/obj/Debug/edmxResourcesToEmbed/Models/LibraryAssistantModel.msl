@@ -121,13 +121,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Current_UP_Person">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Current_UP_Person">
-        <MappingFragment StoreEntitySet="Current_UP_Person">
-          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Day_Of_Week">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Day_Of_Week">
         <MappingFragment StoreEntitySet="Day_Of_Week">
@@ -233,14 +226,6 @@
           <ScalarProperty Name="Logout_DateTime" ColumnName="Logout_DateTime" />
           <ScalarProperty Name="Login_DateTime" ColumnName="Login_DateTime" />
           <ScalarProperty Name="Session_ID" ColumnName="Session_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Person_Title">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Title">
-        <MappingFragment StoreEntitySet="Person_Title">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Person_Title1" ColumnName="Person_Title" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -470,20 +455,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Registered_Person">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Registered_Person">
-        <MappingFragment StoreEntitySet="Registered_Person">
-          <ScalarProperty Name="Person_Title" ColumnName="Person_Title" />
-          <ScalarProperty Name="Person_Type" ColumnName="Person_Type" />
-          <ScalarProperty Name="Person_Registration_DateTime" ColumnName="Person_Registration_DateTime" />
-          <ScalarProperty Name="Person_Password" ColumnName="Person_Password" />
-          <ScalarProperty Name="Person_Email" ColumnName="Person_Email" />
-          <ScalarProperty Name="Person_Surname" ColumnName="Person_Surname" />
-          <ScalarProperty Name="Person_Name" ColumnName="Person_Name" />
-          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ResetPasswordRequests">
       <EntityTypeMapping TypeName="LibraryAssistantModel.ResetPasswordRequest">
         <MappingFragment StoreEntitySet="ResetPasswordRequests">
@@ -546,6 +517,19 @@
         <MappingFragment StoreEntitySet="Trainer_Topic">
           <ScalarProperty Name="Trainer_Topic_ID" ColumnName="Trainer_Topic_ID" />
           <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Registered_Person">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Registered_Person">
+        <MappingFragment StoreEntitySet="Registered_Person">
+          <ScalarProperty Name="Person_Type" ColumnName="Person_Type" />
+          <ScalarProperty Name="Person_Registration_DateTime" ColumnName="Person_Registration_DateTime" />
+          <ScalarProperty Name="Person_Password" ColumnName="Person_Password" />
+          <ScalarProperty Name="Person_Email" ColumnName="Person_Email" />
+          <ScalarProperty Name="Person_Surname" ColumnName="Person_Surname" />
+          <ScalarProperty Name="Person_Name" ColumnName="Person_Name" />
           <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
         </MappingFragment>
       </EntityTypeMapping>

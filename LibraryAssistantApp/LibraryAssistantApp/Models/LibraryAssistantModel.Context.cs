@@ -39,7 +39,6 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Colour> Colours { get; set; }
         public virtual DbSet<Common_Problem> Common_Problem { get; set; }
         public virtual DbSet<Common_Problem_Type> Common_Problem_Type { get; set; }
-        public virtual DbSet<Current_UP_Person> Current_UP_Person { get; set; }
         public virtual DbSet<Day_Of_Week> Day_Of_Week { get; set; }
         public virtual DbSet<Document_Access_Log> Document_Access_Log { get; set; }
         public virtual DbSet<Document_Category> Document_Category { get; set; }
@@ -51,7 +50,6 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Person_Questionnaire_Result> Person_Questionnaire_Result { get; set; }
         public virtual DbSet<Person_Session_Action_Log> Person_Session_Action_Log { get; set; }
         public virtual DbSet<Person_Session_Log> Person_Session_Log { get; set; }
-        public virtual DbSet<Person_Title> Person_Title { get; set; }
         public virtual DbSet<Person_Type> Person_Type { get; set; }
         public virtual DbSet<Possible_Answer> Possible_Answer { get; set; }
         public virtual DbSet<Question_Bank> Question_Bank { get; set; }
@@ -71,13 +69,13 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Topic_Category> Topic_Category { get; set; }
         public virtual DbSet<Venue> Venues { get; set; }
         public virtual DbSet<Venue_Booking> Venue_Booking { get; set; }
-        public virtual DbSet<Registered_Person> Registered_Person { get; set; }
         public virtual DbSet<ResetPasswordRequest> ResetPasswordRequests { get; set; }
         public virtual DbSet<Person_Role> Person_Role { get; set; }
         public virtual DbSet<Booking_Status> Booking_Status { get; set; }
         public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Role_Action> Role_Action { get; set; }
         public virtual DbSet<Trainer_Topic> Trainer_Topic { get; set; }
+        public virtual DbSet<Registered_Person> Registered_Person { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {

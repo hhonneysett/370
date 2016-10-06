@@ -55,10 +55,28 @@ namespace LibraryAssistantApp
                 "~/Scripts/checkbox.js"));
             //select rows script
             bundles.Add(new ScriptBundle("~/bundles/selectrowjs").Include(
-                "~/Script/selectrow.js"));
-            //model script
+                "~/Scripts/selectrow.js"));
+            //modal script
             bundles.Add(new ScriptBundle("~/bundles/bootbox").Include(
-                "~/Script/bootbox.js"));
+                "~/Scripts/bootbox.js"));
+            //notification 'noty' scripts
+            bundles.Add(new ScriptBundle("~/bundles/noty").Include(
+                "~/Scripts/noty/jquery.noty.js",
+                "~/Scripts/noty/layouts/bottom.js",
+                "~/Scripts/noty/layouts/bottomCenter.js",
+                "~/Scripts/noty/layouts/bottomLeft.js",
+                "~/Scripts/noty/layouts/bottomRight.js",
+                "~/Scripts/noty/layouts/center.js",
+                "~/Scripts/noty/layouts/centerLeft.js",
+                "~/Scripts/noty/layouts/centerRight.js",
+                "~/Scripts/noty/layouts/inline.js",
+                "~/Scripts/noty/layouts/top.js",
+                "~/Scripts/noty/layouts/topCenter.js",
+                "~/Scripts/noty/layouts/topLeft.js",
+                "~/Scripts/noty/layouts/topRight.js",
+                "~/Scripts/noty/themes/default.js",
+                "~/Scripts/noty/themes/relax.js"
+                ));
         }
     }
 }
