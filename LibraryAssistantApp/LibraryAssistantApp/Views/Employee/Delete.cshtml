@@ -28,7 +28,7 @@
     {
         @Html.AntiForgeryToken()
         <div class="row">
-            <div class="col-md-6 col-md-offset-1">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <label class="panel-title">
@@ -99,6 +99,37 @@
                     </table>
                 </div>
             </div>
+            @if ((bool)TempData["Check"] == true)
+            {
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <label class="panel-title">
+                                Trainer Topics
+                            </label>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Topic
+                                    </th>
+                                </tr>
+                            </thead>
+                            @for (int i = 0; i < Model.trainer_topic.Count(); i++)
+                            {
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(m => m.trainer_topic[i].Topic.Topic_Name)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            }
         </div>
 
         <div class="col-md-11 col-md-offset-1">

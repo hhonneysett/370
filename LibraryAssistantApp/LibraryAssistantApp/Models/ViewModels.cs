@@ -649,5 +649,6 @@ namespace LibraryAssistantApp.Models
     {
         public Registered_Person registered_person { get; set; }
         public IEnumerable<Person_Role> person_role { get; set; }
+        public List<Trainer_Topic> trainer_topic { get; set;  }
     }
 }

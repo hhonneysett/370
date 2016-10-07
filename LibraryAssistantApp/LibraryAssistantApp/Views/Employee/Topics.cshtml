@@ -57,6 +57,62 @@
                 }).done(function () {
                     $('.loading').hide();
                 });
+        })
+            $('#btn-create').click(function (event) {
+                var a = $('#person_id').val();
+                var b = $('#person_name').val();
+                var c = $('#person_surname').val();
+                var d = $('#person_email').val();
+                if (a && b && c && d)
+                {
+                    event.preventDefault();  
+                var myArray = new Array();
+                var empRoles = new Array();
+                $('#topics-div input:checkbox').each(function () {
+                    var seq = $(this).attr('class');
+                    var ind = "";
+                    if ($(this).is(':checked')) {
+                        ind = "True";
+                    } else {
+                        ind = "False";
+                    }
+                    myArray.push({ topic_seq: seq, topic_ind: ind });
+                });
+                $('#emp-deets input:checkbox').each(function () {
+                    var seq = $(this).attr('class');
+                    var ind = "";
+                    if ($(this).is(':checked')) {
+                        ind = "True";
+                    } else {
+                        ind = "False";
+                    }
+                    empRoles.push({ role_id: seq, role_ind: ind });
+                });
+                $.ajax({
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                        id: JSON.stringify(a),
+                        name: JSON.stringify(b),
+                        surname: JSON.stringify(c),
+                        email: JSON.stringify(d),
+                        arr: JSON.stringify(myArray),
+                        rolearr: JSON.stringify(empRoles)
+                    },
+                    url: '@Url.Action("saveEmployee", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        window.location.href = "/Employee/Index";
+                    },
+                    error: function () {
+                        $('.loading').hide();
+                    }
+                }).done(function () {
+                    $('.loading').hide();
+                });
+            }
             })
         })
 </script>

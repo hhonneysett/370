@@ -75,7 +75,7 @@
                                         @Html.DisplayFor(m => m.emprolecheckeditlist[i].role_name)
                                     </td>
                                     <td>
-                                        @Html.EditorFor(m => m.emprolecheckeditlist[i].role_ind)
+                                        @Html.CheckBoxFor(m => m.emprolecheckeditlist[i].role_ind, htmlAttributes: new { @class = @Model.emprolecheckeditlist[i].role_id })
                                     </td>
                                 </tr>
                             }
@@ -110,7 +110,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save Changes" class="btn btn-default" />
+                <input id="btn-submit" type="submit" value="Save Changes" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -218,7 +218,7 @@
                     myArray.push({ topic_seq: seq, topic_ind: ind });
                 });
 
-            var a = "";
+                var a = "";
                 var a = $(this).children(':selected').attr('id');
                 $.ajax({
                     type: 'GET',
@@ -238,7 +238,58 @@
                 }).done(function () {
                     $('.loading').hide();
                 });
-            })
+            });
+            //submit the update form
+            $('#btn-submit').click(function (event) {
+                event.preventDefault();
+                var roleArray = new Array();
+                var myArray = new Array();
+                $('#emp-roles input:checkbox').each(function () {
+                    var seq = $(this).attr('class');
+                    var ind = "";
+                    if ($(this).is(':checked')) {
+                        ind = "True";
+                    } else {
+                        ind = "False";
+                    }
+                    roleArray.push({ role_id: seq, role_ind: ind });
+                });
+                $('#category-div input:checkbox').each(function () {
+                    var seq = $(this).attr('class');
+                    var ind = "";
+                    if ($(this).is(':checked')) {
+                        ind = "True";
+                    } else {
+                        ind = "False";
+                    }
+                    myArray.push({ topic_seq: seq, topic_ind: ind });
+                });
+                var a = '@Model.person_id';
+                var b = '@Model.person_name';
+                var c = '@Model.person_surname';
+                var d = '@Model.person_email';
+                $.ajax({
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                        id: JSON.stringify(a),
+                        name: JSON.stringify(b),
+                        surname: JSON.stringify(c),
+                        email: JSON.stringify(d),
+                        arr: JSON.stringify(myArray),
+                        rolearr: JSON.stringify(roleArray)
+                    },
+                    url: '@Url.Action("saveTopics", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        window.location.href = "/Employee/Index";
+                    }
+                }).done(function () {
+                    $('.loading').hide();
+                });
+            });
         });
     </script>
 }

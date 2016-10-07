@@ -36,7 +36,7 @@ namespace LibraryAssistantApp.Controllers
             }
             ViewBag.Roles = selectListItems;
 
-            return View(viewModel);
+            return View("Index", viewModel);
         }
 
         public PartialViewResult Employees(string username, string name, string surname, string email, string roleid)
@@ -73,6 +73,7 @@ namespace LibraryAssistantApp.Controllers
                 personDetails.trainer_topic = db.Trainer_Topic
                     .Where(x => x.Person_ID == id)
                         .Include(pr => pr.Topic).ToList();
+
                 TempData["Check"] = false;
                 if (personDetails.trainer_topic.Any())
                 {
@@ -199,6 +200,45 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Categories = selectListItems;
 
             return PartialView("Topics", viewModel);
+        }
+
+        public ActionResult saveEmployee(string id, string name, string surname, string email, string arr, string rolearr)
+        {
+            var viewModel = new EmployeeAddModel();
+            var topicchecklist = (List<TopicCheck>)Session["Topic_Checked"];
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var myojb = (List<TopicCheck>)js.Deserialize(arr, typeof(List<TopicCheck>));
+            var roleArr = (List<RoleCheck>)js.Deserialize(rolearr, typeof(List<RoleCheck>));
+
+            var _id = (string)js.Deserialize(id, typeof(string));
+            var _name = (string)js.Deserialize(name, typeof(string));
+            var _surname = (string)js.Deserialize(surname, typeof(string));
+            var _email = (string)js.Deserialize(email, typeof(string));
+
+            foreach (var item in myojb)
+            {
+                if (topicchecklist.Any(tc => item.topic_seq == tc.topic_seq))
+                {
+                    var remove = topicchecklist.Where(x => x.topic_seq == item.topic_seq).Single();
+                    topicchecklist.Remove(remove);
+                    var topic = new TopicCheck();
+                    topic.topic_seq = item.topic_seq;
+                    topic.category_id = db.Topic_Category.Where(x => x.Topic_Seq == item.topic_seq).Select(x => x.Category_ID).FirstOrDefault().ToString();
+                    topic.topic_name = db.Topics.Find(item.topic_seq).Topic_Name;
+                    topic.topic_ind = item.topic_ind;
+                    topicchecklist.Add(topic);
+                }
+            }
+            viewModel.topic_check = topicchecklist;
+            viewModel.role_check = roleArr;
+
+            viewModel.person_id = _id;
+            viewModel.person_name = _name;
+            viewModel.person_surname = _surname;
+            viewModel.person_email = _email;
+
+            return Create(viewModel);
         }
 
         [HttpPost]
@@ -388,7 +428,6 @@ namespace LibraryAssistantApp.Controllers
             JavaScriptSerializer js = new JavaScriptSerializer();
             var myojb = (List<TopicCheck>)js.Deserialize(arr, typeof(List<TopicCheck>));
             var topicchecks = (List<TopicCheck>)Session["TopicChecked"];
-            //var topics = new List<TopicCheck>();
 
             foreach (var item in myojb)
             {
@@ -416,6 +455,44 @@ namespace LibraryAssistantApp.Controllers
             }
 
             return PartialView("Categories_edit", viewModel);
+        }
+
+        public ActionResult saveTopics(string id, string name, string surname, string email, string arr, string rolearr)
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var myojb = (List<TopicCheck>)js.Deserialize(arr, typeof(List<TopicCheck>));
+            var roleArr = (List<EmpRoleCheckEdit>)js.Deserialize(rolearr, typeof(List<EmpRoleCheckEdit>));
+
+            var _id = (string)js.Deserialize(id, typeof(string));
+            var _name = (string)js.Deserialize(name, typeof(string));
+            var _surname = (string)js.Deserialize(surname, typeof(string));
+            var _email = (string)js.Deserialize(email, typeof(string));
+            var topicchecks = (List<TopicCheck>)Session["TopicChecked"];
+
+            foreach (var item in myojb)
+            {
+                if (topicchecks.Any(tc => item.topic_seq == tc.topic_seq))
+                {
+                    var remove = topicchecks.Where(x => x.topic_seq == item.topic_seq).Single();
+                    topicchecks.Remove(remove);
+                    var topic = new TopicCheck();
+                    topic.topic_seq = item.topic_seq;
+                    topic.category_id = db.Topic_Category.Where(x => x.Topic_Seq == item.topic_seq).Select(x => x.Category_ID).FirstOrDefault().ToString();
+                    topic.topic_name = db.Topics.Find(item.topic_seq).Topic_Name;
+                    topic.topic_ind = item.topic_ind;
+                    topicchecks.Add(topic);
+                }
+            }
+            var viewModel = new EmployeeEditModel();
+            viewModel.topicchecks = topicchecks;
+            viewModel.emprolecheckeditlist = roleArr;
+
+            viewModel.person_id = _id;
+            viewModel.person_name = _name;
+            viewModel.person_surname = _surname;
+            viewModel.person_email = _email;
+
+            return Edit(_id, viewModel);
         }
 
         public ActionResult ResetPassword(string id, string _email)
@@ -448,6 +525,7 @@ namespace LibraryAssistantApp.Controllers
         [HttpPost]
         public ActionResult Edit(string id, EmployeeEditModel viewModel)
         {
+            var topicchecks = (List<TopicCheck>)Session["TopicChecked"];
             //TODO: validate to make sure at least one role is selected
             if (ModelState.IsValid)
             {
@@ -478,9 +556,10 @@ namespace LibraryAssistantApp.Controllers
                 {
                     db.Trainer_Topic.Remove(item);
                 }
+
                 if (viewModel.emprolecheckeditlist.Where(x => x.role_id == 7).Where(y => y.role_ind == true ).Any())
                 {
-                    foreach (var item in viewModel.topicchecks)
+                    foreach (var item in topicchecks)
                     {
                         if (item.topic_ind == true)
                         {
@@ -509,6 +588,20 @@ namespace LibraryAssistantApp.Controllers
             var viewModel = new EmployeeDeleteModel();
             viewModel.registered_person = db.Registered_Person.Find(id);
             viewModel.person_role = db.Person_Role.Where(x => x.Person_ID == id);
+            viewModel.trainer_topic = db.Trainer_Topic
+                .Where(x => x.Person_ID == id)
+                    .Include(pr => pr.Topic).ToList();
+
+            TempData["Check"] = false;
+            if (viewModel.trainer_topic.Any())
+            {
+
+                TempData["Check"] = true;
+            }
+
+            viewModel.trainer_topic = db.Trainer_Topic
+                .Where(x => x.Person_ID == id)
+                    .Include(pr => pr.Topic).ToList();
 
             if (db.Person_Role.Where(x => x.Person_ID == id).Where(x => x.Role_ID == 5).Any())
             {
