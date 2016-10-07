@@ -157,6 +157,6 @@ C:\Users\Gabriel\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bi
 C:\Users\Gabriel\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\System.Web.Webpages.Razor.xml
 C:\Users\Gabriel\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\System.Web.Helpers.xml
 C:\Users\Gabriel\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\System.Web.Mvc.xml
-C:\Users\Gabriel\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.csprojResolveAssemblyReference.cache
 C:\Users\Gabriel\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.dll
 C:\Users\Gabriel\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.pdb
+C:\Users\Gabriel\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.csprojResolveAssemblyReference.cache

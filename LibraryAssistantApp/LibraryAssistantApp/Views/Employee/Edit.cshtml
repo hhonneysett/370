@@ -284,7 +284,13 @@
                         $('.loading').show();
                     },
                     success: function (result) {
-                        window.location.href = "/Employee/Index";
+                        bootbox.alert({
+                            message: "Employee was updated successfully.",
+                            size: 'small',
+                            callback: function () {
+                                window.location.href = "/Employee/Index";
+                            }
+                        });
                     }
                 }).done(function () {
                     $('.loading').hide();

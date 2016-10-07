@@ -361,6 +361,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
     <Compile Include="Controllers\PersonTypeController.cs" />
     <Compile Include="Controllers\QuestionnaireController.cs" />
@@ -723,6 +724,12 @@
     <Content Include="Views\Employee\Employees.cshtml" />
     <Content Include="Views\Employee\Categories.cshtml" />
     <Content Include="Views\Employee\Categories_edit.cshtml" />
+    <Content Include="Views\Member\Index.cshtml" />
+    <Content Include="Views\Member\Members.cshtml" />
+    <Content Include="Views\Member\Create.cshtml" />
+    <Content Include="Views\Member\Edit.cshtml" />
+    <Content Include="Views\Member\Delete.cshtml" />
+    <Content Include="Views\Member\MemberDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

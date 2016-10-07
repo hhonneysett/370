@@ -1,0 +1,54 @@
+﻿@model LibraryAssistantApp.Models.MemberIndexVM
+
+
+@{ var error = ViewBag.ErroMsg = "";}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <label class="panel-title">
+                    Member Details
+                </label>
+            </div>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.person_id, htmlAttributes: new { @class = "control-label" })
+                        </td>
+                        <td>
+                            @Model.person_id
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.person_name, htmlAttributes: new { @class = "control-label" })
+                        </td>
+                        <td>
+                            @Model.person_name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.person_surname, htmlAttributes: new { @class = "control-label" })
+                        </td>
+                        <td>
+                            @Model.person_surname
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.person_email, htmlAttributes: new { @class = "control-label" })
+                        </td>
+                        <td>
+                            @Model.person_email
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

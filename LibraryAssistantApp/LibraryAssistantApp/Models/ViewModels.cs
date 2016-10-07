@@ -553,6 +553,7 @@ namespace LibraryAssistantApp.Models
         public Person_Type person_type { get; set; }
     }
 
+    //Employee controllers
     public class EmployeeIndexModel
     {
         public IEnumerable<Registered_Person> registered_person { get; set; }
@@ -650,5 +651,68 @@ namespace LibraryAssistantApp.Models
         public Registered_Person registered_person { get; set; }
         public IEnumerable<Person_Role> person_role { get; set; }
         public List<Trainer_Topic> trainer_topic { get; set;  }
+    }
+
+    //member controllers
+    public class MemberIndexVM
+    {
+        public IEnumerable<Registered_Person> registered_person { get; set; }
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Display(Name = "Email")]
+        public string person_email { get; set; }
+    }
+
+    public class MemberCreateVM
+    {
+        [Remote("UserExists", "Member", ErrorMessage = "Username is already in use")]
+        [Required(ErrorMessage = "Username is required")]
+        [RegularExpression("([u])([0-9]{8})+", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Name is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Name cannot include numbers or special characters")]
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Surname is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Surname cannot include numbers or special characters")]
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Remote("EmailExists", "Member", ErrorMessage = "Email address is already in use")]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address, please try again. Example: example@example.co.za")]
+        [Display(Name = "Email Address")]
+        public string person_email { get; set; }
+    }
+    public class MemberEditVM
+    {
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Name is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Name cannot include numbers or special characters")]
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Surname is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Surname cannot include numbers or special characters")]
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address, please try again. Example: example@example.co.za")]
+        [Display(Name = "Email Address")]
+        public string person_email { get; set; }
+    }
+    public class MemberDeleteVM
+    {
+        public Registered_Person registered_person { get; set; }
+        public IEnumerable<Person_Role> person_role { get; set; }
+        public List<Trainer_Topic> trainer_topic { get; set; }
     }
 }

@@ -23,6 +23,7 @@
     </div>
 </div>
 
+<script src="~/Scripts/bootbox.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
         $('#categoryList').change(function () {
@@ -104,13 +105,20 @@
                         $('.loading').show();
                     },
                     success: function (result) {
-                        window.location.href = "/Employee/Index";
+                        $('.loading').hide();
+                        bootbox.alert({
+                            message: "Employee was added successfully.",
+                            size: 'small',
+                            callback: function () {
+                                window.location.href = "/Employee/Index";
+                            }
+                        });
                     },
                     error: function () {
                         $('.loading').hide();
                     }
                 }).done(function () {
-                    $('.loading').hide();
+                    $('.loading').hide();                    
                 });
             }
             })

@@ -303,7 +303,7 @@ namespace LibraryAssistantApp.Controllers
 
                 message.From = new MailAddress("uplibraryassistant@gmail.com");
                 message.To.Add(viewModel.person_email);
-                message.Subject = "Employee Register";
+                message.Subject = "Employee Registration";
                 message.Body = "Hi, " + viewModel.person_id + " you have been registered to UP Library Assistant by an Admin, use your UP username to login, your password is: " + password;
                 message.IsBodyHtml = true;
                 client.EnableSsl = true;
