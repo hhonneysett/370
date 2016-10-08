@@ -20,6 +20,24 @@ namespace LibraryAssistantApp.Controllers
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
         public ActionResult Index(string username, string name, string surname, string email, string roleid)
         {
+            try
+            {
+                if ((bool)TempData["Show"] == true)
+                {
+                    TempData["Hidden"] = "";
+                    TempData["Show"] = false;
+                }
+                else
+                {
+                    TempData["Hidden"] = "Hidden";
+                    TempData["Show"] = false;
+                }
+            }
+            catch
+            {
+                TempData["Hidden"] = "Hidden";
+                TempData["Show"] = false;
+            }
             var viewModel = new EmployeeIndexModel();
             viewModel.registered_person = db.Registered_Person
                     .Where(t => t.Person_Type.ToLower() == "employee");
@@ -346,8 +364,10 @@ namespace LibraryAssistantApp.Controllers
             //employee details
             if (id == null)
             {
-                TempData["ErrorMsg"] = "Please select an employee before selecting update";
-                ModelState.AddModelError("person_id", "Please select an employee before selecting update");
+                TempData["Msg"] = "Please select an employee before selecting update.";
+                TempData["Show"] = true;
+                TempData["color"] = "alert-warning";
+                ModelState.AddModelError("person_id", "Please select an employee before selecting update.");
                 return RedirectToAction("Index");
             }
             var viewModel = new EmployeeEditModel();
@@ -420,6 +440,7 @@ namespace LibraryAssistantApp.Controllers
                 }
             viewModel.topicchecks = topicchecks;
             ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
+            TempData["Show"] = false;
             return View(viewModel);
         }
         public PartialViewResult Categories_edit(string cat_id, string arr)
@@ -581,7 +602,9 @@ namespace LibraryAssistantApp.Controllers
         {
             if (id == null)
             {
-                TempData["ErrorMsg"] = "Please select an employee before selecting delete";
+                TempData["Msg"] = "Please select an employee before selecting delete.";
+                TempData["Show"] = true;
+                TempData["color"] = "alert-warning";
                 return RedirectToAction("Index");
             }
 
@@ -629,6 +652,7 @@ namespace LibraryAssistantApp.Controllers
             }
 
             ViewBag.ErrorMsg = "Are you sure you want to delete?";
+            TempData["Show"] = false;
             TempData["Disabled"] = "";
 
             return View(viewModel);

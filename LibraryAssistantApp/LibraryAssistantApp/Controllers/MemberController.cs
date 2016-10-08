@@ -162,10 +162,10 @@ namespace LibraryAssistantApp.Controllers
             //employee details
             if (id == null)
             {
-                TempData["Msg"] = "Please select an employee before selecting update";
+                TempData["Msg"] = "Please select an employee before selecting update.";
                 TempData["Show"] = true;
                 TempData["color"] = "alert-warning";
-                ModelState.AddModelError("person_id", "Please select an employee before selecting update");
+                ModelState.AddModelError("person_id", "Please select a member before selecting update.");
                 return RedirectToAction("Index");
             }
             var viewModel = new MemberEditVM();
@@ -228,7 +228,9 @@ namespace LibraryAssistantApp.Controllers
         {
             if (id == null)
             {
-                TempData["Msg"] = "Please select an employee before selecting delete";
+                TempData["Msg"] = "Please select a member before selecting delete.";
+                TempData["Show"] = true;
+                TempData["color"] = "alert-warning";
                 return RedirectToAction("Index");
             }
 
@@ -263,6 +265,7 @@ namespace LibraryAssistantApp.Controllers
 
             ViewBag.ErrorMsg = "Are you sure you want to delete?";
             TempData["Disabled"] = "";
+            TempData["Show"] = false;
 
             return View(viewModel);
         }

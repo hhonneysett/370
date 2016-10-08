@@ -80,3 +80,12 @@ table tbody tr :hover {
     display:none;
     float: right;
 }
+
+/*cursor styling*/
+.message {
+    cursor: pointer;
+}
+
+.cursor {
+    cursor: pointer;
+}

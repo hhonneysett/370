@@ -23,7 +23,7 @@
  }
 
 
-<div class="row" @TempData["Hidden"]>
+<div class="row message" @TempData["Hidden"]>
     <div class="col-md-10">
         <div class="alert @alertcolor" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -61,11 +61,11 @@
                 </div>
             </div>
         </div>
-        <div id="search-header-mem" class="col-md-2 col-sm-4">
+        <div id="search-header-mem" class="col-md-2 col-sm-4 cursor">
             <div class="panel panel-default">
                 <div id="search-mem" class="panel-heading">
                     <span class="glyphicon glyphicon-plus pull-right"></span>
-                    <label class="panel-title">Search</label>
+                    <label class="panel-title cursor">Search</label>
                 </div>
                 <div id="search-panel-mem" class="panel-body" style="display:none">
 
@@ -185,6 +185,9 @@
                 $('#surname').val('');
                 $('#email').val('');
             });
+            $('.message').click(function () {
+                $(this).hide();
+            })
         });
     </script>
 
