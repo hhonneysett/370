@@ -8,57 +8,63 @@ using System.Data.Entity;
 using LibraryAssistantApp.Models;
 using System.Data;
 using System.IO;
+using System.Web.Script.Serialization;
 
 namespace LibraryAssistantApp.Controllers
 {
     public class BackupController : Controller
     {
-        // Backup
-        public void BackUp()
+        public ActionResult Index()
         {
-
-            LibraryAssistantEntities entity = new LibraryAssistantEntities();
-            string dataTime = DateTime.Now.ToString("yyyy-MM-dd") + "-" + DateTime.Now.ToString("HH-mm");
-            string directory = HttpContext.Current.Server.MapPath("~/") + "/backups/" + dataTime + "/";
-            string fileName = directory + dataTime + ".bak";
-
-            #region Response
-            HttpResponse Response = HttpContext.Current.Response;
-            Response.Clear();
-            Response.BufferOutput = false;
-            Response.ContentType = "application/zip";
-            Response.AddHeader("content-disposition", "inline; filename=\"" + dataTime + "\".zip");
-            #endregion
-
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-
-            // Here the procedure is called and executes successfully
-            entity.Database.ExecuteSqlCommand(System.Data.Entity.TransactionalBehavior.DoNotEnsureTransaction, "EXEC [dbo].[BackUp] @path = N'" + fileName + "'");
-
-            #region Compress
-            using (var memoryStream = new System.IO.MemoryStream())
-            {
-                using (ZipFile zip = new ZipFile())
-                {
-                    zip.CompressionLevel = Ionic.Zlib.CompressionLevel.BestCompression;
-                    zip.ParallelDeflateThreshold = -1;
-                    zip.AddDirectory(directory);
-                    zip.Save(memoryStream);
-                }
-
-                memoryStream.Position = 0;
-                var b = new byte[1024];
-                int n;
-                while ((n = memoryStream.Read(b, 0, b.Length)) > 0)
-                    Response.OutputStream.Write(b, 0, n);
-            }
-            #endregion
-
-            Directory.Delete(directory, true);
-
-            Response.Close();
+            return View();
         }
+
+        public void RestoreDatabase(string path)
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            string _path = (string)js.Deserialize(path, typeof(string));
+            string fileName = _path.Substring(path.LastIndexOf("\\")-2);
+            string dataTime = DateTime.Now.ToString("yyyy-MM-dd") + "-" + DateTime.Now.ToString("HH-mm");
+            string logName = "LibraryAssistant_LogBackup_" + dataTime + ".bak";
+            var sqlCommand = @"USE [master] ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE BACKUP LOG [{0}] TO  DISK = N'{1}' WITH NOFORMAT, NOINIT,  NAME = N'LibraryAssistant_LogBackup', NOSKIP, NOREWIND, NOUNLOAD,  NORECOVERY ,  STATS = 5 RESTORE DATABASE[{0}] FROM DISK = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Backup\{2}' WITH FILE = 1, NOUNLOAD, STATS = 5 ALTER DATABASE [{0}] SET MULTI_USER";
+            using (var db = new LibraryAssistantEntities())
+            {
+                string dbname = db.Database.Connection.Database;
+                db.Database.ExecuteSqlCommand(System.Data.Entity.TransactionalBehavior.DoNotEnsureTransaction, string.Format(sqlCommand, dbname, logName, fileName));
+            }         
+        }
+
+        public void BackupDatabase()
+        {
+            try
+            {
+                string dataTime = DateTime.Now.ToString("yyyy-MM-dd") + "-" + DateTime.Now.ToString("HH-mm");
+                //string directory = Server.MapPath("~/") + "/backups/" + dataTime + "/";
+                string fileName = "LibraryAssistant_" + dataTime + ".bak";
+                string sqlCommand = @"BACKUP DATABASE [{0}] TO  DISK = N'{1}' WITH NOFORMAT, NOINIT,  NAME = N'LibraryAssistant-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10";
+
+                //if (!Directory.Exists(directory))
+                //    Directory.CreateDirectory(directory);
+
+                using (var db = new LibraryAssistantEntities())
+                {
+                    string dbname = db.Database.Connection.Database;
+                    db.Database.ExecuteSqlCommand(System.Data.Entity.TransactionalBehavior.DoNotEnsureTransaction, string.Format(sqlCommand, dbname, fileName));
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        //public void backup()
+        //{
+        //    string sqlCommand = @"BACKUP DATABASE [{0}] TO  DISK = N'{1}' WITH NOFORMAT, NOINIT,  NAME = N'LibraryAssistant-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10";
+        //    using (var db = new LibraryAssistantEntities())
+        //    {
+        //        string dbname = db.Database.Connection.Database;
+        //        db.Database.ExecuteSqlCommand(System.Data.Entity.TransactionalBehavior.DoNotEnsureTransaction, string.Format(sqlCommand, dbname, "LibraryAssistant.bak"));
+        //    }
+        //}
     }
 }

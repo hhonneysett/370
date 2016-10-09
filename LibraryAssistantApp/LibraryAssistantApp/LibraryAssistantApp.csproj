@@ -350,7 +350,9 @@
     <Content Include="Scripts\siteScripts.js" />
     <Content Include="Scripts\timepickerInt.js" />
     <Content Include="Scripts\venueMaintainence.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -731,6 +733,7 @@
     <Content Include="Views\Member\Edit.cshtml" />
     <Content Include="Views\Member\Delete.cshtml" />
     <Content Include="Views\Member\MemberDetails.cshtml" />
+    <Content Include="Views\Backup\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -740,7 +743,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\" />
-    <Folder Include="Views\Backup\" />
     <Folder Include="Views\Default\" />
     <Folder Include="Views\Validate\" />
   </ItemGroup>
