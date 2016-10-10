@@ -271,16 +271,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Person_Session_Log">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Session_Log">
-        <MappingFragment StoreEntitySet="Person_Session_Log">
-          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
-          <ScalarProperty Name="Logout_DateTime" ColumnName="Logout_DateTime" />
-          <ScalarProperty Name="Login_DateTime" ColumnName="Login_DateTime" />
-          <ScalarProperty Name="Session_ID" ColumnName="Session_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Person_Topic">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Topic">
         <MappingFragment StoreEntitySet="Person_Topic">
@@ -467,21 +457,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Venue_Problem">
-      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Problem">
-        <MappingFragment StoreEntitySet="Venue_Problem">
-          <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
-          <ScalarProperty Name="Person_ID_Closed" ColumnName="Person_ID_Closed" />
-          <ScalarProperty Name="DateTime_Closed" ColumnName="DateTime_Closed" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="Common_Problem_Type_ID" ColumnName="Common_Problem_Type_ID" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Person_ID_Logged" ColumnName="Person_ID_Logged" />
-          <ScalarProperty Name="DateTime_Logged" ColumnName="DateTime_Logged" />
-          <ScalarProperty Name="Problem_Seq" ColumnName="Problem_Seq" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Venue_Characteristic">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Characteristic">
         <MappingFragment StoreEntitySet="Venue_Characteristic">
@@ -505,9 +480,35 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Venue_Problem">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Problem">
+        <MappingFragment StoreEntitySet="Venue_Problem">
+          <ScalarProperty Name="Venue_ID" ColumnName="Venue_ID" />
+          <ScalarProperty Name="Person_ID_Closed" ColumnName="Person_ID_Closed" />
+          <ScalarProperty Name="DateTime_Closed" ColumnName="DateTime_Closed" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Common_Problem_ID" ColumnName="Common_Problem_ID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Person_ID_Logged" ColumnName="Person_ID_Logged" />
+          <ScalarProperty Name="DateTime_Logged" ColumnName="DateTime_Logged" />
+          <ScalarProperty Name="Problem_Seq" ColumnName="Problem_Seq" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Person_Session_Log">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Session_Log">
+        <MappingFragment StoreEntitySet="Person_Session_Log">
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+          <ScalarProperty Name="Logout_DateTime" ColumnName="Logout_DateTime" />
+          <ScalarProperty Name="Login_DateTime" ColumnName="Login_DateTime" />
+          <ScalarProperty Name="Session_ID" ColumnName="Session_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Venue_Booking_Person">
       <EntityTypeMapping TypeName="LibraryAssistantModel.Venue_Booking_Person">
         <MappingFragment StoreEntitySet="Venue_Booking_Person">
+          <ScalarProperty Name="Trainer" ColumnName="Trainer" />
           <ScalarProperty Name="Attendee_Status" ColumnName="Attendee_Status" />
           <ScalarProperty Name="Attendee_Type" ColumnName="Attendee_Type" />
           <ScalarProperty Name="Venue_Booking_Seq" ColumnName="Venue_Booking_Seq" />

@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<LibraryAssistantApp.Models.DocumentAccessReportModel>
 
 @{
-    ViewBag.Title = "documentAccess";
+    ViewBag.Title = "Document Access Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
 
 <h2>Document Access Report</h2>
 
@@ -11,86 +14,53 @@
 
 
 <div class="row">
-    <div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table class="table" id="report">
-                    <thead>
-                        <tr>
-                            <th>
-                                Document Sequence
-                            </th>
-                            <th>
-                                Document Name
-                            </th>
-                            <th>Document Category</th>
-                            <th>
-                                Access Times
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.document.Document_Seq</td>
-                                <td>@item.document.Document_Name</td>
-                                <td>@item.document.Document_Category.Category_Name</td>
-                                <td>@item.access</td>
-                            </tr>
+    <div class="col-md-12">
+        <table class="table" id="report">
+            <thead>
+                <tr>
+                    <th>
+                        Document Sequence
+                    </th>
+                    <th>
+                        Document Name
+                    </th>
+                    <th>Document Category</th>
+                    <th>
+                        Access Times
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.document.Document_Seq</td>
+                        <td>@item.document.Document_Name</td>
+                        <td>@item.document.Document_Category.Category_Name</td>
+                        <td>@item.access</td>
+                    </tr>
 
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <button id="btnExport" onclick="fnExcelReport();" class="btn btn-default"> EXPORT TO EXCEL </button>
-        <button onclick="javascript:demoFromHTML()" class="btn btn-default">EXPORT TO PDF</button>
-
+                }
+            </tbody>
+        </table>
     </div>
 </div>
+
+<hr />
+
+<button onclick="javascript:demoFromHTML()" class="btn btn-default"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
 
 <iframe id="txtArea1" style="display:none"></iframe>
 
 <script type="text/javascript">
-    function fnExcelReport() {
-        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
-        var textRange; var j = 0;
-        tab = document.getElementById('report'); // id of table
-
-        for (j = 0 ; j < tab.rows.length ; j++) {
-            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
-            //tab_text=tab_text+"</tr>";
-        }
-
-        tab_text = tab_text + "</table>";
-        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
-        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
-        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
-
-        var ua = window.navigator.userAgent;
-        var msie = ua.indexOf("MSIE ");
-
-        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
-        {
-            txtArea1.document.open("txt/html", "replace");
-            txtArea1.document.write(tab_text);
-            txtArea1.document.close();
-            txtArea1.focus();
-            sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
-        }
-        else                 //other browser not tested on IE 11
-            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
-
-        return (sa);
-    }
-</script>
-
-<script type="text/javascript">
     function demoFromHTML() {
-        $('#report').tableExport({ type: 'pdf', escape: 'false' });
+        $('#report').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7' });
     };
+
+    $(document).ready(function () {
+        //initiate datatable
+        $('#report').DataTable();
+    })
 </script>
 
 

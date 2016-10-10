@@ -69,5 +69,35 @@ namespace LibraryAssistantApp.Controllers
         {
             return Json(db.Registered_Person.Any(r => r.Person_ID == Person_ID), JsonRequestBehavior.AllowGet);
         }
+
+        //check common problem tpye name
+        public JsonResult checkProblemType(string name)
+        {
+            var types = db.Common_Problem_Type.ToList();
+            var type = types.Where(t => t.Common_Problem_Type_Name.ToLower() == name.ToLower());
+            if (type.Any())
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        //check problem name
+        public JsonResult checkProblem(string Common_Problem_Name)
+        {
+            var problems = db.Common_Problem.ToList();
+            var problem = problems.Where(p => p.Common_Problem_Name.ToLower() == Common_Problem_Name.ToLower());
+            if (problem.Any())
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        //check characteristic name
+        public JsonResult checkCharacteristic(string Characteristic_Name)
+        {
+            var characteristics = db.Characteristics.ToList();
+            var c = characteristics.Where(e => e.Characteristic_Name.ToLower() == Characteristic_Name.ToLower());
+            if (c.Any())
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else return Json(true, JsonRequestBehavior.AllowGet);
+        }
     }
 }

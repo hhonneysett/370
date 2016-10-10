@@ -1,0 +1,351 @@
+﻿@using LibraryAssistantApp.Models;
+
+@{
+    ViewBag.Title = "Create Training Session";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var campuses = (IEnumerable<Campus>)ViewBag.Campuses;
+    var categories = (IEnumerable<Category>)ViewBag.Categories;
+    var characteristics = (IEnumerable<Characteristic>)ViewBag.Characteristics;
+    var trainingDurations = (IEnumerable<string>)ViewBag.TrainingDuration;
+}
+
+<script src="~/Scripts/spin.min.js"></script>
+
+<h2>Create Training Session</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="row">
+            <div id="detailsOne" class="cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Training Session Details:</b></div>
+            <hr />
+            <div class="row" id="toggleOne">
+                <form id="TformOne" class="col-md-12">
+                    <div class="col-md-6" style="padding-top:20px">
+                        <table>
+                            <tr>
+                                <td><b>Cateory:</b></td>
+                                <td style="padding-left:10px; padding-bottom:15px">
+                                    <select class="form-control" id="trainingCategory" name="category">
+                                        <option disabled selected value="">-- select a category --</option>
+                                        @foreach (var category in categories)
+                                        {
+                                            <option id="@category.Category_ID">@category.Category_Name</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Topic:</b></td>
+                                <td style="padding-left:10px; padding-bottom:15px">
+                                    <select class="form-control" id="trainingTopic" disabled name="topic">
+                                        <option disabled selected value="">-- no category --</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Date:</b></td>
+                                <td style="padding-left:10px; padding-bottom:15px">
+                                    <input type="text" id="datepicker" name="date" class="form-control" placeholder="-- select date --" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Duration:</b></td>
+                                <td style="padding-left:10px; padding-bottom:15px">
+                                    <select class="form-control" id="trainingDuration" name="duration">
+                                        <option disabled selected value="">-- select duration --</option>
+                                        @foreach (var time in trainingDurations)
+                                        {
+                                            <option>@time</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Campus:</b></td>
+                                <td style="padding-left:10px; padding-bottom:15px">
+                                    <select class="form-control" id="trainingCampus" name="campus">
+                                        <option disabled selected value="">-- select campus --</option>
+                                        @foreach (var campus in campuses)
+                                        {
+                                            <option id="@campus.Campus_ID">@campus.Campus_Name</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="padding-left:10px">
+                                    <button class="btn btn-default" id="trainingProOne">Proceed</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="text-center" style="border-bottom:thin solid lightgrey; padding-bottom:5px">
+                                    <label class="control-label">Characteristics</label>
+                                </div>
+                                <ul class="list-group">
+                                    @foreach (var characteristic in characteristics)
+                                    {
+                                        <li class="list-group-item no-border">
+                                            <span class="pull-right"><input type="checkbox" class="Characteristic_ID" value="@characteristic.Characteristic_ID"></span> @characteristic.Characteristic_Name
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row" id="detailsTwo" hidden></div>
+
+        <div class="row" id="detailsThree" hidden></div>
+
+        <div class="row" id="detailsFour" hidden></div>
+
+    </div>
+
+    <div id="loading" style="width:100%; height:100%"></div>
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group text-center" style="padding-bottom:5px; border-bottom:solid thin lightgrey">
+                    <label class="control-label">Booking Details</label>
+                </div>
+                <div class="form-group">
+                    <table id="bookingDetails">
+                        <tr>
+                            <td>No Details</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title">Existing Clashes</h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //show mathcing topics for selected category
+        $("#trainingCategory").change(function () {
+            var id = $("#trainingCategory").children(":selected").prop('id');
+            $.ajax({
+                type: 'GET',
+                url: '/Trainer/getCatTopic',
+                data: {
+                    id: id
+                },
+                success: function (result) {
+                    var options = $("#trainingTopic");
+
+                    //remove existing options from the select to add new options
+                    options.children().remove();
+
+                    options.append($("<option disabled selected value />").text("-- select topic --"));
+
+                    if (result.length == 0) {
+                        options.children().remove();
+                        options.append($("<option disabled selected value />").text("-- no topics --"));
+                    }
+
+                    //add an option to the select for each building
+                    result.forEach(function (entry) {
+                        options.append($("<option />").prop('id', entry.id).text(entry.text));
+                    });
+                    options.prop('disabled', false)
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        });
+
+        //toggle details when clicked
+        $("#detailsOne").click(function () {
+            $("#toggleOne").toggle(800);
+            if ($("#detailsOne span").hasClass("glyphicon glyphicon-triangle-right")) {
+                $("#detailsOne span").removeClass("glyphicon glyphicon-triangle-right");
+                $("#detailsOne span").addClass("glyphicon glyphicon-triangle-bottom");
+            } else {
+                $("#detailsOne span").removeClass("glyphicon glyphicon-triangle-bottom");
+                $("#detailsOne span").addClass("glyphicon glyphicon-triangle-right");
+            }
+        });
+
+        //add a custom validation rule to validate date
+        jQuery.validator.addMethod("validDateCheck", function (value, element) {
+            var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+            return this.optional(element) || date_regex.test(value)
+        });
+
+        //check date isnt in the past
+        jQuery.validator.addMethod("datePastCheck", function (value, element) {
+            var convertDate = new Date(value);
+            var now = new Date();
+            if (convertDate < now) {
+                return this.optional(element) || false;
+            }
+            else {
+                return this.optional(element) || true;
+            }
+        }, "Date already taken place");
+
+        //initiate validation
+        $("#TformOne").validate({
+            rules: {
+                category: "required",
+                topic: "required",
+                date: {
+                    required: true,
+                    validDateCheck: true,
+                    datePastCheck: true,
+                },
+                duration: "required",
+                campus: "required",
+            },
+            messages: {
+                category: "Please provide a category selection",
+                topic: "Please provide a topic selection",
+                duration: "Please provide a duration selection",
+                campus: "Please provide a campus selection",
+            },
+            errorClass: "my-error-class",
+        });
+
+        //show venues available
+        $("#trainingProOne").click(function () {
+            //check form validation
+            var check = $("#TformOne").valid();
+            if (check) {
+                //get form model values
+                var model = {
+                    category: $("#trainingCategory").children(":selected").prop('id'),
+                    topic: $("#trainingTopic").children(":selected").prop('id'),
+                    duration: $("#trainingDuration").children(":selected").val(),
+                    startDate: $("#datepicker").val(),
+                    campus: $("#trainingCampus").children(":selected").prop('id'),
+                }
+
+                model = JSON.stringify(model);
+
+                //get selected characteristics
+                var characteristicsList = [];
+                $('input:checkbox.Characteristic_ID').each(function () {
+                    var sThisVal = (this.checked ? $(this).val() : "");
+                    if (sThisVal > 0) {
+                        characteristicsList.push(sThisVal);
+                    };
+                });
+
+                //run ajax to get available venues
+                $.ajax({
+                    type: 'GET',
+                    url: '/Trainer/getTrainingVenues',
+                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                        model: model,
+                        characteristics: JSON.stringify(characteristicsList)
+                    },
+                    success: function (result) {                        
+
+                        //display the available venues from a partial
+                        $('#detailsTwo').replaceWith(result);
+
+                        //toggle the session details section
+                        $("#toggleOne").toggle(800);
+                        $("#detailsOne span").removeClass("glyphicon glyphicon-triangle-bottom");
+                        $("#detailsOne span").addClass("glyphicon glyphicon-triangle-right");
+
+                        //disable the proceed button
+                        $("#trainingProTwo").attr('disabled', 'disabled');
+
+                        //add details to summary
+                        var table = $("#bookingDetails");
+                        //clear the table
+                        table.empty();
+                        table.append("<tr><td><b>Topic:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#trainingTopic").children(":selected").val() + "</td>");
+                        table.append("<tr><td><b>Date:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#datepicker").val() + "</td></tr>");
+                        table.append("<tr><td><b>Campus:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#trainingCampus").children(":selected").val() + "</td></tr>");
+
+                        //hide further divs if showing
+                        $("#detailsThree").toggle();
+                        $("#detailsFour").toggle();
+
+                        return;
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                });
+            }
+        })
+
+        //disable form submit
+        var element = document.getElementById("TformOne");
+        element.addEventListener("submit", function (event) {
+            event.preventDefault();
+            // actual logic, e.g. validate the form
+        });
+
+        //laoding div
+        var $loading = $('#loading').hide();
+        $(document)
+          .ajaxStart(function () {
+              $loading.show();
+          })
+          .ajaxStop(function () {
+              $loading.hide();
+          });
+
+        //loading div
+        var opts = {
+            lines: 13 // The number of lines to draw
+        , length: 28 // The length of each line
+        , width: 14 // The line thickness
+        , radius: 42 // The radius of the inner circle
+        , scale: 0.3 // Scales overall size of the spinner
+        , corners: 1 // Corner roundness (0..1)
+        , color: '#000' // #rgb or #rrggbb or array of colors
+        , opacity: 0.25 // Opacity of the lines
+        , rotate: 0 // The rotation offset
+        , direction: 1 // 1: clockwise, -1: counterclockwise
+        , speed: 1 // Rounds per second
+        , trail: 60 // Afterglow percentage
+        , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+        , zIndex: 2e9 // The z-index (defaults to 2000000000)
+        , className: 'spinner' // The CSS class to assign to the spinner
+        , top: '50%' // Top position relative to parent
+        , left: '50%' // Left position relative to parent
+        , shadow: false // Whether to render a shadow
+        , hwaccel: false // Whether to use hardware acceleration
+        , position: 'absolute' // Element positioning
+        }
+        var target = document.getElementById('loading')
+        var spinner = new Spinner(opts).spin(target);
+    })
+</script>
+

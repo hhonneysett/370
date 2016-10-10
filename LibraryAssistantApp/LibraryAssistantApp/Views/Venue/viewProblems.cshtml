@@ -1,0 +1,109 @@
+﻿@using LibraryAssistantApp.Models;
+
+@{
+    ViewBag.Title = "View Problems";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var problems = (IEnumerable<problemList>)ViewBag.Problems;
+}
+
+<h2>Open Venue Problems</h2>
+<hr />
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-10">
+            <table id="problemTable">
+                <thead>
+                    <tr>
+                        <th>Campus</th>
+                        <th>Building</th>
+                        <th>Floor</th>
+                        <th>Venue</th>
+                        <th>Problem</th>
+                        <th>Date Logged</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var problem in problems)
+                    {
+                        <tr id="@problem.problem.Problem_Seq">
+                            <td>@problem.campus</td>
+                            <td>@problem.building</td>
+                            <td>@problem.floor</td>
+                            <td>@problem.problem.Venue.Venue_Name</td>
+                            <td>@problem.problem.Common_Problem.Common_Problem_Name</td>
+                            <td>@problem.problem.DateTime_Logged.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2">
+            <div class="panel panel-default">
+                <div class="panel-body text-center">
+                    <label class="control-label" style="padding-bottom:5px; border-bottom:solid thin lightgrey; width:100%">Actions:</label>
+                    <button disabled class="btn btn-default btn-block" id="problemDetails"><span class="fa fa-info"></span> Details</button>
+                    <button disabled class="btn btn-default btn-block" id="problemResolve"><span class="fa fa-wrench"></span> Resolve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <hr />
+            <div class="modal-body">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //initiate datatable
+        $('#problemTable').DataTable({
+            select: true,
+        });
+
+        //enable action buttons on click
+        $(document).on('click', '#problemTable tbody tr', function () {
+            var selected = $(this).hasClass("selected");
+            $("#problemDetails").prop('disabled', false);
+            $("#problemResolve").prop('disabled', false);
+
+            if (!selected) {
+                $("#problemDetails").prop('disabled', true);
+                $("#problemResolve").prop('disabled', true);
+            }
+        })
+
+        //view problem details
+        $("#problemDetails").click(function () {
+            var target = '/Venue/viewProblemDetails/?id=' + $("#problemTable tbody tr.selected").prop('id');
+
+            $("#myModal .modal-body").load(target, function () {
+                $("#myModal").modal("show");
+            });
+        })
+
+        //resolve problem
+        $("#problemResolve").click(function () {
+            var target = '/Venue/resolveProblem/?id=' + $("#problemTable tbody tr.selected").prop('id');
+
+            $("#myModal .modal-body").load(target, function () {
+                $("#myModal").modal("show");
+            });
+        })
+    });
+</script>

@@ -51,12 +51,14 @@ namespace LibraryAssistantApp.Controllers
             var online = (int)HttpContext.Application["OnlineUsers"];
             HttpContext.Application.UnLock();
 
+            var problems = db.Venue_Problem.Where(p => p.Status == "Closed").Count();
 
             ViewBag.Bookings = today;
             ViewBag.Members = membersYear;
             ViewBag.Attendance = percAtt;
             ViewBag.Daily = avg;
             ViewBag.Online = online;
+            ViewBag.Problems = problems;
 
             return View();
         }

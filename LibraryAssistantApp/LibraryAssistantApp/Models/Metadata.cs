@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace LibraryAssistantApp.Models
 {
@@ -89,7 +90,6 @@ namespace LibraryAssistantApp.Models
         public string Campus_Name;
     }
 
-
     public class CategoryMetadata
     {
         [Display(Name = "Category Name")]
@@ -113,13 +113,41 @@ namespace LibraryAssistantApp.Models
         public string Person_Type1 { get; set; }
 
     }
+
+    public class ProblemTypeMetadata
+    {
+        [Display(Name = "Problem Type")]
+        public int Common_Problem_Type_ID { get; set; }
+
+        [Display(Name = "Common Problem Name"), Required, MaxLength(30)]
+        public string Common_Problem_Type_Name { get; set; }
+
+        [Display(Name = "Description"), Required, MaxLength(100)]
+        public string Description { get; set; }
+    }
+
+    public class CommonProblemMetadata
+    {
+        [Display(Name = "Problem Name"), Required, MaxLength(30)]
+        [Remote("checkProblem", "Validate", ErrorMessage = "Problem already exists")]
+        public string Common_Problem_Name { get; set; }
+
+        [Display(Name = "Problem Type"), Required]
+        public int Common_Problem_Type_ID { get; set; }
+
+        [Display(Name = "Description"), Required, MaxLength(100)]
+        public string Description { get; set; }
+
+    }
+
+    public class CharacteristicModel
+    {
+        [Display (Name ="Name"), MaxLength(30), Required]
+        [Remote("checkCharacteristic", "Validate", ErrorMessage = "Characteristic already exists")]
+        public string Characteristic_Name { get; set; }
+
+        [Display(Name ="Description"), Required, MaxLength(100)]
+        public string Description { get; set; }
+    }
 }
-    
-
-
-//    //public class PersonTitleMetadata
-//    //{
-//    //    [Display(Name ="Title")]
-//    //    public string Person_Title1;
-//    //}
-//}
+   

@@ -1,54 +1,20 @@
 ﻿@using LibraryAssistantApp.Models
 
 @{
-    var venue = (Venue)Session["venueSelect"];
-    var building = ViewBag.building;
-    var campus = ViewBag.campus;
-    var topic = ViewBag.topic;
-    var session = (TrainingSessionModel)Session["sessionDetails"];
     var timeslots = (List<timeslot>)Session["availableVen"];
 }
 
-<div class="col-md-12" id="sessiondetails">
+<div class="row" id="detailsThree">
 
-    <div id="sessionTimeslot" onclick="toggleSection('#sessionTimeslot', '#toggleTimeslot')"><span id="specificArrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select Timeslot:</b></div>
+    <div id="headingThree"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select Timeslot:</b></div>
 
     <hr />
 
-    <div id="toggleTimeslot">
-        <div class="panel panel-default col-md-12">
-            <table class="table">
-                <caption>
-                    <h4 class="text-center">Selected Venue and Session Details</h4>
-                </caption>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Duration</th>
-                        <th>Venue</th>
-                        <th>Building</th>
-                        <th>Campus</th>
-                        <th>Topic</th>
-                        <th>Venue Capacity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@session.startDate</td>
-                        <td>@session.duration</td>
-                        <td>@venue.Venue_Name</td>
-                        <td>@building</td>
-                        <td>@campus</td>
-                        <td>@topic</td>
-                        <td>@venue.Capacity</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div id="toggleThree">
 
         <div class="row">
             <div class="col-md-3">
-                <div class="panel panel-default">
+                <div class="panel panel-default" style="max-height:400px;overflow-y: scroll;">
                     <table class="table text-center">
                         <thead>
                             <tr class="text-center">
@@ -59,7 +25,7 @@
                             @foreach (timeslot ts in timeslots)
                             {
                                 <tr value="@ts.id">
-                                    <td><input type="radio" name="timeslot" value="@ts.id" onclick="getTrainers(this)" data-assigned-id="@ts.id" />  @ts.startDate.TimeOfDay.ToString(@"hh\:mm") - @ts.endDate.TimeOfDay.ToString(@"hh\:mm")</td>
+                                    <td><input type="radio" name="timeslot" class="timeslot" value="@ts.startDate.TimeOfDay.ToString(@"hh\:mm") - @ts.endDate.TimeOfDay.ToString(@"hh\:mm")" onclick="getTrainers(this)" data-assigned-id="@ts.id" />  @ts.startDate.TimeOfDay.ToString(@"hh\:mm") - @ts.endDate.TimeOfDay.ToString(@"hh\:mm")</td>
                                 </tr>
                             }
                         </tbody>
@@ -71,7 +37,86 @@
         </div>
 
         <div class="row col-md-12">
-            <input type="button" class="btn btn-default" id="btnTimeslotProceed" value="Proceed" onclick="timeslotProceed()" />
+            <input type="button" class="btn btn-default" id="trainingProThree" value="Proceed" />
         </div>
     </div>   
 </div>
+
+<script type="text/javascript">
+    //get list of trainers that are available
+    function getTrainers(elem) {
+        var id = $(elem).data('assigned-id');
+        $.ajax({
+            type: 'GET',
+            url: '/Trainer/getTrainers',
+            data: "id=" + id,
+            success: function (result) {
+                $('#possibleTrainers').replaceWith(result);
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    };
+
+    //laoding div
+    var $test = $('#loading').hide();
+    $(document)
+      .ajaxStart(function () {
+          $test.show();
+      })
+      .ajaxStop(function () {
+          $test.hide();
+      });
+
+    //toggle details when clicked
+    $("#headingThree").click(function () {
+        //toggle section
+        $("#toggleThree").toggle(800);
+        if ($("#detailsThree span").hasClass("glyphicon glyphicon-triangle-right")) {
+            $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-right");
+            $("#detailsThree span").addClass("glyphicon glyphicon-triangle-bottom");
+        } else {
+            $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-bottom");
+            $("#detailsThree span").addClass("glyphicon glyphicon-triangle-right");
+        }
+    });
+
+    //proceed to next section
+    $("#trainingProThree").click(function () {
+
+        //load additional details
+        $.ajax({
+            url: '/Trainer/additionalDetails',
+            type: 'GET',
+            data: { trainer: $("input:radio.trainerCheck:checked").prop('id') },
+            async: false,
+            success: function (result) {
+                $("#detailsFour").replaceWith(result);
+
+                //add details to summary
+                var table = $("#bookingDetails");
+                var row = $("#venueTable tbody tr.selected");
+                table.empty();
+                table.append("<tr><td><b>Topic:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#trainingTopic").children(":selected").val() + "</td>");
+                table.append("<tr><td><b>Date:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#datepicker").val() + "</td></tr>");
+                table.append("<tr><td><b>Campus:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#trainingCampus").children(":selected").val() + "</td></tr>");
+                table.append("<tr><td><b>Building:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + row.find(".building").text() + "</td></tr>");
+                table.append("<tr><td><b>Floor:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + row.find(".floor").text() + "</td></tr>")
+                table.append("<tr><td><b>Venue:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + row.find(".venue").text() + "</td></tr>")
+                table.append("<tr><td><b>Trainer:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("input:radio.trainerCheck:checked").prop('id') + "</td></tr>");
+                table.append("<tr><td><b>Timeslot:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("input:radio.timeslot:checked").val() + "</td></tr>");
+
+                //toggle section
+                $("#toggleThree").toggle(800);
+                if ($("#detailsThree span").hasClass("glyphicon glyphicon-triangle-right")) {
+                    $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-right");
+                    $("#detailsThree span").addClass("glyphicon glyphicon-triangle-bottom");
+                } else {
+                    $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-bottom");
+                    $("#detailsThree span").addClass("glyphicon glyphicon-triangle-right");
+                }
+            }
+        })
+    })
+</script>

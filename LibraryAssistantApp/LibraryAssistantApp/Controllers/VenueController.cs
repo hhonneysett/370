@@ -939,6 +939,410 @@ namespace LibraryAssistantApp.Controllers
 
         }
 
+        //report a venue problem
+        public PartialViewResult reportProblem()
+        {
+            var campuses = db.Campus.ToList();
+            ViewBag.Campuses = campuses;
+            return PartialView();
+        }
+
+        //get buildings for selected floor
+        public JsonResult getFloorVenues(int id)
+        {
+            var venues = db.Venues.Where(v => v.Building_Floor_ID == id).ToList();
+            var jsonObj = (from v in venues
+                           select new
+                           {
+                               id = v.Venue_ID,
+                               text = v.Venue_Name,
+                           }).ToArray();
+            return Json(jsonObj, JsonRequestBehavior.AllowGet);
+        }
+
+        //get common problem types
+        public JsonResult getProblemTypes()
+        {
+            var types = db.Common_Problem_Type.ToList();
+            var jsonObj = (from t in types
+                           select new
+                           {
+                               id = t.Common_Problem_Type_ID,
+                               name = t.Common_Problem_Type_Name,
+                           }).ToArray();
+            return Json(jsonObj, JsonRequestBehavior.AllowGet);
+        }
+
+        //get problems
+        public JsonResult getProblems(int id)
+        {
+            var problems = db.Common_Problem.Where(p => p.Common_Problem_Type_ID == id).ToList();
+            var jsonObj = (from p in problems
+                           select new
+                           {
+                               id = p.Common_Problem_ID,
+                               name = p.Common_Problem_Name,
+                           }).ToArray();
+            return Json(jsonObj, JsonRequestBehavior.AllowGet);
+        }
+
+        //capture venue problem
+        [HttpPost]
+        public void captureProblem(int venue, int problem, string comment)
+        {
+            var vp = new Venue_Problem
+            {
+                DateTime_Logged = DateTime.Now,
+                Person_ID_Logged = User.Identity.Name,
+                Description = comment,
+                Common_Problem_ID = problem,
+                Status = "Open",
+                Venue_ID = venue,
+            };
+
+            db.Venue_Problem.Add(vp);
+            db.SaveChanges();
+        }
+
+        //view venue problems
+        public ActionResult viewProblems()
+        {
+            var campuses = db.Campus.ToList();
+            var buildings = db.Buildings.ToList();
+            var floors = db.Building_Floor.ToList();
+            var problems = db.Venue_Problem.Where(p => p.Status == "Open").ToList();
+
+            var list = new List<problemList>();
+
+            foreach(var problem in problems)
+            {
+                var campus = campuses.Where(c => c.Campus_ID == problem.Venue.Campus_ID).FirstOrDefault();
+                var building = buildings.Where(b => b.Building_ID == problem.Venue.Building_ID).FirstOrDefault();
+                var floor = floors.Where(f => f.Building_Floor_ID == problem.Venue.Building_Floor_ID).FirstOrDefault();
+
+                var p = new problemList();
+                p.campus = campus.Campus_Name;
+                p.building = building.Building_Name;
+                p.floor = floor.Floor_Name;
+                p.problem = problem;
+
+                list.Add(p);
+            }
+
+            ViewBag.Problems = list;
+            return View();
+        }
+
+        //view problem details
+        public PartialViewResult viewProblemDetails(int id)
+        {
+            var problem = db.Venue_Problem.Where(p => p.Problem_Seq == id).FirstOrDefault();
+            var campus = db.Campus.Where(c => c.Campus_ID == problem.Venue.Campus_ID).FirstOrDefault();
+            var building = db.Buildings.Where(b => b.Building_ID == problem.Venue.Building_ID).FirstOrDefault();
+            var floor = db.Building_Floor.Where(f => f.Building_Floor_ID == problem.Venue.Building_Floor_ID).FirstOrDefault();
+
+            ViewBag.Campus = campus;
+            ViewBag.Building = building;
+            ViewBag.Floor = floor;
+
+            return PartialView(problem);
+        }
+
+        //resolve venue problem - get
+        public PartialViewResult resolveProblem(int id)
+        {
+            Session["problem"] = id;
+            return PartialView();
+        }
+
+        //resolve venue problem - post
+        [HttpPost]
+        public string resolveProblem()
+        {
+            var id = (int)Session["problem"];
+            var problem = db.Venue_Problem.Where(p => p.Problem_Seq == id).FirstOrDefault();
+            problem.Status = "Closed";
+            problem.DateTime_Closed = DateTime.Now;
+            problem.Person_ID_Closed = User.Identity.Name;
+            db.Entry(problem).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return id.ToString();
+        }
+
+        //add problem type - get
+        public ActionResult addProblemType()
+        {
+            return View();
+        }
+
+        //add problem type - post
+        [HttpPost]
+        public ActionResult addProblemType(problemTypeModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var type = new Common_Problem_Type
+                {
+                    Common_Problem_Type_Name = model.name,
+                    Description = model.description,
+                };
+
+                db.Common_Problem_Type.Add(type);
+                db.SaveChanges();
+
+                return RedirectToAction("viewProblemTypes");
+            }
+            else return View();
+        }
+
+        //view problem types
+        public ActionResult viewProblemTypes()
+        {
+            var types = db.Common_Problem_Type;
+            return View(types);
+        }
+
+        //delete problem types - get
+        public ActionResult deleteProblemType(int id)
+        {
+            var type = db.Common_Problem_Type.Where(t => t.Common_Problem_Type_ID == id).FirstOrDefault();
+            Session["typeID"] = type.Common_Problem_Type_ID;
+            return View(type);
+        }
+
+        //delete problem types - post
+        [HttpPost]
+        public ActionResult deleteProblemType()
+        {
+            var id = (int)Session["typeID"];
+            var type = db.Common_Problem_Type.Where(t => t.Common_Problem_Type_ID == id).FirstOrDefault();
+
+            var problems = db.Common_Problem.Where(p => p.Common_Problem_Type_ID == id);
+
+            if (problems.Any())
+            {
+                var old = db.Common_Problem_Type.Where(p => p.Common_Problem_Type_ID == id).FirstOrDefault();
+                TempData["Message"] = "Problem Type Has Existing Dependencies";
+                TempData["classStyle"] = "danger";
+                return View(old);
+            }
+            else
+            {
+                db.Common_Problem_Type.Attach(type);
+                db.Common_Problem_Type.Remove(type);
+                db.SaveChanges();
+                return RedirectToAction("viewProblemTypes");
+            }
+            
+        }
+
+        //edit problem type - get
+        public ActionResult editProblemType(int id)
+        {
+            var type = db.Common_Problem_Type.Where(t => t.Common_Problem_Type_ID == id).FirstOrDefault();
+            return View(type);
+        }
+
+        //edit problem type - post
+        [HttpPost]
+        public ActionResult editProblemType(Common_Problem_Type model)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("viewProblemTypes");
+            }
+            else return View();
+        }
+
+        //view problems
+        public ActionResult viewCommonProblems()
+        {
+            var problems = db.Common_Problem;
+            return View(problems);
+        }
+
+        //add common problem - get
+        public ActionResult addCommonProblem()
+        {
+            var list = new SelectList(db.Common_Problem_Type, "Common_Problem_Type_ID", "Common_Problem_Type_Name");
+            ViewBag.Common_Problem_Type_ID = list;
+            return View();
+        }
+
+        //add common problem - post
+        [HttpPost]
+        public ActionResult addCommonProblem(Common_Problem model)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Common_Problem.Add(model);
+                db.SaveChanges();
+                return RedirectToAction("viewCommonProblems");
+            }
+            else return View();         
+        }
+
+        //edit common problem - get
+        public ActionResult editCommonProblem(int id)
+        {
+            var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == id).FirstOrDefault();
+            var model = new commonProblemModel
+            {
+                Common_Problem_ID = problem.Common_Problem_ID,
+                Common_Problem_Name = problem.Common_Problem_Name,
+                Description = problem.Description,
+                Common_Problem_Type_ID = problem.Common_Problem_Type_ID
+            };
+            var list = new SelectList(db.Common_Problem_Type, "Common_Problem_Type_ID", "Common_Problem_Type_Name");
+            ViewBag.Common_Problem_Type_ID = list;
+            return View(model);
+        }
+
+        //edit common problem - post
+        [HttpPost]
+        public ActionResult editCommonProblem(commonProblemModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == model.Common_Problem_ID).FirstOrDefault();
+
+                problem.Common_Problem_Name = model.Common_Problem_Name;
+                problem.Description = model.Description;
+                problem.Common_Problem_Type_ID = model.Common_Problem_Type_ID;
+
+                db.Entry(problem).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("viewCommonProblems");
+            }
+            else
+            {
+                var list = new SelectList(db.Common_Problem_Type, "Common_Problem_Type_ID", "Common_Problem_Type_Name");
+                ViewBag.Common_Problem_Type_ID = list;
+                return View();
+            }
+            
+        }
+
+        //delte common problem - get
+        public ActionResult deleteCommonProblem(int id)
+        {
+            Session["problemID"] = id;
+            var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == id).FirstOrDefault();
+            return View(problem);
+        }
+
+        //delete common problem - post
+        [HttpPost]
+        public ActionResult deleteCommonProblem()
+        {
+            var id = (int)Session["problemID"];
+            var vp = db.Venue_Problem.Where(p => p.Common_Problem_ID == id);
+            if (vp.Any())
+            {
+                var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == id).FirstOrDefault();
+                TempData["Message"] = "Problem Has Existing Dependencies";
+                TempData["classStyle"] = "danger";
+                return View(problem);
+            }
+            else
+            {
+                var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == id).FirstOrDefault();
+                db.Common_Problem.Attach(problem);
+                db.Common_Problem.Remove(problem);
+                return RedirectToAction("viewCommonProblems");
+            }
+        }
+
+        //view characteristic
+        public ActionResult viewCharacteristics()
+        {
+            var characteristics = db.Characteristics.ToList();
+            return View(characteristics);
+        }
+
+        //add characteristics - get
+        public ActionResult addCharacteristic()
+        {
+            return View();
+        }
+
+        //add characteristic - post
+        [HttpPost]
+        public ActionResult addCharacteristic(Characteristic model)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Characteristics.Add(model);
+                db.SaveChanges();
+                return RedirectToAction("viewCharacteristics");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        //update characteristic - get
+        public ActionResult updateCharacteristic(int id)
+        {
+            var c = db.Characteristics.Where(e => e.Characteristic_ID == id).FirstOrDefault();
+            var model = new UpdateCharModel
+            {
+                id = c.Characteristic_ID,
+                name = c.Characteristic_Name,
+                description = c.Description,
+            };
+            return View(model);
+        }
+
+        //update characteristic - post
+        [HttpPost]
+        public ActionResult updateCharacteristic(UpdateCharModel model)
+        {
+            var c = db.Characteristics.Where(e => e.Characteristic_ID == model.id).FirstOrDefault();
+            c.Characteristic_Name = model.name;
+            c.Description = model.description;
+            db.Entry(c).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("viewCharacteristics");
+        }
+
+        //delete characteristic - get
+        public ActionResult deleteCharacteristic(int id)
+        {
+            Session["charID"] = id;
+            var c = db.Characteristics.Where(e => e.Characteristic_ID == id).First();
+            return View(c);
+        }
+
+        //delete characteristic - post
+        [HttpPost]
+        public ActionResult deleteCharacteristic()
+        {
+            var id = (int)Session["charID"];
+            var c = db.Characteristics.Where(e => e.Characteristic_ID == id).First();
+
+            var check = db.Venue_Characteristic.Where(a => a.Characteristic_ID == id);
+
+            if (check.Any())
+            {
+                TempData["Message"] = "Characteristic Has Existing Dependencies";
+                TempData["classStyle"] = "danger";
+                return View(c);
+            }
+            else
+            {
+                db.Characteristics.Attach(c);
+                db.Characteristics.Remove(c);
+                db.SaveChanges();
+                TempData["Message"] = "Characteristic Succesfully Deleted";
+                TempData["classStyle"] = "success";
+                return RedirectToAction("viewCharacteristics");
+            }
+        }
+        
         //controler dependant classes
         private T Deserialise<T>(string json)
         {

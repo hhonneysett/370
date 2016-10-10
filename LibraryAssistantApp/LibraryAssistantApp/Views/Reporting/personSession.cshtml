@@ -1,56 +1,55 @@
 ﻿@model IEnumerable<LibraryAssistantApp.Models.PersonSessionReportModel>
 
 @{
-    ViewBag.Title = "Report";
+    ViewBag.Title = "Person Session Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
 
 <h2>Person Session Report</h2>
 <hr />
 
 
 <div class="row">
-    <div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table class="table" id="report">
-                    <thead>
-                        <tr>
-                            <th>
-                                Person ID
-                            </th>
-                            <th>
-                                Person
-                            </th>
-                            <th>
-                                Total Sessions
-                            </th>
-                            <th>
-                                Total Session Duration (h)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.person.Person_ID</td>
-                                <td>@item.person.Person_Name @item.person.Person_Surname</td>
-                                <td>@item.count</td>
-                                <td>@item.totalTime</td>
-                                </tr>
+    <div class="col-md-12">
+        <table id="report">
+            <thead>
+                <tr>
+                    <th>
+                        Person ID
+                    </th>
+                    <th>
+                        Person
+                    </th>
+                    <th>
+                        Total Sessions
+                    </th>
+                    <th>
+                        Total Session Duration (h)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>@item.person.Person_ID</td>
+                        <td>@item.person.Person_Name @item.person.Person_Surname</td>
+                        <td>@item.count</td>
+                        <td>@item.totalTime</td>
+                    </tr>
 
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <button id="btnExport" onclick="fnExcelReport();" class="btn btn-default"> EXPORT TO EXCEL </button>
-        <button onclick="javascript:demoFromHTML()" class="btn btn-default">EXPORT TO PDF</button>
-
+                }
+            </tbody>
+        </table>
     </div>
-</div>
+</div>         
+
+<hr />   
+
+        <button onclick="javascript:demoFromHTML()" class="btn btn-default"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
 
 <iframe id="txtArea1" style="display:none"></iframe>
 
@@ -90,7 +89,12 @@
 
 <script type="text/javascript">
     function demoFromHTML() {
-        $('#report').tableExport({ type: 'pdf', escape: 'false' });
+        $('#report').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7' });
     };
+
+    $(document).ready(function () {
+        //initiate datatable
+        $('#report').DataTable();
+    })
 </script>
 

@@ -57,6 +57,23 @@ namespace LibraryAssistantApp
             var online = (int)Application["OnlineUsers"];
             Application["OnlineUsers"] = online - 1;
             Application.UnLock();
+
+            try
+            {
+                LibraryAssistantEntities db = new LibraryAssistantEntities();
+                //update session end time
+                var session = db.Person_Session_Log.Where(p => p.Person_ID == User.Identity.Name).OrderByDescending(d => d.Login_DateTime).First();
+                if (session.Logout_DateTime == session.Login_DateTime.AddMinutes(20))
+                {
+                    session.Logout_DateTime = DateTime.Now;
+                    db.Entry(session).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch
+            {
+
+            }
         }
     }
 }

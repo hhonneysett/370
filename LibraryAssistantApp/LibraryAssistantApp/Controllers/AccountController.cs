@@ -52,7 +52,7 @@ namespace LibraryAssistantApp.Controllers
 
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         string data = js.Serialize(passablePerson);
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, registered_person.Person_ID, DateTime.Now, DateTime.Now.AddMinutes(1), false, data);
+                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, registered_person.Person_ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, data);
                         string encToken = FormsAuthentication.Encrypt(ticket);
                         HttpCookie authCookies = new HttpCookie(FormsAuthentication.FormsCookieName, encToken);
                         Response.Cookies.Add(authCookies);
@@ -61,34 +61,16 @@ namespace LibraryAssistantApp.Controllers
 
                         newSession.Person_ID = l.Person_ID;
                         newSession.Login_DateTime = DateTime.Now;
-
-                        var tempLogout = new TimeSpan(0, 100, 0);
-
-                        newSession.Logout_DateTime = DateTime.Now.Add(tempLogout);
-
+                        newSession.Logout_DateTime = newSession.Login_DateTime.AddMinutes(20);
                         db.Person_Session_Log.Add(newSession);
 
                         db.SaveChanges();
 
                         Session["loginSession"] = newSession;
 
-                        //add layout tpye
-                        if (registered_person.Person_Type == "Administrator")
-                        {
-                            Session["layout"] = "~/Views/Shared/_Layout.cshtml";
-                        }
-                        else if (registered_person.Person_Type == "Student")
-                        {
-                            Session["layout"] = "~/Views/Shared/_LayoutStudent.cshtml";
-                        }
-                        else
-                        {
-                            Session["layout"] = "~/Views/Shared/_LayoutEmp.cshtml";
-                        }
-
                         if (ReturnUrl != "")
                         {
-                            return RedirectToAction(ReturnUrl);
+                            return Redirect(ReturnUrl);
                         }
                         else
                         {
@@ -106,23 +88,14 @@ namespace LibraryAssistantApp.Controllers
         {
             FormsAuthentication.SignOut();
 
-            //update session logout time
-
-            var session = (Person_Session_Log)Session["loginSession"];
-
-            var logoutSession = (from a in db.Person_Session_Log
-                                 where a.Session_ID == session.Session_ID
-                                 select a).FirstOrDefault();
-
-            logoutSession.Logout_DateTime = DateTime.Now;
-
-            db.Entry(logoutSession).State = System.Data.Entity.EntityState.Modified;
-
+            //var update person session log
+            var session = db.Person_Session_Log.Where(q => q.Person_ID == User.Identity.Name).OrderByDescending(d => d.Login_DateTime).First();
+            session.Logout_DateTime = DateTime.Now;
+            db.Entry(session).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-            //end session update
 
             return RedirectToAction("Index", "Home");
-        } //user logout
+        } 
 
         [HttpGet]
         public ActionResult ForgotPassword()

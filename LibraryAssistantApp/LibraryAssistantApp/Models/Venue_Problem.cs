@@ -18,15 +18,15 @@ namespace LibraryAssistantApp.Models
         public System.DateTime DateTime_Logged { get; set; }
         public string Person_ID_Logged { get; set; }
         public string Description { get; set; }
-        public int Common_Problem_Type_ID { get; set; }
+        public int Common_Problem_ID { get; set; }
         public string Status { get; set; }
-        public System.DateTime DateTime_Closed { get; set; }
+        public Nullable<System.DateTime> DateTime_Closed { get; set; }
         public string Person_ID_Closed { get; set; }
         public int Venue_ID { get; set; }
     
-        public virtual Common_Problem_Type Common_Problem_Type { get; set; }
-        public virtual Venue Venue { get; set; }
+        public virtual Common_Problem Common_Problem { get; set; }
         public virtual Registered_Person Registered_Person { get; set; }
         public virtual Registered_Person Registered_Person1 { get; set; }
+        public virtual Venue Venue { get; set; }
     }
 }

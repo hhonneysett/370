@@ -1,0 +1,47 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Common_Problem_Type>
+
+@{
+    ViewBag.Title = "Problem Types";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Common Problem Types</h2>
+
+<p>
+    @Html.ActionLink("Create New", "addProblemType")
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Common_Problem_Type_Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Common_Problem_Type_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "editProblemType", new { id = item.Common_Problem_Type_ID }) |
+                            @Html.ActionLink("Delete", "deleteProblemType", new { id = item.Common_Problem_Type_ID })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,7 @@
     var attendance = (string)ViewBag.Attendance;
     var daily = (string)ViewBag.Daily;
     var online = (int)ViewBag.Online;
+    var problems = (int)ViewBag.Problems;
 }
 
 <link rel="stylesheet" href="~/Content/morris.css" />
@@ -25,7 +26,7 @@
 
         <div class="col-lg-3">
             <div class="alert alert-success text-center">
-                <span class="fa fa-wrench"></span><b> 4</b> Venue Problems Resolved
+                <span class="fa fa-wrench"></span><b> @problems</b> Venue Problems Resolved
             </div>
         </div>
 
