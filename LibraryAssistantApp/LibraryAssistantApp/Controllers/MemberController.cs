@@ -152,6 +152,8 @@ namespace LibraryAssistantApp.Controllers
                 TempData["color"] = "alert-success";
                 return RedirectToAction("Index");
             }
+            TempData["Show"] = true;
+            TempData["color"] = "alert-warning";
             TempData["Msg"] = "Something went wrong.";
             return View(viewModel);
         }
@@ -208,6 +210,7 @@ namespace LibraryAssistantApp.Controllers
         [HttpPost]
         public ActionResult Edit(string id, MemberEditVM viewModel)
         {
+            TempData["Show"] = false;
             if (ModelState.IsValid)
             {
                 Registered_Person rp = db.Registered_Person.Find(id);
@@ -218,6 +221,9 @@ namespace LibraryAssistantApp.Controllers
                 rp.Person_Type = "Student";
                 db.Entry(rp).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Msg"] = "Member updated successfully.";
+                TempData["Show"] = true;
+                TempData["color"] = "alert-success";
             }
             return RedirectToAction("Index");
         }

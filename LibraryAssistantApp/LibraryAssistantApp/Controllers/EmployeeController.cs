@@ -262,6 +262,7 @@ namespace LibraryAssistantApp.Controllers
         [HttpPost]
         public ActionResult Create(EmployeeAddModel viewModel)
         {
+            TempData["Show"] = false;
             var topicchecklist = (List<TopicCheck>)Session["Topic_Checked"];
             if (db.Registered_Person.Any(x => x.Person_ID == viewModel.person_id))
             {
@@ -331,8 +332,10 @@ namespace LibraryAssistantApp.Controllers
                 //Email end
 
                 db.SaveChanges();
-                    TempData["SuccessMsg"] = "New employee created successfully";
-                    return RedirectToAction("Index");
+                TempData["Msg"] = "New employee created successfully.";
+                TempData["Show"] = true;
+                TempData["color"] = "alert-success";
+                return RedirectToAction("Index");
                 }
             ViewBag.Check1 = true;
             ViewBag.Check2 = true;
@@ -347,6 +350,9 @@ namespace LibraryAssistantApp.Controllers
             }
             viewModel.role_check = rolechecklist;
             ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
+            TempData["Msg"] = "Something went wrong.";
+            TempData["Show"] = true;
+            TempData["color"] = "alert-success";
             return View(viewModel);
         }
         public JsonResult UserExists(string person_id)

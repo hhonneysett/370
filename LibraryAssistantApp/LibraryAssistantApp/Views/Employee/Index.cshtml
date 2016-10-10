@@ -23,19 +23,18 @@
 }
 
 
-    <div class="row message" @TempData["Hidden"]>
-        <div class="col-md-10">
-            <div class="alert @alertcolor" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign"></span>
-                <span class="sr-only">Error:</span>
-                @TempData["Msg"]
-            </div>
+<div class="row message" @TempData["Hidden"]>
+    <div class="col-md-12">
+        <div class="alert @alertcolor" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <span class="sr-only">Error:</span>
+            @TempData["Msg"]
         </div>
     </div>
+</div>
 
 <h3>Employees</h3>
 
-<span style="text-indent:4em" class="text-success">@TempData["SuccessMsg"]</span>
 <div class="container">
     <div class="row">
         <div id="emp-panel" class="col-md-12 col-sm-12">
@@ -58,13 +57,13 @@
 
                 <div class="panel-body">
                     <div class="btn-group" role="group" aria-label="...">
-                        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-default" })
+                        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
                     </div>
                     <div class="btn-group">
-                        @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-default btn-edit" })
+                        @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit" })
                     </div>
                     <div class="btn-group">
-                        @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-default btn-delete" })
+                        @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete" })
                     </div>
                     <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
                 </div>
