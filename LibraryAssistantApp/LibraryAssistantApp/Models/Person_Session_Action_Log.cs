@@ -18,6 +18,8 @@ namespace LibraryAssistantApp.Models
         public System.DateTime Action_DateTime { get; set; }
         public int Session_ID { get; set; }
         public int Action_ID { get; set; }
+        public string Action_Performed { get; set; }
+        public string Crud_Operation { get; set; }
     
         public virtual Action Action { get; set; }
         public virtual Person_Session_Log Person_Session_Log { get; set; }

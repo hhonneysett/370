@@ -2,9 +2,6 @@
 
 
 
-
-
-
 <table class="table">
     <tr>
         <th>
@@ -50,10 +47,10 @@
     }
 </table>
 
-<input type="submit" value="Create" class="btn btn-default" onclick="validateInput();" />
 
-@if (ViewBag.EditNewPossibleAnswer != null)
-{<input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Possible_Answer_Back", new { ViewBag.Style_Type_ID, ViewBag.Question_Seq, ViewBag.Question_Text, ViewBag.Topic_Seq, ViewBag.Topic_Name, ViewBag.Topic_Des })'" /> }<label class="text-danger" id="Error_Topic_Seq"></label>
+@Html.Hidden("EditNewPossibleAnswer", (string)ViewBag.EditNewPossibleAnswer, new { id = "EditNewPossibleAnswer" })
+@if (ViewBag.EditNewPossibleAnswer == "No")
+{<input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Possible_Answer_Back", new { ViewBag.Style_Type_ID, ViewBag.Question_Seq, ViewBag.Question_Text, ViewBag.Topic_Seq, ViewBag.Topic_Name, ViewBag.Topic_Des })'" /> } <input data-toggle="tooltip" data-placement="right" title="Finish creating question" type="submit" value="Create" class="btn btn-default pull-right" onclick="validateInput();" /> <strong><div style="text-align:center" class="text-danger" id="Error_Topic_Seq"></div></strong>
 
 <script>
     function RunURL() {
@@ -66,12 +63,14 @@
             var Answer_Text1 = document.getElementById("Answer_Text1").value;
             var Answer_Text2 = document.getElementById("Answer_Text2").value;
             var NewTopic = document.getElementById("NewTopic").value;
+            var EditNewPossibleAnswer = document.getElementById("EditNewPossibleAnswer").value;
+            
 
-            window.location.href = "/Question_Bank/Possible_Answer_Create_2?Question_Seq=" + Question_Seq + "&Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Answer_Text1=" + Answer_Text1 + "&Answer_Text2=" + Answer_Text2 + "&NewTopic=" + NewTopic;
+            window.location.href = "/Question_Bank/Possible_Answer_Create_2?Question_Seq=" + Question_Seq + "&Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Answer_Text1=" + Answer_Text1 + "&Answer_Text2=" + Answer_Text2 + "&NewTopic=" + NewTopic + "&EditNewPossibleAnswer=" + EditNewPossibleAnswer;
 
         }
         else {
-
+            var EditNewPossibleAnswer = document.getElementById("EditNewPossibleAnswer").value;
             var Question_Seq = document.getElementById("Question_Seq").value;
             var Display_Order1 = document.getElementById("Display_Order1").value;
             var Display_Order2 = document.getElementById("Display_Order2").value;
@@ -84,8 +83,9 @@
             var Answer_Text4 = document.getElementById("Answer_Text4").value;
             var Answer_Text5 = document.getElementById("Answer_Text5").value;
             var NewTopic = document.getElementById("NewTopic").value;
-
-            window.location.href = "/Question_Bank/Possible_Answer_Create_5?Question_Seq=" + Question_Seq + "&Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Display_Order3=" + Display_Order3 + "&Display_Order4=" + Display_Order4 + "&Display_Order5=" + Display_Order5 + "&Answer_Text1=" + Answer_Text1 + "&Answer_Text2=" + Answer_Text2 + "&Answer_Text3=" + Answer_Text3 + "&Answer_Text4=" + Answer_Text4 + "&Answer_Text5=" + Answer_Text5 + "&NewTopic=" + NewTopic;
+           
+                window.location.href = "/Question_Bank/Possible_Answer_Create_5?Question_Seq=" + Question_Seq + "&Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Display_Order3=" + Display_Order3 + "&Display_Order4=" + Display_Order4 + "&Display_Order5=" + Display_Order5 + "&Answer_Text1=" + Answer_Text1 + "&Answer_Text2=" + Answer_Text2 + "&Answer_Text3=" + Answer_Text3 + "&Answer_Text4=" + Answer_Text4 + "&Answer_Text5=" + Answer_Text5 + "&NewTopic=" + NewTopic + "&EditNewPossibleAnswer=" + EditNewPossibleAnswer;
+            
         }
     }
 </script>
@@ -110,7 +110,7 @@
             }
             else {
                 if (Answer_Text1 == Answer_Text2) {
-                    document.getElementById("Error_Topic_Seq").innerHTML = "Answer text required";
+                    document.getElementById("Error_Topic_Seq").innerHTML = "All supplied possible answers should be unique";
                 }
                 else {
                     RunURL();
@@ -167,7 +167,7 @@
                     else if (Answer_Text1 != "" && Answer_Text2 != "" && Answer_Text3 == "") {
                         if (Answer_Text1 == Answer_Text2) {
                             unique = "No"
-                        }                       
+                        }
                     }
                     else {
                         if (Answer_Text1 == Answer_Text2 || Answer_Text1 == Answer_Text3) {
@@ -175,7 +175,7 @@
                         }
                         if (Answer_Text2 == Answer_Text3) {
                             unique = "No"
-                        }                     
+                        }
                     }
                     if (unique == "Yes") {
                         RunURL();
@@ -188,4 +188,12 @@
             }
         }
     }
+</script>
+
+
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
 </script>

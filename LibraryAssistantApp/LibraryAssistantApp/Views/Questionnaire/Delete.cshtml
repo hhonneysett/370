@@ -43,6 +43,7 @@
                     @Html.DisplayFor(model => model.Create_Date)
                 </dd>
 
+             
 
                 <dt>
                     <label>Status</label> 
@@ -66,14 +67,80 @@
 
                 <dd>
                     @Html.DisplayFor(model => model.Registered_Person.Person_Name)
-                </dd>                
+                </dd>
+                
+                <dt>
+                    <label>Amount of responses to questionnaire</label>
+                </dt>
+                
+                <dd>
+                   @Html.Label("", (string)@ViewBag.Responded)
+                </dd>
+                                
 
             </dl>
           
-
+            @if (Convert.ToInt32(ViewBag.Responded) > 0)
+            {
                 <div class="form-actions no-color">
-                    <input type="submit" value="Delete" class="btn btn-default" onclick="location.href='@Url.Action("DeleteConfirmed","Questionnaire", new { ViewBag.id})'"/> | <input type="submit" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index","Questionnaire")'" />                    
-                </div>            
+                    <input  id="Delete_Restricted" disabled type="submit" value="Delete" class="btn btn-default" onclick="location.href='@Url.Action("DeleteConfirmed","Questionnaire", new { ViewBag.id})'" /> | <input type="submit" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index","Questionnaire")'" /><div class="isa_warning">This questionnaire cannot be deleted as it has been responded to.</div>
+                </div>
+            }
+            else
+            {
+                <div class="form-actions no-color">
+                    <input id="Delete_Allowed" type="submit" value="Delete" class="btn btn-default" onclick="location.href='@Url.Action("DeleteConfirmed","Questionnaire", new { ViewBag.id})'" /> | <input type="submit" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index","Questionnaire")'" />
+                </div>
+            }
+                            
         </div>
     </div>
 </div>
+@*<script>
+$(document).ready(function(){
+
+    $("#Delete_Restricted").mouseenter(function () {
+        document.getElementById("Warning").innerHTML = " This questionnaire cannot be deleted as it has been responded to."
+        document.getElementById("Warning").style.color = "red";
+    });
+
+
+    $("#Delete_Restricted"). mouseout(function () {
+            document.getElementById("Warning").innerHTML = ""});
+});
+</script>*@
+
+<style>
+    .isa_info, .isa_success, .isa_warning, .isa_error {
+        margin: 10px 0px;
+        padding: 12px;
+    }
+
+    .isa_info {
+        color: #00529B;
+        background-color: #BDE5F8;
+    }
+
+    .isa_success {
+        color: #4F8A10;
+        background-color: #DFF2BF;
+    }
+
+    .isa_warning {
+        color: #9F6000;
+        background-color: #FEEFB3;
+        text-align: center;
+    }
+
+    .isa_error {
+        color: #D8000C;
+        background-color: #FFBABA;
+        text-align: center;
+    }
+
+        .isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+            margin: 10px 22px;
+            font-size: 2em;
+            vertical-align: middle;
+        }
+</style>

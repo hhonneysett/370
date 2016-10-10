@@ -5,113 +5,115 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit Possible Answers</h2>
+<h2>Edit Possible Answers as: @ViewBag.Style_Type_ID</h2>
 
 @Html.Hidden("Question_Seq", (int)ViewBag.Question_Seq, new { id = "Question_Seq" })
 @Html.Hidden("Style_Type_ID", (string)ViewBag.Style_Type_ID, new { id = "Style_Type_ID" })
 
 <div class="panel panel-default">
-    <div class="panel-heading"><h4></h4>Possible answers of existing question</div>
+    <div class="panel-heading"><h4>Possible answers of existing question</h4></div>
     <div class="panel-body">
 
-        <div class="col-md-10">
-            @Html.TextBox("QuestionText", (string)ViewBag.Question_Text, htmlAttributes: new { @class = "form-control", id = "QuestionText", @readonly = true })
-
+        <div style="text-align:center; padding-bottom: 20px;">
+            <h4><u>Question: @ViewBag.Question_Text</u></h4>
         </div>
+
+
+        <table class="table">
+            <tr>
+                <th>
+                    <h4>Display Order</h4>
+                </th>
+                <th>
+                    <h4>Answer Text</h4>
+                </th>
+            </tr>
+
+            @if (ViewBag.Style_Type_ID == "True or False")
+            {
+                <tr>
+                    <td>
+                        1
+                        @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text1", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1 } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        2
+                        @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text2", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2 } })
+                    </td>
+                </tr>
+
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        1
+                        @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text1", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1 } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        2
+                        @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text2", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2 } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        3
+                        @Html.Hidden("Display_Order3", 3, new { id = "Display_Order3" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text3", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text3", @value = ViewBag.Answer_Text3 } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        4
+                        @Html.Hidden("Display_Order4", 4, new { id = "Display_Order4" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text4", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text4", @value = ViewBag.Answer_Text4 } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        5
+                        @Html.Hidden("Display_Order5", 5, new { id = "Display_Order5" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text5", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text5", @value = ViewBag.Answer_Text5 } })
+                    </td>
+                </tr>
+
+            }
+        </table>
+
+        
+
+        <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Edit", new {ViewBag.id})'" /> <input data-toggle="tooltip" data-placement="right" title="Finish updating  question"  type="submit" value="Submit" class="btn btn-default pull-right" onclick="validateInput();" /><label class="text-danger" id="Error_Topic_Seq"></label>
+
     </div>
 </div>
 
-<table class="table">
-    <tr>
-        <th>
-            <h4>Display Order</h4>
-        </th>
-        <th>
-            <h4>Answer Text</h4>
-        </th>
-    </tr>
-
-    @if (ViewBag.Style_Type_ID == "True or False")
-    {        
-            <tr>
-                <td>
-                    1
-                    @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
-                </td>
-                <td>
-                    @Html.TextBox("Answer_Text1", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1 } })
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    2
-                    @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
-                </td>
-                <td>
-                    @Html.TextBox("Answer_Text2", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2 } })
-                </td>
-            </tr>
-
-    }
-    else
-    {
-        <tr>
-            <td>
-                1
-                @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
-            </td>
-            <td>
-                @Html.TextBox("Answer_Text1", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1 } })
-            </td>
-        </tr>
-
-            <tr>
-                <td>
-                    2
-                    @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
-                </td>
-                <td>
-                    @Html.TextBox("Answer_Text2", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2 } })
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    3
-                    @Html.Hidden("Display_Order3", 3, new { id = "Display_Order3" })
-                </td>
-                <td>
-                    @Html.TextBox("Answer_Text3", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text3", @value = ViewBag.Answer_Text3 } })
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    4
-                    @Html.Hidden("Display_Order4", 4, new { id = "Display_Order4" })
-                </td>
-                <td>
-                    @Html.TextBox("Answer_Text4", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text4", @value = ViewBag.Answer_Text4 } })
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    5
-                    @Html.Hidden("Display_Order5", 5, new { id = "Display_Order5" })
-                </td>
-                <td>
-                    @Html.TextBox("Answer_Text5", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text5", @value = ViewBag.Answer_Text5 } })
-                </td>
-            </tr>
-
-    }
-</table>
-
-<input type="submit" value="Submit" class="btn btn-default" onclick="validateInput();" />
-
-<input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Edit", new {ViewBag.id})'" /> <label class="text-danger" id="Error_Topic_Seq"></label>
 
 <script>
     function RunURL() {
@@ -122,7 +124,7 @@
             var Display_Order1 = document.getElementById("Display_Order1").value;
             var Display_Order2 = document.getElementById("Display_Order2").value;
             var Answer_Text1 = document.getElementById("Answer_Text1").value;
-            var Answer_Text2 = document.getElementById("Answer_Text2").value;            
+            var Answer_Text2 = document.getElementById("Answer_Text2").value;
 
             window.location.href = "/Question_Bank/Possible_Answer_Edit_2?Question_Seq=" + Question_Seq + "&Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Answer_Text1=" + Answer_Text1 + "&Answer_Text2=" + Answer_Text2;
 
@@ -139,7 +141,7 @@
             var Answer_Text2 = document.getElementById("Answer_Text2").value;
             var Answer_Text3 = document.getElementById("Answer_Text3").value;
             var Answer_Text4 = document.getElementById("Answer_Text4").value;
-            var Answer_Text5 = document.getElementById("Answer_Text5").value;            
+            var Answer_Text5 = document.getElementById("Answer_Text5").value;
 
             window.location.href = "/Question_Bank/Possible_Answer_Edit_5?Question_Seq=" + Question_Seq + "&Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Display_Order3=" + Display_Order3 + "&Display_Order4=" + Display_Order4 + "&Display_Order5=" + Display_Order5 + "&Answer_Text1=" + Answer_Text1 + "&Answer_Text2=" + Answer_Text2 + "&Answer_Text3=" + Answer_Text3 + "&Answer_Text4=" + Answer_Text4 + "&Answer_Text5=" + Answer_Text5;
         }
@@ -166,7 +168,7 @@
             }
             else {
                 if (Answer_Text1 == Answer_Text2) {
-                    document.getElementById("Error_Topic_Seq").innerHTML = "Answer text required";
+                    document.getElementById("Error_Topic_Seq").innerHTML = "All supplied possible answers should be unique";
                 }
                 else {
                     RunURL();
@@ -244,4 +246,58 @@
             }
         }
     }
+</script>
+
+<script>
+
+    jQuery(document).ready(function ($) {
+
+        if (window.history && window.history.pushState) {
+
+            $(window).on('popstate', function () {
+                var hashLocation = location.hash;
+                var hashSplit = hashLocation.split("#!/");
+                var hashName = hashSplit[1];
+
+                if (hashName !== '') {
+                    var hash = window.location.hash;
+                    if (hash === '') {
+
+
+                        var Question_Seq = document.getElementById("Question_Seq").value;
+                        var Style_Type_ID = document.getElementById("Style_Type_ID").value;
+                        var Question_Text = document.getElementById("Question_Text").value;
+                        var Topic_Name = document.getElementById("Topic_Name").value;
+                        var Topic_Des = document.getElementById("Topic_Des").value;
+                        var Topic_Seq = document.getElementById("Topic_Seq").value;
+                        var EditNewPossibleAnswer = document.getElementById("EditNewPossibleAnswer").value;
+
+                        if (EditNewPossibleAnswer == "No") {
+                            var r = confirm("This question must have possible answers assigned to it. \nIf you continue this question will be deleted.");
+                            if (r == true) {
+                                window.location.href = "/Questionnaire/DeleteQ?id=" + Question_Seq;
+                            }
+                        }
+                        else {
+                            window.location.href = "/Question_Bank/Possible_Answer_Back?Style_Type_ID=" + Style_Type_ID + "&Question_Seq=" + Question_Seq + "&Question_Text=" + Question_Text + "&Topic_Seq=" + Topic_Seq + "&Topic_Name=" + Topic_Name + "&Topic_Des=" + Topic_Des;
+                        }
+
+
+
+                    }
+                }
+            });
+
+            window.history.pushState('forward', null, './#forward');
+        }
+
+    });
+
+</script>
+
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
 </script>

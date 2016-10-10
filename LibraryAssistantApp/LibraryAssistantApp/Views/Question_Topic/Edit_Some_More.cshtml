@@ -4,6 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Would you like to edit associated qusetions of this topic?</h2>
+@Html.Hidden("Topic", (int)ViewBag.Topic, new { id = "Topic" })
 
-<input type="submit" value="Yes" class="btn btn-default" onclick="location.href='@Url.Action("Index","Question_Bank",new {ViewBag.Topic})'"/> <input type="button" value="No" class="btn btn-default" onclick="location.href='@Url.Action("Index","Question_Topic")'" />            
+<h2>Would you like to edit associated questions of this topic?</h2>
+
+<input type="button" value="Yes" class="btn btn-default" onclick="Go();"/> <input type="button" value="No" class="btn btn-default" onclick="location.href='@Url.Action("FinishEdit","Question_Topic", new {ViewBag.Topic })'" />            
+
+<script>
+                        function Go() {
+                            var Topic = document.getElementById("Topic").value;
+                            window.location.href = "/Question_Bank/Index?Topic=" + Topic + "&Search=" + " ";
+                            }
+</script>

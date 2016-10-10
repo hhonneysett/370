@@ -264,3 +264,10 @@ LibraryAssistantApp/LibraryAssistantApp/obj/Debug/DesignTimeResolveAssemblyRefer
 LibraryAssistantApp/LibraryAssistantApp/obj/Debug/LibraryAssistantApp.csprojResolveAssemblyReference.cache
 LibraryAssistantApp/LibraryAssistantApp/obj/Debug/LibraryAssistantApp.dll
 LibraryAssistantApp/LibraryAssistantApp/obj/Debug/LibraryAssistantApp.pdb
+LibraryAssistantApp/LibraryAssistantApp/bin/Antlr3.Runtime.pdb
+*.exe
+LibraryAssistantApp/LibraryAssistantApp/bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll
+LibraryAssistantApp/LibraryAssistantApp/bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll
+*.dll
+LibraryAssistantApp/LibraryAssistantApp/bin/roslyn/Microsoft.CSharp.Core.targets
+LibraryAssistantApp/LibraryAssistantApp/bin/roslyn/VBCSCompiler.exe.config

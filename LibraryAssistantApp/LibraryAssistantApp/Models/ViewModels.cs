@@ -705,6 +705,18 @@ namespace LibraryAssistantApp.Models
         public string person_email { get; set; }
     }
     public class MemberDeleteVM
+
+    public class AuditLog
+    {
+        public string Action_Performed;
+        public string Crud_Operation;
+        public string Person_Name;
+        public DateTime TimePerformed;
+        public string Area;        
+    }
+
+
+    public class EmployeeDeleteModel
     {
         public Registered_Person registered_person { get; set; }
         public IEnumerable<Person_Role> person_role { get; set; }
@@ -779,4 +791,5 @@ namespace LibraryAssistantApp.Models
         public string trainer { get; set; }
         public string email { get; set; }
     }
+   
 }

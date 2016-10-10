@@ -52,6 +52,7 @@ C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin
 C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.csprojResolveAssemblyReference.cache
 C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.dll
 C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\obj\Debug\LibraryAssistantApp.pdb
+<<<<<<< HEAD
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\roslyn\csc.exe
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 F:\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
