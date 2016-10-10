@@ -52,7 +52,7 @@ namespace LibraryAssistantApp.Models
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
         [Display(Name = "Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Password must be 5 characters long")]
         public string Person_Password { get; set; }
 
         [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
@@ -671,7 +671,7 @@ namespace LibraryAssistantApp.Models
     {
         [Remote("UserExists", "Member", ErrorMessage = "Username is already in use")]
         [Required(ErrorMessage = "Username is required")]
-        [RegularExpression("([u])([0-9]{8})+", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
+        [RegularExpression("([u])([0-9]{8})+", ErrorMessage = "Username must begin with the letter 'u' and contain 8 numbers")]
         [Display(Name = "Username")]
         public string person_id { get; set; }
         [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]

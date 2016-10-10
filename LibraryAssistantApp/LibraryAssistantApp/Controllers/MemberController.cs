@@ -217,7 +217,6 @@ namespace LibraryAssistantApp.Controllers
                 rp.Person_Email = viewModel.person_email;
                 rp.Person_Type = "Student";
                 db.Entry(rp).State = EntityState.Modified;
-                var roleRemove = db.Person_Role.Where(x => x.Person_ID == id);
                 db.SaveChanges();
             }
             return RedirectToAction("Index");
@@ -256,7 +255,7 @@ namespace LibraryAssistantApp.Controllers
                 TempData["Disabled"] = "Disabled";
                 return View(viewModel);
             }
-            if (db.Person_Questionnaire_Result.Any(x => x.Person_ID == id))
+            if (db.Person_Session_Log.Any(x => x.Person_ID == id))
             {
                 ViewBag.ErrorMsg = "Member cannot be deleted because they have been active on the system (relating to session log).";
                 TempData["Disabled"] = "Disabled";

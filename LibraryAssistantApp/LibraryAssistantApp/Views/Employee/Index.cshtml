@@ -38,11 +38,11 @@
 <span style="text-indent:4em" class="text-success">@TempData["SuccessMsg"]</span>
 <div class="container">
     <div class="row">
-        <div id="emp-panel" class="col-md-10 col-sm-12">
+        <div id="emp-panel" class="col-md-12 col-sm-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" style="padding-bottom:15px">
                     <label class="panel-title">Details</label>
-                    <select id="rolesList" class="form-control">
+                    <select id="rolesList" class="form-control" style="position:absolute; top:5px; right:20px">
                         <option selected>All Roles</option>
                         @foreach (var item in ViewBag.Roles)
                         {
@@ -50,8 +50,10 @@
                         }
                     </select>
                 </div>
-                <div id="emp-partial">
-                    @{Html.RenderPartial("Employees");}
+                <div class="panel-body">
+                    <div id="emp-partial">
+                        @{Html.RenderPartial("Employees");}
+                    </div>
                 </div>
 
                 <div class="panel-body">
@@ -68,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <div id="search-header" class="col-md-2 col-sm-4 cursor">
+        @*<div id="search-header" class="col-md-2 col-sm-4 cursor">
             <div class="panel panel-default">
                 <div id="search-emp" class="panel-heading">
                     <span class="glyphicon glyphicon-plus pull-right"></span>
@@ -122,7 +124,7 @@
                     
                 </div>
             </div>
-        </div>
+        </div>*@
         </div>
 </div>
 

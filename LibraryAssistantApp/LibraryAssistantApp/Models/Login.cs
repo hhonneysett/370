@@ -15,7 +15,7 @@ namespace LibraryAssistantApp.Models
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
         [Display(Name = "Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Password must be at least 5 characters in length.")]
         public string Person_Password { get; set; }
 
         [Display(Name = "Remember Me?")]

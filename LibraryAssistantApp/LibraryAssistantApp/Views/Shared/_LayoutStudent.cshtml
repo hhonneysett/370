@@ -98,15 +98,13 @@
                 <li>
                     @Html.ActionLink("View Profile", "Details", "RegisteredPerson")
                 </li>
-
-                <li class="pull-right">
+            </ul>
+            <ul id="navbar-login">
+                <li>
                     @{
                         if (Request.IsAuthenticated)
                         {
-                            using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                            {
-                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
-                            }
+                            @Html.ActionLink("Logout", "Login", "Account")
                         }
                         else
                         {

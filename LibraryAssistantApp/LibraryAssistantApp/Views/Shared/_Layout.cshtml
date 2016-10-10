@@ -174,7 +174,18 @@
                     </a>
                     <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            @Html.ActionLink("Employees", "Index", "Employee")
+                            <a href="#">
+                                Users
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
+                                <li>
+                                    @Html.ActionLink("Employees", "Index", "Employee")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Members", "Index", "Member")
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="#">
@@ -244,16 +255,18 @@
                         <li>
                             @Html.ActionLink("File Types", "ViewFileType", "Repository")
                         </li>
+                        <li>
+                            @Html.ActionLink("Backup and Restore", "Index", "Backup")
+                        </li>
                     </ul>
                 </li>
+            </ul>
+            <ul id="navbar-login">
                 <li>
                     @{
                         if (Request.IsAuthenticated)
                         {
-                            using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                            {
-                                <a style="padding:15px" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>                             
-                            }
+                            @Html.ActionLink("Logout", "Login", "Account")
                         }
                         else
                         {

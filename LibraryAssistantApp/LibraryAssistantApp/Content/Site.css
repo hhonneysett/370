@@ -89,3 +89,7 @@ table tbody tr :hover {
 .cursor {
     cursor: pointer;
 }
+/*heading styling*/
+.shaded {
+    padding: 15px 0 15px 15px;
+}

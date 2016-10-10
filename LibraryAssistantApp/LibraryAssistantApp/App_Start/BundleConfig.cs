@@ -17,7 +17,9 @@ namespace LibraryAssistantApp
                         "~/Scripts/base64.js",
                         "~/Scripts/sprintf.js",
                         "~/Scripts/jspdf.js",
-                        "~/Script/bootbox.js"));
+                        "~/Script/bootbox.js",
+                        "~/Scripts/DataTables/jquery.dataTables.min.js",
+                        "~/Scripts/DataTables/dataTables.bootstrap.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",
@@ -43,7 +45,9 @@ namespace LibraryAssistantApp
                         "~/Content/metisMenu.css", 
                         "~/Content/font-awesome.css",
                         "~/Content/jquery.timepicker.min.css",
-                        "~/Content/dhtmlxscheduler.css"));
+                        "~/Content/dhtmlxscheduler.css",
+                        //"~/Content/DataTables/css/jquery.dataTables.min.css",
+                        "~/Content/DataTables/css/dataTables.bootstrap.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/headScripts").Include(
                 "~/Scripts/Scheduler/dhtmlxscheduler.js",

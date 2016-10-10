@@ -644,7 +644,7 @@ namespace LibraryAssistantApp.Controllers
                 TempData["Disabled"] = "Disabled";
                 return View(viewModel);
             }
-            if (db.Person_Questionnaire_Result.Any(x => x.Person_ID == id))
+            if (db.Person_Session_Log.Any(x => x.Person_ID == id))
             {
                 ViewBag.ErrorMsg = "Employee cannot be deleted because they have been active on the system (relating to session log).";
                 TempData["Disabled"] = "Disabled";
