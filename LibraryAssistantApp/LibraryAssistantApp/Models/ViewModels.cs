@@ -23,9 +23,6 @@ namespace LibraryAssistantApp.Models
         ErrorMessage = "Please provide valid email id")]
         [Remote("checkUpdateEmail", "Validate", ErrorMessage = "Email is already in use")]
         public string Person_Email { get; set; }
-
-        [Display(Name ="Title")]
-        public string Person_Title { get; set; }
     }
 
     public class CreatePersonModel
@@ -59,10 +56,6 @@ namespace LibraryAssistantApp.Models
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         [Required(ErrorMessage ="Please confirm password")]
         public string Confirm_Password { get; set; }
-
-        [Display(Name ="Title")]
-        public string Person_Title { get; set; }
-
     }
 
     public class UpdatePasswordModel
@@ -435,7 +428,7 @@ namespace LibraryAssistantApp.Models
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
         [Display(Name = "Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 6 char long")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Password must be 6 char long")]
         public string Person_Password { get; set; }
 
         [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
@@ -569,9 +562,6 @@ namespace LibraryAssistantApp.Models
         public List<Topic_Category> topic_category { get; set; }
         public List<RoleCheck> role_check { get; set; }
         public List<TopicCheck> topic_check { get; set; }
-        [Required(ErrorMessage = "Title is required")]
-        [Display(Name = "Title")]
-        public string Person_Title { get; set; }
         [Remote("UserExists", "Employee", ErrorMessage = "Employee does not exists at the university")]
         [Required(ErrorMessage = "Username is required")]
         //[RegularExpression(@"/^([p])([0-9]{8})+$/", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]

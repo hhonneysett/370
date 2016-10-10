@@ -12,11 +12,6 @@ namespace LibraryAssistantApp.Models
     {
     }
 
-    [MetadataType(typeof(PersonTitleMetadata))]
-    public partial class Person_Title
-    {
-    }
-
     [MetadataType(typeof(TopicMetadata))]
     public partial class Topic
     {
