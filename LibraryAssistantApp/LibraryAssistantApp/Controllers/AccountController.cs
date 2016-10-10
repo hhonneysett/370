@@ -18,6 +18,7 @@ namespace LibraryAssistantApp.Controllers
 
         public object WebSecurity { get; private set; }
 
+        //login - get
         public ActionResult Login(string ReturnUrl = "")
         {
             //prevent logged in user from login again
@@ -28,6 +29,7 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
+        //login - post
         [HttpPost]
         public ActionResult Login(Login l, string ReturnUrl = "")
         {
@@ -78,11 +80,18 @@ namespace LibraryAssistantApp.Controllers
                         }                      
                     }                    
                 }
+                else
+                {
+                    TempData["Message"] = "Invalid Login Details!";
+                    TempData["classStyle"] = "danger";
+                    return View();
+                }
             }
             ModelState.Remove("Person_Password");
             return View();
         }
 
+        //logout - get
         [Authorize]
         public ActionResult Logout()
         {
@@ -97,12 +106,14 @@ namespace LibraryAssistantApp.Controllers
             return RedirectToAction("Index", "Home");
         } 
 
+        //forgot password - get
         [HttpGet]
         public ActionResult ForgotPassword()
         {
             return View();
         }
 
+        //forgot password - post
         [HttpPost]
         public ActionResult ForgotPassword(LostPasswordModel model)
         {
@@ -124,6 +135,7 @@ namespace LibraryAssistantApp.Controllers
             else return View();           
         }
 
+        //send reset email
         private void SendPasswordResetEmail(string ToEmail, string UserName, string UniqueId)
         {
             // MailMessage class is present is System.Net.Mail namespace
@@ -134,7 +146,7 @@ namespace LibraryAssistantApp.Controllers
             StringBuilder sbEmailBody = new StringBuilder();
             sbEmailBody.Append("Dear " + UserName + ",<br/><br/>");
             sbEmailBody.Append("Please click on the following link to reset your password");
-            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://localhost:52621/Account/ResetPassword/?id=" + UniqueId);
+            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://localhost:52612/Account/ResetPassword/?id=" + UniqueId);
             sbEmailBody.Append("<br/><br/>");
             sbEmailBody.Append("<b>UP Library Assistant</b>");
 
@@ -147,7 +159,7 @@ namespace LibraryAssistantApp.Controllers
 
             message.From = new MailAddress("uplibraryassistant@gmail.com");
             message.To.Add(ToEmail);
-            message.Subject = "Account Activation";
+            message.Subject = "Password Reset";
             message.Body = sbEmailBody.ToString();
             message.IsBodyHtml = true;
             client.EnableSsl = true;
@@ -156,11 +168,13 @@ namespace LibraryAssistantApp.Controllers
             client.Send(message);
         }
 
+        //password reset post screen
         public ActionResult passResetPost()
         {
             return View();
         }
 
+        //reset password - get
         [HttpGet]
         public ActionResult ResetPassword(string id)
         {
@@ -184,6 +198,7 @@ namespace LibraryAssistantApp.Controllers
 
         }
 
+        //reset password - post
         [HttpPost]
         public ActionResult ResetPassword(ResetPassModel model)
         {
@@ -204,6 +219,9 @@ namespace LibraryAssistantApp.Controllers
 
                 db.SaveChanges();
 
+                TempData["Message"] = "Your password has been reset!";
+                TempData["classStyle"] = "success";
+
                 return RedirectToAction("Login");
             }
             else
@@ -213,11 +231,13 @@ namespace LibraryAssistantApp.Controllers
             
         }
 
+        //invalid reset screen
         public ActionResult invalidReset()
         {
             return View();
         }
 
+        //deserialise function
         private T Deserialise<T>(string json)
         {
             using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))

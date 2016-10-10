@@ -3,7 +3,6 @@
 
 @{
     ViewBag.Title = "Details";
-    Layout = (string)Session["layout"];
     var pt = (IEnumerable<Person_Topic>)TempData["personTopic"];
     var categories = (IEnumerable<Category>)TempData["categories"];
 }
@@ -21,10 +20,6 @@
                     <h4>Personal Details</h4>
 
                     <table class="table">
-                        <tr>
-                            <td><b>Title</b></td>
-                            <td>@Model.Person_Title</td>
-                        </tr>
                         <tr>
                             <td><b>Name</b></td>
                             <td>@Model.Person_Name</td>
