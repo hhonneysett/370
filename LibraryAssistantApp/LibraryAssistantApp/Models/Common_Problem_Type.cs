@@ -18,7 +18,6 @@ namespace LibraryAssistantApp.Models
         public Common_Problem_Type()
         {
             this.Common_Problem = new HashSet<Common_Problem>();
-            this.Venue_Problem = new HashSet<Venue_Problem>();
         }
     
         public int Common_Problem_Type_ID { get; set; }
@@ -27,7 +26,5 @@ namespace LibraryAssistantApp.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Common_Problem> Common_Problem { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Venue_Problem> Venue_Problem { get; set; }
     }
 }

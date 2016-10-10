@@ -10,7 +10,7 @@
 
             @if (Model.Any())
             {
-                <label class="control-label">Results:</label>
+                <label id="floorResults" class="control-label">Results:</label>
 
                 <div class="panel panel-default">
                     <table class="table table-hover" id="buildingFloorTable">
@@ -30,6 +30,9 @@
             }
             else
             {
+
+                <label id="floorResults" class="control-label">Results:</label>
+
                 <div class="panel panel-default">
                     <table class="table table-hover" id="buildingFloorTable">
                         <thead>
@@ -106,9 +109,44 @@
     $("#btnViewVenues").click(function () {
         var target = '/Venue/getVenues/?id=' + $("#buildingFloorTable tbody tr.alert-info").prop('id');
         $("#venues").load(target);
-        $("#venues").show(800);
+        $("#venues").show();
         $("#toggleBuildingFloors").hide(800);
         $("#buildingFloorSummary").text("Select Building: " + $("#buildingFloorTable tbody tr.alert-info").find('td:eq(0)').text());
+    })
+
+    //toggle tab
+    $("#buildingFloorDetails").click(function () {
+        toggleArrow("#toggleBuildingFloors", "#buildingFloorDetails span");
+    });
+
+    //search floors
+    $("#btnSearchBuildingFloors").click(function () {
+        $.ajax({
+            type: 'GET',
+            url: '/Venue/searchFloor',
+            data: { search: $("#searchBuildingFloor").val() },
+            success: function (result) {
+
+                $("#buildingFloorTable tbody").empty();
+                $("#buildingFloorTable thead").empty();
+
+                if (!$.isArray(result) || !result.length) {
+                    $("#buildingFloorTable tbody").empty();
+                    $("#buildingFloorTable thead").append('<tr><th>No Matching Building Floors</th></tr>')
+                    $("#floorResults").text("Results: '" + $("#searchBuildingFloor").val() + "'");
+                    $("#searchBuildingFloor").val('');
+                } else {
+                    $("#floorResults").text("Results: '" + $("#searchBuildingFloor").val() + "'");
+                    $("#searchBuildingFloor").val('');
+                    result.forEach(function (entry) {
+                        $('#buildingFloorTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                    });
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
     })
 
 </script>

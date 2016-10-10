@@ -305,7 +305,6 @@ namespace LibraryAssistantApp.Controllers
             {
                 vbp.Person_ID = details.person_id;
             }          
-            vbp.Certificate_Ind = 0;
             vbp.Attendee_Type = "Student";
             vbp.Attendee_Status = "Active";
 
@@ -845,7 +844,7 @@ namespace LibraryAssistantApp.Controllers
         [Authorize]
         public PartialViewResult getAvailableTrainingSess(int id)
         {
-            var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id).Include(v => v.Venue).ToList();
+            var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id).ToList();
 
             var filtered = new List<Venue_Booking>();
 
@@ -879,7 +878,9 @@ namespace LibraryAssistantApp.Controllers
                                building = (from b in db.Buildings
                                            where b.Building_ID == a.Building_ID
                                            select b.Building_Name).FirstOrDefault(),
-                               venue = a.Venue.Venue_Name,
+                               venue = (from v in db.Venues
+                                       where v.Venue_ID == a.Venue_ID
+                                       select v.Venue_Name).FirstOrDefault(),
                                id = a.Venue_Booking_Seq,
                            };
 
@@ -914,7 +915,9 @@ namespace LibraryAssistantApp.Controllers
                                building = (from b in db.Buildings
                                            where b.Building_ID == a.Building_ID
                                            select b.Building_Name).FirstOrDefault(),
-                               venue = a.Venue.Venue_Name,
+                               venue = (from v in db.Venues
+                                        where v.Venue_ID == a.Venue_ID
+                                        select v.Venue_Name).FirstOrDefault(),
                                id = a.Venue_Booking_Seq,
                            };
 
@@ -935,7 +938,6 @@ namespace LibraryAssistantApp.Controllers
             {
                 Person_ID = User.Identity.Name,
                 Venue_Booking_Seq = id,
-                Certificate_Ind = 0,
                 Attendee_Type = "Student",
                 Attendee_Status = "Active",
             };

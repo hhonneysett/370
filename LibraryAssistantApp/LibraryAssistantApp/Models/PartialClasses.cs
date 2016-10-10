@@ -62,4 +62,19 @@ namespace LibraryAssistantApp.Models
     public partial class Person_Type
     {
     }
+
+    [MetadataType(typeof(ProblemTypeMetadata))]
+    public partial class Common_Problem_Type
+    {
+    }
+
+    [MetadataType(typeof(CommonProblemMetadata))]
+    public partial class Common_Problem
+    {
+    }
+
+    [MetadataType(typeof(CharacteristicModel))]
+    public partial class Characteristic
+    {
+    }
 }

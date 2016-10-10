@@ -80,3 +80,7 @@ table tbody tr :hover {
     display:none;
     float: right;
 }
+
+.cursor:hover {
+    cursor:pointer;
+}

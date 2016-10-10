@@ -267,7 +267,9 @@
     </div>
 
     <div class="container body-content">
-        @Html.Notification()
+        <div class="row" style="padding-top:10px">
+            @Html.Notification()
+        </div>
         @RenderBody()
         <hr />
         <footer>
@@ -326,10 +328,8 @@
     </script>
 
     @Scripts.Render("~/Scripts/timepickerInt.js")
-    @Scripts.Render("~/Scripts/siteScripts.js")
-
     @Scripts.Render("~/Scripts/timepickerInt.js")
-    @Scripts.Render("~/Scripts/siteScripts.js")
+    @*@Scripts.Render("~/Scripts/siteScripts.js")*@
     @Scripts.Render("~/Scripts/bundles/bootbox")
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>

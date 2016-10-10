@@ -14,12 +14,9 @@ namespace LibraryAssistantApp.Models
     
     public partial class Venue_Characteristic
     {
+        public int Venue_Characteristic_ID { get; set; }
         public int Characteristic_ID { get; set; }
         public int Venue_ID { get; set; }
-        public int Building_Floor_ID { get; set; }
-        public int Building_ID { get; set; }
-        public int Campus_ID { get; set; }
-        public int Capacity { get; set; }
         public string Additional_Information { get; set; }
     
         public virtual Characteristic Characteristic { get; set; }

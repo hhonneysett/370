@@ -41,7 +41,16 @@
                     $('#myModal').modal('toggle');
 
                     //remove entry from table
-                    $('#campusTable tr#' + result).remove();
+                    $("#campusTable tbody").empty();
+
+                    if (!$.isArray(result) || !result.length) {
+                        $("#campusTable tbody").empty();
+                        $("#campusTable thead").append('<tr><th>No Campuses</th></tr>')
+                    } else {
+                        result.forEach(function (entry) {
+                            $('#campusTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                        });
+                    }
 
                     //show notification
                     $.ambiance({

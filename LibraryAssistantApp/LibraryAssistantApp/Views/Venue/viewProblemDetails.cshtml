@@ -1,0 +1,69 @@
+﻿@model LibraryAssistantApp.Models.Venue_Problem
+
+@using LibraryAssistantApp.Models
+
+@{ 
+    var campus = (Campus)ViewBag.Campus;
+    var building = (Building)ViewBag.Building;
+    var floor = (Building_Floor)ViewBag.Floor;
+}
+
+<form id="problemDetails" class="form-group">
+    <div class="panel panel-default">
+        <div class="panel-body text-center">
+            <label class="panel-title">Problem Details</label>
+        </div>
+        <table class="table" id="details">
+            <tbody>
+                <tr>
+                    <td><b>Campus:</b></td>
+                    <td style="padding-left:5px">@campus.Campus_Name</td>
+                </tr>
+                <tr>
+                    <td><b>Building:</b></td>
+                    <td style="padding-left:5px">@building.Building_Name</td>
+                </tr>
+                <tr>
+                    <td><b>Floor:</b></td>
+                    <td style="padding-left:5px">@floor.Floor_Name</td>
+                </tr>
+                <tr>
+                    <td><b>Venue:</b></td>
+                    <td style="padding-left:5px">@Model.Venue.Venue_Name</td>
+                </tr>
+                <tr>
+                    <td><b>Date Logged:</b></td>
+                    <td style="padding-left:5px">@Model.DateTime_Logged.ToShortDateString()</td>
+                </tr>
+                <tr>
+                    <td><b>Problem:</b></td>
+                    <td style="padding-left:5px">@Model.Common_Problem.Common_Problem_Name</td>
+                </tr>
+                <tr>
+                    <td><b>Comment:</b></td>
+                    <td style="padding-left:5px"><textarea class="form-control" readonly>@Model.Description</textarea></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+<button class="btn btn-default" id="btnPrintDetails"><span class="fa fa-print"></span> Print</button>
+<button class="btn btn-default" id="btnCancelModal">Close</button>
+<hr />
+
+<script type="text/javascript">
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+
+    //print details
+    $("#btnPrintDetails").click(function () {
+        var divToPrint = document.getElementById("details");
+        newWin = window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
+    })
+</script>
+

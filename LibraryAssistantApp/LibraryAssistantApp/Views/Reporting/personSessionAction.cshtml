@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<LibraryAssistantApp.Models.ActionAccessModel>
 
 @{
-    ViewBag.Title = "personSessionAction";
+    ViewBag.Title = "Action Log Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
 
 <h2>Action Usage Report</h2>
 
@@ -11,45 +14,44 @@
 
 
 <div class="row">
-    <div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table class="table" id="report">
-                    <thead>
-                        <tr>
-                            <th>Action ID</th>
-                            <th>
-                                Action Name
-                            </th>
-                            <th>
-                                Action Description
-                            </th>
-                            <th>
-                                Access Times
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.action.Action_ID</td>
-                                <td>@item.action.Action_Name</td>
-                                <td>@item.action.Action_Description</td>
-                                <td>@item.access</td>
-                            </tr>
+    <div class="col-md-12">
+        <table class="table" id="report">
+            <thead>
+                <tr>
+                    <th>Action ID</th>
+                    <th>
+                        Action Name
+                    </th>
+                    <th>
+                        Action Description
+                    </th>
+                    <th>
+                        Access Times
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.action.Action_ID</td>
+                        <td>@item.action.Action_Name</td>
+                        <td>@item.action.Action_Description</td>
+                        <td>@item.access</td>
+                    </tr>
 
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                }
+            </tbody>
+        </table>
 
-        <button id="btnExport" onclick="fnExcelReport();" class="btn btn-default"> EXPORT TO EXCEL </button>
-        <button onclick="javascript:demoFromHTML()" class="btn btn-default">EXPORT TO PDF</button>
+        <hr />
+
+        <button onclick="javascript:demoFromHTML()" class="btn btn-default"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
 
     </div>
 </div>
+
+
 
 <iframe id="txtArea1" style="display:none"></iframe>
 
@@ -89,9 +91,15 @@
 
 <script type="text/javascript">
     function demoFromHTML() {
-        $('#report').tableExport({ type: 'pdf', escape: 'false' });
+        $('#report').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7' });
     };
+
+    $(document).ready(function () {
+        //initiate datatable
+        $('#report').DataTable();
+    })
 </script>
+
 
 
 

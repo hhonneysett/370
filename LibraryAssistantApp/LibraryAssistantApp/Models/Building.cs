@@ -18,14 +18,17 @@ namespace LibraryAssistantApp.Models
         public Building()
         {
             this.Building_Floor = new HashSet<Building_Floor>();
+            this.Venues = new HashSet<Venue>();
         }
     
+        public int Campus_ID { get; set; }
         public int Building_ID { get; set; }
-        public Nullable<int> Campus_ID { get; set; }
         public string Building_Name { get; set; }
     
+        public virtual Campus Campu { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Building_Floor> Building_Floor { get; set; }
-        public virtual Campus Campu { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Venue> Venues { get; set; }
     }
 }

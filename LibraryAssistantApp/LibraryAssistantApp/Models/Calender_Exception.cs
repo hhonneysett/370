@@ -27,6 +27,5 @@ namespace LibraryAssistantApp.Models
         public int HEX_Value { get; set; }
     
         public virtual Colour Colour { get; set; }
-        public virtual Venue Venue { get; set; }
     }
 }

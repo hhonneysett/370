@@ -1,0 +1,188 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    var bookings = (int)ViewBag.Bookings;
+    var members = (int)ViewBag.Members;
+    var attendance = (string)ViewBag.Attendance;
+    var daily = (string)ViewBag.Daily;
+    var online = (int)ViewBag.Online;
+    var problems = (int)ViewBag.Problems;
+}
+
+<link rel="stylesheet" href="~/Content/morris.css" />
+<script src="~/Scripts/Morris Charts/raphael-min.js"></script>
+<script src="~/Scripts/Morris Charts/morris.min.js"></script>
+
+<h2>Dashboard</h2>
+<hr />
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-3">
+            <div class="alert alert-danger text-center">
+                <span class="fa fa-calendar"></span><b> @bookings</b> Bookings Today
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="alert alert-success text-center">
+                <span class="fa fa-wrench"></span><b> @problems</b> Venue Problems Resolved
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="alert alert-info text-center">
+                <span class="fa fa-rss"></span><b> @members</b> New Members This Year
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="alert alert-warning text-center">
+                <span class="fa fa-check"></span><b> @attendance</b> Training Attendance
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="panel-title">Monthly Site Usage</p>
+                </div>
+                <div class="panel-body">
+                    <div id="myfirstchart" style="height: 250px;"></div>
+                </div>
+            </div> 
+        </div>    
+        <div class="col-lg-3">
+            <div class="panel panel-primary text-center no-border" style="border: 1px solid lightgrey">
+                <div class="panel-body" style="height: 277px;overflow:auto">
+                    <a class="twitter-timeline" href="https://twitter.com/UPTuks"></a>
+                    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+                <div class="panel-footer">
+                    <span class="panel-eyecandy-title">
+                        Twitter Feed
+                    </span>
+                </div>
+            </div>
+        </div>   
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="panel-title">Total Bookings Per Type</p>
+                </div>
+                <div class="panel-body">
+                    <div id="mysecondchart" style="height: 250px;"></div>
+                </div>
+            </div> 
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-primary text-center no-border" style="border: 1px solid lightgrey;">
+                <div class="panel-body" style="background-color:lightcyan">
+                    <i class="fa fa-bar-chart fa-2x"></i>
+                    <h4>@daily</h4> 
+                </div>
+                <div class="panel-footer">
+                    <span class="panel-eyecandy-title">
+                        Daily User Visits
+                    </span>
+                </div>
+            </div>
+
+            <div class="panel panel-primary text-center no-border" style="border: 1px solid lightgrey;">
+                <div class="panel-body" style="background-color:lightsalmon">
+                    <i class="fa fa-user fa-2x"></i>
+                    <h4>@online</h4>
+                </div>
+                <div class="panel-footer">
+                    <span class="panel-eyecandy-title">
+                        Online Users
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        //get pie chart
+        $.ajax({
+            type: 'GET',
+            url: '/Dashboard/getBookingTypes',
+            success: function (result) {
+
+                var events = []
+
+                result.forEach(function (entry) {
+                    var event = {
+                        label: entry.type,
+                        value: entry.count,
+                    }
+
+                    //adds the event to the events object
+                    events.push(event);
+                });
+
+                new Morris.Donut({
+                    element: 'mysecondchart',
+                    data: events,
+                });
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+
+        //get line graph data
+        $.ajax({
+            type: 'GET',
+            url: '/Dashboard/getUsage',
+            success: function (result) {
+
+                var events = []
+
+                result.forEach(function (entry) {
+                    var event = {
+                        m: entry.month,
+                        a: entry.count,
+                    }
+
+                    //adds the event to the events object
+                    events.push(event);
+                });
+
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+                Morris.Line({
+                    element: 'myfirstchart',
+                    data: events,
+                    xkey: 'm',
+                    ykeys: ['a'],
+                    labels: ['sessions'],
+                    xLabelFormat: function (x) { // <--- x.getMonth() returns valid index
+                        var month = months[x.getMonth()];
+                        return month;
+                    },
+                    dateFormat: function (x) {
+                        var month = months[new Date(x).getMonth()];
+                        return month;
+                    },
+                });
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    })
+</script>
+

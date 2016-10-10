@@ -329,15 +329,15 @@ namespace LibraryAssistantApp.Models
     {
         [Required(ErrorMessage ="Please provide a category selection")]
         [Display(Name ="Category")]
-        public int Category_ID { get; set; }
+        public int category { get; set; }
 
         [Required(ErrorMessage ="Please provide a topic selection")]
         [Display(Name ="Topic")]
-        public int Topic_ID { get; set; }
+        public int topic { get; set; }
 
         [Required(ErrorMessage ="Please provide a duration")]
         [Display(Name ="Duration (Minutes)")]
-        public int duration { get; set; }
+        public string duration { get; set; }
 
         [Required(ErrorMessage ="Please provide a start date")]
         [Display(Name ="Date")]
@@ -345,7 +345,7 @@ namespace LibraryAssistantApp.Models
 
         [Required(ErrorMessage = "Please provide a campus")]
         [Display(Name = "Campus")]
-        public int Campus_ID { get; set; }
+        public int campus { get; set; }
     }
 
     public class timeslot
@@ -366,6 +366,8 @@ namespace LibraryAssistantApp.Models
         public Venue venue { get; set; }
         public double rating { get; set; }
         public string characteristics { get; set; }
+        public string building { get; set; }
+        public string floor { get; set; }
     }
 
     public class TrainingDetailsModel
@@ -639,5 +641,74 @@ namespace LibraryAssistantApp.Models
     public class EmployeeDeleteModel
     {
         public Registered_Person registered_person { get; set; }
+    }
+
+    public class checkedCharacteristics
+    {
+        public Characteristic characteristic;
+        public bool has;
+    }
+
+    public class monthList
+    {
+        public string month;
+        public int count;
+    }
+
+    public class typeList
+    {
+        public string type;
+        public int count;
+    }
+
+    public class problemList
+    {
+        public Venue_Problem problem;
+        public string campus;
+        public string building;
+        public string floor;
+    }
+
+    public class problemTypeModel
+    {
+        [Display(Name ="Problem Type Name"), Required, MaxLength(30)]
+        [Remote("checkProblem", "Validate", ErrorMessage = "Problem type already exists")]
+        public string name { get; set; }
+
+        [Display(Name = "Problem Type Description"), Required, MaxLength(100)]
+        public string description { get; set; }
+    }
+
+    public class commonProblemModel
+    {
+        public int Common_Problem_ID { get; set; }
+
+        [Display(Name = "Problem Name"), Required, MaxLength(30)]
+        public string Common_Problem_Name { get; set; }
+
+        [Display(Name ="Description"), Required, MaxLength(100)]
+        public string Description { get; set; }
+
+        public int Common_Problem_Type_ID { get; set; }
+    }
+
+    public class UpdateCharModel
+    {
+        public int id { get; set; }
+
+        [Display(Name ="Name"),Required, MaxLength(30)]
+        public string name { get; set; }
+
+        [Display(Name ="Description"), Required, MaxLength(100)]
+        public string description { get; set; }
+    }
+
+    public class Clash
+    {
+        public string date { get; set; }
+        public string topic { get; set; }
+        public string timeslot { get; set; }
+        public string trainer { get; set; }
+        public string email { get; set; }
     }
 }

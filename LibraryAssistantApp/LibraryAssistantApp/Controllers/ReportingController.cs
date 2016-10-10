@@ -124,8 +124,12 @@ namespace LibraryAssistantApp.Controllers
         [Authorize(Roles ="Admin")]
         public ActionResult venueUsage()
         {
-            var venues = (from v in db.Venue_Booking
-                          select v.Venue).Distinct().ToList();
+            var venueIds = (from v in db.Venue_Booking
+                          select v.Venue_ID).Distinct().ToList();
+
+            var venues = (from v in db.Venues
+                          where venueIds.Contains(v.Venue_ID)
+                          select v).ToList();
 
             var sessions = (from s in db.Venue_Booking
                            select s).ToList();

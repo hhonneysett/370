@@ -1,0 +1,42 @@
+﻿<form id="resolveProblem" class="form-group">
+    <p>Are you sure you want to resolve this problem?</p>
+</form>
+<button class="btn btn-default" id="btnConfirmResolve">Yes</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<hr />
+
+<script type="text/javascript">
+    //cancel button
+    $("#btnCancelModal").click(function () {
+        $('#myModal').modal('toggle');
+    })
+
+    //confirm resolve
+    $("#btnConfirmResolve").click(function () {
+        $.ajax({
+            url: '/Venue/resolveProblem',
+            type: 'POST',
+            success: function (result) {
+                //show error notification
+                $.ambiance({
+                    message: "Problem Has Been Resolved!",
+                    title: "Success!",
+                    type: "success",
+                    timeout: 5
+                });
+
+                var row = 'table#problemTable tbody tr#' + result;
+
+                //remove tr
+                $(row).remove();
+
+                //toggle modal
+                $('#myModal').modal('toggle');
+
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        })
+    })
+</script>

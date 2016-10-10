@@ -20,22 +20,43 @@
 
             <div class="col-md-6">
 
-                <label class="control-label">Results:</label>
+                @if (campuses.Any())
+            {
+                    <label class="control-label" id="campusResults">Results:</label>
 
-                <div class="panel panel-default">
-                    <table class="table table-hover" id="campusTable">
-                        <tbody>
-                            @foreach (Campus campus in campuses)
-                            {
-                                <tr id="@campus.Campus_Name">
-                                    <td>
-                                        @campus.Campus_Name
-                                    </td>
+                    <div class="panel panel-default">
+                        <table class="table table-hover" id="campusTable">
+                            <thead></thead>
+                            <tbody>
+                                @foreach (Campus campus in campuses)
+                                {
+                                    <tr id="@campus.Campus_ID">
+                                        <td>
+                                            @campus.Campus_Name
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <label class="control-label" id="campusResults">Results:</label>
+
+                    <div class="panel panel-default">
+                        <table class="table table-hover" id="campusTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        No Campuses
+                                    </th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                }
             </div>
 
             <div class="col-md-3 col-md-offset-1">
@@ -128,11 +149,13 @@
 
         //view buildings relating to selected campus
         $("#btnViewBuildings").click(function () {
-            var target = '/Venue/getBuildings/?campusName=' + $("#campusTable tbody tr.alert-info").prop('id');
+            var target = '/Venue/getBuildings/?id=' + $("#campusTable tbody tr.alert-info").prop('id');
             $("#buildings").load(target);
             $("#buildings").show();
             $("#toggleCampus").hide(800);
-            $("#campusSummary").text("Select Campus: " + $("#campusTable tbody tr.alert-info").prop('id'));
+            $("#campusSummary").text("Select Campus: " + $("#campusTable tbody tr.alert-info").find('td:eq(0)').text());
+            $("#buildingFloors").hide();
+            $("#venues").hide();
         })
 
         //add campus modal
@@ -147,7 +170,7 @@
         //delete campus modal
         $("#btnDeleteCampus").on('click', function () {
 
-            var target = '/Venue/deleteCampus/?campusName=' + $("#campusTable tbody tr.alert-info").prop('id');
+            var target = '/Venue/deleteCampus/?id=' + $("#campusTable tbody tr.alert-info").prop('id');
 
             $("#myModal .modal-body").load(target, function () {
                 $("#myModal").modal("show");
@@ -161,7 +184,7 @@
 
         //update campus 
         $("#btnUpdateCampus").on('click', function () {
-            var target = '/Venue/updateCampus/?campusName=' + $("#campusTable tbody tr.alert-info").prop('id');
+            var target = '/Venue/updateCampus/?id=' + $("#campusTable tbody tr.alert-info").prop('id');
 
             $("#myModal .modal-body").load(target, function () {
                 $("#myModal").modal("show");
@@ -200,6 +223,51 @@
                 $("#btnDeleteBuildingFloor").prop('disabled', false);
                 $("#btnViewVenues").prop('disabled', false);
             }
+        })
+
+        //select venue from table and enable/disable buttons
+        $(document).on("click", "#venueTable tbody tr", function (e) {
+
+            var selected = $(this).hasClass("alert-info");
+            $("#venueTable tbody tr").removeClass("alert-info");
+            $("#btnUpdateVenue").prop('disabled', true);
+            $("#btnDeleteVenue").prop('disabled', true);
+
+            if (!selected) {
+                $(this).addClass("alert-info");
+                $("#btnUpdateVenue").prop('disabled', false);
+                $("#btnDeleteVenue").prop('disabled', false);
+            }
+        })
+
+        //search campuses
+        $("#btnSearchCampus").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Venue/searchCampus',
+                data: { search: $("#searchCampus").val() },
+                success: function (result) {
+
+                    $("#campusTable tbody").empty();
+                    $("#campusTable thead").empty();
+
+                    if (!$.isArray(result) || !result.length) {
+                        $("#campusTable tbody").empty();
+                        $("#campusTable thead").append('<tr><th>No Matching Campuses</th></tr>')
+                        $("#campusResults").text("Results: '" + $("#searchCampus").val() + "'");
+                        $("#searchCampus").val('');
+                    } else {
+                        $("#campusResults").text("Results: '" + $("#searchCampus").val() + "'");
+                        $("#searchCampus").val('');
+                        result.forEach(function (entry) {
+                            $('#campusTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                        });
+                    }
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
         })
     })
 </script>

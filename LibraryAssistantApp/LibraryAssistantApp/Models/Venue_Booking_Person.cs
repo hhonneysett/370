@@ -16,15 +16,13 @@ namespace LibraryAssistantApp.Models
     {
         public string Person_ID { get; set; }
         public int Venue_Booking_Seq { get; set; }
-        public int Certificate_Ind { get; set; }
         public string Attendee_Type { get; set; }
         public string Attendee_Status { get; set; }
-        public Nullable<int> Document_Seq { get; set; }
+        public string Trainer { get; set; }
     
         public virtual Attendee_Status Attendee_Status1 { get; set; }
         public virtual Attendee_Type Attendee_Type1 { get; set; }
-        public virtual Document_Repository Document_Repository { get; set; }
-        public virtual Venue_Booking Venue_Booking { get; set; }
         public virtual Registered_Person Registered_Person { get; set; }
+        public virtual Venue_Booking Venue_Booking { get; set; }
     }
 }

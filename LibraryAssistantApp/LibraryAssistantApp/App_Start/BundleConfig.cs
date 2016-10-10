@@ -9,6 +9,8 @@ namespace LibraryAssistantApp
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                        "~/Scripts/bxSlider/jquery.bxslider.min.js",
+                        "~/Scripts/DataTable/datatables.min.js",
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.timepicker.min.js",
                         "~/Scripts/notify.min.js",
@@ -18,7 +20,7 @@ namespace LibraryAssistantApp
                         "~/Scripts/sprintf.js",
                         "~/Scripts/jspdf.js",
                         "~/Script/bootbox.js",
-                        "~/Script/jquery.ambiance.js"));
+                        "~/Scripts/jquery.ambiance.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",
@@ -46,7 +48,8 @@ namespace LibraryAssistantApp
                         "~/Content/font-awesome.css",
                         "~/Content/jquery.timepicker.min.css",
                         "~/Content/dhtmlxscheduler.css",
-                        "~/Content/jquery.ambiance.css"));
+                        "~/Content/jquery.ambiance.css",
+                        "~/Content/jquery.bxslider.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/headScripts").Include(
                 "~/Scripts/Scheduler/dhtmlxscheduler.js",

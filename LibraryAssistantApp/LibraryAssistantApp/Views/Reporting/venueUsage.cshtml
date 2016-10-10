@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<LibraryAssistantApp.Models.VenueUsageModel>
 
 @{
-    ViewBag.Title = "venueUsage";
+    ViewBag.Title = "Venue Usage Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
 
 <h2>Venue Usuage Report</h2>
 
@@ -11,45 +14,44 @@
 
 
 <div class="row">
-    <div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table class="table" id="report">
-                    <thead>
-                        <tr>
-                            <th>Campus</th>
-                            <th>
-                                Building
-                            </th>
-                            <th>
-                                Venue Name
-                            </th>
-                            <th>
-                                Bookings Made
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.campus</td>
-                                <td>@item.building</td>
-                                <td>@item.venue.Venue_Name</td>
-                                <td>@item.count</td>
-                            </tr>
+    <div class="col-md-12">
+        <table id="report">
+            <thead>
+                <tr>
+                    <th>Campus</th>
+                    <th>
+                        Building
+                    </th>
+                    <th>
+                        Venue Name
+                    </th>
+                    <th>
+                        Bookings Made
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.campus</td>
+                        <td>@item.building</td>
+                        <td>@item.venue.Venue_Name</td>
+                        <td>@item.count</td>
+                    </tr>
 
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                }
+            </tbody>
+        </table>
 
-        <button id="btnExport" onclick="fnExcelReport();" class="btn btn-default"> EXPORT TO EXCEL </button>
-        <button onclick="javascript:demoFromHTML()" class="btn btn-default">EXPORT TO PDF</button>
+        <hr />
+
+        <button onclick="javascript:demoFromHTML()" class="btn btn-default"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
 
     </div>
 </div>
+
+
 
 <iframe id="txtArea1" style="display:none"></iframe>
 
@@ -89,8 +91,13 @@
 
 <script type="text/javascript">
     function demoFromHTML() {
-        $('#report').tableExport({ type: 'pdf', escape: 'false' });
+        $('#report').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7' });
     };
+
+    $(document).ready(function () {
+        //initiate datatable
+        $('#report').DataTable();
+    })
 </script>
 
 

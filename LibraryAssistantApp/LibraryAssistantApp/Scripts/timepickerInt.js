@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     $('input.timepicker').timepicker({});
 });
+
 $('.timepicker').timepicker({
     timeFormat: 'h:mm p',
     interval: 30,

@@ -17,12 +17,9 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Venue()
         {
-            this.Calender_Exception = new HashSet<Calender_Exception>();
-            this.Questionnaires = new HashSet<Questionnaire>();
+            this.Venue_Booking = new HashSet<Venue_Booking>();
             this.Venue_Characteristic = new HashSet<Venue_Characteristic>();
             this.Venue_Problem = new HashSet<Venue_Problem>();
-            this.Roles = new HashSet<Role>();
-            this.Venue_Booking = new HashSet<Venue_Booking>();
         }
     
         public int Campus_ID { get; set; }
@@ -33,18 +30,15 @@ namespace LibraryAssistantApp.Models
         public string Venue_Type { get; set; }
         public int Capacity { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Calender_Exception> Calender_Exception { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Questionnaire> Questionnaires { get; set; }
+        public virtual Building Building { get; set; }
+        public virtual Building_Floor Building_Floor { get; set; }
+        public virtual Campus Campu { get; set; }
         public virtual Venue_Type Venue_Type1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Venue_Booking> Venue_Booking { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Characteristic> Venue_Characteristic { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Problem> Venue_Problem { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Role> Roles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Venue_Booking> Venue_Booking { get; set; }
     }
 }

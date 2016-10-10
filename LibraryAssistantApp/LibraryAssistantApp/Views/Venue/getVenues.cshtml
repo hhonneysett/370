@@ -10,17 +10,29 @@
 
             @if (Model.Any())
             {
-                <label class="control-label">Results:</label>
+                <label id="venueResults" class="control-label">Results:</label>
 
                 <div class="panel panel-default">
                     <table class="table table-hover" id="venueTable">
-                        <thead></thead>
+                        <thead>
+                            <tr>
+                                <th>Venue Name</th>
+                                <th>Type</th>
+                                <th>Capacity</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             @foreach (Venue venue in Model)
                             {
                                 <tr id="@venue.Venue_ID">
                                     <td>
                                         @venue.Venue_Name
+                                    </td>
+                                    <td>
+                                        @venue.Venue_Type
+                                    </td>
+                                    <td>
+                                        @venue.Capacity
                                     </td>
                                 </tr>
                             }
@@ -30,6 +42,8 @@
             }
             else
             {
+                <label id="venueResults" class="control-label">Results:</label>
+
                 <div class="panel panel-default">
                     <table class="table table-hover" id="venueTable">
                         <thead>
@@ -76,6 +90,55 @@
 
         $("#myModal .modal-body").load(target, function () {
             $("#myModal").modal("show");
+        });
+    })
+
+    //delete a venue modal
+    $("#btnDeleteVenue").click(function () {
+        var target = '/Venue/deleteVenue/?id=' + $("#venueTable tbody tr.alert-info").prop('id')
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //update a venue modal
+    $("#btnUpdateVenue").click(function () {
+        var target = '/Venue/updateVenue/?id=' + $("#venueTable tbody tr.alert-info").prop('id')
+
+        $("#myModal .modal-body").load(target, function () {
+            $("#myModal").modal("show");
+        });
+    })
+
+    //search venues
+    $("#btnSearchVenues").click(function () {
+        $.ajax({
+            type: 'GET',
+            url: '/Venue/searchVenue',
+            data: { search: $("#searchVenue").val() },
+            success: function (result) {
+
+                $("#venueTable tbody").empty();
+                $("#venueTable thead").empty();
+
+                if (!$.isArray(result) || !result.length) {
+                    $("#venueTable tbody").empty();
+                    $("#venueTable thead").append('<tr><th>No Matching Building Floors</th></tr>')
+                    $("#venueResults").text("Results: '" + $("#searchVenue").val() + "'");
+                    $("#searchVenue").val('');
+                } else {
+                    $("#venueResults").text("Results: '" + $("#searchVenue").val() + "'");
+                    $("#searchVenue").val('');
+                    $("#venueTable thead").append('<tr><th>Venue Name</th><th>Type</th><th>Capacity</th></tr>')
+                    result.forEach(function (entry) {
+                        $('#venueTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td><td>' + entry.vtype + '</td><td>' + entry.vcapacity + '</tr>');
+                    });
+                }
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
         });
     })
 </script>

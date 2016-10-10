@@ -1,64 +1,70 @@
 ﻿@model IEnumerable<LibraryAssistantApp.Models.venueRating>
 
-<div id="availableVenues" class="col-md-12">
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
+
+<div id="detailsTwo" class="row">
     @{
         if (Model.Any())
         {
-            <div id="venueDetails"><span id="venueArrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select A Venue:</b></div>
-
+            <div id="headingTwo"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="venueSummary">Select Venue:</b></div>
             <hr />
-
-            <div id="toggleVenue">
-                <div class="panel panel-default">
-                    <table class="table" id="venueTable">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.venue.Venue_Name)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.venue.Capacity)
-                                </th>                                
-                                <th>
-                                    @Html.DisplayNameFor(model => model.venue.Venue_Type1.Description)
-                                </th>
-                                <th>
-                                    Characteristics
-                                </th>
-                                <th>
-                                    Match
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr onclick="AssignButtonClicked(this)" data-assigned-id="@item.venue.Venue_ID">
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.venue.Venue_Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.venue.Capacity)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.venue.Venue_Type1.Description)
-                                    </td>
-                                    <td>
-                                        @item.characteristics
-                                    </td>
-                                    <td>
-                                        @item.rating %
-                                    </td>
+            <div id="toggleTwo" class="row">
+                <div class="col-md-12">
+                        <table id="venueTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Building
+                                    </th>
+                                    <th>
+                                        Floor
+                                    </th>
+                                    <th>
+                                        Venue
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.venue.Capacity)
+                                    </th>
+                                    <th>
+                                        Characteristics
+                                    </th>
+                                    <th>
+                                        Match
+                                    </th>
                                 </tr>
-                            }
-                        </tbody>                                               
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr id="@item.venue.Venue_ID">
+                                        <td class="building">
+                                            @item.building
+                                        </td>
+                                        <td class="floor">
+                                            @item.floor
+                                        </td>
+                                        <td class="venue">
+                                            @item.venue.Venue_Name
+                                        </td>
+                                        <td>
+                                            @item.venue.Capacity
+                                        </td>
+                                        <td>
+                                            @item.characteristics
+                                        </td>
+                                        <td>
+                                            @item.rating %
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
 
-                    <input type="button" id="btnProceed" class="btn btn-default" value="Proceed"/>
-            </div>
-            
-            
+                    <input type="button" id="trainingProTwo" class="btn btn-default" value="Proceed" />
+                </div>
+            </div>            
         }
         else
         {
@@ -66,3 +72,68 @@
         }
     }
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //initiate datatable
+        $('#venueTable').DataTable({
+            select: true,
+        });
+
+        //enable action buttons on click
+        $(document).on('click', '#venueTable tbody tr', function () {
+            var selected = $(this).hasClass("selected");
+            $("#trainingProTwo").prop('disabled', false);
+
+            if (!selected) {
+                $("#trainingProTwo").prop('disabled', true);
+            }
+        })
+
+        //call function on button proceed click
+        $("#trainingProTwo").click(function () {
+            $('#possibleTrainers').empty();
+            $("#detailsFour").empty();
+            $.ajax({
+                type: 'GET',
+                url: '/Trainer/addTrainingSessionDetails',
+                data: { id: $("#venueTable tbody tr.selected").prop('id') },
+                success: function (result) {
+
+                    //display the available venues from a partial
+                    $('#detailsThree').replaceWith(result);
+                    $("#toggleTwo").toggle(800);
+                    $("#detailsTwo span").removeClass("glyphicon glyphicon-triangle-bottom");
+                    $("#detailsTwo span").addClass("glyphicon glyphicon-triangle-right");
+                    $("#trainingProThree").attr('disabled', 'disabled');
+
+                    //append details table
+                    var table = $("#bookingDetails");
+                    var row = $("#venueTable tbody tr.selected");
+                    table.empty();
+                    table.append("<tr><td><b>Topic:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#trainingTopic").children(":selected").val() + "</td>");
+                    table.append("<tr><td><b>Date:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#datepicker").val() + "</td></tr>");
+                    table.append("<tr><td><b>Campus:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("#trainingCampus").children(":selected").val() + "</td></tr>");
+                    table.append("<tr><td><b>Building:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + row.find(".building").text() + "</td></tr>");
+                    table.append("<tr><td><b>Floor:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + row.find(".floor").text() + "</td></tr>")
+                    table.append("<tr><td><b>Venue:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + row.find(".venue").text() + "</td></tr>")
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+
+        //toggle details when clicked
+        $("#headingTwo").click(function () {
+            $("#toggleTwo").toggle(800);
+            if ($("#headingTwo span").hasClass("glyphicon glyphicon-triangle-right")) {
+                $("#headingTwo span").removeClass("glyphicon glyphicon-triangle-right");
+                $("#headingTwo span").addClass("glyphicon glyphicon-triangle-bottom");
+            } else {
+                $("#headingTwo span").removeClass("glyphicon glyphicon-triangle-bottom");
+                $("#headingTwo span").addClass("glyphicon glyphicon-triangle-right");
+            }
+        });
+    })
+</script>

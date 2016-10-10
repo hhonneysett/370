@@ -14,11 +14,19 @@ namespace LibraryAssistantApp.Models
     
     public partial class Common_Problem
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Common_Problem()
+        {
+            this.Venue_Problem = new HashSet<Venue_Problem>();
+        }
+    
         public int Common_Problem_ID { get; set; }
         public string Common_Problem_Name { get; set; }
         public string Description { get; set; }
         public int Common_Problem_Type_ID { get; set; }
     
         public virtual Common_Problem_Type Common_Problem_Type { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Venue_Problem> Venue_Problem { get; set; }
     }
 }

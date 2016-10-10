@@ -1,0 +1,614 @@
+﻿
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var time = (string)ViewBag.Time;
+    var pictures = (IEnumerable<string>)ViewBag.Pictures;
+    var trainingduration = (List<string>)ViewBag.TrainingDuration;
+    var openTime = (string)ViewBag.OpenTime;
+    var closeTime = (string)ViewBag.CloseTime;
+}
+
+<h2>Settings</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-4" style="height:100%">
+        <div class="panel panel-default">
+            <table class="table">
+                <tbody>
+                    <tr style="padding-bottom:10px">
+                        <td><b>Scheduled Email Time:</b></td>
+                        <td style="padding-left:5px; padding-bottom:5px"><input class="settingTime form-control" value="@time" id="settingTime" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="panel-body">
+                <button class="btn btn-default form-group" id="btnSaveTime"><span class="fa fa-floppy-o"></span> Save Time</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                <b>Pictures:</b>
+            </div>
+            @if (pictures.Any())
+            {
+                int counter = 1;
+
+                <table class="table table-hover text-center" id="pictureTable">
+                    <tbody>
+                        @foreach (var picture in pictures)
+                        {
+                            <tr id="@picture">
+                                <td><a class="pic" id="@picture">Image @counter</a></td>
+                                <td style="padding-left:5px; padding-bottom:5px"><button id="@picture" class="removePicture"><span class="fa fa-times"></span> Remove</button></td>
+                            </tr>
+
+                            counter = counter + 1;
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <table class="table-hover" id="pictureTable">
+                    <tr><td>No Pictures</td></tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <form id="uploader">
+            <div class="panel panel-default">
+                <table class="table text-center">
+                    <tr>
+                        <td><b>Add Pictures:</b></td>
+                    </tr>
+                </table>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <input id="fileInput" type="file" multiple accept='image/*'>
+
+                    </div>
+                    <div class="">
+                        <input type="submit" value="Upload file" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="text-center">
+                    <label class="control-label">Training Session Duration:</label>
+                </div>
+            </div>
+            @if (trainingduration.Any())
+            {
+                <table class="table table-hover text-center" id="trainingTable">
+                    <tbody>
+                        @foreach (var t in trainingduration)
+                        {
+                            <tr id="@t">
+                                <td>@t</td>
+                                <td style="padding-left:5px; padding-bottom:5px"><button id="@t" class="removeTrainingTime"><span class="fa fa-times"></span> Remove</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <table class="table-hover" id="pictureTable">
+                    <tr><td>No Training Duration</td></tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <form id="addTrainDur">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="text-center form-group" style="padding-bottom:5px; border-bottom:thin solid lightgrey">
+                        <label>Add Training Session Duration:</label>
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-md-12" style="padding-bottom:10px">
+                            <div class="col-md-6">
+                                <label>Hours</label>
+                                <input id="Thours" name="value" value=0 size=3 class="center-block" type="number" min="0" max="24" />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Minutes</label>
+                                <input id="Tminutes" name="value" value=0 size=2 class="center-block" type="number" min="0" max="60" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-default" id="addTDur">Add Duration</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="openTimeForm">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group text-center" style="padding-bottom:5px; border-bottom:thin solid lightgrey">
+                        <label>Library Start Time:</label>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-2">Open Time:</label>
+                        <div class="col-md-10">
+                            <input id="openTime" class="form-control" value="@openTime" name="openTime"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10"><button class="btn btn-default" id="saveOpenTime"><span class="fa fa-save"></span> Save</button></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-4">
+        <form id="closeTimeForm">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group text-center" style="padding-bottom:5px; border-bottom:thin solid lightgrey">
+                        <label>Library End Time:</label>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-2">Close Time:</label>
+                        <div class="col-md-10">
+                            <input id="closeTime" class="form-control" value="@closeTime" name="closeTime"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10"><button class="btn btn-default" id="saveCloseTime"><span class="fa fa-save"></span> Save</button></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Image Preview</h4>
+            </div>
+            <div id="picContent" class="modal-body" style="background-size: contain;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 0;
+            padding-top: 40.64%;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //initiate timepicker
+    $(document).ready(function () {
+
+        //convert time to seconds
+        function timeToSeconds(time) {
+            time = time.split(/:/);
+            return time[0] * 3600 + time[1] * 60 + time[2];
+        }
+
+        //add a custom validation rule to validate date
+        jQuery.validator.addMethod("validateOpenTime", function (value, element) {
+            var closing = ($("#closeTime").val()).substring(0,5);
+            var closing = closing + ":00";
+            var opening = value.substring(0,5) + ":00";
+            var cClosing = timeToSeconds(closing);
+            var cOpening = timeToSeconds(opening);
+
+            if (cOpening < cClosing)
+                return this.optional(element) || true;
+            else return this.optional(element) || false;
+        });
+
+        //add a custom validation rule to validate date
+        jQuery.validator.addMethod("validateCloseTime", function (value, element) {
+            var opening = ($("#openTime").val()).substring(0, 5);
+            var opening = opening + ":00";
+            var closing = value.substring(0, 5) + ":00";
+            var cClosing = timeToSeconds(closing);
+            var cOpening = timeToSeconds(opening);
+
+            if (cOpening < cClosing)
+                return this.optional(element) || true;
+            else return this.optional(element) || false;
+        });
+
+        //initiate timepicker
+        $('input.settingTime').timepicker({
+            timeFormat: 'h:mm p',
+            interval: 30,
+            dynamic: true,
+            dropdown: true,
+            scrollbar: true
+        });
+
+        //delete picture
+        $(document).on('click', ".removePicture", (function () {
+
+            var id = $(this).prop('id');
+
+            $.ajax({
+                type: 'POST',
+                url: '/Settings/deletePicture',
+                data: { filename: id },
+                success: function (result) {
+                    $("#pictureTable tbody").empty();
+                    var counter = 0;
+                    result.forEach(function (entry) {
+                        counter = counter + 1;
+                        $("#pictureTable tbody").append("<tr id=" + entry + "><td><a class='pic' id='" + entry + "'>Image " + counter + "</a></td>" + '<td style="padding-left:5px; padding-bottom:5px"><button id=' + entry + ' class="removePicture"><span class="fa fa-times"></span> Remove</button></td>')
+                    })
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }));
+
+        //show picture
+        $(document).on("click", ".pic", function (e) {
+            $('#picContent').css('background-image', 'url(/img/' + $(this).prop('id') + ')');
+            $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+        })
+
+        //update scheduled time
+        $("#btnSaveTime").click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '/Settings/updateTime',
+                data: { time: $('#settingTime').val() },
+                success: function (result) {
+                    //display notification
+                    $.ambiance({
+                        message: "Scheduled Time Updated!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            })
+        })
+
+        //delete training duration
+        $(document).on('click', ".removeTrainingTime", (function () {
+
+            var id = $(this).prop('id');
+
+            $.ajax({
+                type: 'POST',
+                url: '/Settings/deleteTrainingDuration',
+                data: { time: id },
+                success: function (result) {
+                    $("#trainingTable tbody").empty();
+                    result.forEach(function (entry) {
+                        $("#trainingTable tbody").append("<tr id='" + entry + "'><td>" + entry + "</td><td style='padding-left:5px; padding-bottom:5px'><button id='" + entry + "' class='removeTrainingTime'><span class='fa fa-times'></span> Remove</button></td>")
+                    })
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }));
+
+        //add training duration
+        $("#addTDur").click(function () {
+            //check validation
+            var check = $("#addTrainDur").valid();
+
+            //run script if valid
+            if (check)
+            {
+                //get values of hour and minutes
+                var hour = $('#Thours').val();
+                var min = $('#Tminutes').val();
+
+                if (hour == 0 && min == 0) {
+                    //display notification
+                    $.ambiance({
+                        message: 'Invalid Duration!',
+                        title: "Error!",
+                        type: "error",
+                        timeout: 5
+                    });
+                    return;
+                }
+
+                //run ajax
+                $.ajax({
+                    url: '/Settings/addTrainingDuration',
+                    type: 'POST',
+                    data: { hour: hour, min: min },
+                    success: function (result) {
+
+                        //check for clash
+                        if (!result) {
+                            //display notification
+                            $.ambiance({
+                                message: 'Duration Already Exists!',
+                                title: "Error!",
+                                type: "error",
+                                timeout: 5
+                            });
+
+                            //clear values
+                            $('#Thours').val(0);
+                            $('#Tminutes').val(0);
+
+                            return;
+                        }
+
+                        $("#trainingTable tbody").empty();
+                        result.forEach(function (entry) {
+                            $("#trainingTable tbody").append("<tr id='" + entry + "'><td>" + entry + "</td><td style='padding-left:5px; padding-bottom:5px'><button id='" + entry + "' class='removeTrainingTime'><span class='fa fa-times'></span> Remove</button></td>")
+                        })
+
+                        //display notification
+                        $.ambiance({
+                            message: 'Training Session Duration Added!',
+                            title: "Success!",
+                            type: "success",
+                            timeout: 5
+                        });
+
+                        //clear values
+                        $('#Thours').val(0);
+                        $('#Tminutes').val(0);
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                })
+            }           
+        })
+
+        //initiate training duration validation
+        $("#addTrainDur").validate({
+            errorClass: "my-error-class",
+        });
+
+        //initiate open tme timepicker
+        $("#openTime").timepicker({
+            timeFormat: 'HH:mm'
+        });
+
+        //initiate close tme timepicker
+        $("#closeTime").timepicker({
+            timeFormat: 'HH:mm'
+        });
+
+        //initiate open time validation
+        $("#openTimeForm").validate({
+            rules: {
+                openTime: {
+                    validateOpenTime: true,
+                    required: true,
+                }
+            },
+            errorClass: "my-error-class",
+            messages: {
+                openTime: "Opening time must be before closing"
+            }
+        })
+
+        //initiate open time validation
+        $("#closeTimeForm").validate({
+            rules: {
+                closeTime: {
+                    validateCloseTime: true,
+                    required: true,
+                }
+            },
+            errorClass: "my-error-class",
+            messages: {
+                closeTime: "Opening time must be before closing"
+            }
+        })
+
+        //save open time
+        $("#saveOpenTime").click(function () {
+            var check = $("#openTimeForm").valid();
+            if (check)
+            {
+                $.ajax({
+                    url: '/Settings/saveOpenTime',
+                    data: { time: $("#openTime").val() },
+                    type: 'POST',
+                    success: function (result) {
+                        if (result) {
+                            //display notification
+                            $.ambiance({
+                                message: 'Opening Time Saved!',
+                                title: "Success!",
+                                type: "success",
+                                timeout: 5
+                            });
+                        } else {
+                            //display notification
+                            $.ambiance({
+                                message: 'Invalid Opening Time!',
+                                title: "Error!",
+                                type: "error",
+                                timeout: 5
+                            });
+                        }
+                    }
+                })
+            }
+        })
+
+        //save close time
+        $("#saveCloseTime").click(function () {
+            var check = $("#closeTimeForm").valid();
+            if (check) {
+                $.ajax({
+                    url: '/Settings/saveCloseTime',
+                    data: { time: $("#closeTime").val() },
+                    type: 'POST',
+                    success: function (result) {
+                        if (result) {
+                            //display notification
+                            $.ambiance({
+                                message: 'Closing Time Saved!',
+                                title: "Success!",
+                                type: "success",
+                                timeout: 5
+                            });
+                        } else {
+                            //display notification
+                            $.ambiance({
+                                message: 'Invalid Closing Time!',
+                                title: "Error!",
+                                type: "error",
+                                timeout: 5
+                            });
+                        }
+                    }
+                })
+            }
+        })
+
+        //disable opening time form submit
+        var openingForm = document.getElementById("openTimeForm");
+        openingForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            // actual logic, e.g. validate the form
+        });
+
+        //disable closing time form submit
+        var closingForm = document.getElementById("closeTimeForm");
+        closingForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            // actual logic, e.g. validate the form
+        });
+    });
+
+    //upload file
+    window.onload = function () {
+        document.getElementById('uploader').onsubmit = function () {
+            var formdata = new FormData(); //FormData object
+            var fileInput = document.getElementById('fileInput');
+            //Iterating through each files selected in fileInput
+            for (i = 0; i < fileInput.files.length; i++) {
+                //Appending each file to FormData object
+                formdata.append(fileInput.files[i].name, fileInput.files[i]);
+            }
+            //Creating an XMLHttpRequest and sending
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Settings/Upload');
+            xhr.send(formdata);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+
+                    var arr = JSON.parse(xhr.responseText);
+
+                    if (!arr)
+                    {
+                        //display notification
+                        $.ambiance({
+                            message: 'Invalid Image File!',
+                            title: "Error!",
+                            type: "error",
+                            timeout: 5
+                        });
+
+                        $("#fileInput").val('');
+
+                        return;
+                    }
+
+                    //display notification
+                    $.ambiance({
+                        message: 'Succesfully Uploaded Files!',
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
+                    });
+
+                    $("#pictureTable tbody").empty();
+                    var counter = 0;
+
+
+                    arr.forEach(function (entry) {
+                        counter = counter + 1;
+                        $("#pictureTable tbody").append("<tr id=" + entry + "><td><a class='pic' id='" + entry + "'>Image " + counter + "</a></td>" + '<td style="padding-left:5px; padding-bottom:5px"><button id=' + entry + ' class="removePicture"><span class="fa fa-times"></span> Remove</button></td>')
+                    })
+
+                    $("#fileInput").val('');
+                }
+            }
+            return false;
+        }
+    }
+
+    //duration picker
+    $(function () {
+        $('#seconds').spinner({
+            spin: function (event, ui) {
+                if (ui.value >= 60) {
+                    $(this).spinner('value', ui.value - 60);
+                    $('#minutes').spinner('stepUp');
+                    return false;
+                } else if (ui.value < 0) {
+                    $(this).spinner('value', ui.value + 60);
+                    $('#minutes').spinner('stepDown');
+                    return false;
+                }
+            }
+        });
+        $('#minutes').spinner({
+            spin: function (event, ui) {
+                if (ui.value >= 60) {
+                    $(this).spinner('value', ui.value - 60);
+                    $('#hours').spinner('stepUp');
+                    return false;
+                } else if (ui.value < 0) {
+                    $(this).spinner('value', ui.value + 60);
+                    $('#hours').spinner('stepDown');
+                    return false;
+                }
+            }
+        });
+        $('#hours').spinner({
+            min: 0
+        });
+    });
+</script>

@@ -33,10 +33,17 @@ namespace LibraryAssistantApp.Models
 
         private static MvcHtmlString FormatNotification(string message, string classStyle)
         {
-            var div = new TagBuilder("div");
-            div.AddCssClass("alert alert-" + classStyle);
-            div.SetInnerText(message);
-            return MvcHtmlString.Create(div.ToString());
+            var row = new TagBuilder("div");
+            var col = new TagBuilder("div");
+            var span1 = new TagBuilder("span");
+            var span2 = new TagBuilder("span");
+            col.AddCssClass("alert alert-" + classStyle);
+            span1.AddCssClass("glyphicon glyphicon-exclamation-sign");
+            span2.AddCssClass("sr-only");
+            span2.SetInnerText("Error:");
+            col.InnerHtml = span1.ToString() + span2.ToString() + " " + message;
+            row.InnerHtml = col.ToString();
+            return MvcHtmlString.Create(row.ToString());
         }
 
     }

@@ -21,8 +21,8 @@ namespace LibraryAssistantApp.Models
         public int Period_Type_ID { get; set; }
         public string Day_Of_Week_ID { get; set; }
     
+        public virtual Campus Campu { get; set; }
         public virtual Day_Of_Week Day_Of_Week { get; set; }
         public virtual Period_Type Period_Type { get; set; }
-        public virtual Campus Campu { get; set; }
     }
 }

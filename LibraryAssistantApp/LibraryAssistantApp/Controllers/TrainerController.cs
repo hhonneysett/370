@@ -12,16 +12,17 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace LibraryAssistantApp.Controllers
 {
-    [Authorize(Roles ="Admin, Employee")]
+    //[Authorize(Roles ="Admin, Employee")]
     public class TrainerController : Controller
     {
         //initiate instance of database
         LibraryAssistantEntities db = new LibraryAssistantEntities();
         
-        //display all existing categories
+        //view categories
         [HttpGet]
         public ActionResult viewCategory ()
         {
@@ -35,12 +36,14 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
+        //add category - get
         [HttpGet]
         public ActionResult addCategory()
         {
             return View();
         }
 
+        //add category - post
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult addCategory([Bind(Exclude ="categoryId")]CategoryModel model)
@@ -83,6 +86,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
+        //update category - get
         [HttpGet]
         public ActionResult updateCategory(int id)
         {
@@ -97,6 +101,7 @@ namespace LibraryAssistantApp.Controllers
             return View(model);
         }
 
+        //update category - post
         [HttpPost]
         public ActionResult updateCategory(Category model, string submitButton)
         {           
@@ -145,6 +150,7 @@ namespace LibraryAssistantApp.Controllers
             }                   
         }
 
+        //delete category - get
         [HttpGet]
         public ActionResult deleteCategory(int id)
         {
@@ -159,6 +165,7 @@ namespace LibraryAssistantApp.Controllers
             return View(model);
         }
 
+        //delete category - post
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult deleteCategory()
@@ -194,6 +201,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
+        //view topic
         [HttpGet]
         public ActionResult viewTopic()
         {
@@ -205,6 +213,7 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
+        //get cat topics
         [HttpGet]
         public JsonResult getCatTopic(int id)
         {
@@ -225,6 +234,7 @@ namespace LibraryAssistantApp.Controllers
             return Json(rows, JsonRequestBehavior.AllowGet);
         }
 
+        //update topic - get
         [HttpGet]
         public ActionResult updateTopic(int id)
         {
@@ -252,6 +262,7 @@ namespace LibraryAssistantApp.Controllers
             return View(model);
         }
 
+        //update topic - post
         [HttpPost]
         public ActionResult updateTopic(Topic model, string submitButton, int category)
         {
@@ -413,6 +424,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
+        //add topic - get
         [HttpGet]
         public ActionResult addTopic()
         {
@@ -427,6 +439,7 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
+        //add topic - post
         [HttpPost]
         public ActionResult addTopic(Topic model, int category)
         {
@@ -489,6 +502,7 @@ namespace LibraryAssistantApp.Controllers
             }                   
         }
 
+        //delete topic - get
         [HttpGet]
         public ActionResult deleteTopic(int id)
         {
@@ -514,6 +528,7 @@ namespace LibraryAssistantApp.Controllers
             return View(topic);
         }
 
+        //delete topic - post
         [HttpPost]
         public ActionResult deleteTopic()
         {
@@ -541,6 +556,7 @@ namespace LibraryAssistantApp.Controllers
             return RedirectToAction("viewTopic");
         }
 
+        //add training session
         [HttpGet]
         public ActionResult addTrainingSession()
         {
@@ -568,9 +584,50 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
+        //add training session - new
+        public ActionResult addNewTrainingSession()
+        {
+            //get list of existing categories
+            var categories = from c in db.Categories
+                             select c;
+            //get list of existing campuses
+            var campuses = from c in db.Campus
+                           select c;
+
+            //get list of characterisstics
+            var characteristics = from c in db.Characteristics
+                                  select c;
+
+            //read XML
+            var path = Path.Combine(Server.MapPath("~"), "settings.xml");
+            XElement settings = XElement.Load(path);
+            //get training session durations
+            List<string> trainingdurations = (from d in settings.Elements("trainingduration")
+                                              select d.Value).ToList();
+            trainingdurations.Sort();
+
+            ViewBag.TrainingDuration = trainingdurations;
+
+            //assign list of categories to viewbag
+            ViewBag.Categories = categories;
+
+
+            //assign list of campuses to viewbag
+            ViewBag.Campuses = campuses;
+
+            //assing list of characteristics to viewbag
+            ViewBag.Characteristics = characteristics;
+
+            return View();
+        }
+
+        //get training venues
         [HttpGet]
         public ActionResult getTrainingVenues(string model, string characteristics)
         {
+            var buildings = db.Buildings.ToList();
+            var floors = db.Building_Floor.ToList();
+
             //deserialise the training session model
             TrainingSessionModel sessionDetails = Deserialise<TrainingSessionModel>(model);
 
@@ -582,26 +639,39 @@ namespace LibraryAssistantApp.Controllers
 
             DateTime date = Convert.ToDateTime(sessionDetails.startDate);
 
-            TimeSpan duration = new TimeSpan(0, sessionDetails.duration, 0);
+            var duration = (Convert.ToDateTime(sessionDetails.duration)).TimeOfDay;
 
-            DateTime startTime = new DateTime();
-            TimeSpan ts = new TimeSpan(7, 30, 0);
-            startTime = date + ts;
+            //get opening and closing times
+            var path = Path.Combine(Server.MapPath("~"), "settings.xml");
 
-            DateTime endTime = new DateTime();
-            TimeSpan ets = new TimeSpan(17, 00, 0);
-            endTime = date + ets;
+            //read XML
+            XElement settings = XElement.Load(path);
+
+            string openTime = (from d in settings.Elements("opentime")
+                               select d.Value).First();
+
+            string closeTime = (from d in settings.Elements("closetime")
+                                select d.Value).First();
+
+            DateTime pstartTime = Convert.ToDateTime(openTime);
+            var stime = pstartTime.TimeOfDay;
+
+            DateTime pendTime = Convert.ToDateTime(closeTime);
+            var etime = pendTime.TimeOfDay;
+
+            var startTime = Convert.ToDateTime(sessionDetails.startDate) + stime;
+            var endTime = Convert.ToDateTime(sessionDetails.startDate) + etime;
 
             List<timeslot> timeslots = new List<timeslot>();
             int tsCount = 1;
 
-            while ((startTime + duration) < endTime)
+            while ((startTime + duration) <= endTime)
             {
                 timeslot a = new timeslot();
                 a.startDate = startTime;
                 DateTime tempDate = startTime + duration;
-                startTime = tempDate;
-                a.endDate = startTime;
+                startTime = startTime.AddMinutes(30);
+                a.endDate = tempDate;
                 a.id = tsCount;
                 tsCount = tsCount + 1;
                 timeslots.Add(a);
@@ -613,7 +683,7 @@ namespace LibraryAssistantApp.Controllers
             {
                 venueTimeslot vt = new venueTimeslot();
                 vt.timeslot = t;
-                vt.venues = db.findBookingVenuesFunc(t.startDate, t.endDate, "Training", sessionDetails.Campus_ID).ToList() ;
+                vt.venues = db.findBookingVenuesFunc(t.startDate, t.endDate, "Training", sessionDetails.campus).ToList() ;
                 timeslotList.Add(vt);
             }
 
@@ -644,11 +714,6 @@ namespace LibraryAssistantApp.Controllers
                 //get venue id for available venues
                 var venueId = (from a in distinctVenue
                               select a.Venue_ID).ToList();
-
-                //get venue characteristic objects for venues
-                //var venueChar = (from vc in db.Venue_Characteristic
-                //                 where venueId.Contains(vc.Venue_ID)
-                //                 select vc).ToList();
 
                 var venueChar = db.Venue_Characteristic.Where(p => venueId.Contains(p.Venue_ID)).Include(v => v.Characteristic);
 
@@ -693,11 +758,15 @@ namespace LibraryAssistantApp.Controllers
 
                     //add the venue and value to the venue rating list
                     decimal rating = (Convert.ToDecimal(loopCounter) / Convert.ToDecimal(charCount)) * 100m;
+                    var building = buildings.Where(b => b.Building_ID == venue.Building_ID).First();
+                    var floor = floors.Where(f => f.Building_Floor_ID == venue.Building_Floor_ID).First();
                     venueRating a = new venueRating
                     {
                         venue = venue,
                         rating = Convert.ToDouble(Math.Round(rating)),
                         characteristics = matchCharString,
+                        building = building.Building_Name,
+                        floor = floor.Floor_Name,
                     };
                     venueRatingList.Add(a);
                 }
@@ -721,11 +790,15 @@ namespace LibraryAssistantApp.Controllers
                                 matchCharString = matchCharString + ", " + item.Characteristic.Characteristic_Name;
                             }
                         }
+                        var building = buildings.Where(b => b.Building_ID == v.Building_ID).First();
+                        var floor = floors.Where(f => f.Building_Floor_ID == v.Building_Floor_ID).First();
                         venueRating a = new venueRating
                         {
                             venue = v,
                             rating = 0,
                             characteristics = matchCharString,
+                            building = building.Building_Name,
+                            floor = floor.Floor_Name,
                         };
                         venueRatingList.Add(a);
                     }
@@ -747,49 +820,38 @@ namespace LibraryAssistantApp.Controllers
                         {
                             matchCharString = matchCharString + ", " + item.Characteristic.Characteristic_Name;
                         }
-                    }
+                    }                    
+                    var building = buildings.Where(b => b.Building_ID == v.Building_ID).First();
+                    var floor = floors.Where(f => f.Building_Floor_ID == v.Building_Floor_ID).First();
                     venueRating a = new venueRating
                     {
                         venue = v,
                         rating = 100,
                         characteristics = matchCharString,
+                        building = building.Building_Name,
+                        floor = floor.Floor_Name,
                     };
                     venueRatingList.Add(a);
                 }
-            }           
+            }
 
             return PartialView(venueRatingList);          
         }
 
+        //show further training session details
         [HttpGet]
-        public PartialViewResult addTrainingSessionDetails()
+        public PartialViewResult addTrainingSessionDetails(int id)
         {
             //create local variable of selected venue
-            var venue = (Venue)Session["venueSelect"];
+            var venue = db.Venues.Where(v => v.Venue_ID == id).First();
+            ViewBag.Venue = venue;
+            Session["venueSelect"] = venue;
 
             //create local variable of session details
             var session = (TrainingSessionModel)Session["sessionDetails"];
 
             //create local variable of venue timeslot lists
             var timeslotList = (List<venueTimeslot>)Session["timeslotList"];
-
-            //get building details and assing to a viewbag
-            var building = (from b in db.Buildings
-                            where b.Building_ID.Equals(venue.Building_ID)
-                            select b.Building_Name).FirstOrDefault();
-            ViewBag.building = building;
-
-            //get campus details and assing to a viewbag
-            var campus = (from c in db.Campus
-                          where c.Campus_ID.Equals(session.Campus_ID)
-                          select c.Campus_Name).FirstOrDefault();
-            ViewBag.campus = campus;
-
-            //get topic details and assing to a viewbag
-            var topic = (from t in db.Topics
-                         where t.Topic_Seq.Equals(session.Topic_ID)
-                         select t.Topic_Name).FirstOrDefault();
-            ViewBag.topic = topic;
 
             //get timeslots available for the selected venue
             List<timeslot> available = new List<timeslot>();
@@ -813,6 +875,7 @@ namespace LibraryAssistantApp.Controllers
             return PartialView();
         }
 
+        //get available trainers
         [HttpGet]
         public PartialViewResult getTrainers(int id)
         {
@@ -852,9 +915,11 @@ namespace LibraryAssistantApp.Controllers
                                     where !vbpClash.Contains(a.Person_ID)
                                     select a.Person_ID).ToList();
 
+            var allAvail = db.Registered_Person.Where(t => availableTrainers.Contains(t.Person_ID)).ToList();
+
 
             var trainerTopics = (from a in db.Trainer_Topic
-                                where a.Topic_Seq.Equals(session.Topic_ID)
+                                where a.Topic_Seq.Equals(session.topic)
                                 select a.Registered_Person).ToList();
 
             var topicMatch = (from a in trainerTopics
@@ -863,30 +928,24 @@ namespace LibraryAssistantApp.Controllers
 
             //assing available trainers to session data
             Session["availableTrainers"] = topicMatch;
+            Session["allTrainers"] = allAvail;
 
             //return partial view
             return PartialView();
                                 
         }
 
+        //get additional details
         [HttpGet]
-        public void selectTrainer(string id)
+        public PartialViewResult additionalDetails(string trainer)
         {
-            //get the registered person by provided ID
-            var trainer = (from t in db.Registered_Person
-                           where t.Person_ID.Equals(id)
-                           select t).FirstOrDefault();
-
             //assing registered person to a session variable
             Session["trainer"] = trainer;
-        }
 
-        [HttpGet]
-        public PartialViewResult additionalDetails()
-        {
             return PartialView();
         }
 
+        //repeat check
         [HttpGet]
         public bool reapeatCheck(string repeatType, int multiple)
         {
@@ -895,25 +954,45 @@ namespace LibraryAssistantApp.Controllers
             var startDate = timeslot.startDate;
             var endDate = timeslot.endDate;
             var venue = (Venue)Session["venueSelect"];
-
+            List<Clash> clashlist = new List<Clash>();
 
             switch (repeatType)
             {
                 case "daily":
                     for (int i = 1; i <= multiple; i++)
                     {
-                        var clash = from a in db.Venue_Booking
+                        var clash = (from a in db.Venue_Booking
                                     where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
-                                    select a;
+                                    select a).ToList();
                         if (clash.Any())
                         {
-                            return false;
+
+                            foreach(var c in clash)
+                            {
+                                var vbp = db.Venue_Booking_Person.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
+
+                                var cl = new Clash();
+                                cl.date = c.DateTime_From.ToShortDateString();
+                                cl.timeslot = c.DateTime_From.TimeOfDay.ToString(@"hh\:mm") + " - " + c.DateTime_To.TimeOfDay.ToString(@"hh\:mm");
+                                cl.topic = c.Topic.Topic_Name;
+                                cl.email = vbp.Registered_Person.Person_Email;
+                                cl.trainer = vbp.Registered_Person.Person_Name + " " + vbp.Registered_Person.Person_Surname;
+                                clashlist.Add(cl);
+                            }
+
+                            startDate = startDate.AddDays(1);
+                            endDate = endDate.AddDays(1);
                         }
                         else
                         {                           
                             startDate = startDate.AddDays(1);
                             endDate = endDate.AddDays(1);
                         }
+                    }
+                    if (clashlist.Any())
+                    {
+                        Session["clashlist"] = clashlist;
+                        return false;
                     }
                     return true;
 
@@ -925,7 +1004,21 @@ namespace LibraryAssistantApp.Controllers
                                     select a;
                         if (clash.Any())
                         {
-                            return false;
+                            foreach (var c in clash)
+                            {
+                                var vbp = db.Venue_Booking_Person.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
+
+                                var cl = new Clash();
+                                cl.date = c.DateTime_From.ToShortDateString();
+                                cl.timeslot = c.DateTime_From.TimeOfDay.ToString(@"hh\:mm") + " - " + c.DateTime_To.TimeOfDay.ToString(@"hh\:mm");
+                                cl.topic = c.Topic.Topic_Name;
+                                cl.email = vbp.Registered_Person.Person_Email;
+                                cl.trainer = vbp.Registered_Person.Person_Name + " " + vbp.Registered_Person.Person_Surname;
+                                clashlist.Add(cl);
+                            }
+
+                            startDate = startDate.AddDays(7);
+                            endDate = endDate.AddDays(7);
                         }
                         else
                         {
@@ -933,23 +1026,47 @@ namespace LibraryAssistantApp.Controllers
                             endDate = endDate.AddDays(7);
                         }
                     }
+                    if (clashlist.Any())
+                    {
+                        Session["clashlist"] = clashlist;
+                        return false;
+                    }
                     return true;
 
                 case "monthly":
                     for (int i = 1; i <= multiple; i++)
                     {
-                        var clash = from a in db.Venue_Booking
-                                    where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
-                                    select a;
+                        var clash = (from a in db.Venue_Booking
+                                     where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
+                                     select a).ToList();
                         if (clash.Any())
                         {
-                            return false;
+                            foreach (var c in clash)
+                            {
+                                var vbp = db.Venue_Booking_Person.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
+
+                                var cl = new Clash();
+                                cl.date = c.DateTime_From.ToShortDateString();
+                                cl.timeslot = c.DateTime_From.TimeOfDay.ToString(@"hh\:mm") + " - " + c.DateTime_To.TimeOfDay.ToString(@"hh\:mm");
+                                cl.topic = c.Topic.Topic_Name;
+                                cl.email = vbp.Registered_Person.Person_Email;
+                                cl.trainer = vbp.Registered_Person.Person_Name + " " + vbp.Registered_Person.Person_Surname;
+                                clashlist.Add(cl);
+                            }
+
+                            startDate = startDate.AddMonths(1);
+                            endDate = endDate.AddMonths(1);
                         }
                         else
                         {
                             startDate = startDate.AddMonths(1);
                             endDate = endDate.AddMonths(1);
                         }
+                    }
+                    if (clashlist.Any())
+                    {
+                        Session["clashlist"] = clashlist;
+                        return false;
                     }
                     return true;
 
@@ -961,13 +1078,32 @@ namespace LibraryAssistantApp.Controllers
                                     select a;
                         if (clash.Any())
                         {
-                            return false;
+                            foreach (var c in clash)
+                            {
+                                var vbp = db.Venue_Booking_Person.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
+
+                                var cl = new Clash();
+                                cl.date = c.DateTime_From.ToShortDateString();
+                                cl.timeslot = c.DateTime_From.TimeOfDay.ToString(@"hh\:mm") + " - " + c.DateTime_To.TimeOfDay.ToString(@"hh\:mm");
+                                cl.topic = c.Topic.Topic_Name;
+                                cl.email = vbp.Registered_Person.Person_Email;
+                                cl.trainer = vbp.Registered_Person.Person_Name + " " + vbp.Registered_Person.Person_Surname;
+                                clashlist.Add(cl);
+                            }
+
+                            startDate = startDate.AddYears(1);
+                            endDate = endDate.AddYears(1);
                         }
                         else
                         {
                             startDate = startDate.AddYears(1);
                             endDate = endDate.AddYears(1);
                         }
+                    }
+                    if (clashlist.Any())
+                    {
+                        Session["clashlist"] = clashlist;
+                        return false;
                     }
                     return true;
 
@@ -976,6 +1112,13 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
+        //view clashes
+        public PartialViewResult viewClashes()
+        {
+            return PartialView();
+        }
+
+        //capture training session
         [HttpGet]
         public bool captureTrainingSession(string description, int maxAtt, string confirmation, string privacy, string notify, string repeatType, int? multiple)
         {
@@ -983,7 +1126,7 @@ namespace LibraryAssistantApp.Controllers
             var session = (TrainingSessionModel)Session["sessionDetails"];
             var venue = (Venue)Session["venueSelect"];
             var timeslot = (timeslot)Session["selectedTimeslot"];
-            var trainer = (Registered_Person)Session["trainer"];
+            var trainer = (string)Session["trainer"];
             var startDate = timeslot.startDate;
             var endDate = timeslot.endDate;
 
@@ -1011,7 +1154,7 @@ namespace LibraryAssistantApp.Controllers
                     else a.Exclusive_ind = 0;
                     a.Description = description;
                     a.Booking_Type_Seq = 2;
-                    a.Topic_Seq = session.Topic_ID;
+                    a.Topic_Seq = session.topic;
                     a.Booking_Status = confirmation;
                     a.Venue_ID = venue.Venue_ID;
                     a.Building_Floor_ID = venue.Building_Floor_ID;
@@ -1029,15 +1172,18 @@ namespace LibraryAssistantApp.Controllers
                     Venue_Booking_Person c = new Venue_Booking_Person();
 
                     //asign values to venue booking person
-                    if (trainer == null)
-                        c.Person_ID = User.Identity.Name;
-                    else
+                    if (trainer == "None")
+                        c.Trainer = "None";
+                    else if (trainer == "External")
                     {
-                        c.Person_ID = trainer.Person_ID;
-                        sendTrainerMail(trainer.Person_ID, a);
-                    }                   
+                        c.Trainer = "External";
+                    } else
+                    {
+                        c.Trainer = trainer;
+                        sendTrainerMail(trainer, a);
+                    }
+                    c.Person_ID = User.Identity.Name;              
                     c.Venue_Booking_Seq = bookingSeq;
-                    c.Certificate_Ind = 0;
                     c.Attendee_Type = "Trainer";
                     c.Attendee_Status = "Active";
 
@@ -1047,11 +1193,12 @@ namespace LibraryAssistantApp.Controllers
 
                     if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
                     {
-                        sendStudentsMail(session.Topic_ID, a);
+                        sendStudentsMail(session.topic, a);
                     }
                     return true;
 
                 case "daily":
+                    Venue_Booking booking = new Venue_Booking();
                     for (int i = 1; i <= multiple; i++)
                     {
                         //create instance of new venue booking object
@@ -1075,7 +1222,7 @@ namespace LibraryAssistantApp.Controllers
                         else daily.Exclusive_ind = 0;
                         daily.Description = description;
                         daily.Booking_Type_Seq = 2;
-                        daily.Topic_Seq = session.Topic_ID;
+                        daily.Topic_Seq = session.topic;
                         daily.Booking_Status = confirmation;
                         daily.Venue_ID = venue.Venue_ID;
                         daily.Building_Floor_ID = venue.Building_Floor_ID;
@@ -1093,17 +1240,20 @@ namespace LibraryAssistantApp.Controllers
                         Venue_Booking_Person dailyVBP = new Venue_Booking_Person();
 
                         //asign values to venue booking person
-                        dailyVBP.Venue_Booking_Seq = id;
-                        if (trainer == null)
-                            dailyVBP.Person_ID = User.Identity.Name;
+                        if (trainer == "None")
+                            dailyVBP.Trainer = "None";
+                        else if (trainer == "External")
+                        {
+                            dailyVBP.Trainer = "External";
+                        }
                         else
                         {
-                            dailyVBP.Person_ID = trainer.Person_ID;
-                            sendTrainerMail(trainer.Person_ID, daily);
+                            dailyVBP.Trainer = trainer;
                         }
-                        dailyVBP.Certificate_Ind = 0;
+                        dailyVBP.Person_ID = User.Identity.Name;
                         dailyVBP.Attendee_Type = "Trainer";
                         dailyVBP.Attendee_Status = "Active";
+                        dailyVBP.Venue_Booking_Seq = id;
 
                         //add and save instance of person booking
                         db.Venue_Booking_Person.Add(dailyVBP);
@@ -1112,16 +1262,31 @@ namespace LibraryAssistantApp.Controllers
                         //increase the timeslot
                         startDate = startDate.AddDays(1);
                         endDate = endDate.AddDays(1);
+
+                        booking = daily;
+                    }
+                    
+                    if (trainer.Length == 9)
+                    {
+                        try
+                        {
+                            sendTrainerMail(trainer, booking);
+                        }
+                        catch
+                        {
+
+                        }
                     }
 
                     if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
                     {
-                        sendGeneralStudentsMail(session.Topic_ID );
+                        sendGeneralStudentsMail(session.topic );
                     }
 
                     return true;
 
                 case "weekly":
+                    Venue_Booking weeklyBooking = new Venue_Booking();
                     for (int i = 1; i <= multiple; i++)
                     {
                         //create instance of new venue booking object
@@ -1145,7 +1310,7 @@ namespace LibraryAssistantApp.Controllers
                         else daily.Exclusive_ind = 0;
                         daily.Description = description;
                         daily.Booking_Type_Seq = 2;
-                        daily.Topic_Seq = session.Topic_ID;
+                        daily.Topic_Seq = session.topic;
                         daily.Booking_Status = confirmation;
                         daily.Venue_ID = venue.Venue_ID;
                         daily.Building_Floor_ID = venue.Building_Floor_ID;
@@ -1163,17 +1328,21 @@ namespace LibraryAssistantApp.Controllers
                         Venue_Booking_Person dailyVBP = new Venue_Booking_Person();
 
                         //asign values to venue booking person
-                        dailyVBP.Venue_Booking_Seq = id;
-                        if (trainer == null)
-                            dailyVBP.Person_ID = User.Identity.Name;
+                        if (trainer == "None")
+                            dailyVBP.Trainer = "None";
+                        else if (trainer == "External")
+                        {
+                            dailyVBP.Trainer = "External";
+                        }
                         else
                         {
-                            dailyVBP.Person_ID = trainer.Person_ID;
-                            sendTrainerMail(trainer.Person_ID, daily);
+                            dailyVBP.Trainer = trainer;
                         }
-                        dailyVBP.Certificate_Ind = 0;
+
+                        dailyVBP.Person_ID = User.Identity.Name;
                         dailyVBP.Attendee_Type = "Trainer";
                         dailyVBP.Attendee_Status = "Active";
+                        dailyVBP.Venue_Booking_Seq = id;
 
                         //add and save instance of person booking
                         db.Venue_Booking_Person.Add(dailyVBP);
@@ -1182,16 +1351,31 @@ namespace LibraryAssistantApp.Controllers
                         //increase timeslot
                         startDate = startDate.AddDays(7);
                         endDate = endDate.AddDays(7);
+
+                        weeklyBooking = daily;
+                    }
+
+                    if (trainer.Length == 9)
+                    {
+                        try
+                        {
+                            sendTrainerMail(trainer, weeklyBooking);
+                        }
+                        catch
+                        {
+
+                        }
                     }
 
                     if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
                     {
-                        sendGeneralStudentsMail(session.Topic_ID);
+                        sendGeneralStudentsMail(session.topic);
                     }
 
                     return true;
 
                 case "monthly":
+                    Venue_Booking monthlyBooking = new Venue_Booking();
                     for (int i = 1; i <= multiple; i++)
                     {
                         //create instance of new venue booking object
@@ -1215,7 +1399,7 @@ namespace LibraryAssistantApp.Controllers
                         else daily.Exclusive_ind = 0;
                         daily.Description = description;
                         daily.Booking_Type_Seq = 2;
-                        daily.Topic_Seq = session.Topic_ID;
+                        daily.Topic_Seq = session.topic;
                         daily.Booking_Status = confirmation;
                         daily.Venue_ID = venue.Venue_ID;
                         daily.Building_Floor_ID = venue.Building_Floor_ID;
@@ -1233,17 +1417,21 @@ namespace LibraryAssistantApp.Controllers
                         Venue_Booking_Person dailyVBP = new Venue_Booking_Person();
 
                         //asign values to venue booking person
-                        dailyVBP.Venue_Booking_Seq = id;
-                        if (trainer == null)
-                            dailyVBP.Person_ID = User.Identity.Name;
+                        if (trainer == "None")
+                            dailyVBP.Trainer = "None";
+                        else if (trainer == "External")
+                        {
+                            dailyVBP.Trainer = "External";
+                        }
                         else
                         {
-                            dailyVBP.Person_ID = trainer.Person_ID;
-                            sendTrainerMail(trainer.Person_ID, daily);
+                            dailyVBP.Trainer = trainer;
                         }
-                        dailyVBP.Certificate_Ind = 0;
+
+                        dailyVBP.Person_ID = User.Identity.Name;
                         dailyVBP.Attendee_Type = "Trainer";
                         dailyVBP.Attendee_Status = "Active";
+                        dailyVBP.Venue_Booking_Seq = id;
 
                         //add and save instance of person booking
                         db.Venue_Booking_Person.Add(dailyVBP);
@@ -1252,16 +1440,31 @@ namespace LibraryAssistantApp.Controllers
                         //increase timeslot
                         startDate = startDate.AddMonths(1);
                         endDate = endDate.AddMonths(1);
+
+                        monthlyBooking = daily;
+                    }
+
+                    if (trainer.Length == 9)
+                    {
+                        try
+                        {
+                            sendTrainerMail(trainer, monthlyBooking);
+                        }
+                        catch
+                        {
+
+                        }
                     }
 
                     if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
                     {
-                        sendGeneralStudentsMail(session.Topic_ID);
+                        sendGeneralStudentsMail(session.topic);
                     }
 
                     return true;
 
                 case "yearly":
+                    Venue_Booking yearlyBooking = new Venue_Booking();
                     for (int i = 1; i <= multiple; i++)
                     {
                         //create instance of new venue booking object
@@ -1285,7 +1488,7 @@ namespace LibraryAssistantApp.Controllers
                         else daily.Exclusive_ind = 0;
                         daily.Description = description;
                         daily.Booking_Type_Seq = 2;
-                        daily.Topic_Seq = session.Topic_ID;
+                        daily.Topic_Seq = session.topic;
                         daily.Booking_Status = confirmation;
                         daily.Venue_ID = venue.Venue_ID;
                         daily.Building_Floor_ID = venue.Building_Floor_ID;
@@ -1303,17 +1506,21 @@ namespace LibraryAssistantApp.Controllers
                         Venue_Booking_Person dailyVBP = new Venue_Booking_Person();
 
                         //asign values to venue booking person
-                        dailyVBP.Venue_Booking_Seq = id;
-                        if (trainer == null)
-                            dailyVBP.Person_ID = User.Identity.Name;
+                        if (trainer == "None")
+                            dailyVBP.Trainer = "None";
+                        else if (trainer == "External")
+                        {
+                            dailyVBP.Trainer = "External";
+                        }
                         else
                         {
-                            dailyVBP.Person_ID = trainer.Person_ID;
-                            sendTrainerMail(trainer.Person_ID, daily);
+                            dailyVBP.Trainer = trainer;
                         }
-                        dailyVBP.Certificate_Ind = 0;
+
+                        dailyVBP.Person_ID = User.Identity.Name;
                         dailyVBP.Attendee_Type = "Trainer";
                         dailyVBP.Attendee_Status = "Active";
+                        dailyVBP.Venue_Booking_Seq = id;
 
                         //add and save instance of person booking
                         db.Venue_Booking_Person.Add(dailyVBP);
@@ -1321,11 +1528,25 @@ namespace LibraryAssistantApp.Controllers
 
                         startDate = timeslot.startDate.AddYears(1);
                         endDate = timeslot.endDate.AddYears(1);
+
+                        yearlyBooking = daily;
+                    }
+
+                    if (trainer.Length == 9)
+                    {
+                        try
+                        {
+                            sendTrainerMail(trainer, yearlyBooking);
+                        }
+                        catch
+                        {
+
+                        }                    
                     }
 
                     if (notify == "Yes" && privacy == "Public" && confirmation == "Confirmed")
                     {
-                        sendGeneralStudentsMail(session.Topic_ID);
+                        sendGeneralStudentsMail(session.topic);
                     }
 
                     return true;
@@ -1335,6 +1556,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
+        //send trainger mail
         public void sendTrainerMail(string id, Venue_Booking booking)
         {
             var trainer = (from rp in db.Registered_Person
@@ -1375,6 +1597,7 @@ namespace LibraryAssistantApp.Controllers
             client.Send(message);
         }
 
+        //send students mail
         public void sendStudentsMail(int id, Venue_Booking booking)
         {
             var topicPerson = db.Person_Topic.Include(p => p.Registered_Person).Include(t => t.Topic).Where(c => c.Topic_Seq.Equals(id) && c.Registered_Person.Person_Type.Equals("Student"));
@@ -1416,6 +1639,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
+        //send general student mail
         public void sendGeneralStudentsMail(int id)
         {
             var topicPerson = db.Person_Topic.Include(p => p.Registered_Person).Include(t => t.Topic).Where(c => c.Topic_Seq.Equals(id) && c.Registered_Person.Person_Type.Equals("Student"));
@@ -1445,6 +1669,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
+        //manage training session
         public ActionResult manageTrainingSession()
         {
             //get list of campuses to display in form
@@ -1522,7 +1747,7 @@ namespace LibraryAssistantApp.Controllers
 
             var venue_booking = (from v in db.Venue_Booking
                                  where v.Venue_Booking_Seq.Equals(id)
-                                 select v).Include(r => r.Venue_Booking_Person).Include(t => t.Booking_Type).Include(to => to.Topic).Include(c => c.Venue).FirstOrDefault();
+                                 select v).Include(r => r.Venue_Booking_Person).Include(t => t.Booking_Type).Include(to => to.Topic).FirstOrDefault();
 
             var vbp = (from v in db.Venue_Booking_Person
                        where v.Venue_Booking_Seq.Equals(id)
@@ -1544,6 +1769,10 @@ namespace LibraryAssistantApp.Controllers
                            where vb.Venue_Booking_Seq.Equals(id) && vb.Attendee_Type.Equals("Student")
                            select vb).Include(r => r.Registered_Person).Any();
 
+            var venue = (from v in db.Venues
+                         where v.Venue_ID == venue_booking.Venue_ID
+                         select v.Venue_Name).FirstOrDefault();
+
             //assing values to view model
             details.personId = vbp;
             details.bookingType = venue_booking.Booking_Type.Booking_Type_Name;
@@ -1553,7 +1782,7 @@ namespace LibraryAssistantApp.Controllers
             details.timeslot = venue_booking.DateTime_From.ToShortTimeString() + " - " + venue_booking.DateTime_To.ToShortTimeString();
             details.campus = campus;
             details.building = building;
-            details.venue = venue_booking.Venue.Venue_Name;
+            details.venue = venue;
             details.attendance = sessionAtt;
 
 
@@ -1638,6 +1867,7 @@ namespace LibraryAssistantApp.Controllers
             return View(list);
         }
 
+        //submit attendance
         [HttpGet]
         public void submitAttendance(string attended, int? document)
         {
@@ -1756,6 +1986,7 @@ namespace LibraryAssistantApp.Controllers
 
         }
 
+        //cancel training
         [HttpGet]
         public void cancelTraining()
         {
@@ -1806,7 +2037,7 @@ namespace LibraryAssistantApp.Controllers
 
         }
 
-            //controler dependant classes
+        //controler dependant classes
         private T Deserialise<T>(string json)
         {
             using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))

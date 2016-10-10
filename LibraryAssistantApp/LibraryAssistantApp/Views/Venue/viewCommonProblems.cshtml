@@ -1,0 +1,52 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Common_Problem>
+
+@{
+    ViewBag.Title = "Common Problems";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
+
+<h2>Common Problems</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            @Html.ActionLink("Create New", "addCommonProblem")
+        </p>
+        <div class="col-md-12">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>Problem Type</th>
+                        <th>Problem Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var problem in Model)
+                    {
+                        <tr>
+                            <td>@problem.Common_Problem_Type.Common_Problem_Type_Name</td>
+                            <td>@problem.Common_Problem_Name</td>
+                            <td>@problem.Description</td>
+                            <td>
+                                @Html.ActionLink("Edit", "editCommonProblem", new { id = problem.Common_Problem_ID }) |
+                                @Html.ActionLink("Delete", "deleteCommonProblem", new { id = problem.Common_Problem_ID })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //initiate datatable
+        $('#table').DataTable();
+    })
+</script>

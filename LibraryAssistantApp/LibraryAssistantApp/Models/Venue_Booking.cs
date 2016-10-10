@@ -37,6 +37,7 @@ namespace LibraryAssistantApp.Models
         public int Campus_ID { get; set; }
         public int Topic_Seq { get; set; }
     
+        public virtual Booking_Status Booking_Status1 { get; set; }
         public virtual Booking_Type Booking_Type { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Questionnaire> Questionnaires { get; set; }
@@ -44,6 +45,5 @@ namespace LibraryAssistantApp.Models
         public virtual Venue Venue { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Booking_Person> Venue_Booking_Person { get; set; }
-        public virtual Booking_Status Booking_Status1 { get; set; }
     }
 }

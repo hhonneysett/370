@@ -1,7 +1,6 @@
 ﻿
 @{
     ViewBag.Title = "Home";
-    Layout = (string)Session["layout"];
 }
 
 <div class="text-center">
@@ -9,49 +8,31 @@
     <hr />
 </div>
 
-@*<div class="panel panel-default">
-    <div class="panel-body">*@
-        <div class="col-md-6 col-md-offset-3">
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-            <li data-target="#myCarousel" data-slide-to="3"></li>
-        </ol>
+<ul class="bxslider" id="picSlider">
+</ul>
 
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
-            <div class="item active">
-                <img src="~/img/14647109849_5a7d49fb67_b.jpg" alt="chania" width="460" height="345" />
-            </div>
+<script type="text/javascript">
 
-            <div class="item">
-                <img src="~/img/Arc-Architects-Our-Projects-UP-Amphitheatre-roof-Cover.jpg" alt="Chania" width="460" height="345" />
-            </div>
+    $(document).ready(function () {
 
-            <div class="item">
-                <img src="~/img/Tuks.jpg" alt="Flower" width="460" height="345" />
-            </div>
+        $.ajax({
+            url: '/Home/getPictures',
+            async: false,
+            success: function (result) {
 
-            <div class="item">
-                <img src="~/img/web_pretoria4.jpg" alt="Flower" width="460" height="345" />
-            </div>
-        </div>
+                //add a new picture to the html
+                result.forEach(function (entry) {
+                    $("#picSlider").append('<li><img src="' + entry + '" /></li>')
+                });
 
-        <!-- Left and right controls -->
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-</div>
-    @*</div>
-</div>*@
+            }
+        });
 
+        $('.bxslider').bxSlider({
+            adaptiveHeight: true,
+            mode: 'fade'
+        });
+    });
+
+</script>
 

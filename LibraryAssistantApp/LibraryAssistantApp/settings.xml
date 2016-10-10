@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <scheduler>
+    <time>3:30 PM</time>
+  </scheduler>
+  <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\8SEJfpn.jpg</picture>
+  <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\Hotline.jpg</picture>
+  <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\850041-minimalistic-wallpaper.png</picture>
+  <trainingduration>01:00</trainingduration>
+  <trainingduration>02:00</trainingduration>
+  <trainingduration>02:30</trainingduration>
+  <trainingduration>01:30</trainingduration>
+  <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\850194-minimalistic-wallpaper.png</picture>
+  <trainingduration>00:30</trainingduration>
+  <opentime>08:30</opentime>
+  <closetime>18:00</closetime>
+</settings>

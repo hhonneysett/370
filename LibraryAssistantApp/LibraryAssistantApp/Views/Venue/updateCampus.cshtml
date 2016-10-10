@@ -52,11 +52,16 @@
             success: function (result) {
                 $('#myModal').modal('toggle');
 
-                var newtr = "<tr id='" + $("#campusName").val() + "'><td>" + $("#campusName").val() + "</td></tr>"
+                $("#campusTable tbody").empty();
 
-                var element = '#' + result;
-
-                $(element).replaceWith(newtr);
+                if (!$.isArray(result) || !result.length) {
+                    $("#campusTable tbody").empty();
+                    $("#campusTable thead").append('<tr><th>No Campuses</th></tr>')
+                } else {
+                    result.forEach(function (entry) {
+                        $('#campusTable tbody').append('<tr id="' + entry.id + '"><td>' + entry.name + '</td></tr>');
+                    });
+                }
 
                 $.ambiance({
                     message: "Campus Successfully Updated!",
@@ -64,6 +69,11 @@
                     type: "success",
                     timeout: 5
                 });
+
+                //disable buttons
+                $("#btnUpdateCampus").prop('disabled', true);
+                $("#btnDeleteCampus").prop('disabled', true);
+                $("#btnViewBuildings").prop('disabled', true)
             },
             error: function (err, result) {
                 alert("Error in assigning dataToSave" + err.responseText);
