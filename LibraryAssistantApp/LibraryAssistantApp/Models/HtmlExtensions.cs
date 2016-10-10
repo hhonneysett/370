@@ -33,7 +33,7 @@ namespace LibraryAssistantApp.Models
 
         private static MvcHtmlString FormatNotification(string message, string classStyle)
         {
-            var row = new TagBuilder("div");
+            var row = new TagBuilder("div message");
             var col = new TagBuilder("div");
             var span1 = new TagBuilder("span");
             var span2 = new TagBuilder("span");
