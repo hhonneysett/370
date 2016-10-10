@@ -277,6 +277,9 @@
           <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
           <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
           <ScalarProperty Name="Person_Topic_ID" ColumnName="Person_Topic_ID" />
+          <ScalarProperty Name="Logout_DateTime" ColumnName="Logout_DateTime" />
+          <ScalarProperty Name="Login_DateTime" ColumnName="Login_DateTime" />
+          <ScalarProperty Name="Session_ID" ColumnName="Session_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -488,6 +491,36 @@
           <ScalarProperty Name="DateTime_Closed" ColumnName="DateTime_Closed" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Common_Problem_ID" ColumnName="Common_Problem_ID" />
+    <EntitySetMapping Name="ResetPasswordRequests">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.ResetPasswordRequest">
+        <MappingFragment StoreEntitySet="ResetPasswordRequests">
+          <ScalarProperty Name="ResetRequestDateTime" ColumnName="ResetRequestDateTime" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spResetPasswordFunc" FunctionName="LibraryAssistantModel.Store.spResetPassword">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="LibraryAssistantModel.spResetPasswordFunc_Result">
+          <ScalarProperty Name="ReturnCode" ColumnName="ReturnCode" />
+          <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="Person_Role">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
+        <MappingFragment StoreEntitySet="Person_Role">
+          <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+          <ScalarProperty Name="Person_Role_ID" ColumnName="Person_Role_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Booking_Status">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Booking_Status">
+        <MappingFragment StoreEntitySet="Booking_Status">
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Person_ID_Logged" ColumnName="Person_ID_Logged" />
           <ScalarProperty Name="DateTime_Logged" ColumnName="DateTime_Logged" />
@@ -512,6 +545,19 @@
           <ScalarProperty Name="Attendee_Status" ColumnName="Attendee_Status" />
           <ScalarProperty Name="Attendee_Type" ColumnName="Attendee_Type" />
           <ScalarProperty Name="Venue_Booking_Seq" ColumnName="Venue_Booking_Seq" />
+          <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Registered_Person">
+      <EntityTypeMapping TypeName="LibraryAssistantModel.Registered_Person">
+        <MappingFragment StoreEntitySet="Registered_Person">
+          <ScalarProperty Name="Person_Type" ColumnName="Person_Type" />
+          <ScalarProperty Name="Person_Registration_DateTime" ColumnName="Person_Registration_DateTime" />
+          <ScalarProperty Name="Person_Password" ColumnName="Person_Password" />
+          <ScalarProperty Name="Person_Email" ColumnName="Person_Email" />
+          <ScalarProperty Name="Person_Surname" ColumnName="Person_Surname" />
+          <ScalarProperty Name="Person_Name" ColumnName="Person_Name" />
           <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
         </MappingFragment>
       </EntityTypeMapping>

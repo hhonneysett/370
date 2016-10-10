@@ -8,7 +8,7 @@
 
 <h3>Update Employee</h3>
 <hr />
-<h4>Update employee details below</h4>
+<h5>Update employee details below</h5>
 <br />
 
 @using (Html.BeginForm())
@@ -17,54 +17,43 @@
 
     <div class="form-horizontal">
         <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.person_id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.registered_person.Person_ID, new { htmlAttributes = new { @class = "form-control", @disabled= true }})
-                @Html.ValidationMessageFor(model => model.registered_person.Person_ID, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.person_id, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+                @Html.ValidationMessageFor(model => model.person_id, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.person_name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.registered_person.Person_Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.registered_person.Person_Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.person_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.person_name, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.person_surname, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.registered_person.Person_Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.registered_person.Person_Surname, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.person_surname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.person_surname, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.registered_person.Person_Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.person_email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.registered_person.Person_Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.registered_person.Person_Email, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.person_email, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="form-group">
-                @Html.LabelFor(model => model.registered_person.Person_Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("Person_Title", null, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.registered_person.Person_Title, "", new { @class = "text-danger" })
-                </div>
-            </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input id="btn-reset" type="button" value="Reset Password" class="btn btn-default" />
-                @Html.Hidden("Password_", null, htmlAttributes: new { @class="password-reset"})
             </div>
         </div>
-        @*<div class="form-group" hidden>
-                <div class="col-md-10">
-                    @Html.HiddenFor(model => model.registered_person, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>*@
-
+        
+        <h5>Employee Roles:</h5>
+        <br />
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-md-offset-2">
                 <div class="panel panel-default">
                     <table class="table" id="emp-roles">
                         <thead>
@@ -72,17 +61,21 @@
                                 <th>
                                     Role
                                 </th>
+                                <th>
+                                    Select
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @for (int i = 0; i < Model.emprolecheckeditlist.Count(); ++i)
                             {
                                 <tr id="@Model.emprolecheckeditlist[i].role_id">
+                                    @Html.HiddenFor(m => m.emprolecheckeditlist[i].role_id)
                                     <td>
                                         @Html.DisplayFor(m => m.emprolecheckeditlist[i].role_name)
                                     </td>
                                     <td>
-                                        @Html.EditorFor(m => m.emprolecheckeditlist[i].role_ind)
+                                        @Html.CheckBoxFor(m => m.emprolecheckeditlist[i].role_ind, htmlAttributes: new { @class = @Model.emprolecheckeditlist[i].role_id })
                                     </td>
                                 </tr>
                             }
@@ -90,56 +83,34 @@
                     </table>
                 </div>
             </div>
-            <div id="div-emp-actions" class="col-md-8">
-                <div class="panel panel-default">
-                    <div class="table">
+        </div>
 
+        <div id="topics" hidden="@TempData["Check1"]">
+            <h5>Trainer Topics:</h5>
+            <div class="col-md-4 col-md-offset-2">
+                <div class="row">
+                    <div class="col-md-offset-1">
+                        <div class="form-group">
+                            <select id="categoryList" class="form-control">
+                                <option selected>All Topics</option>
+                                @foreach (var item in ViewBag.Categories)
+                                {
+                                    <option id="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
                     </div>
+                </div>
+                <div id="category-div">
+                    @{Html.RenderPartial("Categories_edit", Model);}
                 </div>
             </div>
         </div>
-        @if ((bool)TempData["Check1"])
-        {
-            <div class="col-md-8">
-                <div class="panel panel-default">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Topic
-                                </th>
-                                <th>
-                                    Description
-                                </th>
-                            </tr>
-                        </thead>
-                        @for (int i = 0; i < Model.trainertopiccheck.Count(); i++)
-                        {
-                            <tbody>
-                                <tr>
-                                    @Html.HiddenFor(m => m.trainertopiccheck[i].topic_seq)
-                                    @Html.HiddenFor(m => m.trainertopiccheck[i].personid)
-                                    <td>
-                                        @Html.DisplayFor(m => m.trainertopiccheck[i].topic_name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(m => m.trainertopiccheck[i].topic_description)
-                                    </td>
-                                    <td>
-                                        @Html.CheckBoxFor(m => m.trainertopiccheck[i].topic_ind)
-                                    </td>
-                                </tr>
-                            </tbody>
-                        }
-                    </table>
-                </div>
-            </div>
-        }
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input id="btn-submit" type="submit" value="Save Changes" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -152,6 +123,11 @@
 @section script {
     <script src="~/Scripts/bootbox.js"></script>
     <script type="text/javascript">
+
+        $(document).ready(function () {
+
+        });
+
         $(document).ready(function () {
             $('#emp-roles tbody tr').click(function () {
                 $('#emp-roles tr').removeClass('selectedrow');
@@ -171,10 +147,153 @@
                     $('.loading').hide();
                 });
             });
+
+            $('#emp-roles tbody tr').click(function () {
+                var z = $(this).attr('id');
+                if (z == 7) {
+                    if ($('input', this).is(':checked')) {
+                        $('#topics').show();
+                    } else {
+                        $('#topics').hide();
+                    }
+                };
+            });
+
             $('#btn-reset').click(function () {
-                bootbox.confirm("Are you sure you want to reset password?", function (result) {
-                    alert("Password will be reset and employee will be notified when 'save' is pressed.")
-                    $('.password-reset').attr('value', result)
+                bootbox.confirm({
+                    title: "Reset Password?",
+                    message: "Are you sure you want to reset the password?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancel'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Confirm'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result == true)
+                        {
+                            var b = '@Model.person_id';
+                            var e = '@Model.person_email';
+                            var n = noty({
+                                layout: 'topRight',
+                                text: 'Password reset successful. New password has been sent to the email on record for this employee.',
+                                type: 'success',
+                                animation: {
+                                    open: { height: 'toggle' },
+                                    close: { height: 'toggle' },
+                                    easing: 'swing',
+                                    speed: 500
+                                },
+                                timeout: 5000,
+                            });
+                            $.ajax({
+                                type: 'GET',
+                                data: { id: b, _email: e },
+                                url: '@Url.Action("ResetPassword", "Employee")',
+                                beforeSend: function () {
+                                    $('.loading').show();
+                                },
+                            }).done(function () {
+                                $('.loading').hide();
+                            });
+                        } else {
+
+                        }
+                    }
+                });
+            });
+            //filter by category
+            $('#categoryList').change(function () {
+                var myArray = new Array();
+                $('#category-div input:checkbox').each(function () {
+                    var seq = $(this).attr('class');
+                    var ind = "";
+                    if ($(this).is(':checked')) {
+                        ind = "True";
+                    } else {
+                        ind = "False";
+                    }
+                    myArray.push({ topic_seq: seq, topic_ind: ind });
+                });
+
+                var a = "";
+                var a = $(this).children(':selected').attr('id');
+                $.ajax({
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                        cat_id : JSON.stringify(a),
+                        arr : JSON.stringify(myArray)
+                    },
+                    url: '@Url.Action("Categories_edit", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        $('#category-div').html(result);
+                        console.log(result);
+                    }
+                }).done(function () {
+                    $('.loading').hide();
+                });
+            });
+            //submit the update form
+            $('#btn-submit').click(function (event) {
+                event.preventDefault();
+                var roleArray = new Array();
+                var myArray = new Array();
+                $('#emp-roles input:checkbox').each(function () {
+                    var seq = $(this).attr('class');
+                    var ind = "";
+                    if ($(this).is(':checked')) {
+                        ind = "True";
+                    } else {
+                        ind = "False";
+                    }
+                    roleArray.push({ role_id: seq, role_ind: ind });
+                });
+                $('#category-div input:checkbox').each(function () {
+                    var seq = $(this).attr('class');
+                    var ind = "";
+                    if ($(this).is(':checked')) {
+                        ind = "True";
+                    } else {
+                        ind = "False";
+                    }
+                    myArray.push({ topic_seq: seq, topic_ind: ind });
+                });
+                var a = $('#person_id').val();
+                var b = $('#person_name').val();
+                var c = $('#person_surname').val();
+                var d = $('#person_email').val();
+                $.ajax({
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                        id: JSON.stringify(a),
+                        name: JSON.stringify(b),
+                        surname: JSON.stringify(c),
+                        email: JSON.stringify(d),
+                        arr: JSON.stringify(myArray),
+                        rolearr: JSON.stringify(roleArray)
+                    },
+                    url: '@Url.Action("saveTopics", "Employee")',
+                    beforeSend: function () {
+                        $('.loading').show();
+                    },
+                    success: function (result) {
+                        bootbox.alert({
+                            message: "Employee was updated successfully.",
+                            size: 'small',
+                            callback: function () {
+                                window.location.href = "/Employee/Index";
+                            }
+                        });
+                    }
+                }).done(function () {
+                    $('.loading').hide();
                 });
             });
         });

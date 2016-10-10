@@ -176,7 +176,7 @@ namespace LibraryAssistantApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult UpdateDetails(UpdatePersonModel model, string Title)
+        public ActionResult UpdateDetails(UpdatePersonModel model)
         {
             if (ModelState.IsValid)
             {
@@ -202,8 +202,6 @@ namespace LibraryAssistantApp.Controllers
                 }
                 else
                 {
-
-
                     TempData["Message"] = "Email address already exists on the system";
                     return View(model);
                 }              

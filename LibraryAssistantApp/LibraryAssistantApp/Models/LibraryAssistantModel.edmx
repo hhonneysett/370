@@ -704,6 +704,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+
         <Association Name="FK__ResetPass__Perso__00200768">
           <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="0..1" />
           <End Role="ResetPasswordRequests" Type="Self.ResetPasswordRequests" Multiplicity="*" />
@@ -728,6 +729,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+
         <Association Name="FK__Venue_Boo__Topic__160F4887">
           <End Role="Topic" Type="Self.Topic" Multiplicity="1" />
           <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
@@ -1387,6 +1389,7 @@
             <End Role="Document_Type" EntitySet="Document_Type" />
             <End Role="Document_Repository" EntitySet="Document_Repository" />
           </AssociationSet>
+
           <AssociationSet Name="FK__ResetPass__Perso__00200768" Association="Self.FK__ResetPass__Perso__00200768">
             <End Role="Registered_Person" EntitySet="Registered_Person" />
             <End Role="ResetPasswordRequests" EntitySet="ResetPasswordRequests" />
@@ -1395,6 +1398,7 @@
             <End Role="Venue_Type" EntitySet="Venue_Type" />
             <End Role="Venue" EntitySet="Venue" />
           </AssociationSet>
+
           <AssociationSet Name="FK__Venue_Boo__Topic__160F4887" Association="Self.FK__Venue_Boo__Topic__160F4887">
             <End Role="Topic" EntitySet="Topic" />
             <End Role="Venue_Booking" EntitySet="Venue_Booking" />
@@ -1602,6 +1606,7 @@
           <EntitySet Name="Person_Role" EntityType="LibraryAssistantModel.Person_Role" />
           <EntitySet Name="Person_Session_Action_Log" EntityType="LibraryAssistantModel.Person_Session_Action_Log" />
           <EntitySet Name="Person_Topic" EntityType="LibraryAssistantModel.Person_Topic" />
+          <EntitySet Name="Person_Session_Log" EntityType="LibraryAssistantModel.Person_Session_Log" />
           <EntitySet Name="Person_Type" EntityType="LibraryAssistantModel.Person_Type" />
           <EntitySet Name="Possible_Answer" EntityType="LibraryAssistantModel.Possible_Answer" />
           <EntitySet Name="Question_Bank" EntityType="LibraryAssistantModel.Question_Bank" />
@@ -1791,6 +1796,43 @@
             <End Role="Venue" EntitySet="Venues" />
             <End Role="Venue_Characteristic" EntitySet="Venue_Characteristic" />
           </AssociationSet>
+          <EntitySet Name="ResetPasswordRequests" EntityType="LibraryAssistantModel.ResetPasswordRequest" />
+          <FunctionImport Name="spResetPasswordFunc" ReturnType="Collection(LibraryAssistantModel.spResetPasswordFunc_Result)">
+          <Parameter Name="UserName" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Person_Role" EntityType="LibraryAssistantModel.Person_Role" />
+          <AssociationSet Name="Role_PersonRole" Association="LibraryAssistantModel.Role_PersonRole">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Person_Role" EntitySet="Person_Role" />
+          </AssociationSet>
+          <EntitySet Name="Booking_Status" EntityType="LibraryAssistantModel.Booking_Status" />
+          <AssociationSet Name="BookingStatus_VenueBooking" Association="LibraryAssistantModel.BookingStatus_VenueBooking">
+            <End Role="Booking_Status" EntitySet="Booking_Status" />
+            <End Role="Venue_Booking" EntitySet="Venue_Booking" />
+          </AssociationSet>
+          <EntitySet Name="Actions" EntityType="LibraryAssistantModel.Action" />
+          <AssociationSet Name="Action_Action" Association="LibraryAssistantModel.Action_Action">
+            <End Role="Action" EntitySet="Actions" />
+            <End Role="Action1" EntitySet="Actions" />
+          </AssociationSet>
+          <AssociationSet Name="Action_PerSesActionLog" Association="LibraryAssistantModel.Action_PerSesActionLog">
+            <End Role="Action" EntitySet="Actions" />
+            <End Role="Person_Session_Action_Log" EntitySet="Person_Session_Action_Log" />
+          </AssociationSet>
+          <EntitySet Name="Role_Action" EntityType="LibraryAssistantModel.Role_Action" />
+          <EntitySet Name="Trainer_Topic" EntityType="LibraryAssistantModel.Trainer_Topic" />
+          <AssociationSet Name="Action_RoleAction" Association="LibraryAssistantModel.Action_RoleAction">
+            <End Role="Action" EntitySet="Actions" />
+            <End Role="Role_Action" EntitySet="Role_Action" />
+          </AssociationSet>
+          <AssociationSet Name="Role_RoleAction" Association="LibraryAssistantModel.Role_RoleAction">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Role_Action" EntitySet="Role_Action" />
+          </AssociationSet>
+          <AssociationSet Name="RegisteredPerson_Topic" Association="LibraryAssistantModel.RegisteredPerson_Topic">
+            <End Role="Topic" EntitySet="Topics" />
+            <End Role="Trainer_Topic" EntitySet="Trainer_Topic" />
+          </AssociationSet>
           <EntitySet Name="Registered_Person" EntityType="LibraryAssistantModel.Registered_Person" />
           <AssociationSet Name="RegisteredPerson_PersonQues" Association="LibraryAssistantModel.RegisteredPerson_PersonQues">
             <End Role="Registered_Person" EntitySet="Registered_Person" />
@@ -1799,6 +1841,10 @@
           <AssociationSet Name="RegisteredPerson_PersonRole" Association="LibraryAssistantModel.RegisteredPerson_PersonRole">
             <End Role="Registered_Person" EntitySet="Registered_Person" />
             <End Role="Person_Role" EntitySet="Person_Role" />
+          </AssociationSet>
+          <AssociationSet Name="RegisteredPerson_PersonSessionLog" Association="LibraryAssistantModel.RegisteredPerson_PersonSessionLog">
+            <End Role="Registered_Person" EntitySet="Registered_Person" />
+            <End Role="Person_Session_Log" EntitySet="Person_Session_Log" />
           </AssociationSet>
           <AssociationSet Name="RegisteredPerson_PersonTopic" Association="LibraryAssistantModel.RegisteredPerson_PersonTopic">
             <End Role="Registered_Person" EntitySet="Registered_Person" />
@@ -1817,6 +1863,7 @@
             <End Role="Questionnaire" EntitySet="Questionnaires" />
           </AssociationSet>
           <AssociationSet Name="FK__ResetPass__Perso__5F7E2DAC" Association="LibraryAssistantModel.FK__ResetPass__Perso__5F7E2DAC">
+
             <End Role="Registered_Person" EntitySet="Registered_Person" />
             <End Role="ResetPasswordRequest" EntitySet="ResetPasswordRequests" />
           </AssociationSet>
@@ -1829,6 +1876,7 @@
             <End Role="Common_Problem" EntitySet="Common_Problem" />
             <End Role="Venue_Problem" EntitySet="Venue_Problem" />
           </AssociationSet>
+
           <AssociationSet Name="PersonClosed_VenueProblem" Association="LibraryAssistantModel.PersonClosed_VenueProblem">
             <End Role="Registered_Person" EntitySet="Registered_Person" />
             <End Role="Venue_Problem" EntitySet="Venue_Problem" />
@@ -1869,6 +1917,14 @@
           </AssociationSet>
           <AssociationSet Name="RegisteredPerson_VenueBookingPerson" Association="LibraryAssistantModel.RegisteredPerson_VenueBookingPerson">
             <End Role="Venue_Booking" EntitySet="Venue_Booking" />
+
+          <AssociationSet Name="RegisteredPerson_TrainerTopic" Association="LibraryAssistantModel.RegisteredPerson_TrainerTopic">
+            <End Role="Registered_Person" EntitySet="Registered_Person" />
+            <End Role="Trainer_Topic" EntitySet="Trainer_Topic" />
+          </AssociationSet>
+          <AssociationSet Name="VenueBooking_VenueBookingPerson" Association="LibraryAssistantModel.VenueBooking_VenueBookingPerson">
+            <End Role="Registered_Person" EntitySet="Registered_Person" />
+
             <End Role="Venue_Booking_Person" EntitySet="Venue_Booking_Person" />
           </AssociationSet>
           </EntityContainer>
@@ -2051,6 +2107,7 @@
           <Property Name="Common_Problem_Type_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Common_Problem" Relationship="LibraryAssistantModel.CommonProblemType_CommonProblem" FromRole="Common_Problem_Type" ToRole="Common_Problem" />
+          <NavigationProperty Name="Venue_Problem" Relationship="LibraryAssistantModel.CommonProblemType_VenueProblem" FromRole="Common_Problem_Type" ToRole="Venue_Problem" />
         </EntityType>
         <EntityType Name="Day_Of_Week">
           <Key>
@@ -2182,6 +2239,9 @@
           <Property Name="Topic_Seq" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Topic" Relationship="LibraryAssistantModel.Topic_PersonTopic" FromRole="Person_Topic" ToRole="Topic" />
           <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_PersonTopic" FromRole="Person_Topic" ToRole="Registered_Person" />
+          <NavigationProperty Name="Document_Access_Log" Relationship="LibraryAssistantModel.PersonSessionLog_DocumentAccessLog" FromRole="Person_Session_Log" ToRole="Document_Access_Log" />
+          <NavigationProperty Name="Person_Session_Action_Log" Relationship="LibraryAssistantModel.PersonSesLog_PerSesActionLog" FromRole="Person_Session_Log" ToRole="Person_Session_Action_Log" />
+          <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_PersonSessionLog" FromRole="Person_Session_Log" ToRole="Registered_Person" />
         </EntityType>
         <EntityType Name="Person_Type">
           <Key>
@@ -2249,7 +2309,7 @@
           <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.VenueBooking_Questionnaire" FromRole="Questionnaire" ToRole="Venue_Booking" />
           <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.PersonCreator_Questionnaire" FromRole="Questionnaire" ToRole="Registered_Person" />
           <NavigationProperty Name="Registered_Person1" Relationship="LibraryAssistantModel.PersonInvolved_Questionnaire" FromRole="Questionnaire" ToRole="Registered_Person" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="Questionnaire_Questions">
           <Key>
             <PropertyRef Name="Questionnaire_ID" />
@@ -2356,6 +2416,11 @@
           <NavigationProperty Name="Venue_Characteristic" Relationship="LibraryAssistantModel.FK_Venue_Characteristic_Venue" FromRole="Venue" ToRole="Venue_Characteristic" />
           <NavigationProperty Name="Venue_Problem" Relationship="LibraryAssistantModel.FK_Venue_Problem_Venue" FromRole="Venue" ToRole="Venue_Problem" />
         </EntityType>
+          <NavigationProperty Name="Common_Problem_Type" Relationship="LibraryAssistantModel.CommonProblemType_VenueProblem" FromRole="Venue_Problem" ToRole="Common_Problem_Type" />
+          <NavigationProperty Name="Venue" Relationship="LibraryAssistantModel.Venue_VenueProblem" FromRole="Venue_Problem" ToRole="Venue" />
+          <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.PersonClosed_VenueProblem" FromRole="Venue_Problem" ToRole="Registered_Person" />
+          <NavigationProperty Name="Registered_Person1" Relationship="LibraryAssistantModel.PersonLogged_VenueProblem" FromRole="Venue_Problem" ToRole="Registered_Person" />
+          </EntityType>
         <EntityType Name="Venue_Type">
           <Key>
             <PropertyRef Name="Venue_Type1" />
@@ -2945,10 +3010,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Registered_Person">
+        <EntityType Name="ResetPasswordRequest">
           <Key>
-            <PropertyRef Name="Person_ID" />
+            <PropertyRef Name="Id" />
           </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Person_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="ResetRequestDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.FK__ResetPass__Perso__18EBB532" FromRole="ResetPasswordRequest" ToRole="Registered_Person" />
+        </EntityType>
+        <ComplexType Name="spResetPasswordFunc_Result">
+          <Property Type="Int32" Name="ReturnCode" Nullable="false" />
+          <Property Type="Guid" Name="UniqueId" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="Person_Role">
+          <Key>
+            <PropertyRef Name="Person_Role_ID" />
+          </Key>
+          <Property Name="Person_Role_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="Person_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Person_Surname" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
@@ -2985,10 +3065,16 @@
           <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
+          <Property Name="Role_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="LibraryAssistantModel.Role_PersonRole" FromRole="Person_Role" ToRole="Role" />
+          <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_PersonRole" FromRole="Person_Role" ToRole="Registered_Person" />
+        </EntityType>
+        <Association Name="Role_PersonRole">
+          <End Type="LibraryAssistantModel.Role" Role="Role" Multiplicity="1" />
           <End Type="LibraryAssistantModel.Person_Role" Role="Person_Role" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Registered_Person">
-              <PropertyRef Name="Person_ID" />
+            <Principal Role="Role">
+              <PropertyRef Name="Role_ID" />
             </Principal>
             <Dependent Role="Person_Role">
               <PropertyRef Name="Person_ID" />
@@ -3000,57 +3086,125 @@
             <OnDelete Action="Cascade" />
           </End>
           <End Type="LibraryAssistantModel.Person_Topic" Role="Person_Topic" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Registered_Person">
-              <PropertyRef Name="Person_ID" />
-            </Principal>
-            <Dependent Role="Person_Topic">
-              <PropertyRef Name="Person_ID" />
+              <PropertyRef Name="Role_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PersonType_RegisteredPerson">
-          <End Type="LibraryAssistantModel.Person_Type" Role="Person_Type" Multiplicity="1" />
-          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="*" />
+        <EntityType Name="Booking_Status">
+          <Key>
+            <PropertyRef Name="Booking_Status1" />
+          </Key>
+          <Property Name="Booking_Status1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Venue_Booking" Relationship="LibraryAssistantModel.BookingStatus_VenueBooking" FromRole="Booking_Status" ToRole="Venue_Booking" />
+        </EntityType>
+        <Association Name="BookingStatus_VenueBooking">
+          <End Type="LibraryAssistantModel.Booking_Status" Role="Booking_Status" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Person_Type">
-              <PropertyRef Name="Person_Type1" />
+            <Principal Role="Booking_Status">
+              <PropertyRef Name="Booking_Status1" />
             </Principal>
-            <Dependent Role="Registered_Person">
-              <PropertyRef Name="Person_Type" />
+            <Dependent Role="Venue_Booking">
+              <PropertyRef Name="Booking_Status" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PersonCreator_Questionnaire">
-          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
-          <End Type="LibraryAssistantModel.Questionnaire" Role="Questionnaire" Multiplicity="*" />
+        <EntityType Name="Action">
+          <Key>
+            <PropertyRef Name="Action_ID" />
+          </Key>
+          <Property Name="Action_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Action_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Action_Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Action1" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action" ToRole="Action1" />
+          <NavigationProperty Name="Action2" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action1" ToRole="Action" />
+          <NavigationProperty Name="Person_Session_Action_Log" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Action" ToRole="Person_Session_Action_Log" />
+          <NavigationProperty Name="Role_Action" Relationship="LibraryAssistantModel.Action_RoleAction" FromRole="Action" ToRole="Role_Action" />
+        </EntityType>
+        <Association Name="Action_Action">
+          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Action" Role="Action1" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="Registered_Person">
-              <PropertyRef Name="Person_ID" />
+            <Principal Role="Action">
+              <PropertyRef Name="Action_ID" />
             </Principal>
-            <Dependent Role="Questionnaire">
-              <PropertyRef Name="Person_ID_Creator" />
+            <Dependent Role="Action1">
+              <PropertyRef Name="Action_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PersonInvolved_Questionnaire">
-          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="0..1" />
-          <End Type="LibraryAssistantModel.Questionnaire" Role="Questionnaire" Multiplicity="*" />
+        <Association Name="Action_PerSesActionLog">
+          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Person_Session_Action_Log" Role="Person_Session_Action_Log" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Registered_Person">
-              <PropertyRef Name="Person_ID" />
+            <Principal Role="Action">
+              <PropertyRef Name="Action_ID" />
             </Principal>
-            <Dependent Role="Questionnaire">
-              <PropertyRef Name="Person_ID_Involved" />
+            <Dependent Role="Person_Session_Action_Log">
+              <PropertyRef Name="Action_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Role_Action">
+          <Key>
+            <PropertyRef Name="RoleAction_ID" />
+          </Key>
+          <Property Name="Create_Ind" Type="Boolean" Nullable="false" />
+          <Property Name="Read_Ind" Type="Boolean" Nullable="false" />
+          <Property Name="Update_Ind" Type="Boolean" Nullable="false" />
+          <Property Name="Delete_Ind" Type="Boolean" Nullable="false" />
+          <Property Name="Action_ID" Type="Int32" Nullable="false" />
+          <Property Name="Role_ID" Type="Int32" Nullable="false" />
+          <Property Name="RoleAction_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Action" Relationship="LibraryAssistantModel.Action_RoleAction" FromRole="Role_Action" ToRole="Action" />
+          <NavigationProperty Name="Role" Relationship="LibraryAssistantModel.Role_RoleAction" FromRole="Role_Action" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Trainer_Topic">
+          <Key>
+            <PropertyRef Name="Trainer_Topic_ID" />
+          </Key>
+          <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="Topic_Seq" Type="Int32" Nullable="false" />
+          <Property Name="Trainer_Topic_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Topic" Relationship="LibraryAssistantModel.RegisteredPerson_Topic" FromRole="Trainer_Topic" ToRole="Topic" />
+          <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_TrainerTopic" FromRole="Trainer_Topic" ToRole="Registered_Person" />
+        </EntityType>
+        <Association Name="Action_RoleAction">
+          <End Type="LibraryAssistantModel.Action" Role="Action" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Role_Action" Role="Role_Action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Action">
+              <PropertyRef Name="Action_ID" />
+            </Principal>
+            <Dependent Role="Role_Action">
+              <PropertyRef Name="Action_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Role_RoleAction">
+          <End Type="LibraryAssistantModel.Role" Role="Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="LibraryAssistantModel.Role_Action" Role="Role_Action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Role_ID" />
+            </Principal>
+            <Dependent Role="Role_Action">
+              <PropertyRef Name="Role_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__ResetPass__Perso__5F7E2DAC">
           <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="0..1" />
           <End Type="LibraryAssistantModel.ResetPasswordRequest" Role="ResetPasswordRequest" Multiplicity="*" />
+        <Association Name="RegisteredPerson_Topic">
+          <End Type="LibraryAssistantModel.Topic" Role="Topic" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Trainer_Topic" Role="Trainer_Topic" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Registered_Person">
-              <PropertyRef Name="Person_ID" />
+            <Principal Role="Topic">
+              <PropertyRef Name="Topic_Seq" />
             </Principal>
             <Dependent Role="ResetPasswordRequest">
               <PropertyRef Name="Person_ID" />
@@ -3062,11 +3216,58 @@
             <OnDelete Action="Cascade" />
           </End>
           <End Type="LibraryAssistantModel.Trainer_Topic" Role="Trainer_Topic" Multiplicity="*" />
+            <Dependent Role="Trainer_Topic">
+              <PropertyRef Name="Topic_Seq" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Registered_Person">
+          <Key>
+            <PropertyRef Name="Person_ID" />
+          </Key>
+          <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="Person_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Person_Surname" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Person_Email" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Person_Password" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="false" />
+          <Property Name="Person_Registration_DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Person_Type" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Person_Questionnaire" Relationship="LibraryAssistantModel.RegisteredPerson_PersonQues" FromRole="Registered_Person" ToRole="Person_Questionnaire" />
+          <NavigationProperty Name="Person_Role" Relationship="LibraryAssistantModel.RegisteredPerson_PersonRole" FromRole="Registered_Person" ToRole="Person_Role" />
+          <NavigationProperty Name="Person_Session_Log" Relationship="LibraryAssistantModel.RegisteredPerson_PersonSessionLog" FromRole="Registered_Person" ToRole="Person_Session_Log" />
+          <NavigationProperty Name="Person_Topic" Relationship="LibraryAssistantModel.RegisteredPerson_PersonTopic" FromRole="Registered_Person" ToRole="Person_Topic" />
+          <NavigationProperty Name="Person_Type1" Relationship="LibraryAssistantModel.PersonType_RegisteredPerson" FromRole="Registered_Person" ToRole="Person_Type" />
+          <NavigationProperty Name="Questionnaires" Relationship="LibraryAssistantModel.PersonCreator_Questionnaire" FromRole="Registered_Person" ToRole="Questionnaire" />
+          <NavigationProperty Name="Questionnaires1" Relationship="LibraryAssistantModel.PersonInvolved_Questionnaire" FromRole="Registered_Person" ToRole="Questionnaire" />
+          <NavigationProperty Name="ResetPasswordRequests" Relationship="LibraryAssistantModel.FK__ResetPass__Perso__18EBB532" FromRole="Registered_Person" ToRole="ResetPasswordRequest" />
+          <NavigationProperty Name="Venue_Problem" Relationship="LibraryAssistantModel.PersonClosed_VenueProblem" FromRole="Registered_Person" ToRole="Venue_Problem" />
+          <NavigationProperty Name="Venue_Problem1" Relationship="LibraryAssistantModel.PersonLogged_VenueProblem" FromRole="Registered_Person" ToRole="Venue_Problem" />
+          <NavigationProperty Name="Trainer_Topic" Relationship="LibraryAssistantModel.RegisteredPerson_TrainerTopic" FromRole="Registered_Person" ToRole="Trainer_Topic" />
+          <NavigationProperty Name="Venue_Booking_Person" Relationship="LibraryAssistantModel.VenueBooking_VenueBookingPerson" FromRole="Registered_Person" ToRole="Venue_Booking_Person" />
+        </EntityType>
+        <Association Name="RegisteredPerson_PersonQues">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Person_Questionnaire" Role="Person_Questionnaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registered_Person">
+              <PropertyRef Name="Person_ID" />
+            </Principal>
+            <Dependent Role="Person_Questionnaire">
+              <PropertyRef Name="Person_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RegisteredPerson_PersonRole">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="LibraryAssistantModel.Person_Role" Role="Person_Role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Registered_Person">
               <PropertyRef Name="Person_ID" />
             </Principal>
             <Dependent Role="Trainer_Topic">
+            <Dependent Role="Person_Role">
               <PropertyRef Name="Person_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -3104,6 +3305,9 @@
         <Association Name="PersonClosed_VenueProblem">
           <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="0..1" />
           <End Type="LibraryAssistantModel.Venue_Problem" Role="Venue_Problem" Multiplicity="*" />
+        <Association Name="RegisteredPerson_PersonSessionLog">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Person_Session_Log" Role="Person_Session_Log" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Registered_Person">
               <PropertyRef Name="Person_ID" />
@@ -3116,6 +3320,16 @@
         <Association Name="PersonLogged_VenueProblem">
           <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
           <End Type="LibraryAssistantModel.Venue_Problem" Role="Venue_Problem" Multiplicity="*" />
+            <Dependent Role="Person_Session_Log">
+              <PropertyRef Name="Person_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RegisteredPerson_PersonTopic">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="LibraryAssistantModel.Person_Topic" Role="Person_Topic" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Registered_Person">
               <PropertyRef Name="Person_ID" />
@@ -3180,11 +3394,56 @@
         <Association Name="RegisteredPerson_PersonSessionLog">
           <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
           <End Type="LibraryAssistantModel.Person_Session_Log" Role="Person_Session_Log" Multiplicity="*" />
+            <Dependent Role="Person_Topic">
+              <PropertyRef Name="Person_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonType_RegisteredPerson">
+          <End Type="LibraryAssistantModel.Person_Type" Role="Person_Type" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person_Type">
+              <PropertyRef Name="Person_Type1" />
+            </Principal>
+            <Dependent Role="Registered_Person">
+              <PropertyRef Name="Person_Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonCreator_Questionnaire">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Questionnaire" Role="Questionnaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registered_Person">
+              <PropertyRef Name="Person_ID" />
+            </Principal>
+            <Dependent Role="Questionnaire">
+              <PropertyRef Name="Person_ID_Creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonInvolved_Questionnaire">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="0..1" />
+          <End Type="LibraryAssistantModel.Questionnaire" Role="Questionnaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registered_Person">
+              <PropertyRef Name="Person_ID" />
+            </Principal>
+            <Dependent Role="Questionnaire">
+              <PropertyRef Name="Person_ID_Involved" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ResetPass__Perso__18EBB532">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="0..1" />
+          <End Type="LibraryAssistantModel.ResetPasswordRequest" Role="ResetPasswordRequest" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Registered_Person">
               <PropertyRef Name="Person_ID" />
             </Principal>
             <Dependent Role="Person_Session_Log">
+            <Dependent Role="ResetPasswordRequest">
               <PropertyRef Name="Person_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -3213,6 +3472,27 @@
             </Principal>
             <Dependent Role="Venue_Booking_Person">
               <PropertyRef Name="Attendee_Status" />
+        <Association Name="PersonClosed_VenueProblem">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Venue_Problem" Role="Venue_Problem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registered_Person">
+              <PropertyRef Name="Person_ID" />
+            </Principal>
+            <Dependent Role="Venue_Problem">
+              <PropertyRef Name="Person_ID_Closed" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonLogged_VenueProblem">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1" />
+          <End Type="LibraryAssistantModel.Venue_Problem" Role="Venue_Problem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registered_Person">
+              <PropertyRef Name="Person_ID" />
+            </Principal>
+            <Dependent Role="Venue_Problem">
+              <PropertyRef Name="Person_ID_Logged" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3244,6 +3524,8 @@
         </Association>
         <Association Name="RegisteredPerson_VenueBookingPerson">
           <End Type="LibraryAssistantModel.Venue_Booking" Role="Venue_Booking" Multiplicity="1">
+        <Association Name="VenueBooking_VenueBookingPerson">
+          <End Type="LibraryAssistantModel.Registered_Person" Role="Registered_Person" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="LibraryAssistantModel.Venue_Booking_Person" Role="Venue_Booking_Person" Multiplicity="*" />
@@ -3253,6 +3535,11 @@
             </Principal>
             <Dependent Role="Venue_Booking_Person">
               <PropertyRef Name="Venue_Booking_Seq" />
+            <Principal Role="Registered_Person">
+              <PropertyRef Name="Person_ID" />
+            </Principal>
+            <Dependent Role="Venue_Booking_Person">
+              <PropertyRef Name="Person_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3538,6 +3825,9 @@
                 <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
                 <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
                 <ScalarProperty Name="Person_Topic_ID" ColumnName="Person_Topic_ID" />
+                <ScalarProperty Name="Logout_DateTime" ColumnName="Logout_DateTime" />
+                <ScalarProperty Name="Login_DateTime" ColumnName="Login_DateTime" />
+                <ScalarProperty Name="Session_ID" ColumnName="Session_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3749,6 +4039,36 @@
                 <ScalarProperty Name="DateTime_Closed" ColumnName="DateTime_Closed" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Common_Problem_ID" ColumnName="Common_Problem_ID" />
+          <EntitySetMapping Name="ResetPasswordRequests">
+            <EntityTypeMapping TypeName="LibraryAssistantModel.ResetPasswordRequest">
+              <MappingFragment StoreEntitySet="ResetPasswordRequests">
+                <ScalarProperty Name="ResetRequestDateTime" ColumnName="ResetRequestDateTime" />
+                <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spResetPasswordFunc" FunctionName="LibraryAssistantModel.Store.spResetPassword">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LibraryAssistantModel.spResetPasswordFunc_Result">
+                <ScalarProperty Name="ReturnCode" ColumnName="ReturnCode" />
+                <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Person_Role">
+            <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Role">
+              <MappingFragment StoreEntitySet="Person_Role">
+                <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+                <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+                <ScalarProperty Name="Person_Role_ID" ColumnName="Person_Role_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Booking_Status">
+            <EntityTypeMapping TypeName="LibraryAssistantModel.Booking_Status">
+              <MappingFragment StoreEntitySet="Booking_Status">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Person_ID_Logged" ColumnName="Person_ID_Logged" />
                 <ScalarProperty Name="DateTime_Logged" ColumnName="DateTime_Logged" />
@@ -3773,6 +4093,19 @@
                 <ScalarProperty Name="Attendee_Status" ColumnName="Attendee_Status" />
                 <ScalarProperty Name="Attendee_Type" ColumnName="Attendee_Type" />
                 <ScalarProperty Name="Venue_Booking_Seq" ColumnName="Venue_Booking_Seq" />
+                <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Registered_Person">
+            <EntityTypeMapping TypeName="LibraryAssistantModel.Registered_Person">
+              <MappingFragment StoreEntitySet="Registered_Person">
+                <ScalarProperty Name="Person_Type" ColumnName="Person_Type" />
+                <ScalarProperty Name="Person_Registration_DateTime" ColumnName="Person_Registration_DateTime" />
+                <ScalarProperty Name="Person_Password" ColumnName="Person_Password" />
+                <ScalarProperty Name="Person_Email" ColumnName="Person_Email" />
+                <ScalarProperty Name="Person_Surname" ColumnName="Person_Surname" />
+                <ScalarProperty Name="Person_Name" ColumnName="Person_Name" />
                 <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
               </MappingFragment>
             </EntityTypeMapping>
