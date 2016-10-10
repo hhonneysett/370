@@ -3,6 +3,22 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+@if (ViewBag.DeleteComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.DeleteCompleteMessage</div>
+}
+@if (ViewBag.CreateComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.CreateCompleteMessage</div>
+}
+@if (ViewBag.EditComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.EditCompleteMessage</div>
 }
 
 <h2>Questionnaire Topics</h2>
@@ -10,12 +26,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><h4>All Topics</h4></div>
     <div class="panel-body">
-
-
-
-        <p>
-            <input type="submit" value="Create" class="btn btn-default" onclick="location.href='@Url.Action("Create")'" />            
-        </p>
+     
         <table class="table">
             <tr>
                 <th>
@@ -45,5 +56,47 @@
             }
 
         </table>
+
+        <div>
+            <button id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="location.href='@Url.Action("Create")'">Create New Questionnaire Topic</button>
+        </div>
+
     </div>
 </div>
+
+<style>
+    .isa_info, .isa_success, .isa_warning, .isa_error {
+        margin: 10px 0px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .isa_info {
+        color: #00529B;
+        background-color: #BDE5F8;
+        text-align: center;
+    }
+
+    .isa_success {
+        color: #4F8A10;
+        background-color: #DFF2BF;
+    }
+
+    .isa_warning {
+        color: #9F6000;
+        background-color: #FEEFB3;
+        text-align: center;
+    }
+
+    .isa_error {
+        color: #D8000C;
+        background-color: #FFBABA;
+        text-align: center;
+    }
+
+        .isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+            margin: 10px 22px;
+            font-size: 2em;
+            vertical-align: middle;
+        }
+</style>

@@ -11,7 +11,7 @@
           </Key>
           <Property Name="Action_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Action_Name" Type="varchar" MaxLength="20" />
-          <Property Name="Action_Description" Type="varchar" MaxLength="50" />
+          <Property Name="Action_Description" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Attendee_Status">
           <Key>
@@ -220,7 +220,7 @@
           <Property Name="Questionnaire_ID" Type="int" Nullable="false" />
           <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="Answer_Date" Type="datetime" Nullable="false" />
-          <Property Name="Status" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="Status" Type="char" MaxLength="20" />
         </EntityType>
         <EntityType Name="Person_Questionnaire_Result">
           <Key>
@@ -231,7 +231,7 @@
           <Property Name="Questionnaire_ID" Type="int" Nullable="false" />
           <Property Name="Person_ID" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="Question_Seq" Type="int" Nullable="false" />
-          <Property Name="Question_Answer" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Question_Answer" Type="varchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="Person_Role">
           <Key>
@@ -249,6 +249,8 @@
           <Property Name="Action_DateTime" Type="datetime" Nullable="false" />
           <Property Name="Session_ID" Type="int" Nullable="false" />
           <Property Name="Action_ID" Type="int" Nullable="false" />
+          <Property Name="Action_Performed" Type="varchar" MaxLength="100" />
+          <Property Name="Crud_Operation" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Person_Session_Log">
           <Key>
@@ -295,7 +297,7 @@
             <PropertyRef Name="Question_Seq" />
           </Key>
           <Property Name="Question_Seq" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Question_Text" Type="text" Nullable="false" />
+          <Property Name="Question_Text" Type="varchar(max)" />
           <Property Name="Topic_Seq" Type="int" Nullable="false" />
           <Property Name="Style_Type_ID" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
@@ -314,7 +316,7 @@
           <Property Name="Questionnaire_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="40" Nullable="false" />
           <Property Name="Description" Type="text" Nullable="false" />
-          <Property Name="Assessment_Type" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="Assessment_Type" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Create_Date" Type="datetime" Nullable="false" />
           <Property Name="Person_ID_Creator" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="Active_From" Type="datetime" Nullable="false" />
@@ -385,6 +387,16 @@
           <Property Name="Style_Type_ID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Preview" Type="image" Nullable="false" />
           <Property Name="Description" Type="text" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Topic">
           <Key>
@@ -803,7 +815,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ResetPass__Perso__6166761E">
+        <Association Name="FK__ResetPass__Perso__5F7E2DAC">
           <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="0..1" />
           <End Role="ResetPasswordRequests" Type="Self.ResetPasswordRequests" Multiplicity="*" />
           <ReferentialConstraint>
@@ -827,7 +839,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Venue_Boo__Topic__51300E55">
+        <Association Name="FK__Venue_Boo__Topic__69FBBC1F">
           <End Role="Topic" Type="Self.Topic" Multiplicity="1" />
           <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1435,6 +1447,7 @@
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role_Action" EntityType="Self.Role_Action" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Style_Type" EntityType="Self.Style_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Topic" EntityType="Self.Topic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Topic_Category" EntityType="Self.Topic_Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trainer_Topic" EntityType="Self.Trainer_Topic" Schema="dbo" store:Type="Tables" />
@@ -1537,7 +1550,7 @@
             <End Role="Document_Type" EntitySet="Document_Type" />
             <End Role="Document_Repository" EntitySet="Document_Repository" />
           </AssociationSet>
-          <AssociationSet Name="FK__ResetPass__Perso__6166761E" Association="Self.FK__ResetPass__Perso__6166761E">
+          <AssociationSet Name="FK__ResetPass__Perso__5F7E2DAC" Association="Self.FK__ResetPass__Perso__5F7E2DAC">
             <End Role="Registered_Person" EntitySet="Registered_Person" />
             <End Role="ResetPasswordRequests" EntitySet="ResetPasswordRequests" />
           </AssociationSet>
@@ -1545,7 +1558,7 @@
             <End Role="Venue_Type" EntitySet="Venue_Type" />
             <End Role="Venue" EntitySet="Venue" />
           </AssociationSet>
-          <AssociationSet Name="FK__Venue_Boo__Topic__51300E55" Association="Self.FK__Venue_Boo__Topic__51300E55">
+          <AssociationSet Name="FK__Venue_Boo__Topic__69FBBC1F" Association="Self.FK__Venue_Boo__Topic__69FBBC1F">
             <End Role="Topic" EntitySet="Topic" />
             <End Role="Venue_Booking" EntitySet="Venue_Booking" />
           </AssociationSet>
@@ -2027,6 +2040,7 @@
             <End Role="Topic" EntitySet="Topics" />
             <End Role="Trainer_Topic" EntitySet="Trainer_Topic" />
           </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="LibraryAssistantModel.sysdiagram" />
           </EntityContainer>
         <ComplexType Name="findBookingVenues_Result">
           <Property Type="Int32" Name="Campus_ID" Nullable="false" />
@@ -2254,7 +2268,7 @@
           <Property Name="Questionnaire_ID" Type="Int32" Nullable="false" />
           <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="Answer_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Person_Questionnaire_Result" Relationship="LibraryAssistantModel.PersonQues_PersonQuesResult" FromRole="Person_Questionnaire" ToRole="Person_Questionnaire_Result" />
           <NavigationProperty Name="Questionnaire" Relationship="LibraryAssistantModel.Questionnaire_PersonQues" FromRole="Person_Questionnaire" ToRole="Questionnaire" />
           <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_PersonQues" FromRole="Person_Questionnaire" ToRole="Registered_Person" />
@@ -2268,7 +2282,7 @@
           <Property Name="Questionnaire_ID" Type="Int32" Nullable="false" />
           <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="Question_Seq" Type="Int32" Nullable="false" />
-          <Property Name="Question_Answer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Question_Answer" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Person_Questionnaire" Relationship="LibraryAssistantModel.PersonQues_PersonQuesResult" FromRole="Person_Questionnaire_Result" ToRole="Person_Questionnaire" />
           <NavigationProperty Name="Questionnaire_Questions" Relationship="LibraryAssistantModel.QuesQuestions_PersonQuesResult" FromRole="Person_Questionnaire_Result" ToRole="Questionnaire_Questions" />
         </EntityType>
@@ -2282,6 +2296,8 @@
           <Property Name="Action_ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Person_Session_Log" Relationship="LibraryAssistantModel.PersonSesLog_PerSesActionLog" FromRole="Person_Session_Action_Log" ToRole="Person_Session_Log" />
           <NavigationProperty Name="Action" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Person_Session_Action_Log" ToRole="Action" />
+          <Property Name="Action_Performed" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Crud_Operation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Person_Session_Log">
           <Key>
@@ -2326,7 +2342,7 @@
             <PropertyRef Name="Question_Seq" />
           </Key>
           <Property Name="Question_Seq" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Question_Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question_Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Topic_Seq" Type="Int32" Nullable="false" />
           <Property Name="Style_Type_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Possible_Answer" Relationship="LibraryAssistantModel.QuestionBank_PossibleAnswer" FromRole="Question_Bank" ToRole="Possible_Answer" />
@@ -2351,7 +2367,7 @@
           <Property Name="Questionnaire_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Assessment_Type" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="Assessment_Type" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Create_Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Person_ID_Creator" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="Active_From" Type="DateTime" Nullable="false" Precision="3" />
@@ -3399,7 +3415,7 @@
           </Key>
           <Property Name="Action_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Action_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Action_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Action_Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Action1" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action" ToRole="Action1" />
           <NavigationProperty Name="Action2" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action1" ToRole="Action" />
           <NavigationProperty Name="Person_Session_Action_Log" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Action" ToRole="Person_Session_Action_Log" />
@@ -3505,6 +3521,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3729,6 +3755,8 @@
           <EntitySetMapping Name="Person_Session_Action_Log">
             <EntityTypeMapping TypeName="LibraryAssistantModel.Person_Session_Action_Log">
               <MappingFragment StoreEntitySet="Person_Session_Action_Log">
+                <ScalarProperty Name="Crud_Operation" ColumnName="Crud_Operation" />
+                <ScalarProperty Name="Action_Performed" ColumnName="Action_Performed" />
                 <ScalarProperty Name="Action_ID" ColumnName="Action_ID" />
                 <ScalarProperty Name="Session_ID" ColumnName="Session_ID" />
                 <ScalarProperty Name="Action_DateTime" ColumnName="Action_DateTime" />
@@ -4057,6 +4085,17 @@
                 <ScalarProperty Name="Trainer_Topic_ID" ColumnName="Trainer_Topic_ID" />
                 <ScalarProperty Name="Topic_Seq" ColumnName="Topic_Seq" />
                 <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="LibraryAssistantModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

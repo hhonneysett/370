@@ -20,7 +20,20 @@ namespace LibraryAssistantApp.Controllers
         {
             return View(db.Question_Topic.ToList());
         }
-
+        public ActionResult Finished(string TopicName)
+        {
+            ViewBag.CreateComplete = "Yes";
+            @ViewBag.CreateCompleteMessage = "Question topic '"+TopicName+"' successfully created";
+            return View("Index",db.Question_Topic.ToList());
+        }
+        
+            public ActionResult FinishEdit(int Topic)
+        {
+            string TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
+            ViewBag.EditComplete = "Yes";
+            @ViewBag.EditCompleteMessage = "Question topic '"+ TopicName +"' successfully edited";
+            return View("Index", db.Question_Topic.ToList());
+        }
         // GET: Question_Topic/Details/5
         public ActionResult Details(int? id)
         {
@@ -44,10 +57,22 @@ namespace LibraryAssistantApp.Controllers
 
         public ActionResult Create_Back_From_Create_Question(string Topic_Name, string Topic_Des)
         {
+
             Question_Topic question_Topic = db.Question_Topic.Where(X => X.Topic_Name == Topic_Name).Single();
+
+            //// -------------------------------Action Log ----------------------------------------//
+            //string name = db.Question_Topic.Where(X => X.Topic_Seq == question_Topic.Topic_Seq).Select(Y => Y.Topic_Name).Single();
+
+
+            //db.Person_Session_Action_Log.Remove(db.Person_Session_Action_Log.Where(X => X.Action_Performed == "Created question topic: " + name).Single());
+            //db.SaveChanges();
+            //// -------------------------------Action Log ----------------------------------------//
+
+            
             db.Question_Topic.Remove(question_Topic);
             db.SaveChanges();
 
+            
             ViewBag.Topic_Name = Topic_Name;
             ViewBag.Topic_Des = Topic_Des;
             return View("Create");
@@ -73,6 +98,20 @@ namespace LibraryAssistantApp.Controllers
                 {
                     db.Question_Topic.Add(question_Topic);
                     db.SaveChanges();
+
+
+                    // -------------------------------Action Log ----------------------------------------//
+                    string name = db.Question_Topic.Where(X => X.Topic_Seq == question_Topic.Topic_Seq).Select(Y => Y.Topic_Name).Single();
+                    Person_Session_Action_Log psal = new Person_Session_Action_Log();
+                    psal.Action_DateTime = DateTime.Now;
+                    psal.Action_ID = 11;
+                    psal.Session_ID = db.Person_Session_Log.Select(Y => Y.Session_ID).Max();
+                    psal.Action_Performed = "Question topic: " + name;
+                    psal.Crud_Operation = "Create";
+                    db.Person_Session_Action_Log.Add(psal);
+                    db.SaveChanges();
+                    // -------------------------------Action Log ----------------------------------------//
+
                     string NewTopic = "YES";
                     return RedirectToAction("Add_Question_To_New_Topic", "Question_Bank", new { question_Topic.Topic_Seq, NewTopic, question_Topic.Topic_Name, question_Topic.Description });
                 }
@@ -125,6 +164,20 @@ namespace LibraryAssistantApp.Controllers
                     {
                         db.Entry(question_Topic).State = EntityState.Modified;
                         db.SaveChanges();
+
+                        // -------------------------------Action Log ----------------------------------------//
+                        string name = db.Question_Topic.Where(X => X.Topic_Seq == question_Topic.Topic_Seq).Select(Y => Y.Topic_Name).Single();
+                        Person_Session_Action_Log psal = new Person_Session_Action_Log();
+                        psal.Action_DateTime = DateTime.Now;
+                        psal.Action_ID = 11;
+                        psal.Session_ID = db.Person_Session_Log.Select(Y => Y.Session_ID).Max();                        
+                        psal.Action_Performed = "Question topic: " + name;
+                        psal.Crud_Operation = "Edit";
+                        db.Person_Session_Action_Log.Add(psal);
+                        db.SaveChanges();
+                        // -------------------------------Action Log ----------------------------------------//
+
+
                         ViewBag.Topic = question_Topic.Topic_Seq;
                         return View("Edit_Some_More");
                     }
@@ -140,6 +193,20 @@ namespace LibraryAssistantApp.Controllers
                 {
                     db.Entry(question_Topic).State = EntityState.Modified;
                     db.SaveChanges();
+
+
+                    // -------------------------------Action Log ----------------------------------------//
+                    string name = db.Question_Topic.Where(X => X.Topic_Seq == question_Topic.Topic_Seq).Select(Y => Y.Topic_Name).Single();
+                    Person_Session_Action_Log psal = new Person_Session_Action_Log();
+                    psal.Action_DateTime = DateTime.Now;
+                    psal.Action_ID = 11;
+                    psal.Session_ID = db.Person_Session_Log.Select(Y => Y.Session_ID).Max();
+                    psal.Crud_Operation = "Edit";
+                    psal.Action_Performed = "Question topic: " + name;
+                    db.Person_Session_Action_Log.Add(psal);
+                    db.SaveChanges();
+                    // -------------------------------Action Log ----------------------------------------//
+
                     ViewBag.Topic = question_Topic.Topic_Seq;
                     return View("Edit_Some_More");
                 }                             
@@ -158,7 +225,17 @@ namespace LibraryAssistantApp.Controllers
             if (question_Topic == null)
             {
                 return HttpNotFound();
-            }
+            }            
+
+            int _Count = 0;
+            _Count = db.Questionnaires.Where(X => X.Topic_Seq == id).Count();
+
+            if (_Count != 0)
+            {
+                ViewBag.Error = "This topic cannot be deleted as it is being used in a questionnaire";
+               }
+
+
             return View(question_Topic);
         }
 
@@ -174,21 +251,38 @@ namespace LibraryAssistantApp.Controllers
 
             if (_Count != 0)
             {
-                ViewBag.Error = "This topic cannot be deleted as it has already been used elsewhere in the system.";
+                ViewBag.Error = "This topic cannot be deleted as it is being used in a questionnaire";
                 Question_Topic q_Topic = db.Question_Topic.Find(id);
                 return View(q_Topic);
             }
             else
             {
-                List<Question_Bank> question_Bank = db.Question_Bank.Where(X => X.Topic_Seq == question_Topic.Topic_Seq).ToList();
 
+
+                // -------------------------------Action Log ----------------------------------------//
+                string name = db.Question_Topic.Where(X => X.Topic_Seq == question_Topic.Topic_Seq).Select(Y => Y.Topic_Name).Single();
+                Person_Session_Action_Log psal = new Person_Session_Action_Log();
+                psal.Action_DateTime = DateTime.Now;
+                psal.Action_ID = 11;
+                psal.Session_ID = db.Person_Session_Log.Select(Y => Y.Session_ID).Max();
+                psal.Crud_Operation = "Delete";
+                psal.Action_Performed = "Question topic: " + name;
+
+                db.Person_Session_Action_Log.Add(psal);
+                db.SaveChanges();
+                // -------------------------------Action Log ----------------------------------------//
+
+                List<Question_Bank> question_Bank = db.Question_Bank.Where(X => X.Topic_Seq == question_Topic.Topic_Seq).ToList();
+                @ViewBag.DeleteCompleteMessage = "Question topic '" + question_Topic.Topic_Name + "' successfully deleted.";
                 db.Question_Bank.RemoveRange(question_Bank);
 
                 db.Question_Topic.Remove(question_Topic);
 
                 db.SaveChanges();
-
-                return RedirectToAction("Index");
+                ViewBag.DeleteComplete = "Yes";
+                
+                return View("Index",db.Question_Topic.ToList());
+               
             }
         }
 

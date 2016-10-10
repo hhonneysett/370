@@ -317,6 +317,7 @@
       <End Role="Topic" EntitySet="Topics" />
       <End Role="Trainer_Topic" EntitySet="Trainer_Topic" />
     </AssociationSet>
+    <EntitySet Name="sysdiagrams" EntityType="LibraryAssistantModel.sysdiagram" />
   </EntityContainer>
   <ComplexType Name="findBookingVenues_Result">
     <Property Type="Int32" Name="Campus_ID" Nullable="false" />
@@ -544,7 +545,7 @@
     <Property Name="Questionnaire_ID" Type="Int32" Nullable="false" />
     <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
     <Property Name="Answer_Date" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="Status" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+    <Property Name="Status" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
     <NavigationProperty Name="Person_Questionnaire_Result" Relationship="LibraryAssistantModel.PersonQues_PersonQuesResult" FromRole="Person_Questionnaire" ToRole="Person_Questionnaire_Result" />
     <NavigationProperty Name="Questionnaire" Relationship="LibraryAssistantModel.Questionnaire_PersonQues" FromRole="Person_Questionnaire" ToRole="Questionnaire" />
     <NavigationProperty Name="Registered_Person" Relationship="LibraryAssistantModel.RegisteredPerson_PersonQues" FromRole="Person_Questionnaire" ToRole="Registered_Person" />
@@ -558,7 +559,7 @@
     <Property Name="Questionnaire_ID" Type="Int32" Nullable="false" />
     <Property Name="Person_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
     <Property Name="Question_Seq" Type="Int32" Nullable="false" />
-    <Property Name="Question_Answer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Question_Answer" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Person_Questionnaire" Relationship="LibraryAssistantModel.PersonQues_PersonQuesResult" FromRole="Person_Questionnaire_Result" ToRole="Person_Questionnaire" />
     <NavigationProperty Name="Questionnaire_Questions" Relationship="LibraryAssistantModel.QuesQuestions_PersonQuesResult" FromRole="Person_Questionnaire_Result" ToRole="Questionnaire_Questions" />
   </EntityType>
@@ -572,6 +573,8 @@
     <Property Name="Action_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Person_Session_Log" Relationship="LibraryAssistantModel.PersonSesLog_PerSesActionLog" FromRole="Person_Session_Action_Log" ToRole="Person_Session_Log" />
     <NavigationProperty Name="Action" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Person_Session_Action_Log" ToRole="Action" />
+    <Property Name="Action_Performed" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Crud_Operation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Person_Session_Log">
     <Key>
@@ -616,7 +619,7 @@
       <PropertyRef Name="Question_Seq" />
     </Key>
     <Property Name="Question_Seq" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Question_Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Question_Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="Topic_Seq" Type="Int32" Nullable="false" />
     <Property Name="Style_Type_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Possible_Answer" Relationship="LibraryAssistantModel.QuestionBank_PossibleAnswer" FromRole="Question_Bank" ToRole="Possible_Answer" />
@@ -641,7 +644,7 @@
     <Property Name="Questionnaire_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
     <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="Assessment_Type" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+    <Property Name="Assessment_Type" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="Create_Date" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Person_ID_Creator" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
     <Property Name="Active_From" Type="DateTime" Nullable="false" Precision="3" />
@@ -1689,7 +1692,7 @@
     </Key>
     <Property Name="Action_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Action_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Action_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Action_Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Action1" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action" ToRole="Action1" />
     <NavigationProperty Name="Action2" Relationship="LibraryAssistantModel.Action_Action" FromRole="Action1" ToRole="Action" />
     <NavigationProperty Name="Person_Session_Action_Log" Relationship="LibraryAssistantModel.Action_PerSesActionLog" FromRole="Action" ToRole="Person_Session_Action_Log" />
@@ -1795,4 +1798,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
 </Schema>

@@ -8,6 +8,7 @@
 <h2>Edit Questionnaire</h2>
 
 @Html.Hidden("Questionnaire_ID", (int)ViewBag.Questionnaire_ID, new { id = "Questionnaire_ID" })
+@Html.Hidden("CannotEdit", (string)ViewBag.CannotEdit, new { id = "CannotEdit" })
 
 <div class="panel panel-default">
     <div class="panel-heading">Edit Questionnaire details</div>
@@ -32,17 +33,17 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Active_From, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Active Date", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Active_From, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_From", @readonly = "true", @value = ViewBag.Active_From } })
+                    @Html.EditorFor(model => model.Active_From, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_From", @readonly = "true", @value = ViewBag.Active_From, @data_toggle = "tooltip", @title = "Select a date upon which this new questionnaire will be active from." } })
                     <label class="text-danger" id="Active_From_Validation"></label>
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Active_To, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Expiry Date", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Active_To, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_To", @readonly = "true", @value = ViewBag.Active_To } })
+                    @Html.EditorFor(model => model.Active_To, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_To", @readonly = "true", @value = ViewBag.Active_To, @data_toggle = "tooltip", @title = "Select a date upon which this new questionnaire will expire on." } })
                     <label class="text-danger" id="Active_To_Validation"></label>
                 </div>
             </div>
@@ -56,24 +57,36 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Assessment_Type, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.Assessment_Type, new SelectList(
-                  new List<Object>{
-                       new { value = "Other" , text = "Other"  },
-                       new { value = "Venue" , text = "Venue" },
-                       new { value = "Employee" , text = "Employee"},
-                       new { value = "Training Session" , text = "Training Session"}
-                    },
-                  "value",
-                  "text",
-                   @ViewBag.Assess))
-                    @*@Html.DropDownList("Assessment_Type", new List<SelectListItem>
-                     {
-                        new SelectListItem{ Text="Other", Value = "Other" },
-                        new SelectListItem{ Text="Venue", Value = "Venue" },
-                        new SelectListItem{ Text="Employee", Value = "Employee" },
-                        new SelectListItem{ Text="Training Session", Value = "Training Session" }
-                     }, "Select an assessment type", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assess })*@
-                        <label class="text-danger" id="Assessment_Type_Validation"></label>
+
+                 
+
+                    @if (ViewBag.CannotEdit == "true")
+                    {
+
+                        @Html.DropDownList("Assessment_Type", new List<SelectListItem>
+                        {
+                           new SelectListItem{ Text="Other", Value = "Other" },
+                           new SelectListItem{ Text="Venue", Value = "Venue" },
+                           new SelectListItem{ Text="Employee", Value = "Employee" },
+                           new SelectListItem{ Text="Training Session", Value = "Training Session" }
+                        }, "All", htmlAttributes: new { @class = "form-control", @disabled = "disabled" , id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
+
+                    }
+                    else
+                    {
+
+                        @Html.DropDownList("Assessment_Type", new List<SelectListItem>
+                        {
+                           new SelectListItem{ Text="Other", Value = "Other" },
+                           new SelectListItem{ Text="Venue", Value = "Venue" },
+                           new SelectListItem{ Text="Employee", Value = "Employee" },
+                           new SelectListItem{ Text="Training Session", Value = "Training Session" }
+                        }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
+
+                    }
+
+
+                    <label class="text-danger" id="Assessment_Type_Validation"></label>
                 </div>
             </div>
 
@@ -81,13 +94,36 @@
                 @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
 
-                    @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
+                    @if (ViewBag.CannotEdit == "true")
+                    {
+                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic", @disabled = "disabled" })
+                    }
+                    else
+                    {
+                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
+                    }
+
                     <label class="text-danger" id="Topic_validation"></label>
 
                 </div>
             </div>
 
-            <input type="submit" value="Done" class="btn btn-default" onclick="validateInput();" /> <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Index","Questionnaire")'" /> <label id="Warning"></label>
+
+
+            
+
+            @if (ViewBag.CannotEdit == "true")
+            {
+                <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Index","Questionnaire")'" /> <input type="submit" value="Update" class="btn btn-default pull-right" onclick="validateInput();" />
+                <strong><div class="isa_warning" id="Warning">@ViewBag.CannotEditError</div></strong>
+            }
+            else
+            {
+                <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Index","Questionnaire")'" /> <input type="submit" value="Next" class="btn btn-default pull-right" onclick="validateInput();" />
+                <strong><div class="isa_info" id="Warning"></div></strong>
+            }
+
+
         </div>
 
     </div>
@@ -104,6 +140,9 @@
         document.getElementById("Active_To_Validation").innerHTML = "";
         document.getElementById("Assessment_Type_Validation").innerHTML = "";
         document.getElementById("Topic_validation").innerHTML = "";
+        var Active_FromDate = new Date(document.getElementById("Active_From").value);
+        var Active_ToDate = new Date(document.getElementById("Active_To").value);
+
 
         var Name = document.getElementById("Name").value;
         var Description = document.getElementById("Description").value;
@@ -112,7 +151,7 @@
         var Assessment_Type = document.getElementById("Assessment_Type").value;
         var Topic = document.getElementById("Topic").value;
 
-        if (Name == "" && Description == "" && Active_From == "" && Active_To == "" && Assessment_Type == "" & Topic== "") {
+        if (Name == "" && Description == "" && Active_From == "" && Active_To == "" && Assessment_Type == "" & Topic == "") {
             document.getElementById("Name_Validation").innerHTML = "Name is required";
             document.getElementById("Description_Validation").innerHTML = "Description is required";
             document.getElementById("Active_From_Validation").innerHTML = "Active from is required";
@@ -127,67 +166,67 @@
             document.getElementById("Active_To_Validation").innerHTML = "Active to is required";
             document.getElementById("Assessment_Type_Validation").innerHTML = "Assessment type is required ";
         }
-        else if (Name == "" && Description == "" && Active_From == "" && Active_To == "" & Topic== "") {
+        else if (Name == "" && Description == "" && Active_From == "" && Active_To == "" & Topic == "") {
             document.getElementById("Name_Validation").innerHTML = "Name is required";
             document.getElementById("Description_Validation").innerHTML = "Description is required";
             document.getElementById("Active_From_Validation").innerHTML = "Active from is required";
             document.getElementById("Active_To_Validation").innerHTML = "Active to is required";
             document.getElementById("Topic_validation").innerHTML = "Topic is required";
         }
-        else if (Name == "" && Description == "" && Active_From == "" && Assessment_Type == "" & Topic== "") {
+        else if (Name == "" && Description == "" && Active_From == "" && Assessment_Type == "" & Topic == "") {
             document.getElementById("Name_Validation").innerHTML = "Name is required";
             document.getElementById("Description_Validation").innerHTML = "Description is required";
             document.getElementById("Active_From_Validation").innerHTML = "Active from is required";
             document.getElementById("Assessment_Type_Validation").innerHTML = "Assessment type is required ";
             document.getElementById("Topic_validation").innerHTML = "Topic is required";
         }
-        else if (Name == "" && Description == "" && Active_To == "" && Assessment_Type == "" & Topic== "") {
+        else if (Name == "" && Description == "" && Active_To == "" && Assessment_Type == "" & Topic == "") {
             document.getElementById("Name_Validation").innerHTML = "Name is required";
             document.getElementById("Description_Validation").innerHTML = "Description is required";
             document.getElementById("Active_To_Validation").innerHTML = "Active to is required";
             document.getElementById("Assessment_Type_Validation").innerHTML = "Assessment type is required ";
             document.getElementById("Topic_validation").innerHTML = "Topic is required";
         }
-        else if (Name == "" && Active_From == "" && Active_To == "" && Assessment_Type == "" & Topic== "") {
+        else if (Name == "" && Active_From == "" && Active_To == "" && Assessment_Type == "" & Topic == "") {
             document.getElementById("Name_Validation").innerHTML = "Name is required";
             document.getElementById("Active_From_Validation").innerHTML = "Active from is required";
             document.getElementById("Active_To_Validation").innerHTML = "Active to is required";
             document.getElementById("Assessment_Type_Validation").innerHTML = "Assessment type is required ";
             document.getElementById("Topic_validation").innerHTML = "Topic is required";
         }
-        else if (Description == "" && Active_From == "" && Active_To == "" && Assessment_Type == "" & Topic== "") {
+        else if (Description == "" && Active_From == "" && Active_To == "" && Assessment_Type == "" & Topic == "") {
             document.getElementById("Description_Validation").innerHTML = "Description is required";
             document.getElementById("Active_From_Validation").innerHTML = "Active from is required";
             document.getElementById("Active_To_Validation").innerHTML = "Active to is required";
             document.getElementById("Assessment_Type_Validation").innerHTML = "Assessment type is required ";
             document.getElementById("Topic_validation").innerHTML = "Topic is required";
         }
-        else if (Name == "")
-        {
+        else if (Name == "") {
             document.getElementById("Name_Validation").innerHTML = "Name is required";
         }
-        else if (Description == "")
-        {
+        else if (Description == "") {
             document.getElementById("Description_Validation").innerHTML = "Description is required";
         }
-        else if (Active_From == "")
-        {
+        else if (Active_From == "") {
             document.getElementById("Active_From_Validation").innerHTML = "Active from is required";
         }
-        else if (Active_To == "")
-        {
+        else if (Active_To == "") {
             document.getElementById("Active_To_Validation").innerHTML = "Active to is required";
         }
-        else if (Assessment_Type == "")
-        {
+        else if (Assessment_Type == "") {
             document.getElementById("Assessment_Type_Validation").innerHTML = "Assessment type is required ";
         }
-        else if (Topic == "")
-        {
+        else if (Topic == "") {
             document.getElementById("Topic_validation").innerHTML = "Topic is required";
         }
         else {
-            RunURL();
+            if (Active_FromDate > Active_ToDate) {
+                document.getElementById("Active_From_Validation").innerHTML = "Active from date cannot be greater than Active To date";
+
+            }
+            else {
+                RunURL();
+            }
         }
     }
 </script>
@@ -201,26 +240,50 @@
         var Assessment_Type = document.getElementById("Assessment_Type").value;
         var Topic = document.getElementById("Topic").value;
         var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
-
-        window.location.href = "/Questionnaire/Editing?Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic_Seq=" + Topic + "&Questionnaire_ID=" + Questionnaire_ID;
+        var CannotEdit = document.getElementById("CannotEdit").value;
+    
+        if (CannotEdit == "true") {
+            window.location.href = "/Questionnaire/LimitedEdit?Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic_Seq=" + Topic + "&Questionnaire_ID=" + Questionnaire_ID;
+        }
+        else {
+            window.location.href = "/Questionnaire/Editing?Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic_Seq=" + Topic + "&Questionnaire_ID=" + Questionnaire_ID;
+        }
     }
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
+    $(document).ready(function () {
 
-    $("#Topic").mouseenter(function () {
-        document.getElementById("Warning").innerHTML = "If the topic is changed then all previously assigned questions will be deleted and new questions must be assigned to the questionnaire."
-        document.getElementById("Warning").style.color = "red";
+        $("#Topic").mouseenter(function () {
+            document.getElementById("Warning").innerHTML = "Topic Notification: If the topic is changed then all previously assigned questions will be deleted and new questions must be assigned to the questionnaire."
+            document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
+        });
+
+
+        $("#Topic").mouseout(function () {
+            document.getElementById("Warning").innerHTML = ""
+            document.getElementById("Warning").style.backgroundColor = "white";
+        });
     });
-
-
-    $("#Topic").mouseout(function () {
-            document.getElementById("Warning").innerHTML = ""});
-});
 </script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#Assessment_Type").mouseenter(function () {
+            document.getElementById("Warning").innerHTML = "Assessment Type Notification: If the assessment type is changed then all previously assigned assessment type information will be deleted and new information must be obtaind."
+            document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
+        });
+
+
+        $("#Assessment_Type").mouseout(function () {
+            document.getElementById("Warning").innerHTML = ""
+            document.getElementById("Warning").style.backgroundColor = "white";
+        });
+    });
+</script>
 
 <script>
 
@@ -229,13 +292,54 @@ $(document).ready(function(){
     };
 
 
-    function forceAssessmentType()
-    {
+    function forceAssessmentType() {
 
         var d = document.getElementById("Assessment_Type");
         d.className += " form-control";
 
-       
+
     }
 
+</script>
+<style>
+    .isa_info, .isa_success, .isa_warning, .isa_error {
+        margin: 10px 0px;
+        padding: 12px;
+    }
+
+    .isa_info {
+        color: #00529B;
+        text-align: center;
+    }
+
+    .isa_success {
+        color: #4F8A10;
+        background-color: #DFF2BF;
+        text-align: center;
+    }
+
+    .isa_warning {
+        color: #9F6000;
+        background-color: #FEEFB3;
+        text-align: center;
+    }
+
+    .isa_error {
+        color: #D8000C;
+        background-color: #FFBABA;
+        text-align: center;
+    }
+
+        .isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+            margin: 10px 22px;
+            font-size: 2em;
+            vertical-align: middle;
+        }
+</style>
+
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
 </script>

@@ -78,6 +78,7 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Role_Action> Role_Action { get; set; }
         public virtual DbSet<Trainer_Topic> Trainer_Topic { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {

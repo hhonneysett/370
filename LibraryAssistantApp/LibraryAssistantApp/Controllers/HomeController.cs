@@ -17,5 +17,12 @@ namespace LibraryAssistantApp.Controllers
         {
             return View();                  
         }
+
+        [Authorize]
+        public ActionResult About_Us()
+        {
+            return View();
+        }
+
     }
 }

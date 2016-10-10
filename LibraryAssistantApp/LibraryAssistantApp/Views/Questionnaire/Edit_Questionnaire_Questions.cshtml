@@ -12,19 +12,21 @@
 @Html.Hidden("Edit_or_New", (string)ViewBag.Edit_or_New, new { id = "Edit_or_New" })
 
 <div class="panel panel-default">
-    <div class="panel-heading">Select Questions</div>
+    <div style="text-align:center" class="panel-heading"><h4>Select an appropriate question from the list to be added to the questionnaire</h4></div>
     <div class="panel-body">
 
-        <div>
-            <label>Filter questions by name</label><button type="button" class="btn btn-default pull-right" onclick="Search();">Search</button>
+        <div style="padding-bottom:8px">
+            <label>Filter questions by name</label>
             <br />
             @Html.Editor("A_New_Name", new { htmlAttributes = new { @class = "form-control", id = "A_New_Name" } })
         </div>
-
+        <div >
+            <button type="button" class="btn btn-default " onclick="Search();">Search</button>
+        </div>
 
         <p>
             <div>
-                <label>Questions related to selected topic</label>
+                <label>List of Questions related to the selected topic: @ViewBag.TopicName</label>
                 <br />
 
                 @if (ViewBag.Count == 0)
@@ -36,7 +38,9 @@
                 }
                 else
                 {
-                    @Html.ListBox("Listbox", (SelectList)ViewBag.Questions, new { htmlAttributes = new { @class = "form-control" } })
+                    <div >
+                        @Html.ListBox("Listbox", (SelectList)ViewBag.Questions, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
                 }
 
             </div>
@@ -63,11 +67,11 @@
 
 
 <div class="panel panel-default">
-    <div class="panel-heading">Selected Questions</div>
+    <div style="text-align:center" class="panel-heading"><h4>Selected Questions</h4></div>
     <div class="panel-body">
 
         <p>
-            <input type="submit" value="Remove" class="btn btn-default" onclick="RemoveQuestion();" /> <label class="text-danger" id="Warning"></label>
+            <input type="submit" value="Remove last question" class="btn btn-default" onclick="RemoveQuestion();" /> <label class="text-danger" id="Warning"></label>
         </p>
 
         <table class="table">
@@ -213,10 +217,10 @@
             </tr>
 
         </table>
-
-        <p>
-            <input type="submit" value="Submit" class="btn btn-default" onclick="Submit()" />
-        </p>
+        
+        <div>
+            <button id="Select_Button" type="submit" value="Submit" class="btn btn-outline btn-default btn-lg btn-block" onclick="Submit()" >Submit</button>
+        </div>
 
     </div>
 </div>

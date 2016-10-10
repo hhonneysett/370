@@ -16,19 +16,21 @@
 @Html.Hidden("Questionnaire_ID", (int)ViewBag.Questionnaire_ID, new { id = "Questionnaire_ID" })
 
 <div class="panel panel-default">
-    <div class="panel-heading">Select Questions</div>
+    <div style="text-align:center" class="panel-heading"><h4>Select an appropriate question from the list to be added to the questionnaire</h4></div>
     <div class="panel-body">
 
-        <div>
-            <label>Filter questions by name</label><button type="button" class="btn btn-default pull-right" onclick="Search();">Search</button>
+        <div style="padding-bottom:8px">
+            <label>Filter the list of questions by Name</label>
             <br />
             @Html.Editor("A_New_Name", new { htmlAttributes = new { @class = "form-control", id = "A_New_Name" } })
         </div>
-
+        <div>
+            <button type="button" class="btn btn-default " onclick="Search();">Search</button>
+        </div>
 
         <p>
             <div>
-                <label>Questions related to selected topic</label>
+                <label>List of Questions related to the selected topic: @ViewBag.TopicName</label>
                 <br />
 
                 @if (ViewBag.Count == 0)
@@ -36,30 +38,30 @@
                     @Html.ListBox("Listbox", new List<SelectListItem>
                      {
                         new SelectListItem{ Text="No results where found", Value = "No results where found" }
-               }, new { htmlAttributes = new { @class = "form-control" } })
+               }, new { htmlAttributes = new { @class = "form-control", id = "Listbox" } })
                 }
                 else
                 {
-                    @Html.ListBox("Listbox", (SelectList)ViewBag.Questions, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ListBox("Listbox", (SelectList)ViewBag.Questions, new { htmlAttributes = new { @class = "form-control", id = "Listbox" } })
                 }
 
             </div>
         </p>
 
-       
-            @if (ViewBag.Count == 0)
+
+        @if (ViewBag.Count == 0)
             {
-                <div>
-                    <button disabled id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="SelectQuestion();">Select</button>
-                </div>
-            }
-            else
-            {
-                <div>
-                    <button  id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="SelectQuestion();">Select</button>
-                </div>
-            }
-        
+            <div>
+                <button disabled id="Select_Button" type="button" class="btn btn-default btn-default btn-lg btn-block" onclick="SelectQuestion();">Select</button>
+            </div>
+        }
+        else
+        {
+            <div>
+                <button id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="SelectQuestion();">Select</button>
+            </div>
+        }
+
     </div>
 </div>
 
@@ -67,11 +69,11 @@
 
 
 <div class="panel panel-default">
-    <div class="panel-heading">Selected Questions</div>
+    <div style="text-align:center" class="panel-heading"><h4>Selected Questions</h4></div>
     <div class="panel-body">
 
         <p>
-            <input type="submit" value="Remove" class="btn btn-default" onclick="RemoveQuestion();" /> <label class="text-danger" id="Warning"></label>
+            <input type="submit" value="Remove last question" class="btn btn-default" onclick="RemoveQuestion();" /> <label class="text-danger" id="Warning"></label>
         </p>
 
         <table class="table">
@@ -218,9 +220,30 @@
 
         </table>
 
-        <p>
-            <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" *@ /> <input type="submit" value="Submit" class="btn btn-default pull-right" onclick="Submit()" />
-        </p>
+        @if (ViewBag.EmployeeAssessment == "Yes")
+        {
+            <p>
+                <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_Employee_Assessment","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" /> <input type="submit" value="Submit" class="btn btn-outline btn-default pull-right" onclick="Submit()" />
+            </p>
+        }
+        else if (ViewBag.TrainingSessionAssessment == "Yes")
+        {
+            <p>
+                <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_TrainingSessionAssessment","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" /> <input type="submit" value="Submit" class="btn btn-outline btn-default pull-right" onclick="Submit()" />
+            </p>
+        }
+        else if (ViewBag.VenueAssessment == "Yes")
+        {
+            <p>
+                <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_VenueAssessment_QQuestions","Questionnaire", new {ViewBag.SelectedCampus,ViewBag.SelectedBuilding,ViewBag.SelectedBuildingFloor,ViewBag.SelectedVenue, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" /> <input type="submit" value="Submit" class="btn btn-outline btn-default pull-right" onclick="Submit()" />
+            </p>
+        }
+        else
+        {
+            <p>
+                <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" /> <input type="submit" value="Submit" class="btn btn-outline btn-default pull-right" onclick="Submit()" />
+            </p>
+        }
 
     </div>
 </div>
@@ -383,8 +406,18 @@
     }
 </script>
 
+<style>
+    #Listbox {
+        height: 100%;
+        width: 100%;
+        line-height: 30px;
+    }
+</style>
 
+<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+<script type="text/javascript">
 
+    $(document).ready(function(){
 
-
-
+        $('Listbox').width(500);
+    });</script>

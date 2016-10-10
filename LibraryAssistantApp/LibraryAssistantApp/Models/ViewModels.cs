@@ -632,8 +632,19 @@ namespace LibraryAssistantApp.Models
         public bool topic_ind;
     }
 
+    public class AuditLog
+    {
+        public string Action_Performed;
+        public string Crud_Operation;
+        public string Person_Name;
+        public DateTime TimePerformed;
+        public string Area;        
+    }
+
+
     public class EmployeeDeleteModel
     {
         public Registered_Person registered_person { get; set; }
     }
+   
 }

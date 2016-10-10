@@ -120,6 +120,7 @@
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_TrainerTopic" />
         <AssociationConnector Association="LibraryAssistantModel.Role_RoleAction" />
         <AssociationConnector Association="LibraryAssistantModel.RegisteredPerson_Topic" />
+        <EntityTypeShape EntityType="LibraryAssistantModel.sysdiagram" Width="1.5" PointX="5.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
