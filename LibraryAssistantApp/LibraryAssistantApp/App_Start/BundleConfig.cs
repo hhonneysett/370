@@ -9,6 +9,7 @@ namespace LibraryAssistantApp
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                         "~/Scripts/bootbox.min.js",
                         "~/Scripts/bxSlider/jquery.bxslider.min.js",
                         "~/Scripts/DataTable/datatables.min.js",
                         "~/Scripts/jquery-{version}.js",
@@ -68,7 +69,7 @@ namespace LibraryAssistantApp
                 "~/Scripts/selectrow.js"));
             //modal script
             bundles.Add(new ScriptBundle("~/bundles/bootbox").Include(
-                "~/Scripts/bootbox.js"));
+                "~/Scripts/bootbox.min.js"));
             //notification 'noty' scripts
             bundles.Add(new ScriptBundle("~/bundles/noty").Include(
                 "~/Scripts/noty/jquery.noty.js",

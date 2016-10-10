@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace LibraryAssistantApp.Controllers
 {
@@ -11,12 +13,14 @@ namespace LibraryAssistantApp.Controllers
     {
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
+        //view booings - student side
         [Authorize]
         public ActionResult ViewBookings()
         {
             return View();
         }
 
+        //view bookings - employee side
         [Authorize(Roles ="Admin, Employee")]
         public ActionResult employeeViewBookings()
         {
@@ -35,6 +39,24 @@ namespace LibraryAssistantApp.Controllers
         public ActionResult BookDiscussionRoom()
         {
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+
+            //get xml
+            var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
+            XElement doc = XElement.Load(settingsPath);
+
+            //get list of durations
+            List<string> durations = (from el in doc.Elements("discussionduration")
+                                             select el.Value).ToList();
+            durations.Sort();
+            ViewBag.Durations = durations;
+
+            //get start/closing time
+            var open = doc.Elements("opentime").First();
+            var close = doc.Elements("closetime").First();
+
+            ViewBag.Open = open;
+            ViewBag.Close = close;
+
             return View();
         }
 
@@ -56,7 +78,7 @@ namespace LibraryAssistantApp.Controllers
             if (ModelState.IsValid)
             {
                 var dateToday = DateTime.Today;
-                if (model.date > dateToday)
+                if (model.date.Date > dateToday.Date)
                 {
                     model.time = Convert.ToDateTime(model.inTime);
 
@@ -68,7 +90,7 @@ namespace LibraryAssistantApp.Controllers
                     DateTime startDateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
 
                     //calculate the end time of the new session
-                    TimeSpan duration = new TimeSpan(0, model.length, 0);
+                    var duration = Convert.ToDateTime(model.length).TimeOfDay;
                     DateTime endDateTime = startDateTime.Add(duration);
                     model.date = startDateTime;
                     model.endDate = endDateTime;
@@ -99,9 +121,27 @@ namespace LibraryAssistantApp.Controllers
                     ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
                     TempData["Message"] = "Invalid date selection, date is in the past.";
                     TempData["classStyle"] = "warning";
+                    //get xml
+                    var sp = Path.Combine(Server.MapPath("~"), "settings.xml");
+                    XElement document = XElement.Load(sp);
+
+                    //get list of durations
+                    List<string> dur = (from el in document.Elements("discussionduration")
+                                              select el.Value).ToList();
+                    dur.Sort();
+                    ViewBag.Durations = dur;
                     return View(model);
                 }
             }
+            //get xml
+            var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
+            XElement doc = XElement.Load(settingsPath);
+
+            //get list of durations
+            List<string> durations = (from el in doc.Elements("discussionduration")
+                                      select el.Value).ToList();
+            durations.Sort();
+            ViewBag.Durations = durations;
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
             return View(model);
         }
@@ -132,7 +172,7 @@ namespace LibraryAssistantApp.Controllers
                         DateTime startDateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
 
                         //calculate the end time of the new session
-                        TimeSpan duration = new TimeSpan(0, model.length, 0);
+                        TimeSpan duration = Convert.ToDateTime(model.length).TimeOfDay;
                         DateTime endDateTime = startDateTime.Add(duration);
                         model.date = startDateTime;
                         model.endDate = endDateTime;
@@ -655,7 +695,7 @@ namespace LibraryAssistantApp.Controllers
             var details = (DiscussionRoomBooking)Session["details"];
             var venues = db.findBookingVenuesFunc(details.date, details.endDate, "Discussion", details.campus_ID).ToList();
 
-            if (characteristics.Any())
+            if (characteristics != null)
             {
                 //get list of all venues venue_id
                 var venueListId = (from a in venues
@@ -702,7 +742,7 @@ namespace LibraryAssistantApp.Controllers
             if (capacity > 0)
             {
                 venues = (from venue in venues
-                          where venue.Capacity.Equals(capacity)
+                          where venue.Capacity >= capacity
                           select venue).ToList();
             }
                  
