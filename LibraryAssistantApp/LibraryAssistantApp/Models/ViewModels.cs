@@ -176,8 +176,8 @@ namespace LibraryAssistantApp.Models
         public DateTime time { get; set; }
 
         [Required(ErrorMessage = "Please provide a length selection")]
-        [Display(Name = "Duration (Minutes)")]
-        public int length { get; set; }
+        [Display(Name = "Duration")]
+        public string length { get; set; }
 
         [Required(ErrorMessage = "Please provide a campus selection")]
         [Display(Name = "Campus")]
@@ -206,7 +206,7 @@ namespace LibraryAssistantApp.Models
 
         [Required(ErrorMessage = "Please provide a length selection")]
         [Display(Name = "Duration (Minutes)")]
-        public int length { get; set; }
+        public string length { get; set; }
 
         [Required(ErrorMessage = "Please provide a campus selection")]
         [Display(Name = "Campus")]

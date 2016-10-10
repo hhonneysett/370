@@ -1,42 +1,41 @@
-﻿function AssignButtonClicked(elem) {
-    var id = $(elem).data('assigned-id');
-    $.ajax({
-        type: 'POST',
-        url: '/Booking/venueSelect',
-        data: "id=" + id,
-        success: function (result) { },
-        error: function (err, result) {
-            alert("Error in assigning dataToSave" + err.responseText);
-        }
-    });
-}
+﻿//function AssignButtonClicked(elem) {
+//    var id = $(elem).data('assigned-id');
+//    $.ajax({
+//        type: 'POST',
+//        url: '/Booking/venueSelect',
+//        data: "id=" + id,
+//        success: function (result) { },
+//        error: function (err, result) {
+//            alert("Error in assigning dataToSave" + err.responseText);
+//        }
+//    });
+//}
 
-$('#btnSubmit').on('click', function () {
-    $("#confirmDetailsForm").dialog({
-        autoOpen: true,
-        position: {
-            my: "center",
-            at: "top+350",
-            of: window
-        },
-        width: 1000,
-        resizable: false,
-        title: 'Confirm Details:',
-        modal: true,
-        open: function () {
-            $(this).load('/Booking/confirmDetails');
-        },
-        buttons: {
-            "Confirm Booking": function () {
-                confirmBooking();
-            },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
-        }
-    });
-    return false;
-});
+//$('#btnSubmit').on('click', function () {
+//    $("#confirmDetailsForm").dialog({
+//        autoOpen: true,
+//        position: {
+//            my: "center",
+//            at: "top+350",
+//            of: window
+//        },
+//        width: 1000,
+//        resizable: false,
+//        title: 'Confirm Details:',
+//        modal: true,
+//        open: function () {
+//            $(this).load('/Booking/confirmDetails');
+//        },
+//        buttons: {
+//            "Confirm Booking": function () {
+//                confirmBooking();
+//            },
+//            Cancel: function () {
+//                $(this).dialog("close");
+//            }
+//        }
+//    });
+//});
 
 $('#btnRegisterStudent').on('click', function () {
     $("#oneTimePin").dialog({
@@ -64,18 +63,18 @@ $('#btnRegisterStudent').on('click', function () {
     });
 });
 
-function confirmBooking() {
-    $.ajax({
-        type: 'POST',
-        url: '/Booking/captureDetails',
-        success: function (result) {
-            window.location.href = result;
-        },
-        error: function (err, result) {
-            alert("Error in assigning dataToSave" + err.responseText);
-        }
-    });
-}
+//function confirmBooking() {
+//    $.ajax({
+//        type: 'POST',
+//        url: '/Booking/captureDetails',
+//        success: function (result) {
+//            window.location.href = result;
+//        },
+//        error: function (err, result) {
+//            alert("Error in assigning dataToSave" + err.responseText);
+//        }
+//    });
+//}
 
 //enable button on employeeViewBookings when status is updated
 function enableButton() {

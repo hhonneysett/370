@@ -8,6 +8,7 @@
     var trainingduration = (List<string>)ViewBag.TrainingDuration;
     var openTime = (string)ViewBag.OpenTime;
     var closeTime = (string)ViewBag.CloseTime;
+    var discussiondurations = (IEnumerable<string>)ViewBag.DiscussionDuration;
 }
 
 <h2>Settings</h2>
@@ -138,6 +139,65 @@
                     </div>
                     <div class="">
                         <button class="btn btn-default" id="addTDur">Add Duration</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="text-center">
+                    <label class="control-label">Discussion Room Session Duration:</label>
+                </div>
+            </div>
+            @if (discussiondurations.Any())
+            {
+                <table class="table table-hover text-center" id="discussionTable">
+                    <tbody>
+                        @foreach (var t in discussiondurations)
+                        {
+                            <tr id="@t">
+                                <td>@t</td>
+                                <td style="padding-left:5px; padding-bottom:5px"><button id="@t" class="removeDiscussionTime"><span class="fa fa-times"></span> Remove</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <table class="table-hover" id="pictureTable">
+                    <tr><td>No Discussion Room Session Durations</td></tr>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <form id="addDisDur">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="text-center form-group" style="padding-bottom:5px; border-bottom:thin solid lightgrey">
+                        <label>Add Discussion Room Session Duration:</label>
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-md-12" style="padding-bottom:10px">
+                            <div class="col-md-6">
+                                <label>Hours</label>
+                                <input id="Dhours" name="value" value=0 size=3 class="center-block" type="number" min="0" max="24" />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Minutes</label>
+                                <input id="Dminutes" name="value" value=0 size=2 class="center-block" type="number" min="0" max="60" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-default" id="addDDur">Add Duration</button>
                     </div>
                 </div>
             </div>
@@ -329,6 +389,27 @@
             });
         }));
 
+        //delete discussion duration
+        $(document).on('click', ".removeDiscussionTime", (function () {
+
+            var id = $(this).prop('id');
+
+            $.ajax({
+                type: 'POST',
+                url: '/Settings/deleteDiscussionDuration',
+                data: { time: id },
+                success: function (result) {
+                    $("#discussionTable tbody").empty();
+                    result.forEach(function (entry) {
+                        $("#discussionTable tbody").append("<tr id='" + entry + "'><td>" + entry + "</td><td style='padding-left:5px; padding-bottom:5px'><button id='" + entry + "' class='removeTrainingTime'><span class='fa fa-times'></span> Remove</button></td>")
+                    })
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }));
+
         //add training duration
         $("#addTDur").click(function () {
             //check validation
@@ -400,8 +481,83 @@
             }           
         })
 
+        //add training duration
+        $("#addDDur").click(function () {
+            //check validation
+            var check = $("#addDisDur").valid();
+
+            //run script if valid
+            if (check) {
+                //get values of hour and minutes
+                var hour = $('#Dhours').val();
+                var min = $('#Dminutes').val();
+
+                if (hour == 0 && min == 0) {
+                    //display notification
+                    $.ambiance({
+                        message: 'Invalid Duration!',
+                        title: "Error!",
+                        type: "error",
+                        timeout: 5
+                    });
+                    return;
+                }
+
+                //run ajax
+                $.ajax({
+                    url: '/Settings/addDiscussionDuration',
+                    type: 'POST',
+                    data: { hour: hour, min: min },
+                    success: function (result) {
+
+                        //check for clash
+                        if (!result) {
+                            //display notification
+                            $.ambiance({
+                                message: 'Duration Already Exists!',
+                                title: "Error!",
+                                type: "error",
+                                timeout: 5
+                            });
+
+                            //clear values
+                            $('#Dhours').val(0);
+                            $('#Dminutes').val(0);
+
+                            return;
+                        }
+
+                        $("#discussionTable tbody").empty();
+                        result.forEach(function (entry) {
+                            $("#discussionTable tbody").append("<tr id='" + entry + "'><td>" + entry + "</td><td style='padding-left:5px; padding-bottom:5px'><button id='" + entry + "' class='removeTrainingTime'><span class='fa fa-times'></span> Remove</button></td>")
+                        })
+
+                        //display notification
+                        $.ambiance({
+                            message: 'Discussion Room Session Duration Added!',
+                            title: "Success!",
+                            type: "success",
+                            timeout: 5
+                        });
+
+                        //clear values
+                        $('#Dhours').val(0);
+                        $('#Dminutes').val(0);
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                })
+            }
+        })
+
         //initiate training duration validation
         $("#addTrainDur").validate({
+            errorClass: "my-error-class",
+        });
+
+        //initiate discussion duration validation
+        $("#addDisDur").validate({
             errorClass: "my-error-class",
         });
 
@@ -516,6 +672,13 @@
         //disable closing time form submit
         var closingForm = document.getElementById("closeTimeForm");
         closingForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            // actual logic, e.g. validate the form
+        });
+
+        //disable add discussion duration form submit
+        var disDurForm = document.getElementById("addDisDur");
+        disDurForm.addEventListener("submit", function (event) {
             event.preventDefault();
             // actual logic, e.g. validate the form
         });

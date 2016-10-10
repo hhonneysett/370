@@ -2,7 +2,7 @@
 @model List<Venue>
 
 @{
-    ViewBag.Title = "GetDiscussionRoomVenues";
+    ViewBag.Title = "Book Discussion Room";
 }
 
 @{ 
@@ -29,39 +29,43 @@
                             }
                         </ul>
 
-                        <div class="tab-content" id="tabContent">
+                        <div class="tab-content" id="tabContent" style="padding-top:10px">
                             @foreach (var building in (List<Building>)Session["buildings"])
                             {
                                 <div id="@building.Building_ID" class="tab-pane fade">
-                                    <table class="table" id="venueTable">
-                                        <tr>
-                                            <th>
-                                                Venue
-                                            </th>
-                                            <th>
-                                                Level
-                                            </th>
-                                            <th>
-                                                Capacity
-                                            </th>
-                                        </tr>
-                                        @foreach (var item in Model)
-                                        {
-                                            if (item.Building_ID.Equals(building.Building_ID))
+                                    <table class="table venueTable" id="venueTable">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Venue
+                                                </th>
+                                                <th>
+                                                    Level
+                                                </th>
+                                                <th>
+                                                    Capacity
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
                                             {
-                                                <tr onclick="AssignButtonClicked(this)" data-assigned-id="@item.Venue_ID">
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Venue_Name)
-                                                    </td>
-                                                    <td>
-                                                        <span>Floor</span> @Html.DisplayFor(modelItem => item.Building_Floor.Floor_Name)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Capacity)
-                                                    </td>
-                                                </tr>
+                                                if (item.Building_ID.Equals(building.Building_ID))
+                                                {
+                                                    <tr onclick="AssignButtonClicked(this)" data-assigned-id="@item.Venue_ID">
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Venue_Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Building_Floor.Floor_Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Capacity)
+                                                        </td>
+                                                    </tr>
+                                                }
                                             }
-                                        }
+                                        </tbody>                                        
                                     </table>
                                 </div>
                             }
@@ -76,7 +80,7 @@
             </div>
             <div class="panel-footer">
                 @Html.ActionLink("Back", "BookDiscussionRoom", "Booking", htmlAttributes: new { @class = "btn btn-default" })
-                <input type="submit" id="btnSubmit" data-toggle="modal" data-target="#confirmDetails" value="Submit" class="btn btn-default" disabled="disabled" />
+                <input type="submit" id="bookDiscussion" data-toggle="modal" data-target="#confirmDetails" value="Submit" class="btn btn-default" disabled="disabled" />
             </div>
         </div>
     </div>
@@ -133,9 +137,9 @@
                 }
                 var buttonEnabled = $(this).hasClass("alert-info");
                 if (buttonEnabled) {
-                    $("#btnSubmit").prop('disabled', false)
+                    $("#bookDiscussion").prop('disabled', false)
                 } else {
-                    $("#btnSubmit").prop('disabled', true)
+                    $("#bookDiscussion").prop('disabled', true)
                 }
             });
 
@@ -143,9 +147,36 @@
             $(function () {
                 $('#tabContent div:first-child').addClass('in active');
                 $('#buildingTabs li:first-child').addClass('active');
-            });                       
+            });
+
+            $('.venueTable').each(function (i, obj) {
+                $(this).DataTable();
+            });
+
+            //submit venue selection
+            $('#bookDiscussion').on('click', function () {
+                //show confirmation modal
+                bootbox.confirm({
+                    title: "Confirm Details?",
+                    message: function () {
+                        $(this).load('/Booking/confirmDetails');
+                        },
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancel'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Confirm'
+                        }
+                    },
+                    callback: function (result) {
+                        confirmBooking();
+                    }
+                });
+            });
         });
 
+        //filter available venues
         function getFilters() {
 
             var characteristicsList = [];
@@ -177,6 +208,34 @@
                 });
             }
         };
+
+        //get selected venue
+        function AssignButtonClicked(elem) {
+            var id = $(elem).data('assigned-id');
+            $.ajax({
+                type: 'POST',
+                url: '/Booking/venueSelect',
+                data: "id=" + id,
+                success: function (result) { },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }
+
+        //confirm booking details
+        function confirmBooking() {
+            $.ajax({
+                type: 'POST',
+                url: '/Booking/captureDetails',
+                success: function (result) {
+                    window.location.href = result;
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        }
     </script>
     }
 
