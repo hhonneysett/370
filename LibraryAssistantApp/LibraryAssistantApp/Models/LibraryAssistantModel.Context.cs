@@ -59,13 +59,11 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Person_Questionnaire> Person_Questionnaire { get; set; }
         public virtual DbSet<Person_Questionnaire_Result> Person_Questionnaire_Result { get; set; }
         public virtual DbSet<Person_Role> Person_Role { get; set; }
-        public virtual DbSet<Person_Session_Action_Log> Person_Session_Action_Log { get; set; }
         public virtual DbSet<Person_Topic> Person_Topic { get; set; }
         public virtual DbSet<Person_Type> Person_Type { get; set; }
         public virtual DbSet<Possible_Answer> Possible_Answer { get; set; }
         public virtual DbSet<Question_Bank> Question_Bank { get; set; }
         public virtual DbSet<Question_Topic> Question_Topic { get; set; }
-        public virtual DbSet<Questionnaire> Questionnaires { get; set; }
         public virtual DbSet<Questionnaire_Questions> Questionnaire_Questions { get; set; }
         public virtual DbSet<ResetPasswordRequest> ResetPasswordRequests { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -76,6 +74,8 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Trainer_Topic> Trainer_Topic { get; set; }
         public virtual DbSet<Venue> Venues { get; set; }
         public virtual DbSet<Venue_Type> Venue_Type { get; set; }
+        public virtual DbSet<Person_Session_Action_Log> Person_Session_Action_Log { get; set; }
+        public virtual DbSet<Questionnaire> Questionnaires { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {

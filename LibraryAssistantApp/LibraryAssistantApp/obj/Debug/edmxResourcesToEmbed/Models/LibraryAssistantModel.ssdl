@@ -235,6 +235,8 @@
     <Property Name="Action_DateTime" Type="datetime" Nullable="false" />
     <Property Name="Session_ID" Type="int" Nullable="false" />
     <Property Name="Action_ID" Type="int" Nullable="false" />
+    <Property Name="Action_Performed" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Crud_Operation" Type="varchar" MaxLength="30" Nullable="false" />
   </EntityType>
   <EntityType Name="Person_Session_Log">
     <Key>
@@ -293,7 +295,7 @@
     <Property Name="Questionnaire_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="40" Nullable="false" />
     <Property Name="Description" Type="text" Nullable="false" />
-    <Property Name="Assessment_Type" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="Assessment_Type" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Create_Date" Type="datetime" Nullable="false" />
     <Property Name="Person_ID_Creator" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="Active_From" Type="datetime" Nullable="false" />

@@ -672,7 +672,8 @@ namespace LibraryAssistantApp.Controllers
             }
 
             // ----------Venue
-            if (questionnaire.Venue != null)
+            var qvenue = db.Venues.Where(v => v.Venue_ID == questionnaire.Venue_ID).First();
+            if (qvenue != null)
             {
                 Venue myVenue = db.Venues.Where(X => X.Campus_ID == questionnaire.Campus_ID && X.Building_ID == questionnaire.Building_ID && X.Building_Floor_ID == questionnaire.Building_Floor_ID && X.Venue_ID == questionnaire.Venue_ID).Single();
 
@@ -966,7 +967,7 @@ namespace LibraryAssistantApp.Controllers
                 ViewBag.Selected_Training_Session = "None";
             }
             // ----------Venue
-            if (questionnaire.Venue != null)
+            if (questionnaire.Venue_ID != null)
             {
                 Venue myVenue = db.Venues.Where(X => X.Campus_ID == questionnaire.Campus_ID && X.Building_ID == questionnaire.Building_ID && X.Building_Floor_ID == questionnaire.Building_Floor_ID && X.Venue_ID == questionnaire.Venue_ID).Single();
 
@@ -2816,7 +2817,7 @@ namespace LibraryAssistantApp.Controllers
                     ViewBag.Selected_Training_Session = "None";
                 }
                 // ----------Venue
-                if (questionnaire.Venue != null)
+                if (questionnaire.Venue_ID != null)
                 {
                     Venue myVenue = db.Venues.Where(X => X.Campus_ID == questionnaire.Campus_ID && X.Building_ID == questionnaire.Building_ID && X.Building_Floor_ID == questionnaire.Building_Floor_ID && X.Venue_ID == questionnaire.Venue_ID).Single();
 
@@ -3107,7 +3108,7 @@ namespace LibraryAssistantApp.Controllers
                     ViewBag.Selected_Training_Session = "None";
                 }
                 // ----------Venue
-                if (questionnaire.Venue != null)
+                if (questionnaire.Venue_ID != null)
                 {
                     Venue myVenue = db.Venues.Where(X => X.Campus_ID == questionnaire.Campus_ID && X.Building_ID == questionnaire.Building_ID && X.Building_Floor_ID == questionnaire.Building_Floor_ID && X.Venue_ID == questionnaire.Venue_ID).Single();
 
@@ -3386,7 +3387,7 @@ namespace LibraryAssistantApp.Controllers
                 ViewBag.Selected_Training_Session = "None";
             }
             // ----------Venue
-            if (questionnaire.Venue != null)
+            if (questionnaire.Venue_ID != null)
             {
                 Venue myVenue = db.Venues.Where(X => X.Campus_ID == questionnaire.Campus_ID && X.Building_ID == questionnaire.Building_ID && X.Building_Floor_ID == questionnaire.Building_Floor_ID && X.Venue_ID == questionnaire.Venue_ID).Single();
 

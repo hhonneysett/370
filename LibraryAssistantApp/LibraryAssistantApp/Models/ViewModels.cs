@@ -704,7 +704,13 @@ namespace LibraryAssistantApp.Models
         [Display(Name = "Email Address")]
         public string person_email { get; set; }
     }
+
     public class MemberDeleteVM
+    {
+        public Registered_Person registered_person { get; set; }
+        public IEnumerable<Person_Role> person_role { get; set; }
+        public List<Trainer_Topic> trainer_topic { get; set; }
+    }
 
     public class AuditLog
     {
@@ -713,14 +719,6 @@ namespace LibraryAssistantApp.Models
         public string Person_Name;
         public DateTime TimePerformed;
         public string Area;        
-    }
-
-
-    public class EmployeeDeleteModel
-    {
-        public Registered_Person registered_person { get; set; }
-        public IEnumerable<Person_Role> person_role { get; set; }
-        public List<Trainer_Topic> trainer_topic { get; set; }
     }
 
     public class checkedCharacteristics
