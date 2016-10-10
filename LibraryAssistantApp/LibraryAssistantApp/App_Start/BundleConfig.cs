@@ -20,7 +20,7 @@ namespace LibraryAssistantApp
                         "~/Scripts/sprintf.js",
                         "~/Scripts/jspdf.js",
                         "~/Script/bootbox.js",
-                        "~/Scripts/jquery.ambiance.js"));
+                        "~/Scripts/jquery.ambiance.js",
                         "~/Scripts/DataTables/jquery.dataTables.min.js",
                         "~/Scripts/DataTables/dataTables.bootstrap.min.js"));
 
@@ -51,7 +51,7 @@ namespace LibraryAssistantApp
                         "~/Content/jquery.timepicker.min.css",
                         "~/Content/dhtmlxscheduler.css",
                         "~/Content/jquery.ambiance.css",
-                        "~/Content/jquery.bxslider.css"));
+                        "~/Content/jquery.bxslider.css",
                         //"~/Content/DataTables/css/jquery.dataTables.min.css",
                         "~/Content/DataTables/css/dataTables.bootstrap.min.css"));
 

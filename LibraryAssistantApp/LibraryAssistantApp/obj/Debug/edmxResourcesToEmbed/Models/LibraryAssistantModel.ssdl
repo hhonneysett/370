@@ -700,7 +700,6 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK__ResetPass__Perso__00200768">
-  <Association Name="FK__ResetPass__Perso__18EBB532">
     <End Role="Registered_Person" Type="Self.Registered_Person" Multiplicity="0..1" />
     <End Role="ResetPasswordRequests" Type="Self.ResetPasswordRequests" Multiplicity="*" />
     <ReferentialConstraint>
@@ -725,7 +724,6 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK__Venue_Boo__Topic__160F4887">
-  <Association Name="FK__Venue_Boo__Topic__236943A5">
     <End Role="Topic" Type="Self.Topic" Multiplicity="1" />
     <End Role="Venue_Booking" Type="Self.Venue_Booking" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1385,7 +1383,6 @@
       <End Role="Document_Repository" EntitySet="Document_Repository" />
     </AssociationSet>
     <AssociationSet Name="FK__ResetPass__Perso__00200768" Association="Self.FK__ResetPass__Perso__00200768">
-    <AssociationSet Name="FK__ResetPass__Perso__18EBB532" Association="Self.FK__ResetPass__Perso__18EBB532">
       <End Role="Registered_Person" EntitySet="Registered_Person" />
       <End Role="ResetPasswordRequests" EntitySet="ResetPasswordRequests" />
     </AssociationSet>
@@ -1394,7 +1391,6 @@
       <End Role="Venue" EntitySet="Venue" />
     </AssociationSet>
     <AssociationSet Name="FK__Venue_Boo__Topic__160F4887" Association="Self.FK__Venue_Boo__Topic__160F4887">
-    <AssociationSet Name="FK__Venue_Boo__Topic__236943A5" Association="Self.FK__Venue_Boo__Topic__236943A5">
       <End Role="Topic" EntitySet="Topic" />
       <End Role="Venue_Booking" EntitySet="Venue_Booking" />
     </AssociationSet>

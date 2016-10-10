@@ -24,9 +24,9 @@ namespace LibraryAssistantApp.Models
         public string Person_ID_Closed { get; set; }
         public int Venue_ID { get; set; }
     
-        public virtual Common_Problem Common_Problem { get; set; }
         public virtual Registered_Person Registered_Person { get; set; }
         public virtual Registered_Person Registered_Person1 { get; set; }
+        public virtual Common_Problem Common_Problem { get; set; }
         public virtual Venue Venue { get; set; }
     }
 }

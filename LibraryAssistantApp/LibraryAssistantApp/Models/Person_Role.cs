@@ -18,7 +18,7 @@ namespace LibraryAssistantApp.Models
         public string Person_ID { get; set; }
         public int Role_ID { get; set; }
     
-        public virtual Role Role { get; set; }
         public virtual Registered_Person Registered_Person { get; set; }
+        public virtual Role Role { get; set; }
     }
 }
