@@ -5,9 +5,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if (ViewBag.DeleteComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.DeleteCompleteMessage</div>
+}
+@if (ViewBag.CreateComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.CreateCompleteMessage</div>
+}
+@if (ViewBag.EditComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.EditCompleteMessage</div>
+}
+
+
 <h2>Current Questionnaires</h2>
-
-
 
 <div class="panel panel-default">
     <div class="panel-heading">Search Criteria</div>
@@ -50,12 +62,17 @@
         {
             <p>
                 <b>Include in-active questionaires</b>
-                @Html.CheckBox("Include in-active questionaires", true, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox" })
+                @Html.CheckBox("Include in-active questionaires", true, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox", @data_toggle = "tooltip", @title = "All questionnaires, including in-actives ones, will be shown when ticked." })
             </p>
 
         }
         
-        <input type="submit" class="btn btn-default" value="Search" onclick="Search();" /> | <input type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Index","Questionnaire")'" />
+        <input type="submit" class="btn btn-default" value="Search" onclick="Search();" /> | <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questionnaires" type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Index","Questionnaire")'" /> <button id="Select_Button" type="button" class="btn btn-default pull-right" onclick="Create()">Create New Questionnaire</button>
+
+
+        
+        
+        
 
     </div>
 </div>
@@ -102,18 +119,21 @@
                             @Html.DisplayFor(modelItem => item.Question_Topic.Topic_Name)
                         </td>
                         <td>
-                            <input type="button" class="btn btn-default" value="Delete" onclick="location.href='@Url.Action("Delete", "Questionnaire", new { id = item.Questionnaire_ID })'" /> |
-                            <input type="button" class="btn btn-default" value="Edit" onclick="location.href='@Url.Action("Edit", "Questionnaire", new { id = item.Questionnaire_ID })'" /> |
-                            <input type="button" class="btn btn-default" value="Details" onclick="location.href='@Url.Action("Details", "Questionnaire", new { id = item.Questionnaire_ID })'" />
+                            <input type="button" class="btn btn-default " value="Delete" onclick="location.href='@Url.Action("Delete", "Questionnaire", new { id = item.Questionnaire_ID })'" /> |
+                            <input  type="button" class="btn btn-default " value="Edit" onclick="location.href='@Url.Action("Edit", "Questionnaire", new { id = item.Questionnaire_ID })'" /> |
+                            <input  type="button" class="btn btn-default " value="Details" onclick="location.href='@Url.Action("Details", "Questionnaire", new { id = item.Questionnaire_ID })'" />
                         </td>
                     </tr>
                 }
             }
         </table>
-        <input type="button" class="btn btn-default" value="Create New" onclick="location.href='@Url.Action("Create", "Questionnaire")'" />
+
+
+
 
     </div>
 </div>
+
 
 <script>
     function Search() {
@@ -124,4 +144,58 @@
 
         window.location.href = "/Questionnaire/Search?Search=" + Search + "&Topic=" + Topic + "&Assessment_Type=" + Assessment_Type + "&CheckBox=" + CheckBox;
     }
+
+    function Create()
+    {
+        var Search = document.getElementById("Search").value;
+        var Topic = document.getElementById("Topic").value;
+        var Assessment_Type = document.getElementById("Assessment_Type").value;
+
+        window.location.href = "/Questionnaire/Create?Name=" + Search + "&Topic=" + Topic + "&Assessment_Type=" + Assessment_Type ;
+        
+    }
+
+</script>
+
+<style>
+    .isa_info, .isa_success, .isa_warning, .isa_error {
+        margin: 10px 0px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .isa_info {
+        color: #00529B;
+        background-color: #BDE5F8;
+        text-align: center;
+    }
+
+    .isa_success {
+        color: #4F8A10;
+        background-color: #DFF2BF;
+    }
+
+    .isa_warning {
+        color: #9F6000;
+        background-color: #FEEFB3;
+        text-align: center;
+    }
+
+    .isa_error {
+        color: #D8000C;
+        background-color: #FFBABA;
+        text-align: center;
+    }
+
+        .isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+            margin: 10px 22px;
+            font-size: 2em;
+            vertical-align: middle;
+        }
+</style>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
 </script>

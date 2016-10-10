@@ -5,10 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if (ViewBag.DeleteComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.DeleteCompleteMessage</div>
+}
+@if (ViewBag.CreateComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.CreateCompleteMessage</div>
+}
+@if (ViewBag.EditComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.EditCompleteMessage</div>
+}
+@if (ViewBag.CannotEdit == "Yes")
+{
+    <div style="text-align:center" class="isa_error">@ViewBag.CannotEditMessage</div>
+}
+
+
 <h2>Question Bank</h2>
 
 <div class="panel panel-default">
-    <div class="panel-heading">Search</div>
+    <div class="panel-heading">Question Search criteria</div>
     <div class="panel-body">
 
         @using (Html.BeginForm("Index", "Question_Bank", FormMethod.Get))
@@ -18,41 +36,41 @@
             <p>
                 <b>Search Topic</b>
                 <br />
-                @Html.DropDownList("Topic",null, "All", htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Topic",null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
             </p>
 
             <p>
                 <b>Search by Question Name</b>
                 <br />
-                @Html.TextBox("Search",null, htmlAttributes: new { @class = "form-control" })
+                @Html.TextBox("Search",null, htmlAttributes: new { @class = "form-control", id = "Search" })
                 <br />
             </p>
 
             if (ViewBag.NewTopic == "YES")
             {
-                <input type="submit" class="btn btn-default" value="Search" /><input type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Index")'" /> <input type="button" class='btn btn-primary pull-right' value="Finish" onclick="location.href='@Url.Action("Index","Question_Topic")'" />
+                <input type="submit" class="btn btn-default" value="Search" /><input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questions" style="margin-left: 3px;"  type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Index")'" /> <button style="margin-left: 3px;" id="Select_Button" type="button" class="btn btn-default pull-right" onclick="create()">Create New Question</button>  <input style="margin-left: 3px;" type="button" class='btn btn-default pull-right' value="Finish creating new topic" onclick="location.href='@Url.Action("Finished","Question_Topic", new { ViewBag.TopicName })'" />
             }
             else
             {
-                <input type="submit" class="btn btn-default" value="Search" /><input type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Index")'" />                 
+                <input type="submit" class="btn btn-default" value="Search" /><input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Index")'" /> <button id="Select_Button" type="button" class="btn btn-default pull-right" onclick="create()">Create New Question</button>
             }
+
+
 
         }
 
-        <p>
-
-        </p>
+     
 
     </div>
 </div>
 
 <div class="panel panel-default">
-    <div class="panel-heading">Questions</div>
+    <div class="panel-heading">Question results</div>
     <div class="panel-body">
 
-        <p>
-            <input type="button" class="btn btn-default" value="Create New" onclick="location.href='@Url.Action("Create", "Question_Bank")'" />
-        </p>
+        @*<p>
+            <input type="button" class="btn btn- " value="Create New" onclick="location.href='@Url.Action("Create", "Question_Bank")'" />
+        </p>*@
         <table class="table">
             <tr>
                 <th>
@@ -84,11 +102,70 @@
 
                         <td>
                             <input type="button" class="btn btn-default" value="Edit" onclick="location.href='@Url.Action("Edit", "Question_Bank", new { id = item.Question_Seq })'" /> |
-                            <input type="button" class="btn btn-default" value="Delete" onclick="location.href='@Url.Action("Delete", "Question_Bank", new { id = item.Question_Seq })'" />
+                            <input type="button" class="btn btn-default" value="Delete" onclick="location.href='@Url.Action("Delete", "Question_Bank", new { id = item.Question_Seq })'" /> |
+                            <input type="button" class="btn btn-default" value="View" onclick="location.href='@Url.Action("ViewQuestion", "Question_Bank", new { id = item.Question_Seq })'" />
                         </td>
                     </tr>
                 }
             }
         </table>
+
+       
+
     </div>
 </div>
+
+<script>
+    function create()
+    {
+        var Search = document.getElementById("Search").value;
+        var Topic = document.getElementById("Topic").value;
+       
+
+        window.location.href = "/Question_Bank/Create?Name=" + Search + "&Topic=" + Topic;
+    }
+
+</script>
+
+<style>
+    .isa_info, .isa_success, .isa_warning, .isa_error {
+        margin: 10px 0px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .isa_info {
+        color: #00529B;
+        background-color: #BDE5F8;
+        text-align: center;
+    }
+
+    .isa_success {
+        color: #4F8A10;
+        background-color: #DFF2BF;
+    }
+
+    .isa_warning {
+        color: #9F6000;
+        background-color: #FEEFB3;
+        text-align: center;
+    }
+
+    .isa_error {
+        color: #D8000C;
+        background-color: #FFBABA;
+        text-align: center;
+    }
+
+        .isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+            margin: 10px 22px;
+            font-size: 2em;
+            vertical-align: middle;
+        }
+</style>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>

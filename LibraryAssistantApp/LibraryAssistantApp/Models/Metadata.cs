@@ -35,12 +35,6 @@ namespace LibraryAssistantApp.Models
         public int Level_ID;
     }
 
-    public class PersonTitleMetadata
-    {
-        [Display(Name = "Title")]
-        public string Person_Title1;
-    }
-
     public class TopicMetadata
     {
         [Display(Name = "Topic")]
@@ -150,4 +144,3 @@ namespace LibraryAssistantApp.Models
         public string Description { get; set; }
     }
 }
-   

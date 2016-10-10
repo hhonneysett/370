@@ -15,13 +15,6 @@ namespace LibraryAssistantApp.Controllers
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
 
-        // GET: RegisteredPerson
-        public ActionResult Index()
-        {
-            var registered_Person = db.Registered_Person.Include(r => r.Person_Type);
-            return View(registered_Person.ToList());
-        }
-
         // GET: RegisteredPerson/Details/5
         [Authorize]
         public ActionResult Details()
@@ -146,6 +139,9 @@ namespace LibraryAssistantApp.Controllers
                 Session.Remove("newStudent");
                 Session.Remove("OTP");
 
+                TempData["Message"] = "Succesfully created an account!";
+                TempData["classStyle"] = "success";
+
                 return RedirectToAction("Login", "Account");
             }
             else return View();
@@ -180,7 +176,7 @@ namespace LibraryAssistantApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult UpdateDetails(UpdatePersonModel model, string Title)
+        public ActionResult UpdateDetails(UpdatePersonModel model)
         {
             if (ModelState.IsValid)
             {
@@ -200,12 +196,12 @@ namespace LibraryAssistantApp.Controllers
 
                     db.Entry(registered_Person).State = EntityState.Modified;
                     db.SaveChanges();
+                    TempData["Message"] = "Details successfully updated!";
+                    TempData["classStyle"] = "success";
                     return RedirectToAction("Details");
                 }
                 else
                 {
-
-
                     TempData["Message"] = "Email address already exists on the system";
                     return View(model);
                 }              

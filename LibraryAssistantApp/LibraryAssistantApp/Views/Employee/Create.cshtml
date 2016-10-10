@@ -14,7 +14,7 @@
 
 <h3>Create Employee</h3>
 <hr />
-<h4>Enter new employee details below:</h4>
+<h5>New Employee Details:</h5>
 <br />
 @using (Html.BeginForm())
 {
@@ -47,13 +47,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Person_Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("Person_Title", null, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Person_Title, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
                     @Html.LabelFor(model => model.person_email, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control" } })
@@ -70,9 +63,11 @@
                 </div>
         </div>
 
+        <h5>Employee Roles:</h5>
+        <br />
         <div class="row">
-            <div class="col-md-4">
-                <div class="panel panel-default">
+            <div class="col-md-4 col-md-offset-2">
+                <div id="emp-deets" class="panel panel-default">
                     @if (ViewBag.Check1 == true)
                 {
                         <table id="tbl-roles" class="table">
@@ -92,7 +87,7 @@
                                             @Html.DisplayFor(x => x.role[i].Role_Name)
                                         </td>
                                         <td>
-                                            @Html.CheckBoxFor(x => x.role_check[i].role_ind, htmlAttributes: new { @onclick = "myFunction(this)", @id = Model.role[i].Role_ID })
+                                            @Html.CheckBoxFor(x => x.role_check[i].role_ind, htmlAttributes: new { @onclick = "myFunction(this)", @id = Model.role[i].Role_ID, @class = @Model.role_check[i].role_id })
                                         </td>
                                     </tr>
                                 }
@@ -101,27 +96,11 @@
                     }
                 </div>
             </div>
-            <div id="div-actions" class="col-md-8">
-
-            </div>
         </div>
 
         <div id="topic-parent" hidden>
-            <h4>Please select topics that the new trainer is able to present:</h4>
-            <br/>
-            @*<div class="col-md-4">
-                <select id="category-dropdown" class="form-control">
-                    <option>
-                        All categories
-                    </option>
-                    @foreach (var item in catlist)
-                {
-                        <option id="@item.Category_ID">
-                            @item.Category_Name
-                        </option>
-                    }
-                </select>
-            </div>*@            
+            <h5>Trainer Topics:</h5>
+            <br/>        
             <div id="div-topics">
 
             </div>
@@ -129,9 +108,9 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input name="submit" type="submit" value="Submit" formmethod="get" formaction="Create" class="btn btn-default btn-submit" />
-                <input type="submit" value="Create" formmethod="post" formaction="Create" class="btn btn-default" />
+                <input id="btn-create" type="submit" value="Create" formmethod="post" formaction="Create" class="btn btn-default" />
             </div>
+            <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
         </div>
         <div>
             @Html.ActionLink("Back to List", "Index")
@@ -147,19 +126,6 @@
                 $('#tbl-roles tr').removeClass('selectedrow');
                 $(this).addClass('selectedrow');
                 var a = $(this).attr('id');
-                $.ajax({
-                    type: 'GET',
-                    data: { id: a },
-                    url: '@Url.Action("GetActions", "Employee")',
-                    beforeSend: function () {
-                        $('.loading').show();
-                    },
-                    success: function (result) {
-                        $('#div-actions').html(result);  
-                    }
-                }).done(function () {
-                    $('.loading').hide();
-                });
                 if (a == 7) {
                     $.ajax({
                         type: 'GET',
@@ -174,7 +140,7 @@
         function myFunction (e) {
             if ($(e).attr('id') == 7)
             {
-                $('#topic-parent').toggle(400);
+                $('#topic-parent').toggle();
             }
         }
 

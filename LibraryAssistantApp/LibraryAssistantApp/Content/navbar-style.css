@@ -176,12 +176,6 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
     margin-left: 5px;
 }
 
-/*navbar login/register*/
-
-.navbar-login {
-    padding-right: 10px;
-}
-
 /*logo styling*/
 
 /*dropdown menu*/
@@ -194,7 +188,7 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
         }
 
         #menu li:last-child {
-            border-right:none;
+            border:none;
         }
 
         #menu > li ul {
@@ -283,35 +277,54 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
     .nav-third-level li a {
 
     }
-        
-.navbar-login ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    padding-right: 15px;
-}
-
-.navbar-login li {
-    float: none;
-}
-
-.navbar-login {
-    padding-right: 0px;
-}
-
-.navbar-login li:last-child {
-    border-bottom: solid 1px #e7e7e7;
-}
-
-.navbar-login li a {
-    display: block;
-    text-align: left;
-    padding: 10px 5px;
-    text-decoration: none;
-}
 
 .navbar-custom .navbar-brand {
             font-size: 1.5em;
         }
     }
+
+/*LOGIN*/
+
+#navbar-login a:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+@media (min-width: 768px) {
+    #navbar-login a {
+        float:right;
+        padding-right: 20px;
+        padding: 15px 25px 15px 15px;
+    }
+
+}
+
+@media (max-width: 1109px) {
+    #navbar-login a {
+        padding-right: 20px;
+        padding: 15px 25px 15px 15px;
+        position: fixed;
+        top: 0;
+        right: 0;
+    }
+
+}
+
+@media (max-width: 767px) {
+    #navbar-login {
+        border-top: solid 1px #e7e7e7;
+        padding: inherit;
+        margin: 0px -15px;
+    }
+        #navbar-login a {
+        display:block;
+        text-decoration:none;
+    }
+
+    #navbar-login > li > a {
+        padding: 10px 15px;
+        line-height: 20px;
+        position:relative;
+    }
+
+}

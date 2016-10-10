@@ -1,0 +1,147 @@
+﻿@model List<LibraryAssistantApp.Models.AuditLog>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Audit log</h2>
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Search Criteria</div>
+    <div class="panel-body">
+
+        <p>
+            <b>Search by  Name</b>
+            <br />
+            
+            @Html.Editor("Names", new { htmlAttributes = new { @class = "form-control", id = "Names", @value = ViewBag.Names } })
+            <br />
+        </p>
+
+        <p>
+            <b>Search by  Operation</b>
+            <br />
+            @Html.DropDownList("Crud_Operation", new List<SelectListItem>
+                     {
+                        new SelectListItem{ Text="Create", Value = "Create" },
+                        new SelectListItem{ Text="Edit", Value = "Edit" },
+                        new SelectListItem{ Text="Delete", Value = "Delete" },
+                        new SelectListItem{ Text="Respond", Value = "Respond" },
+                     }, "All", htmlAttributes: new { @class = "form-control", id = "Crud_Operation", @value = (string)ViewBag.Crud_Operation })
+            <br />
+        </p>
+
+        <p>
+            <b>Search by  system area</b>
+            <br />
+            @Html.DropDownList("Areas", null, "All", htmlAttributes: new { @class = "form-control", id = "Areas" })
+
+            <br />
+        </p>
+
+        <p>
+            <b>Search by date</b>
+            <br />
+            @Html.Editor("DateSearch", new { htmlAttributes = new { @class = "datepick form-control", id = "From", @value = ViewBag.DateSearch } })
+            <br />
+        </p>
+
+
+        <script>
+            $('.datepick').each(function () {
+                $(this).datepicker();
+            });
+
+        </script>
+
+
+        <input type="submit" value="Search" class="btn btn-default" onclick="go()" /> | <input type="submit" value="Clear" class="btn btn-default" onclick="Clear()" />
+    </div>
+</div>
+
+<script>
+    function go() {
+
+        var Names = document.getElementById("Names").value;
+        var Areas = document.getElementById("Areas").value;
+        var From = document.getElementById("From").value;
+        var Crud_Operation = document.getElementById("Crud_Operation").value;
+        
+        if (From == "") {
+            From = "11/11/1111";
+        }
+
+        window.location.href = "/Person_Session_Action_Log/Search?Names=" + Names + "&Areas=" + Areas + "&From=" + From + "&Crud_Operation=" + Crud_Operation;
+
+    }
+    function Clear() {
+
+        window.location.href = "/Person_Session_Action_Log/Index?";
+
+    }
+
+</script>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Results</div>
+    <div class="panel-body">
+
+
+        <table class="table">
+            <tr>
+                <th>
+                    Person
+                </th>
+                <th>
+                    Operation
+                </th>
+                <th>
+                    Action Performaed
+                </th>
+                <th>
+                    Area of the system
+                </th>
+                <th>
+                    Time of occurance
+                </th>
+                <th></th>
+            </tr>
+
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="4">No rows match search criteria</td>
+                </tr>
+            }
+            else
+            {
+
+
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Person_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Crud_Operation)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Action_Performed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TimePerformed)
+                        </td>
+
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>

@@ -163,14 +163,13 @@
                         </li>
                     </ul>
                 </li>              
+            </ul>
+            <ul id="navbar-login">
                 <li>
                     @{
                         if (Request.IsAuthenticated)
                         {
-                            using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                            {
-                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
-                            }
+                            @Html.ActionLink("Logout", "Logout", "Account")
                         }
                         else
                         {
@@ -184,7 +183,9 @@
     </div>
 
     <div class="container body-content">
-        @Html.Notification()
+        <div class="row" style="padding-top:10px">
+            @Html.Notification()
+        </div>
         @RenderBody()
         <hr />
         <footer>

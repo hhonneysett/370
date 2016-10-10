@@ -83,4 +83,16 @@ table tbody tr :hover {
 
 .cursor:hover {
     cursor:pointer;
+=======
+/*cursor styling*/
+.message {
+    cursor: pointer;
+}
+
+.cursor {
+    cursor: pointer;
+}
+/*heading styling*/
+.shaded {
+    padding: 15px 0 15px 15px;
 }

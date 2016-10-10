@@ -1,0 +1,58 @@
+﻿<script>
+    $(document).ready(function () {
+        $('#result-table-4').DataTable();
+        $('#result-table-4 tbody tr').click(function () {
+            $('#result-table-4 tr').removeClass('selectedrow');
+            $(this).addClass('selectedrow');
+            $('.btn-edit').attr('href', '/Employee/Edit/' + $(this).attr('id'));
+            $('.btn-delete').attr('href', '/Employee/Delete/' + $(this).attr('id'));
+            var z = $(this).attr('id');
+            $.ajax({
+                type: 'GET',
+                data: { id: z },
+                url: '@Url.Action("EmployeeDetails", "Employee")',
+                beforeSend: function (){
+                    $('.loading').show();
+                },
+                success: function (result) {
+                    $('#emp-roles').html(result);
+                }
+            }).done(function () {
+                $('.loading').hide();
+            });
+        });
+    });
+    </script>
+
+<table id="result-table-4" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.registered_person)
+            {
+            <tr id="@item.Person_ID">
+                <td>
+                    @item.Person_ID
+                </td>
+                <td>
+                    @item.Person_Name
+                </td>
+                <td>
+                    @item.Person_Surname
+                </td>
+                <td>
+                    @item.Person_Email
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

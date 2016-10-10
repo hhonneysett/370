@@ -12,8 +12,12 @@ namespace LibraryAssistantApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Current_UP_Person
+    public partial class sysdiagram
     {
-        public string Person_ID { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

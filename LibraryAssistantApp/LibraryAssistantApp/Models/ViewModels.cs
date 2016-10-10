@@ -23,9 +23,6 @@ namespace LibraryAssistantApp.Models
         ErrorMessage = "Please provide valid email id")]
         [Remote("checkUpdateEmail", "Validate", ErrorMessage = "Email is already in use")]
         public string Person_Email { get; set; }
-
-        [Display(Name ="Title")]
-        public string Person_Title { get; set; }
     }
 
     public class CreatePersonModel
@@ -52,17 +49,13 @@ namespace LibraryAssistantApp.Models
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
         [Display(Name = "Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 8 char long")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Password must be 5 characters long")]
         public string Person_Password { get; set; }
 
         [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         [Required(ErrorMessage ="Please confirm password")]
         public string Confirm_Password { get; set; }
-
-        [Display(Name ="Title")]
-        public string Person_Title { get; set; }
-
     }
 
     public class UpdatePasswordModel
@@ -435,7 +428,7 @@ namespace LibraryAssistantApp.Models
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
         [Display(Name = "Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be 6 char long")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Password must be 6 char long")]
         public string Person_Password { get; set; }
 
         [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
@@ -555,11 +548,23 @@ namespace LibraryAssistantApp.Models
         public Person_Type person_type { get; set; }
     }
 
+    //Employee controllers
     public class EmployeeIndexModel
     {
         public IEnumerable<Registered_Person> registered_person { get; set; }
         public IEnumerable<Person_Role> person_role { get; set; }
+        public List<Trainer_Topic> trainer_topic { get; set; }
         public IEnumerable<Role_Action> role_action { get; set; }
+        public List<Role> roles { get; set; }
+        //
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Display(Name = "Email")]
+        public string person_email { get; set; }
     }
 
     public class EmployeeAddModel
@@ -569,20 +574,19 @@ namespace LibraryAssistantApp.Models
         public List<Topic_Category> topic_category { get; set; }
         public List<RoleCheck> role_check { get; set; }
         public List<TopicCheck> topic_check { get; set; }
-        [Required(ErrorMessage = "Title is required")]
-        [Display(Name = "Title")]
-        public string Person_Title { get; set; }
-        [Remote("UserExists", "Employee", ErrorMessage = "Employee does not exists at the university")]
+        [Remote("UserExists", "Employee", ErrorMessage = "Username is already in use")]
         [Required(ErrorMessage = "Username is required")]
-        //[RegularExpression(@"/^([p])([0-9]{8})+$/", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
+        [RegularExpression("([p])([0-9]{8})+", ErrorMessage = "Username must begin with the letter 'p' and contain 8 numbers")]
         [Display(Name = "Username")]
         public string person_id { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
         [Required(ErrorMessage = "Name is required")]
-        //[RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage = "Invalid name, please ensure the surname is alphabetic")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Name cannot include numbers or special characters")]
         [Display(Name = "Name")]
         public string person_name { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
         [Required(ErrorMessage = "Surname is required")]
-        //[RegularExpression(@"/^[a-z ,.'-]+$/i", ErrorMessage ="Invalid surname, please ensure the name is alphabetic")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Surname cannot include numbers or special characters")]
         [Display(Name = "Surname")]
         public string person_surname { get; set; }
         [Remote("EmailExists", "Employee", ErrorMessage = "Email address is already in use")]
@@ -602,45 +606,119 @@ namespace LibraryAssistantApp.Models
 
     public class TopicCheck
     {
-        public int topic_sec { get; set; }
-        public int person_id { get; set; }
+        public int topic_seq { get; set; }
+        public string category_id { get; set; }
+        public string topic_name { get; set; }
         public bool topic_ind { get; set; }
     }
 
     public class EmployeeEditModel
     {
-        public Registered_Person registered_person { get; set; }
-        public List<Person_Role> person_role { get; set; }
-        //public IEnumerable<Role_Action> role_action { get; set; }
-        //public List<Role> role { get; set; }
-        public List<Trainer_Topic> trainer_topic { get; set; }
-        //public List<RoleCheck> role_check { get; set; }
-        //public List<TopicCheck> topic_check { get; set; }
-        //public EmpRoleCheckEdit emprole { get; set; }
+        [Display(Name = "Username")]
+        public string person_id {get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Name is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Name cannot include numbers or special characters")]
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Surname is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Surname cannot include numbers or special characters")]
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address, please try again. Example: example@example.co.za")]
+        [Display(Name = "Email Address")]
+        public string person_email { get; set; }
         public List<EmpRoleCheckEdit> emprolecheckeditlist { get; set; }
-        public List<TrainerTopicCheck> trainertopiccheck { get; set; }
+        public List<TopicCheck> topicchecks { get; set; }
     }
 
     public class EmpRoleCheckEdit
     {
-        public int role_id;
-        public string person_ID;
-        public string role_name;
-        public bool role_ind;
-    }
-
-    public class TrainerTopicCheck
-    {
-        public int topic_seq;
-        public string personid;
-        public string topic_name;
-        public string topic_description;
-        public bool topic_ind;
+        public int role_id { get; set; }
+        public string role_name { get; set; }
+        public bool role_ind { get; set; }
     }
 
     public class EmployeeDeleteModel
     {
         public Registered_Person registered_person { get; set; }
+        public IEnumerable<Person_Role> person_role { get; set; }
+        public List<Trainer_Topic> trainer_topic { get; set;  }
+    }
+
+    //member controllers
+    public class MemberIndexVM
+    {
+        public IEnumerable<Registered_Person> registered_person { get; set; }
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Display(Name = "Email")]
+        public string person_email { get; set; }
+    }
+
+    public class MemberCreateVM
+    {
+        [Remote("UserExists", "Member", ErrorMessage = "Username is already in use")]
+        [Required(ErrorMessage = "Username is required")]
+        [RegularExpression("([u])([0-9]{8})+", ErrorMessage = "Username must begin with the letter 'u' and contain 8 numbers")]
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Name is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Name cannot include numbers or special characters")]
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Surname is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Surname cannot include numbers or special characters")]
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Remote("EmailExists", "Member", ErrorMessage = "Email address is already in use")]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address, please try again. Example: example@example.co.za")]
+        [Display(Name = "Email Address")]
+        public string person_email { get; set; }
+    }
+    public class MemberEditVM
+    {
+        [Display(Name = "Username")]
+        public string person_id { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Name is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Name cannot include numbers or special characters")]
+        [Display(Name = "Name")]
+        public string person_name { get; set; }
+        [StringLength(30, ErrorMessage = "Maximum length is 30 characters")]
+        [Required(ErrorMessage = "Surname is required")]
+        [RegularExpression("([a-zA-Z .&'-]+)", ErrorMessage = "Surname cannot include numbers or special characters")]
+        [Display(Name = "Surname")]
+        public string person_surname { get; set; }
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address, please try again. Example: example@example.co.za")]
+        [Display(Name = "Email Address")]
+        public string person_email { get; set; }
+    }
+
+    public class MemberDeleteVM
+    {
+        public Registered_Person registered_person { get; set; }
+        public IEnumerable<Person_Role> person_role { get; set; }
+        public List<Trainer_Topic> trainer_topic { get; set; }
+    }
+
+    public class AuditLog
+    {
+        public string Action_Performed;
+        public string Crud_Operation;
+        public string Person_Name;
+        public DateTime TimePerformed;
+        public string Area;        
     }
 
     public class checkedCharacteristics
@@ -711,4 +789,5 @@ namespace LibraryAssistantApp.Models
         public string trainer { get; set; }
         public string email { get; set; }
     }
+   
 }
