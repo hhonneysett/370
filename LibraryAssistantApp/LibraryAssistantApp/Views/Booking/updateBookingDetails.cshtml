@@ -4,6 +4,9 @@
 @{
     ViewBag.Title = "updateBookingDetails";
     var bookingDetails = (BookingDetailsModel)Session["selectedBookingDetails"];
+    var durations = (List<string>)ViewBag.Durations;
+    var open = (string)ViewBag.Open;
+    var close = (string)ViewBag.Close;
 }
 
 <h2>Update Booking</h2>
@@ -18,7 +21,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control", @id = "datepicker", @placeholder = "Select Date" } })
+            @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control", @id = "datepicker", @placeholder = "--select date--" } })
             @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -35,9 +38,10 @@
         @Html.LabelFor(model => model.length, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <select name="length" id="length" class="form-control" Value="@Model.length">
-                <option>30</option>
-                <option>60</option>
-                <option>90</option>
+                @foreach (var d in durations)
+                {
+                    <option id="@d">@d</option>
+                }
             </select>
             @Html.ValidationMessageFor(model => model.length, "", new { @class = "text-danger" })
         </div>
