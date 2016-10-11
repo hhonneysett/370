@@ -26,10 +26,10 @@ namespace LibraryAssistantApp.Models
         public System.DateTime Logout_DateTime { get; set; }
         public string Person_ID { get; set; }
     
-        public virtual Registered_Person Registered_Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Document_Access_Log> Document_Access_Log { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Session_Action_Log> Person_Session_Action_Log { get; set; }
+        public virtual Registered_Person Registered_Person { get; set; }
     }
 }

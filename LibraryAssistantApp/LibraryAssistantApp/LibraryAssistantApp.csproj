@@ -459,9 +459,9 @@
     <Content Include="Content\normalize.css" />
     <Content Include="Content\loginStyle.css" />
     <Content Include="Scripts\base64.js" />
-    <Content Include="Scripts\bxSlider\jquery.bxslider.min.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bxSlider\jquery.bxslider.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
