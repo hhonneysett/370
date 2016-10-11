@@ -188,7 +188,7 @@ namespace LibraryAssistantApp.Models
 
     public class EmpDiscussionRoomBooking
     {
-        [Display(Name = "Person ID")]
+        [Display(Name = "Username")]
         [Remote("loginCheckPerson", "Validate", ErrorMessage = "Not a registered person ID")]
         [Required(ErrorMessage ="Please enter a person ID")]
         public string person_id { get; set; }
@@ -205,7 +205,7 @@ namespace LibraryAssistantApp.Models
         public DateTime time { get; set; }
 
         [Required(ErrorMessage = "Please provide a length selection")]
-        [Display(Name = "Duration (Minutes)")]
+        [Display(Name = "Duration")]
         public string length { get; set; }
 
         [Required(ErrorMessage = "Please provide a campus selection")]
@@ -281,7 +281,7 @@ namespace LibraryAssistantApp.Models
         public string time { get; set; }
 
         [Required(ErrorMessage = "Please provide a length selection")]
-        [Display(Name = "Duration (Minutes)")]
+        [Display(Name = "Duration")]
         public double length { get; set; }
 
         [Display(Name = "Campus")]

@@ -9,7 +9,7 @@ namespace LibraryAssistantApp
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                         "~/Scripts/bootbox.min.js",
+                        "~/Scripts/bootbox.min.js",
                         "~/Scripts/bxSlider/jquery.bxslider.min.js",
                         "~/Scripts/DataTable/datatables.min.js",
                         "~/Scripts/jquery-{version}.js",

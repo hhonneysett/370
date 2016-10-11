@@ -85,106 +85,106 @@ function enableButton() {
 };
 
 //display calendar on employeeViewBookings
-function displayCalendar(inputId, inputType) {
-    $.ajax({
-        type: 'GET',
-        url: '/Booking/getEmpBookings',
-        data: {
-            id: inputId,
-            idType: inputType
-        },
-        success: function (result) {
-            scheduler.clearAll();
-            $("#scheduler_here").show();
+//function displayCalendar(inputId, inputType) {
+//    $.ajax({
+//        type: 'GET',
+//        url: '/Booking/getEmpBookings',
+//        data: {
+//            id: inputId,
+//            idType: inputType
+//        },
+//        success: function (result) {
+//            scheduler.clearAll();
+//            $("#scheduler_here").show();
 
-            //configuration for the scheduler
-            scheduler.config.resize_month_events = false;
-            scheduler.config.first_hour = 8;
-            scheduler.config.last_hour = 17;
-            scheduler.config.start_on_monday = true;
-            scheduler.locale.labels.agenda_tab = "Agenda";
-            scheduler.config.readonly = true;
+//            //configuration for the scheduler
+//            scheduler.config.resize_month_events = false;
+//            scheduler.config.first_hour = 8;
+//            scheduler.config.last_hour = 17;
+//            scheduler.config.start_on_monday = true;
+//            scheduler.locale.labels.agenda_tab = "Agenda";
+//            scheduler.config.readonly = true;
 
 
-            //initialize the scheduler
-            scheduler.init('scheduler_here', new Date(), "month");
+//            //initialize the scheduler
+//            scheduler.init('scheduler_here', new Date(), "month");
 
-            //create an events json object
-            var events = [];
+//            //create an events json object
+//            var events = [];
 
-            //go through list of events and add each event to the json events object
-            result.forEach(function (entry) {
-                var event = {
-                    id: entry.id,
-                    text: entry.text,
-                    start_date: moment(entry.start_date).format('MM[/]DD[/]YYYY h:mm:ss'),
-                    end_date: moment(entry.end_date).format('MM[/]DD[/]YYYY h:mm:ss'),
-                }
+//            //go through list of events and add each event to the json events object
+//            result.forEach(function (entry) {
+//                var event = {
+//                    id: entry.id,
+//                    text: entry.text,
+//                    start_date: moment(entry.start_date).format('MM[/]DD[/]YYYY h:mm:ss'),
+//                    end_date: moment(entry.end_date).format('MM[/]DD[/]YYYY h:mm:ss'),
+//                }
 
-                //adds the event to the events object
-                events.push(event);
-            });
+//                //adds the event to the events object
+//                events.push(event);
+//            });
 
-            //passes the events to the scheduler
-            scheduler.parse(events, "json"); //takes the name and format of the data source
+//            //passes the events to the scheduler
+//            scheduler.parse(events, "json"); //takes the name and format of the data source
 
-            scheduler.attachEvent("onClick", function (id, e) {
-                //any custom logic here
-                $("#bookingDetailsForm").dialog({
-                    autoOpen: true,
-                    position: {
-                        my: "center",
-                        at: "top+350",
-                        of: window
-                    },
-                    width: 1000,
-                    resizable: false,
-                    title: 'Booking Details',
-                    modal: true,
-                    open: function () {
-                        $(this).load('/Booking/getEmpBookingDetails/?id=' + id);
-                    },
-                    buttons: {
-                        "Update Booking Status": {
-                            click: function () {
-                                var selectList = $("#bookingStatusList").val();
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '/Booking/updateStatus',
-                                    data: "status=" + selectList,
-                                    success: function (result) {
-                                        $("#bookingDetailsForm").dialog("close");
-                                        displayCalendar(inputId, inputType);
-                                    },
-                                    error: function (err, result) {
-                                        alert("Error in assigning dataToSave" + err.responseText);
-                                    }
-                                });
-                            },
-                            text: "Update Booking Status",
-                            id: "btUpdateStatus",
-                            disabled: "disabled",
-                        },
-                        "Update Booking": {
-                            text: "Update Booking",
-                            id: "btnUpdateBooking",
-                            click: function () {
-                                location = "/Booking/updateBookingDetails";
-                            }
-                        },
-                        Cancel: function () {
-                            $(this).dialog("close");
-                        },
-                    }
-                });
-            });
-        },
-        error: function (err, result) {
-            alert("Error in assigning dataToSave" + err.responseText);
-        }
-    });
-    scheduler.updateView();
-};
+//            scheduler.attachEvent("onClick", function (id, e) {
+//                //any custom logic here
+//                $("#bookingDetailsForm").dialog({
+//                    autoOpen: true,
+//                    position: {
+//                        my: "center",
+//                        at: "top+350",
+//                        of: window
+//                    },
+//                    width: 1000,
+//                    resizable: false,
+//                    title: 'Booking Details',
+//                    modal: true,
+//                    open: function () {
+//                        $(this).load('/Booking/getEmpBookingDetails/?id=' + id);
+//                    },
+//                    buttons: {
+//                        "Update Booking Status": {
+//                            click: function () {
+//                                var selectList = $("#bookingStatusList").val();
+//                                $.ajax({
+//                                    type: 'GET',
+//                                    url: '/Booking/updateStatus',
+//                                    data: "status=" + selectList,
+//                                    success: function (result) {
+//                                        $("#bookingDetailsForm").dialog("close");
+//                                        displayCalendar(inputId, inputType);
+//                                    },
+//                                    error: function (err, result) {
+//                                        alert("Error in assigning dataToSave" + err.responseText);
+//                                    }
+//                                });
+//                            },
+//                            text: "Update Booking Status",
+//                            id: "btUpdateStatus",
+//                            disabled: "disabled",
+//                        },
+//                        "Update Booking": {
+//                            text: "Update Booking",
+//                            id: "btnUpdateBooking",
+//                            click: function () {
+//                                location = "/Booking/updateBookingDetails";
+//                            }
+//                        },
+//                        Cancel: function () {
+//                            $(this).dialog("close");
+//                        },
+//                    }
+//                });
+//            });
+//        },
+//        error: function (err, result) {
+//            alert("Error in assigning dataToSave" + err.responseText);
+//        }
+//    });
+//    scheduler.updateView();
+//};
 
 //run scripts on document ready
 $(document).ready(function () {
@@ -481,41 +481,41 @@ function getSelectedTraining(elem) {
     });
 }
 
-function getTrainingBookingDetails() {
-    $("#confirmTrainingBooking").dialog({
-        autoOpen: true,
-        position: {
-            my: "center",
-            at: "top+350",
-            of: window
-        },
-        width: 600,
-        resizable: false,
-        title: 'Confirm Booking:',
-        modal: true,
-        open: function () {
-            $(this).load('/Booking/confirmStudentTraining');
-        },
-        buttons: {
-            "Confirm": function () {
-                studentBook();
-            },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
-        }
-    });
-}
+//function getTrainingBookingDetails() {
+//    $("#confirmTrainingBooking").dialog({
+//        autoOpen: true,
+//        position: {
+//            my: "center",
+//            at: "top+350",
+//            of: window
+//        },
+//        width: 600,
+//        resizable: false,
+//        title: 'Confirm Booking:',
+//        modal: true,
+//        open: function () {
+//            $(this).load('/Booking/confirmStudentTraining');
+//        },
+//        buttons: {
+//            "Confirm": function () {
+//                studentBook();
+//            },
+//            Cancel: function () {
+//                $(this).dialog("close");
+//            }
+//        }
+//    });
+//}
 
-function studentBook() {
-    $.ajax({
-        type: 'POST',
-        url: '/Booking/captureStudentTraining',
-        success: function (result) {
-            window.location.href = "/Booking/ViewBookings/";
-        },
-        error: function (err, result) {
-            alert("Error in assigning dataToSave" + err.responseText);
-        }
-    });
+//function studentBook() {
+//    $.ajax({
+//        type: 'POST',
+//        url: '/Booking/captureStudentTraining',
+//        success: function (result) {
+//            window.location.href = "/Booking/ViewBookings/";
+//        },
+//        error: function (err, result) {
+//            alert("Error in assigning dataToSave" + err.responseText);
+//        }
+//    });
 }

@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Book Training Session";
-    Layout = (string)Session["layout"];
     var categories = (IEnumerable<Category>)Session["categories"];
 }
 
@@ -107,5 +106,42 @@
                 }
             });
         })
+
+        function getTrainingBookingDetails() {
+
+            //show bootbox dialog
+            bootbox.confirm({
+                title: "Confirm Bookinfg",
+                message: function () {
+                    $(this).load('/Booking/confirmStudentTraining');
+                },
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result)
+                        studentBook();
+                }
+            });
+        }
+
+        //confirm booking
+        function studentBook() {
+            $.ajax({
+                type: 'POST',
+                url: '/Booking/captureStudentTraining',
+                success: function (result) {
+                    window.location.href = "/Booking/ViewBookings/";
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        };
     </script>
     }
