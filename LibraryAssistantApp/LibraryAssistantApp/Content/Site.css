@@ -112,6 +112,40 @@ table tbody tr :hover {
     color:black;
 }
 
-.tbl-bordered, td, tr {
+.tbl-bordered td tr {
     border: 1px solid black;
+}
+/*export buttons get a fixed position*/
+.exp-fixed {
+    position:absolute;
+    top:80px;
+    left:70%;
+}
+
+/*set below navbar !temporary fix*/
+@media (max-width: 1447px) {
+    .exp-fixed {
+        top: 125px;
+    } 
+}
+
+/*set below navbar !temporary fix*/
+@media (max-width: 1192px) {
+    .exp-fixed {
+        top: 170px;
+    } 
+}
+
+/*set top below navbar !temporary fix*/
+@media (max-width: 767px) {
+    .exp-fixed {
+            top: 80px;
+        } 
+}
+
+/*Make tables scrollable if too much data*/
+
+.scrollable {
+     overflow:auto; 
+     height:450px;
 }

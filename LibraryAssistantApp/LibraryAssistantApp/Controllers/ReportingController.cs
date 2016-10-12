@@ -126,6 +126,8 @@ namespace LibraryAssistantApp.Controllers
                     //var test = (db.Document_Access_Log.Where(x => x.Document_Seq == item.Document_Seq).Select(x => x.Person_Session_Log).Distinct()).ToList();
                     foreach (var da in doc_access)
                     {
+                        //attempted code at creating the 3rd control break at person
+
                         //var id = (from b in db.Person_Session_Log
                         //          where b.Session_ID == da.Session_ID
                         //          select b.Person_ID).Single();

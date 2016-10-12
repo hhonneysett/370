@@ -140,12 +140,12 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 .nav-second-level li {
     border-bottom: none !important;
     background-color: #4983B0;
-    padding: 10px 20px;
+    padding: 15px 20px;
 }
 .nav-third-level li {
     border-bottom: none !important;
     background-color: #428bca;
-    padding: 10px 20px;
+    padding: 15px 20px;
 }
 
 .nav-second-level li a {

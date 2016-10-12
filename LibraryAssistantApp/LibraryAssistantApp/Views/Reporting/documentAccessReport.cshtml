@@ -16,9 +16,12 @@
     <title>documentAccessReport</title>
 </head>
 <body>
-    <h2>Document Access Log</h2>
+    <div>
+        <h2>Document Access Log</h2>
+        <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+    </div>
     <div class="panel panel-default">
-        <table class="table table-condensed tbl-bordered">
+        <table id="doc-report" class="table table-condensed tbl-bordered">
             <tbody>
                 @foreach (var item in Model.doc_types)
             {
@@ -93,3 +96,9 @@
     </div>
 </body>
 </html>
+
+<script type="text/javascript">
+    function demoFromHTML() {
+        $('#doc-report').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7' });
+    };
+</script>

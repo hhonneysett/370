@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "addTopic";
-    Layout = (string)Session["layout"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var categories = (IEnumerable < Category >) ViewBag.Categories;
 }
 
