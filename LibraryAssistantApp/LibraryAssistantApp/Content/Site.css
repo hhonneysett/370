@@ -93,3 +93,25 @@ table tbody tr :hover {
 .shaded {
     padding: 15px 0 15px 15px;
 }
+
+/*td shading*/
+.shade-blue {
+    background-color: rgb(47,117,181);
+    color: white;
+}
+.shade-green {
+    background-color: rgb(84,130,53);
+    color: white;
+}
+.shade-green-l {
+    background-color: rgb(198,224,180);
+    color: black;
+}
+.shade-blue-l {
+    background-color: rgb(189,215,238);
+    color:black;
+}
+
+.tbl-bordered, td, tr {
+    border: 1px solid black;
+}

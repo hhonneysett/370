@@ -1151,6 +1151,7 @@
     <Content Include="Views\Member\Delete.cshtml" />
     <Content Include="Views\Member\MemberDetails.cshtml" />
     <Content Include="Views\Backup\Index.cshtml" />
+    <Content Include="Views\Reporting\documentAccessReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
