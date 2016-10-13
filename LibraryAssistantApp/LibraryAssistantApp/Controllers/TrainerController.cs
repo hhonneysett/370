@@ -1758,6 +1758,43 @@ namespace LibraryAssistantApp.Controllers
             return PartialView(details);
         }
 
+        //show further training session details
+        [HttpGet]
+        public PartialViewResult addTrainingSessionDetails(int id)
+        {
+            //create local variable of selected venue
+            var venue = db.Venues.Where(v => v.Venue_ID == id).First();
+            ViewBag.Venue = venue;
+            Session["venueSelect"] = venue;
+
+            //create local variable of session details
+            var session = (TrainingSessionModel)Session["sessionDetails"];
+
+            //create local variable of venue timeslot lists
+            var timeslotList = (List<venueTimeslot>)Session["timeslotList"];
+
+            //get timeslots available for the selected venue
+            List<timeslot> available = new List<timeslot>();
+
+            //go through the venue timeslots and check for the venue
+            foreach (venueTimeslot vt in timeslotList)
+            {
+                foreach (Venue v in vt.venues)
+                {
+                    if (v.Venue_ID.Equals(venue.Venue_ID))
+                    {
+                        available.Add(vt.timeslot);
+                    }
+                }
+            }
+
+            //assing the avialable timeslots to a session variable
+            Session["availableVen"] = available;
+
+            //return partial view
+            return PartialView();
+        }
+
         //generate attendance register
         public void generateAttendance()
         {
