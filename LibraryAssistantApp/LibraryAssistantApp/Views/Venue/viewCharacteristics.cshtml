@@ -5,15 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="stylesheet" href="~/Content/datatables.min.css" />
-<script src="~/Scripts/DataTable/datatables.min.js"></script>
-
 <h2>Characteristics</h2>
 
 <p>
     @Html.ActionLink("Create New", "addCharacteristic")
 </p>
-<table id="table">
+<table id="table" class="table table-bordered">
     <thead>
         <tr>
             <th>

@@ -22,7 +22,7 @@
                 </div>              
             </div>
             <div class="panel-footer">
-                <input type="submit" id="btnPersonId" class="btn btn-default" disabled="disabled" value="Submit"/>
+                <input type="submit" id="btnPersonId" class="btn btn-primary" disabled="disabled" value="Submit"/>
             </div>
         </div>
     </div>
@@ -59,25 +59,29 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <button type="button" class="btn btn-default" id="btnVenueSubmit" disabled="disabled">Submit</button>
+                <button type="button" class="btn btn-primary" id="btnVenueSubmit" disabled="disabled">Submit</button>
             </div>
         </div>
     </div>
 </div>
 <hr />
-<div id="scheduler_here" class="dhx_cal_container" style='width:1000px; height:600px; display:none'>
-    <div class="dhx_cal_navline">
-        <div class="dhx_cal_prev_button">&nbsp;</div>
-        <div class="dhx_cal_next_button">&nbsp;</div>
-        <div class="dhx_cal_today_button"></div>
-        <div class="dhx_cal_date"></div>
-        <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
-        <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
-        <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
-        <div class="dhx_cal_tab" name="agenda_tab" style="right:280px;"></div>
+<div class="panel panel-default" id="container" hidden>
+    <div class="panel-body">
+        <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:55em; display:none'>
+            <div class="dhx_cal_navline">
+                <div class="dhx_cal_prev_button">&nbsp;</div>
+                <div class="dhx_cal_next_button">&nbsp;</div>
+                <div class="dhx_cal_today_button"></div>
+                <div class="dhx_cal_date"></div>
+                <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+                <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+                <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+                <div class="dhx_cal_tab" name="agenda_tab" style="right:280px;"></div>
+            </div>
+            <div class="dhx_cal_header"></div>
+            <div class="dhx_cal_data"></div>
+        </div>
     </div>
-    <div class="dhx_cal_header"></div>
-    <div class="dhx_cal_data"></div>
 </div>
 
 <div id="bookingDetailsForm"></div>
@@ -233,6 +237,7 @@
 
         //load calendar
         function displayCalendar(inputId, inputType) {
+            $("#container").show();
             $.ajax({
                 type: 'GET',
                 url: '/Booking/getEmpBookings',
@@ -332,5 +337,14 @@
             });
             scheduler.updateView();
         };
+
+        //enable button on employeeViewBookings when status is updated
+        function enableButton() {
+            var button = $("#btUpdateStatus");
+            button.prop("disabled", false);
+            button.removeClass("ui-button-disabled");
+            button.removeClass("ui-state-disabled");
+        };
+
     </script>    
 }

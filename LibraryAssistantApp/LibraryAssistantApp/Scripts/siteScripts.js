@@ -76,13 +76,13 @@ $('#btnRegisterStudent').on('click', function () {
 //    });
 //}
 
-//enable button on employeeViewBookings when status is updated
-function enableButton() {
-    var button = $("#btUpdateStatus");
-    button.prop("disabled", false);
-    button.removeClass("ui-button-disabled");
-    button.removeClass("ui-state-disabled");
-};
+////enable button on employeeViewBookings when status is updated
+//function enableButton() {
+//    var button = $("#btUpdateStatus");
+//    button.prop("disabled", false);
+//    button.removeClass("ui-button-disabled");
+//    button.removeClass("ui-state-disabled");
+//};
 
 //display calendar on employeeViewBookings
 //function displayCalendar(inputId, inputType) {
@@ -189,44 +189,44 @@ function enableButton() {
 //run scripts on document ready
 $(document).ready(function () {
 
-    //check inputted person id is an employee person id
-    jQuery.validator.addMethod("validTrainerID", function (value, element) {
-        var regex = /^[p][0-9]{8}$/;
-        return this.optional(element) || regex.test(value);
-    }, "Invalid person ID");
+    ////check inputted person id is an employee person id
+    //jQuery.validator.addMethod("validTrainerID", function (value, element) {
+    //    var regex = /^[p][0-9]{8}$/;
+    //    return this.optional(element) || regex.test(value);
+    //}, "Invalid person ID");
 
     jQuery.validator.addMethod("validStudentID", function (value, element) {
         var regex = /^[u][0-9]{8}$/;
         return this.optional(element) || regex.test(value);
     }, "You have entered an invalid studnet number");
 
-    $("#manageTraining").validate({
-        rules: {
-            trainerID: {
-                validTrainerID: true,
-                required: true,
-            }
-        },
-        errorClass: "my-error-class",
-    })
+    //$("#manageTraining").validate({
+    //    rules: {
+    //        trainerID: {
+    //            validTrainerID: true,
+    //            required: true,
+    //        }
+    //    },
+    //    errorClass: "my-error-class",
+    //})
 
     $('#timepicker').removeAttr("data-val");
 
-    //hide training details panel
-    $('#trainingDetails').hide();
+    ////hide training details panel
+    //$('#trainingDetails').hide();
 
-    //show calendar for trainer
-    $("#btnTrainerID").click(function () {
-        if ($("#manageTraining").valid()) {
-            manageTrainingCalendar($("#trainerID").val())
-            $('#manageCampusSelect').prop('value', 0);
-        }
-    })
+    ////show calendar for trainer
+    //$("#btnTrainerID").click(function () {
+    //    if ($("#manageTraining").valid()) {
+    //        manageTrainingCalendar($("#trainerID").val())
+    //        $('#manageCampusSelect').prop('value', 0);
+    //    }
+    //})
 
-    //show calendar for campus
-    $("#manageCampusSelect").change(function () {
-        manageTrainingCalendar($(manageCampusSelect).children(":selected").attr("value"))
-    })
+    ////show calendar for campus
+    //$("#manageCampusSelect").change(function () {
+    //    manageTrainingCalendar($(manageCampusSelect).children(":selected").attr("value"))
+    //})
 
 });
 
@@ -312,122 +312,122 @@ function submitTrainingSession() {
     }
 }
 
-//show calendar for training sessions
-function manageTrainingCalendar(id) {
-    $.ajax({
-        type: 'GET',
-        url: '/Trainer/getTrainingSessions',
-        data: "id=" + id,
-        success: function (result) {
+////show calendar for training sessions
+//function manageTrainingCalendar(id) {
+//    $.ajax({
+//        type: 'GET',
+//        url: '/Trainer/getTrainingSessions',
+//        data: "id=" + id,
+//        success: function (result) {
 
-            //clear the calendar
-            scheduler.clearAll();
+//            //clear the calendar
+//            scheduler.clearAll();
 
-            //configure the calendar
-            scheduler.config.resize_month_events = false;
-            scheduler.config.first_hour = 8;
-            scheduler.config.last_hour = 17;
-            scheduler.config.start_on_monday = true;
-            scheduler.locale.labels.agenda_tab = "Agenda";
-            scheduler.config.readonly = true;
+//            //configure the calendar
+//            scheduler.config.resize_month_events = false;
+//            scheduler.config.first_hour = 8;
+//            scheduler.config.last_hour = 17;
+//            scheduler.config.start_on_monday = true;
+//            scheduler.locale.labels.agenda_tab = "Agenda";
+//            scheduler.config.readonly = true;
 
-            //initialize the scheduler
-            scheduler.init('scheduler_here', new Date(), "month");
+//            //initialize the scheduler
+//            scheduler.init('scheduler_here', new Date(), "month");
 
-            //create an events json object
-            var events = [];
+//            //create an events json object
+//            var events = [];
 
-            //go through list of events and add each event to the json events object
-            result.forEach(function (entry) {
+//            //go through list of events and add each event to the json events object
+//            result.forEach(function (entry) {
 
-                //create an event for each booking
-                var event = {
-                    id: entry.id,
-                    text: entry.text,
-                    start_date: moment(entry.start_date).format('MM[/]DD[/]YYYY h:mm:ss'),
-                    end_date: moment(entry.end_date).format('MM[/]DD[/]YYYY h:mm:ss'),
-                }
+//                //create an event for each booking
+//                var event = {
+//                    id: entry.id,
+//                    text: entry.text,
+//                    start_date: moment(entry.start_date).format('MM[/]DD[/]YYYY h:mm:ss'),
+//                    end_date: moment(entry.end_date).format('MM[/]DD[/]YYYY h:mm:ss'),
+//                }
 
 
-                //adds the event to the events object
-                events.push(event);
-            });
+//                //adds the event to the events object
+//                events.push(event);
+//            });
 
-            //passes the events to the scheduler
-            scheduler.parse(events, "json"); //takes the name and format of the data source
+//            //passes the events to the scheduler
+//            scheduler.parse(events, "json"); //takes the name and format of the data source
 
-            //make events clickable
-            scheduler.attachEvent("onClick", function (id, e) {
-                //any custom logic here
-                showTrainingDetails(id);
-            });
+//            //make events clickable
+//            scheduler.attachEvent("onClick", function (id, e) {
+//                //any custom logic here
+//                showTrainingDetails(id);
+//            });
 
-        },
-        error: function (err, result) {
-            alert("Unfortunately, something went wrong, please contact IT support for further assistance. Have a nice day!");
-        }
-    });
-}
+//        },
+//        error: function (err, result) {
+//            alert("Unfortunately, something went wrong, please contact IT support for further assistance. Have a nice day!");
+//        }
+//    });
+//}
 
-//show popup of details
-function showTrainingDetails(id) {
-    $.ajax({
-        type: 'GET',
-        url: '/Trainer/trainingSessionDetails',
-        data: { id: id },
-        success: function (result) {
+////show popup of details
+//function showTrainingDetails(id) {
+//    $.ajax({
+//        type: 'GET',
+//        url: '/Trainer/trainingSessionDetails',
+//        data: { id: id },
+//        success: function (result) {
 
-            $('#trainingDetails').show(1100);
-            $('#trainingDetails').replaceWith(result);
-            $("#btnGenerateAttendance").click(function () {
-                getRegister();
-            })
+//            $('#trainingDetails').show(1100);
+//            $('#trainingDetails').replaceWith(result);
+//            $("#btnGenerateAttendance").click(function () {
+//                getRegister();
+//            })
 
-            $("#cancelTraining").click(function () {
-                $("#cancelConfirm").dialog({
-                    autoOpen: true,
-                    position: {
-                        my: "center",
-                        at: "top+350",
-                        of: window
-                    },
-                    width: 600,
-                    resizable: false,
-                    title: 'Cancel Confirmation:',
-                    modal: true,
-                    open: function () {
-                        var markup = 'Are you sure you want to cancel this training session?';
-                        $(this).html(markup);
-                    },
-                    buttons: {
-                        "Confirm": function () {
-                            cancelTraining();
-                        },
-                        Cancel: function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                });
-            });
-        },
-        error: function (err, result) {
-            alert("Error in assigning dataToSave" + err.responseText);
-        }
-    });
-}
+//            $("#cancelTraining").click(function () {
+//                $("#cancelConfirm").dialog({
+//                    autoOpen: true,
+//                    position: {
+//                        my: "center",
+//                        at: "top+350",
+//                        of: window
+//                    },
+//                    width: 600,
+//                    resizable: false,
+//                    title: 'Cancel Confirmation:',
+//                    modal: true,
+//                    open: function () {
+//                        var markup = 'Are you sure you want to cancel this training session?';
+//                        $(this).html(markup);
+//                    },
+//                    buttons: {
+//                        "Confirm": function () {
+//                            cancelTraining();
+//                        },
+//                        Cancel: function () {
+//                            $(this).dialog("close");
+//                        }
+//                    }
+//                });
+//            });
+//        },
+//        error: function (err, result) {
+//            alert("Error in assigning dataToSave" + err.responseText);
+//        }
+//    });
+//}
 
-function cancelTraining() {
-    $.ajax({
-        type: 'GET',
-        url: '/Trainer/cancelTraining',
-        success: function (result) {
-            window.location.href = "/Trainer/manageTrainingSession";
-        },
-        error: function (err, result) {
-            alert("Unfortunately, something went wrong, please contact IT support for further assistance. Have a nice day!");
-        }
-    });
-}
+//function cancelTraining() {
+//    $.ajax({
+//        type: 'GET',
+//        url: '/Trainer/cancelTraining',
+//        success: function (result) {
+//            window.location.href = "/Trainer/manageTrainingSession";
+//        },
+//        error: function (err, result) {
+//            alert("Unfortunately, something went wrong, please contact IT support for further assistance. Have a nice day!");
+//        }
+//    });
+//}
 
 //request one time pin
 function oneTimePin()
@@ -468,18 +468,18 @@ function oneTimePin()
     });
 }
 
-function getSelectedTraining(elem) {
-    var id = $(elem).data('assigned-id');
-    $.ajax({
-        type: 'GET',
-        url: '/Booking/sessionSelect',
-        data: "id=" + id,
-        success: function (result) { },
-        error: function (err, result) {
-            alert("Error in assigning dataToSave" + err.responseText);
-        }
-    });
-}
+//function getSelectedTraining(elem) {
+//    var id = $(elem).data('assigned-id');
+//    $.ajax({
+//        type: 'GET',
+//        url: '/Booking/sessionSelect',
+//        data: "id=" + id,
+//        success: function (result) { },
+//        error: function (err, result) {
+//            alert("Error in assigning dataToSave" + err.responseText);
+//        }
+//    });
+//}
 
 //function getTrainingBookingDetails() {
 //    $("#confirmTrainingBooking").dialog({
@@ -518,4 +518,4 @@ function getSelectedTraining(elem) {
 //            alert("Error in assigning dataToSave" + err.responseText);
 //        }
 //    });
-}
+//}

@@ -311,7 +311,7 @@
 
         //initiate timepicker
         $('input.settingTime').timepicker({
-            timeFormat: 'h:mm p',
+            timeFormat: 'HH:mm',
             interval: 30,
             dynamic: true,
             dropdown: true,
@@ -356,7 +356,7 @@
                 success: function (result) {
                     //display notification
                     $.ambiance({
-                        message: "Scheduled Time Updated!",
+                        message: "Scheduled email time updated, restart server to take effect!",
                         title: "Success!",
                         type: "success",
                         timeout: 5

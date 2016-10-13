@@ -39,6 +39,7 @@
         rules: {
             buildingName: {
                 required: true,
+                maxlength: 30,
                 remote: {
                     url: '/Venue/checkBuilding',
                     type: 'get'

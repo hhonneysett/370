@@ -17,17 +17,12 @@
         $('#myModal').modal('toggle');
     })
 
-    //add lettersonly method
-    jQuery.validator.addMethod("lettersonly", function (value, element) {
-        return this.optional(element) || /^[a-z]+$/i.test(value);
-    }, "Letters only please");
-
     //start form validation
     $("#updateCampusForm").validate({
         rules: {
             Campus_Name: {
                 required: true,
-                lettersonly: true,
+                maxlength: 30,
                 remote: {
                     url: "/Venue/checkUpdateCampus",
                     type: "get"

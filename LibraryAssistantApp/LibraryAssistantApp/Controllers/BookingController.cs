@@ -936,7 +936,7 @@ namespace LibraryAssistantApp.Controllers
         [Authorize]
         public PartialViewResult getAvailableTrainingSess(int id)
         {
-            var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id).ToList();
+            var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id && b.DateTime_From > DateTime.Today).ToList();
 
             var filtered = new List<Venue_Booking>();
 

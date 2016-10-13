@@ -87,6 +87,7 @@
 /// <reference path="scheduler/dhtmlxscheduler.js" />
 /// <reference path="scheduler/dhtmlxscheduler_agenda_view.js" />
 /// <reference path="selectrow.js" />
+/// <reference path="server_notification.js" />
 /// <reference path="sitescripts.js" />
 /// <reference path="spin.min.js" />
 /// <reference path="sprintf.js" />

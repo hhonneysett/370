@@ -548,6 +548,7 @@
     <Content Include="Scripts\Login\index.js" />
     <Content Include="Scripts\Morris Charts\morris.min.js" />
     <Content Include="Scripts\Morris Charts\raphael-min.js" />
+    <Content Include="Scripts\server_notification.js" />
     <Content Include="Scripts\spin.min.js" />
     <Content Include="Scripts\noty\jquery.noty.js" />
     <Content Include="Scripts\noty\layouts\bottom.js" />
@@ -1131,6 +1132,12 @@
     <Content Include="Views\Member\Delete.cshtml" />
     <Content Include="Views\Member\MemberDetails.cshtml" />
     <Content Include="Views\Backup\Index.cshtml" />
+    <Content Include="Views\Venue\addVenueCharacteristic.cshtml" />
+    <Content Include="Views\Repository\DeleteFileType.cshtml" />
+    <Content Include="Views\Repository\viewFileCategories.cshtml" />
+    <Content Include="Views\Repository\addFileCategory.cshtml" />
+    <Content Include="Views\Repository\updateFileCategory.cshtml" />
+    <Content Include="Views\Repository\deleteFileCategory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
