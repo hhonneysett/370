@@ -1,12 +1,12 @@
 ﻿@model LibraryAssistantApp.Models.CategoryModel
 @using LibraryAssistantApp.Models
 @{
-    ViewBag.Title = "viewTopic";
-    Layout = (string)Session["layout"];
+    ViewBag.Title = "Training Topics";
     var category = (IEnumerable<Category>)ViewBag.Category;
 }
 
 <h2>Topics</h2>
+<hr />
 
 <div class="row">
     <div class="col-md-12">
@@ -19,6 +19,7 @@
                     @Html.LabelFor(model => model.categoryName, htmlAttributes: new { })
                     <div>
                         <select id="categorySelect" class="form-control">
+                            <option disabled selected value="">--select category--</option>
                             @foreach(var item in category)
                             {
                                 <option value="@item.Category_ID">@item.Category_Name</option>

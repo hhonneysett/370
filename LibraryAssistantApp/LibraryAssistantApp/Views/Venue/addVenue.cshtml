@@ -25,7 +25,7 @@
         <tr>
             <td><b>Type:</b></td>
             <td style="padding-left:5px; padding-bottom:5px"">
-                <select id="venueTypeSelect" class="form-control">
+                <select id="venueTypeSelect" class="form-control" required>
                     @foreach (var vtype in types)
                     {
                         <option id="@vtype.Venue_Type1">@vtype.Venue_Type1</option>
@@ -35,7 +35,7 @@
         </tr>
         <tr>
             <td><b>Venue Name:</b></td>
-            <td style="padding-left:5px; padding-bottom:5px"><input class="form-control" type="text" id="venueName" name="venueName" placeholder="Enter Venue Name" /></td>
+            <td style="padding-left:5px; padding-bottom:5px"><input class="form-control" type="text" id="venueName" name="venueName" placeholder="Enter Venue Name" required maxlength="30"/></td>
         </tr>
         <tr>
             <td><b>Capacity:</b></td>

@@ -10,6 +10,7 @@ namespace LibraryAssistantApp
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/bootbox.min.js",
+                        "~/Scripts/spin.min.js",
                         "~/Scripts/bxSlider/jquery.bxslider.min.js",
                         "~/Scripts/DataTable/datatables.min.js",
                         "~/Scripts/jquery-{version}.js",
@@ -59,7 +60,8 @@ namespace LibraryAssistantApp
             bundles.Add(new ScriptBundle("~/bundles/headScripts").Include(
                 "~/Scripts/Scheduler/dhtmlxscheduler.js",
                 "~/Scripts/Scheduler/dhtmlxscheduler_agenda_view.js",
-                "~/Scripts/moment.min.js"));
+                "~/Scripts/moment.min.js",
+                "~/Scripts/server_notification.js"));
 
             //checkbox scripts
             bundles.Add(new ScriptBundle("~/bundles/checkboxjs").Include(

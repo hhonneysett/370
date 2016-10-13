@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Web;
-
+using System.IO;
 
 namespace LibraryAssistantApp.Models
 {
@@ -90,10 +88,12 @@ namespace LibraryAssistantApp.Models
 
     public class AddFileModel
     {
-        [Required(ErrorMessage = "Please provide a file name")]
+        [Required(ErrorMessage = "Please provide a file name"), MaxLength(30)]
         [Display(Name = "File Name")]
+        [Remote("checkFilename", "Validate", ErrorMessage ="Filename already exists")]
         public string Document_Name { get; set; }
 
+        [Required, MaxLength(50)]
         public string Description { get; set; }
 
         [Display(Name = "Category")]
@@ -144,12 +144,46 @@ namespace LibraryAssistantApp.Models
 
     public class AddFileTypeModel
     {
-        [Required(ErrorMessage = "Please provide a file type name")]
+        [Required(ErrorMessage = "Please provide a file type name"), MaxLength(30)]
+        [Display(Name = "File Type Name")]
+        [Remote("checkFileType", "Validate", ErrorMessage ="File type already exists")]
+        public string Type_Name { get; set; }
+
+        [Display(Name = "File Type Description")]
+        [Required, MaxLength(50)]
+        public string Description { get; set; }
+    }
+
+    public class UpdateFileType
+    {
+        [Required(ErrorMessage = "Please provide a file type name"), MaxLength(30)]
         [Display(Name = "File Type Name")]
         public string Type_Name { get; set; }
 
         [Display(Name = "File Type Description")]
+        [Required, MaxLength(50)]
         public string Description { get; set; }
+    }
+
+    public class AddFileCategory
+    {
+        [Required, MaxLength(30), Display(Name ="Category Name")]
+        [Remote("checkFileCategory", "Validate", ErrorMessage ="Category already exits")]
+        public string name { get; set; }
+
+        [Required, MaxLength(50), Display(Name ="Description")]
+        public string description { get; set; }
+    }
+
+    public class UpdateFileCategory
+    {
+        [Required, MaxLength(30), Display(Name = "Category Name")]
+        public string name { get; set; }
+
+        [Required, MaxLength(50), Display(Name = "Description")]
+        public string description { get; set; }
+
+        public int id { get; set; }
     }
 
     public class GetTypesModel
@@ -310,10 +344,12 @@ namespace LibraryAssistantApp.Models
         public int categoryId { get; set; }
 
         [Display(Name ="Category Name")]
-        [Required(ErrorMessage ="Please provide a category name")]
+        [Required(ErrorMessage ="Please provide a category name"), MaxLength(30)]
+        [Remote("checkCategory", "Validate", ErrorMessage ="Category already exists")]
         public string categoryName { get; set; }
 
         [Display(Name ="Description")]
+        [Required(ErrorMessage ="Please provide a description"), MaxLength(50)]
         public string description { get; set; }
   
     }
@@ -750,7 +786,7 @@ namespace LibraryAssistantApp.Models
     public class problemTypeModel
     {
         [Display(Name ="Problem Type Name"), Required, MaxLength(30)]
-        [Remote("checkProblem", "Validate", ErrorMessage = "Problem type already exists")]
+        [Remote("checkProblemType", "Validate", ErrorMessage = "Problem type already exists")]
         public string name { get; set; }
 
         [Display(Name = "Problem Type Description"), Required, MaxLength(100)]
@@ -789,5 +825,10 @@ namespace LibraryAssistantApp.Models
         public string trainer { get; set; }
         public string email { get; set; }
     }
+
+    public class serverpath
+    {
+        public static string path = Path.Combine(HttpContext.Current.Server.MapPath("~"), "settings.xml");
+    } 
    
 }

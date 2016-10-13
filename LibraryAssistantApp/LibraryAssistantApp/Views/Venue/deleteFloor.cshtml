@@ -68,6 +68,9 @@
                     $("#btnUpdateBuildingFloor").prop('disabled', true);
                     $("#btnDeleteBuildingFloor").prop('disabled', true);
                     $("#btnViewVenues").prop('disabled', true)
+
+                    //hide further divs
+                    $("#venues").hide(800);
                 }
             },
             error: function (err, result) {

@@ -58,48 +58,6 @@
                 success: function (result) {
                     $('#topicPanel').replaceWith(result);
                     $("#topicToggle").show(800);
-
-                    $("#bkTrainingTopic").change(function () {
-                        var id = $("#bkTrainingTopic").children(":selected").val();
-
-                        $.ajax({
-                            type: 'GET',
-                            url: '/Booking/getAvailableTrainingSess',
-                            data: "id=" + id,
-                            success: function (result) {
-                                $('#bkTrainingBookings').replaceWith(result);
-                                $("#sessionToggle").show(800);
-
-                                $("#btnBkTraining").prop('disabled', true);
-
-                                //select available trainer
-                                $("#sessionTable tbody tr").click(function () {
-
-                                    var selected = $(this).hasClass("alert-info");
-                                    $("#sessionTable tbody tr").removeClass("alert-info");
-
-                                    if (!selected) {
-                                        $(this).addClass("alert-info");
-                                    }
-                                    var buttonEnabled = $(this).hasClass("alert-info");
-                                    if (buttonEnabled) {
-                                        $("#btnBkTraining").prop('disabled', false)
-                                    } else {
-                                        $("#btnBkTraining").prop('disabled', true)
-                                    }
-                                });
-
-                                $("#btnBkTraining").click(function () {
-                                    getTrainingBookingDetails();
-                                })
-
-                            },
-                            error: function (err, result) {
-                                alert("Error in assigning dataToSave" + err.responseText);
-                            }
-                        });
-                    })
-
                 },
                 error: function (err, result) {
                     alert("Error in assigning dataToSave" + err.responseText);
@@ -111,7 +69,7 @@
 
             //show bootbox dialog
             bootbox.confirm({
-                title: "Confirm Bookinfg",
+                title: "Confirm Booking",
                 message: function () {
                     $(this).load('/Booking/confirmStudentTraining');
                 },

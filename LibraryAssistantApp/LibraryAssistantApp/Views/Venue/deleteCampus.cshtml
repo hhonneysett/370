@@ -64,6 +64,11 @@
                     $("#btnUpdateCampus").prop('disabled', true);
                     $("#btnDeleteCampus").prop('disabled', true);
                     $("#btnViewBuildings").prop('disabled', true)
+
+                    //hide further divs
+                    $("#buildings").hide(800);
+                    $("#buildingFloors").hide(800);
+                    $("#venues").hide(800);
                 }
             },
             error: function (err, result) {

@@ -68,6 +68,10 @@
                     $("#btnUpdateBuilding").prop('disabled', true);
                     $("#btnDeleteBuilding").prop('disabled', true);
                     $("#btnViewBuildingFloors").prop('disabled', true)
+
+                    //hide further divs
+                    $("#buildingFloors").hide(800);
+                    $("#venues").hide(800);
                 }
             },
             error: function (err, result) {

@@ -14,17 +14,13 @@
     $("#btnCancelModal").click(function () {
         $('#myModal').modal('toggle');
     })
-     
-    jQuery.validator.addMethod("lettersonly", function (value, element) {
-        return this.optional(element) || /^[a-z]+$/i.test(value);
-    }, "Letters only please");
 
     //validate form
     $("#addCampusForm").validate({
         rules: {
             campusName: {
                 required: true,
-                lettersonly: true,
+                maxlength: 30,
                 remote: {
                     url: "/Venue/checkCampus",
                     type: "get"
