@@ -271,3 +271,6 @@ LibraryAssistantApp/LibraryAssistantApp/bin/roslyn/Microsoft.CodeAnalysis.CSharp
 *.dll
 LibraryAssistantApp/LibraryAssistantApp/bin/roslyn/Microsoft.CSharp.Core.targets
 LibraryAssistantApp/LibraryAssistantApp/bin/roslyn/VBCSCompiler.exe.config
+LibraryAssistantApp/.vs/LibraryAssistantApp/v14/.suo
+LibraryAssistantApp/LibraryAssistantApp/bin/LibraryAssistantApp.dll
+LibraryAssistantApp/LibraryAssistantApp/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache

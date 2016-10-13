@@ -72,6 +72,7 @@ namespace LibraryAssistantApp
             //modal script
             bundles.Add(new ScriptBundle("~/bundles/bootbox").Include(
                 "~/Scripts/bootbox.min.js"));
+
             //notification 'noty' scripts
             bundles.Add(new ScriptBundle("~/bundles/noty").Include(
                 "~/Scripts/noty/jquery.noty.js",

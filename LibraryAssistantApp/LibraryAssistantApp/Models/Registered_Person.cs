@@ -17,17 +17,17 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Registered_Person()
         {
-            this.Person_Questionnaire = new HashSet<Person_Questionnaire>();
-            this.Person_Role = new HashSet<Person_Role>();
-            this.Person_Session_Log = new HashSet<Person_Session_Log>();
-            this.Person_Topic = new HashSet<Person_Topic>();
-            this.Questionnaires = new HashSet<Questionnaire>();
-            this.Questionnaires1 = new HashSet<Questionnaire>();
-            this.ResetPasswordRequests = new HashSet<ResetPasswordRequest>();
             this.Venue_Problem = new HashSet<Venue_Problem>();
             this.Venue_Problem1 = new HashSet<Venue_Problem>();
-            this.Trainer_Topic = new HashSet<Trainer_Topic>();
+            this.Person_Session_Log = new HashSet<Person_Session_Log>();
             this.Venue_Booking_Person = new HashSet<Venue_Booking_Person>();
+            this.Person_Questionnaire = new HashSet<Person_Questionnaire>();
+            this.Person_Role = new HashSet<Person_Role>();
+            this.Person_Topic = new HashSet<Person_Topic>();
+            this.ResetPasswordRequests = new HashSet<ResetPasswordRequest>();
+            this.Trainer_Topic = new HashSet<Trainer_Topic>();
+            this.Questionnaires = new HashSet<Questionnaire>();
+            this.Questionnaires1 = new HashSet<Questionnaire>();
         }
     
         public string Person_ID { get; set; }
@@ -39,27 +39,27 @@ namespace LibraryAssistantApp.Models
         public string Person_Type { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person_Questionnaire> Person_Questionnaire { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person_Role> Person_Role { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person_Session_Log> Person_Session_Log { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person_Topic> Person_Topic { get; set; }
-        public virtual Person_Type Person_Type1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Questionnaire> Questionnaires { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Questionnaire> Questionnaires1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ResetPasswordRequest> ResetPasswordRequests { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Problem> Venue_Problem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Problem> Venue_Problem1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Trainer_Topic> Trainer_Topic { get; set; }
+        public virtual ICollection<Person_Session_Log> Person_Session_Log { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venue_Booking_Person> Venue_Booking_Person { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Person_Questionnaire> Person_Questionnaire { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Person_Role> Person_Role { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Person_Topic> Person_Topic { get; set; }
+        public virtual Person_Type Person_Type1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ResetPasswordRequest> ResetPasswordRequests { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Trainer_Topic> Trainer_Topic { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Questionnaire> Questionnaires { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Questionnaire> Questionnaires1 { get; set; }
     }
 }
