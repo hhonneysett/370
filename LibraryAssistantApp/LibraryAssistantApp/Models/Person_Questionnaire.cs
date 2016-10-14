@@ -27,7 +27,7 @@ namespace LibraryAssistantApp.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Questionnaire_Result> Person_Questionnaire_Result { get; set; }
-        public virtual Registered_Person Registered_Person { get; set; }
         public virtual Questionnaire Questionnaire { get; set; }
+        public virtual Registered_Person Registered_Person { get; set; }
     }
 }

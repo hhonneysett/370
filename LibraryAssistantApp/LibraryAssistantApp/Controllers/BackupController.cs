@@ -76,15 +76,5 @@ namespace LibraryAssistantApp.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
-
-        //public void backup()
-        //{
-        //    string sqlCommand = @"BACKUP DATABASE [{0}] TO  DISK = N'{1}' WITH NOFORMAT, NOINIT,  NAME = N'LibraryAssistant-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10";
-        //    using (var db = new LibraryAssistantEntities())
-        //    {
-        //        string dbname = db.Database.Connection.Database;
-        //        db.Database.ExecuteSqlCommand(System.Data.Entity.TransactionalBehavior.DoNotEnsureTransaction, string.Format(sqlCommand, dbname, "LibraryAssistant.bak"));
-        //    }
-        //}
     }
 }

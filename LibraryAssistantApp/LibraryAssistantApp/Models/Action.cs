@@ -17,8 +17,8 @@ namespace LibraryAssistantApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Action()
         {
-            this.Role_Action = new HashSet<Role_Action>();
             this.Person_Session_Action_Log = new HashSet<Person_Session_Action_Log>();
+            this.Role_Action = new HashSet<Role_Action>();
         }
     
         public int Action_ID { get; set; }
@@ -28,8 +28,8 @@ namespace LibraryAssistantApp.Models
         public virtual Action Action1 { get; set; }
         public virtual Action Action2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Role_Action> Role_Action { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person_Session_Action_Log> Person_Session_Action_Log { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Role_Action> Role_Action { get; set; }
     }
 }

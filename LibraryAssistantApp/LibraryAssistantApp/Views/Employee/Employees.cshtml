@@ -1,9 +1,14 @@
 ﻿<script>
     $(document).ready(function () {
-        $('#result-table-4').DataTable();
-        $('#result-table-4 tbody tr').click(function () {
-            $('#result-table-4 tr').removeClass('selectedrow');
-            $(this).addClass('selectedrow');
+        var table = $('#result-table-4').DataTable();
+        $('#result-table-4 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selectedrow')) {
+                $(this).removeClass('selectedrow');
+            }
+            else {
+                table.$('tr.selectedrow').removeClass('selectedrow');
+                $(this).addClass('selectedrow');
+            }
             $('.btn-edit').attr('href', '/Employee/Edit/' + $(this).attr('id'));
             $('.btn-delete').attr('href', '/Employee/Delete/' + $(this).attr('id'));
             var z = $(this).attr('id');
@@ -11,7 +16,7 @@
                 type: 'GET',
                 data: { id: z },
                 url: '@Url.Action("EmployeeDetails", "Employee")',
-                beforeSend: function (){
+                beforeSend: function () {
                     $('.loading').show();
                 },
                 success: function (result) {
