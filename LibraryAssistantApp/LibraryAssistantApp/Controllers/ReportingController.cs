@@ -12,7 +12,7 @@ namespace LibraryAssistantApp.Controllers
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
         [HttpGet]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult personSession()
         {
             var persons = (from a in db.Person_Session_Log
@@ -85,6 +85,93 @@ namespace LibraryAssistantApp.Controllers
             }
 
             return View(documentList);
+        }
+
+        public ActionResult documentAccessReport()
+        {
+            var viewModel = new DocumentAccess();
+            var doc_acc = new List<Document_Access_Log>();
+            var typeslist = new List<DocType>();
+            var doclist = new List<Doc>();
+            var personlist = new List<DocPerson>();
+            var accesslist = new List<DocAcc>();
+            var runcount1 = 0;
+            var runcount2 = 0;
+            foreach (var item in db.Document_Repository)
+            {
+                if (db.Document_Access_Log.Any(x => x.Document_Seq == item.Document_Seq))
+                {
+                    var type = db.Document_Type.Find(item.Document_Type_ID);
+                    if (!typeslist.Any(x => x.doc_type == type.Document_Type_Name))
+                    {
+                        var doctype = new DocType();
+                        doctype.doc_type = type.Document_Type_Name;
+                        var doctype_ = (db.Document_Access_Log.Where(x => x.Document_Repository.Document_Type_ID == type.Document_Type_ID));
+                        var unique = (doctype_.GroupBy(x => x.Document_Seq)).Count();
+                        runcount1 = runcount1 + unique;
+                        doctype.doc_count = runcount1;
+                        typeslist.Add(doctype);
+                    }
+                    var doc = new Doc();
+                    doc.doc_id = item.Document_Seq;
+                    doc.doc_name = db.Document_Repository.Find(item.Document_Seq).Document_Name;
+                    var ext = (from d in db.Document_Extension
+                               where d.Document_Extension_ID == item.Document_Extension_ID
+                               select d.Extension_Type).Single();
+                    doc.doc_ext = ext;
+                    var count = (db.Document_Access_Log.Where(x => x.Document_Seq == doc.doc_id)).Count();
+                    runcount2 = runcount2 + count;
+                    doc.count = runcount2;
+                    var doc_access = (db.Document_Access_Log.Where(x => x.Document_Seq == item.Document_Seq)).ToList();
+                    //var test = (db.Document_Access_Log.Where(x => x.Document_Seq == item.Document_Seq).Select(x => x.Person_Session_Log).Distinct()).ToList();
+                    foreach (var da in doc_access)
+                    {
+                        //attempted code at creating the 3rd control break at person
+
+                        //var id = (from b in db.Person_Session_Log
+                        //          where b.Session_ID == da.Session_ID
+                        //          select b.Person_ID).Single();
+                        //var person_count = (from f in db.Person_Session_Log
+                        //                    where f.Session_ID == da.Session_ID
+                        //                    select f.Person_ID).Distinct().Count();
+                        //doc.person_count = person_count;
+                        //var docperson = new DocPerson();
+                        //var person = (from b in db.Person_Session_Log
+                        //              where b.Session_ID == da.Session_ID
+                        //              select b.Person_ID).Single();
+                        //docperson.person_id = person;
+                        //var pName = (from c in db.Registered_Person
+                        //             where c.Person_ID == person
+                        //             select c.Person_Name).Single();
+                        //docperson.person_name = pName;
+                        //var access = (from g in db.Person_Session_Log
+                        //              where g.Session_ID == da.Session_ID
+                        //              select g);
+                        //int i = 0;
+                        //foreach (var p in access)
+                        //{
+                        //    if (p.Person_ID == person)
+                        //    {
+                        //        i = i + 1;
+                        //    }
+                        //}
+                        //docperson.access_count = i;
+                        //var acc = new DocAcc();
+                        //acc.accessed = da.Access_DateTime;
+                        //personlist.Add(docperson);
+                        //accesslist.Add(acc);
+                        doc_acc.Add(da);
+                    }
+                    doclist.Add(doc);
+
+                }
+            }
+            viewModel.doc_types = typeslist;
+            viewModel.docs = doclist;
+            viewModel.doc_access = doc_acc;
+            //viewModel.doc_persons = personlist;
+            //viewModel.doc_acc = accesslist;
+            return View(viewModel);
         }
 
         [HttpGet]

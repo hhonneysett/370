@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Questionnaire Questions</h2>
+<h3>Questionnaire Questions</h3>
 
 @Html.Hidden("Name", (string)ViewBag.Name, new { id = "Name" })
 @Html.Hidden("Description", (string)ViewBag.Description, new { id = "Description" })
@@ -15,236 +15,264 @@
 @Html.Hidden("Topic", (int)ViewBag.Topic, new { id = "Topic" })
 @Html.Hidden("Questionnaire_ID", (int)ViewBag.Questionnaire_ID, new { id = "Questionnaire_ID" })
 
-<div class="panel panel-default">
-    <div style="text-align:center" class="panel-heading"><h4>Select an appropriate question from the list to be added to the questionnaire</h4></div>
-    <div class="panel-body">
-
-        <div style="padding-bottom:8px">
-            <label>Filter the list of questions by Name</label>
-            <br />
-            @Html.Editor("A_New_Name", new { htmlAttributes = new { @class = "form-control", id = "A_New_Name" } })
-        </div>
-        <div>
-            <button type="button" class="btn btn-default " onclick="Search();">Search</button>
-        </div>
-
-        <p>
-            <div>
-                <label>List of Questions related to the selected topic: @ViewBag.TopicName</label>
-                <br />
-
-                @if (ViewBag.Count == 0)
-                {
-                    @Html.ListBox("Listbox", new List<SelectListItem>
-                     {
-                        new SelectListItem{ Text="No results where found", Value = "No results where found" }
-               }, new { htmlAttributes = new { @class = "form-control", id = "Listbox" } })
-                }
-                else
-                {
-                    @Html.ListBox("Listbox", (SelectList)ViewBag.Questions, new { htmlAttributes = new { @class = "form-control", id = "Listbox" } })
-                }
-
-            </div>
-        </p>
-
-
-        @if (ViewBag.Count == 0)
+<div class="form-horizontal">
+    <div class="row">
+        <div class="col-md-8">
+            <h4 class="bg-info shaded">Available Questions:</h4>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul style="list-style:none">
+                        <li>
+                            <label>Topic: @ViewBag.TopicName</label>
+                        </li>
+                        <li>
+                            Available questions:
+                        </li>
+                    </ul>
+                        @if (ViewBag.Count == 0)
+                        {
+                            @Html.ListBox("Listbox", new List<SelectListItem>
+                            {
+                            new SelectListItem{ Text="No results where found", Value = "No results where found" } }, new { htmlAttributes = new { @class = "form-control", id = "Listbox" } })
+                        }
+                        else
+                        {
+                            @Html.ListBox("Listbox", (SelectList)ViewBag.Questions, new { size="8", style="max-width:800px", @class = "form-control" })
+                        }
+                </div>
+                <div class="panel-body">
+                    <div>
+                        @if (ViewBag.Count == 0)
             {
-            <div>
-                <button disabled id="Select_Button" type="button" class="btn btn-default btn-default btn-lg btn-block" onclick="SelectQuestion();">Select</button>
+                            <div class="btn-group">
+                                <button disabled id="Select_Button" type="button" class="btn btn-primary" onclick="SelectQuestion();">Add Question</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <label class="text-danger" id="Warning"></label>
+                            <div class="btn-group">
+                                <button id="Select_Button" type="button" class="btn btn-primary" onclick="SelectQuestion();">Add Question</button>
+                            </div>
+                            <div class="btn-group">
+                                <input type="submit" value="Undo Previous" class="btn btn-primary" onclick="RemoveQuestion();" />
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
-        }
-        else
-        {
-            <div>
-                <button id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="SelectQuestion();">Select</button>
-            </div>
-        }
+        </div>
 
+        <div class="col-md-4">
+            <h5 class="bg-info shaded">Search Questions:</h5>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-md-2">Name:</label>
+                        <div class="col-md-10">                        
+                            @Html.Editor("A_New_Name", new { htmlAttributes = new { @class = "form-control", id = "A_New_Name" } })
+                        </div>
+                    </div>
+                    <div class="col-md-offset-9">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="Search();">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                @*<div style="text-align:center" class="panel-heading">
+                    <h5>Selected Questions:</h5>
+                </div>*@
+                    <table class="table table-striped">
+                        <tr id="blue-1">
+                            <th style="text-align:center;">
+                                <h5>Display Order</h5>
+                            </th>
+                            <th style="text-align:center;">
+                                <h5>Question</h5>
+                            </th>
+                            <th style="text-align:center;">
+                                <h5>Optional Answer</h5>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">
+                                1
+                                @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
+                            </td>
+                            <td style="text-align:center;">
+                                <label class="form-control" id="SelectedQuestion 1">@ViewBag.SelectedQuestion1</label>
+                            </td>
+
+                            @if (ViewBag.SelectedQ_Checkbox1 == "true")
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox1", true)
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox1", false)
+                                </td>
+
+                            }
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center;">
+                                2
+                                @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
+                            </td>
+                            <td style="text-align:center;">
+                                <label class="form-control" id="SelectedQuestion 2">@ViewBag.SelectedQuestion2</label>
 
 
-<div class="panel panel-default">
-    <div style="text-align:center" class="panel-heading"><h4>Selected Questions</h4></div>
-    <div class="panel-body">
+                            </td>
+                            @if (ViewBag.SelectedQ_Checkbox2 == "true")
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox2", true)
+                                </td>
 
-        <p>
-            <input type="submit" value="Remove last question" class="btn btn-default" onclick="RemoveQuestion();" /> <label class="text-danger" id="Warning"></label>
-        </p>
+                            }
+                            else
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox2", false)
+                                </td>
 
-        <table class="table">
-            <tr>
-                <th style="text-align:center;">
-                    <h4>Display Order</h4>
-                </th>
-                <th style="text-align:center;">
-                    <h4>Selected Question</h4>
-                </th>
-                <th style="text-align:center;">
-                    <h4>Optional answer</h4>
-                </th>
-            </tr>
+                            }
+                        </tr>
 
-            <tr>
-                <td style="text-align:center;">
-                    1
-                    @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
-                </td>
-                <td style="text-align:center;">
-                    <label class="form-control" id="SelectedQuestion 1">@ViewBag.SelectedQuestion1</label>
-                </td>
-
-                @if (ViewBag.SelectedQ_Checkbox1 == "true")
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox1", true)
-                    </td>
-
-                }
-                else
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox1", false)
-                    </td>
-
-                }
-            </tr>
-
-            <tr>
-                <td style="text-align:center;">
-                    2
-                    @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
-                </td>
-                <td style="text-align:center;">
-                    <label class="form-control" id="SelectedQuestion 2">@ViewBag.SelectedQuestion2</label>
+                        <tr>
+                            <td style="text-align:center;">
+                                3
+                                @Html.Hidden("Display_Order3", 3, new { id = "Display_Order3" })
+                            </td>
+                            <td style="text-align:center;">
+                                <label class="form-control" id="SelectedQuestion 3">@ViewBag.SelectedQuestion3</label>
 
 
-                </td>
-                @if (ViewBag.SelectedQ_Checkbox2 == "true")
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox2", true)
-                    </td>
+                            </td>
+                            @if (ViewBag.SelectedQ_Checkbox3 == "true")
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox3", true)
+                                </td>
 
-                }
-                else
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox2", false)
-                    </td>
+                            }
+                            else
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox3", false)
+                                </td>
 
-                }
-            </tr>
+                            }
+                        </tr>
 
-            <tr>
-                <td style="text-align:center;">
-                    3
-                    @Html.Hidden("Display_Order3", 3, new { id = "Display_Order3" })
-                </td>
-                <td style="text-align:center;">
-                    <label class="form-control" id="SelectedQuestion 3">@ViewBag.SelectedQuestion3</label>
-
-
-                </td>
-                @if (ViewBag.SelectedQ_Checkbox3 == "true")
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox3", true)
-                    </td>
-
-                }
-                else
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox3", false)
-                    </td>
-
-                }
-            </tr>
-
-            <tr>
-                <td style="text-align:center;">
-                    4
-                    @Html.Hidden("Display_Order4", 4, new { id = "Display_Order4" })
-                </td>
-                <td style="text-align:center;">
-                    <label class="form-control" id="SelectedQuestion 4">@ViewBag.SelectedQuestion4</label>
+                        <tr>
+                            <td style="text-align:center;">
+                                4
+                                @Html.Hidden("Display_Order4", 4, new { id = "Display_Order4" })
+                            </td>
+                            <td style="text-align:center;">
+                                <label class="form-control" id="SelectedQuestion 4">@ViewBag.SelectedQuestion4</label>
 
 
-                </td>
-                @if (ViewBag.SelectedQ_Checkbox4 == "true")
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox4", true)
-                    </td>
+                            </td>
+                            @if (ViewBag.SelectedQ_Checkbox4 == "true")
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox4", true)
+                                </td>
 
-                }
-                else
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox4", false)
-                    </td>
+                            }
+                            else
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox4", false)
+                                </td>
 
-                }
-            </tr>
+                            }
+                        </tr>
 
-            <tr>
-                <td style="text-align:center;">
-                    5
-                    @Html.Hidden("Display_Order5", 5, new { id = "Display_Order5" })
-                </td>
-                <td style="text-align:center;">
-                    <label class="form-control" id="SelectedQuestion 5">@ViewBag.SelectedQuestion5</label>
+                        <tr>
+                            <td style="text-align:center;">
+                                5
+                                @Html.Hidden("Display_Order5", 5, new { id = "Display_Order5" })
+                            </td>
+                            <td style="text-align:center;">
+                                <label class="form-control" id="SelectedQuestion 5">@ViewBag.SelectedQuestion5</label>
 
 
-                </td>
-                @if (ViewBag.SelectedQ_Checkbox5 == "true")
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox5", true)
-                    </td>
+                            </td>
+                            @if (ViewBag.SelectedQ_Checkbox5 == "true")
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox5", true)
+                                </td>
 
-                }
-                else
-                {
-                    <td style="text-align:center;">
-                        @Html.CheckBox("SelectedQ_Checkbox5", false)
-                    </td>
+                            }
+                            else
+                            {
+                                <td style="text-align:center;">
+                                    @Html.CheckBox("SelectedQ_Checkbox5", false)
+                                </td>
 
-                }
-            </tr>
+                            }
+                        </tr>
 
-        </table>
-
-        @if (ViewBag.EmployeeAssessment == "Yes")
-        {
-            <p>
-                <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_Employee_Assessment","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" /> <input type="submit" value="Submit" class="btn btn-outline btn-default pull-right" onclick="Submit()" />
-            </p>
-        }
-        else if (ViewBag.TrainingSessionAssessment == "Yes")
-        {
-            <p>
-                <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_TrainingSessionAssessment","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" /> <input type="submit" value="Submit" class="btn btn-outline btn-default pull-right" onclick="Submit()" />
-            </p>
-        }
-        else if (ViewBag.VenueAssessment == "Yes")
-        {
-            <p>
-                <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_VenueAssessment_QQuestions","Questionnaire", new {ViewBag.SelectedCampus,ViewBag.SelectedBuilding,ViewBag.SelectedBuildingFloor,ViewBag.SelectedVenue, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" /> <input type="submit" value="Submit" class="btn btn-outline btn-default pull-right" onclick="Submit()" />
-            </p>
-        }
-        else
-        {
-            <p>
-                <input type="submit" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" /> <input type="submit" value="Submit" class="btn btn-outline btn-default pull-right" onclick="Submit()" />
-            </p>
-        }
-
+                    </table>
+                <div class="panel-footer">
+                    <div>
+                        @if (ViewBag.EmployeeAssessment == "Yes")
+                        {
+                            <div class="btn-group">
+                                <input type="submit" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Back_From_Employee_Assessment","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />
+                            </div>
+                            <div class="btn-group">
+                                <input type="submit" value="Save Questionnaire" class="btn btn-primary" onclick="Submit()" />
+                            </div>
+                        }
+                        else if (ViewBag.TrainingSessionAssessment == "Yes")
+                        {
+                            <div class="btn-group">
+                                <input type="submit" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Back_From_TrainingSessionAssessment","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />
+                            </div>
+                            <div class="btn-group">
+                                <input type="submit" value="Save Questionnaire" class="btn btn-primary" onclick="Submit()" />
+                            </div>
+                        }
+                        else if (ViewBag.VenueAssessment == "Yes")
+                        {
+                            <div class="btn-group">
+                                <input type="submit" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Back_From_VenueAssessment_QQuestions","Questionnaire", new {ViewBag.SelectedCampus,ViewBag.SelectedBuilding,ViewBag.SelectedBuildingFloor,ViewBag.SelectedVenue, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />
+                            </div>
+                            <div class="btn-group">
+                                <input type="submit" value="Save Questionnaire" class="btn btn-primary" onclick="Submit()" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="btn-group">
+                                <input type="submit" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />
+                            </div>
+                            <div class="btn-group">
+                                <input type="submit" value="Save Questionnaire" class="btn btn-primary" onclick="Submit()" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

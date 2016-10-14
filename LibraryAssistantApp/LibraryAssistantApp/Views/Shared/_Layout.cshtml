@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - UP Library Assistant</title>
+    <title>@ViewBag.Title UP Library Assistant</title>
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -137,7 +137,7 @@
                             @Html.ActionLink("Session Log", "personSession", "Reporting")
                         </li>
                         <li>
-                            @Html.ActionLink("Document Access Log", "documentAccess", "Reporting")
+                            @Html.ActionLink("Document Access Log", "documentAccessReport", "Reporting")
                         </li>
                         <li>
                             @Html.ActionLink("Action Log", "personSessionAction", "Reporting")
@@ -306,11 +306,12 @@
     @Scripts.Render("~/Scripts/jquery-ui-1.12.0.min.js")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/noty")
+    @Scripts.Render("~/bundles/bootbox")
+    @Scripts.Render("~/bundles/checkboxjs")
 
     @Scripts.Render("~/Scripts/timepickerInt.js")
     @Scripts.Render("~/Scripts/timepickerInt.js")
-    @*@Scripts.Render("~/Scripts/siteScripts.js")*@
-    @Scripts.Render("~/Scripts/bundles/bootbox")
+    @Scripts.Render("~/Scripts/siteScripts.js")
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     @RenderSection("script", required: false)

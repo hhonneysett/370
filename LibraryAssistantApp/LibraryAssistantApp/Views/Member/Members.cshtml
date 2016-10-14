@@ -1,11 +1,16 @@
 ﻿<script>
     $(document).ready(function () {
-        $('#result-table-6').DataTable();
-        $('#result-table-6 tbody tr').click(function () {
-            $('#result-table-6 tr').removeClass('selectedrow');
-            $(this).addClass('selectedrow');
-            $('.btn-edit').attr('href', '/Member/Edit/' + $(this).attr('id'));
-            $('.btn-delete').attr('href', '/Member/Delete/' + $(this).attr('id'));
+            var table = $('#result-table-6').DataTable();
+            $('#result-table-6 tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selectedrow')) {
+                    $(this).removeClass('selectedrow');
+                }
+                else {
+                    table.$('tr.selectedrow').removeClass('selectedrow');
+                    $(this).addClass('selectedrow');
+                }
+                $('.btn-edit').attr('href', '/Member/Edit/' + $(this).attr('id'));
+                $('.btn-delete').attr('href', '/Member/Delete/' + $(this).attr('id'));
             var z = $(this).attr('id');
             $.ajax({
                 type: 'GET',
