@@ -5,77 +5,88 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit Questionnaire</h2>
+<h3>Update Questionnaire</h3>
 
 @Html.Hidden("Questionnaire_ID", (int)ViewBag.Questionnaire_ID, new { id = "Questionnaire_ID" })
 @Html.Hidden("CannotEdit", (string)ViewBag.CannotEdit, new { id = "CannotEdit" })
 
-<div class="panel panel-default">
-    <div class="panel-heading">Edit Questionnaire details</div>
-    <div class="panel-body">
+<div class="row" style="padding-top:15px; padding-left:25px">
+    <p><strong>Instructions:</strong></p>
+    <ul style="padding-bottom:5px; padding-top:5px">
+        <li>
+            <p>Update questionnaire details.</p>
+        </li>
+        <li>
+            <p>Click 'Proceed' to update questions related to this questionnaire.</p>
+        </li>
+        <li>
+            <p style="color:darkred">Note: Changes made to either topic or assesment type require changes on the next screen.</p>
+        </li>
+    </ul>
+</div>
+<h4 class="bg-info shaded">
+    Update Questionnaire Details
+</h4>
+<div class="form-horizontal" style="padding-top:10px">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "Name", @value = ViewBag.Name } })
+            <label class="text-danger" id="Name_Validation"></label><font color="red">@ViewBag.DuplicateError</font>
+        </div>
+    </div>
 
-        <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "Name", @value = ViewBag.Name } })
-                    <label class="text-danger" id="Name_Validation"></label><font color="red">@ViewBag.DuplicateError</font>
-                </div>
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "Description", @value = ViewBag.Description } })
+            <label class="text-danger" id="Description_Validation"></label>
+        </div>
+    </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "Description", @value = ViewBag.Description } })
-                    <label class="text-danger" id="Description_Validation"></label>
-                </div>
-            </div>
+    <div class="form-group">
+        @Html.Label("Active Date", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Active_From, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_From", @readonly = "true", @value = ViewBag.Active_From, @data_toggle = "tooltip", @title = "Select a date upon which this new questionnaire will be active from." } })
+            <label class="text-danger" id="Active_From_Validation"></label>
+        </div>
+    </div>
 
-            <div class="form-group">
-                @Html.Label("Active Date", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Active_From, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_From", @readonly = "true", @value = ViewBag.Active_From, @data_toggle = "tooltip", @title = "Select a date upon which this new questionnaire will be active from." } })
-                    <label class="text-danger" id="Active_From_Validation"></label>
-                </div>
-            </div>
+    <div class="form-group">
+        @Html.Label("Expiry Date", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Active_To, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_To", @readonly = "true", @value = ViewBag.Active_To, @data_toggle = "tooltip", @title = "Select a date upon which this new questionnaire will expire on." } })
+            <label class="text-danger" id="Active_To_Validation"></label>
+        </div>
+    </div>
 
-            <div class="form-group">
-                @Html.Label("Expiry Date", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Active_To, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_To", @readonly = "true", @value = ViewBag.Active_To, @data_toggle = "tooltip", @title = "Select a date upon which this new questionnaire will expire on." } })
-                    <label class="text-danger" id="Active_To_Validation"></label>
-                </div>
-            </div>
+    <script>
+        $('.datepick').each(function () {
+            $(this).datepicker({ minDate: 0 });
+        });
+    </script>
 
-            <script>
-                $('.datepick').each(function () {
-                    $(this).datepicker({ minDate: 0 });
-                });
-            </script>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Assessment_Type, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Assessment_Type, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+            @if (ViewBag.CannotEdit == "true")
+            {
 
-                 
-
-                    @if (ViewBag.CannotEdit == "true")
-                    {
-
-                        @Html.DropDownList("Assessment_Type", new List<SelectListItem>
+                @Html.DropDownList("Assessment_Type", new List<SelectListItem>
                         {
                            new SelectListItem{ Text="Other", Value = "Other" },
                            new SelectListItem{ Text="Venue", Value = "Venue" },
                            new SelectListItem{ Text="Employee", Value = "Employee" },
                            new SelectListItem{ Text="Training Session", Value = "Training Session" }
-                        }, "All", htmlAttributes: new { @class = "form-control", @disabled = "disabled" , id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
+                        }, "All", htmlAttributes: new { @class = "form-control", @disabled = "disabled", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
 
-                    }
-                    else
-                    {
+            }
+            else
+            {
 
-                        @Html.DropDownList("Assessment_Type", new List<SelectListItem>
+                @Html.DropDownList("Assessment_Type", new List<SelectListItem>
                         {
                            new SelectListItem{ Text="Other", Value = "Other" },
                            new SelectListItem{ Text="Venue", Value = "Venue" },
@@ -83,50 +94,51 @@
                            new SelectListItem{ Text="Training Session", Value = "Training Session" }
                         }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
 
-                    }
+            }
 
 
-                    <label class="text-danger" id="Assessment_Type_Validation"></label>
-                </div>
-            </div>
+            <label class="text-danger" id="Assessment_Type_Validation"></label>
+        </div>
+    </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-
-                    @if (ViewBag.CannotEdit == "true")
-                    {
-                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic", @disabled = "disabled" })
-                    }
-                    else
-                    {
-                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
-                    }
-
-                    <label class="text-danger" id="Topic_validation"></label>
-
-                </div>
-            </div>
-
-
-
-            
+    <div class="form-group">
+        @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
 
             @if (ViewBag.CannotEdit == "true")
             {
-                <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Index","Questionnaire")'" /> <input type="submit" value="Update" class="btn btn-default pull-right" onclick="validateInput();" />
-                <strong><div class="isa_warning" id="Warning">@ViewBag.CannotEditError</div></strong>
+                @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic", @disabled = "disabled" })
             }
             else
             {
-                <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Index","Questionnaire")'" /> <input type="submit" value="Next" class="btn btn-default pull-right" onclick="validateInput();" />
-                <strong><div class="isa_info" id="Warning"></div></strong>
+                @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
             }
 
-
+            <label class="text-danger" id="Topic_validation"></label>
         </div>
-
     </div>
+
+    <div class="col-md-offset-2">
+        @if (ViewBag.CannotEdit == "true")
+            {
+            <div class="btn-group">
+                <input type="submit" value="Update" class="btn btn-primary" onclick="validateInput();" />
+            </div>
+            <div class="isa_warning" id="Warning">@ViewBag.CannotEditError</div>
+        }
+        else
+        {
+            <div class="btn-group">
+                <input type="submit" value="Proceed" class="btn btn-primary" onclick="validateInput();" />
+            </div>
+            <div class="isa_info" id="Warning"></div>
+        }
+    </div>
+
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
 
@@ -241,7 +253,7 @@
         var Topic = document.getElementById("Topic").value;
         var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
         var CannotEdit = document.getElementById("CannotEdit").value;
-    
+
         if (CannotEdit == "true") {
             window.location.href = "/Questionnaire/LimitedEdit?Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic_Seq=" + Topic + "&Questionnaire_ID=" + Questionnaire_ID;
         }
@@ -255,16 +267,26 @@
 <script>
     $(document).ready(function () {
 
-        $("#Topic").mouseenter(function () {
-            document.getElementById("Warning").innerHTML = "Topic Notification: If the topic is changed then all previously assigned questions will be deleted and new questions must be assigned to the questionnaire."
-            document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
+        $("#Topic").one("click", function () {
+            var n = noty({
+                layout: 'topRight',
+                text: 'Changes to topic: <br />New questions will need to be assined to this questionnaire!',
+                type: 'warning',
+                animation: {
+                    open: 'animated bounceIn',
+                    close: 'animated bounceOut',
+                    easing: 'swing',
+                    speed: 500
+                },
+                timeout: false,
+            });
+            //document.getElementById("Warning").innerHTML = "Topic Notification: If the topic is changed then all previously assigned questions will be deleted and new questions must be assigned to the questionnaire."
+            //document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
         });
-
-
-        $("#Topic").mouseout(function () {
-            document.getElementById("Warning").innerHTML = ""
-            document.getElementById("Warning").style.backgroundColor = "white";
-        });
+        //$("#Topic").mouseout(function () {
+        //    document.getElementById("Warning").innerHTML = ""
+        //    document.getElementById("Warning").style.backgroundColor = "white";
+        //});
     });
 </script>
 
@@ -272,16 +294,27 @@
 <script>
     $(document).ready(function () {
 
-        $("#Assessment_Type").mouseenter(function () {
-            document.getElementById("Warning").innerHTML = "Assessment Type Notification: If the assessment type is changed then all previously assigned assessment type information will be deleted and new information must be obtaind."
-            document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
+        $("#Assessment_Type").one("click", function () {
+            var n = noty({
+                layout: 'topRight',
+                text: 'Changes to assessment type: <br />Requires new type information on next screen.',
+                type: 'warning',
+                animation: {
+                    open: 'animated bounceIn',
+                    close: 'animated bounceOut',
+                    easing: 'swing',
+                    speed: 500
+                },
+                timeout: false,
+            });
+            //document.getElementById("Warning").innerHTML = "Assessment Type Notification: If the assessment type is changed then all previously assigned assessment type information will be deleted and new information must be obtaind."
+            //document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
         });
 
-
-        $("#Assessment_Type").mouseout(function () {
-            document.getElementById("Warning").innerHTML = ""
-            document.getElementById("Warning").style.backgroundColor = "white";
-        });
+        //$("#Assessment_Type").mouseout(function () {
+        //    document.getElementById("Warning").innerHTML = ""
+        //    document.getElementById("Warning").style.backgroundColor = "white";
+        //});
     });
 </script>
 

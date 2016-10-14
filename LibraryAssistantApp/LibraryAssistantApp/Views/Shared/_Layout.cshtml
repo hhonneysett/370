@@ -137,10 +137,13 @@
                     </a>
                     <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            @Html.ActionLink("Create Questionnaire", "Create", "Questionnaire")
+                            @Html.ActionLink("Manage Questionnaires", "Index", "Questionnaire")
                         </li>
                         <li>
-                            @Html.ActionLink("View All Questionnaires", "Index", "Questionnaire")
+                            @Html.ActionLink("Manage Questions", "Index", "Question_Bank")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Manage Question Topics", "Index", "Question_Topic")
                         </li>
                     </ul>
                 </li>
@@ -184,20 +187,6 @@
                                 </li>
                                 <li>
                                     @Html.ActionLink("Members", "Index", "Member")
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Questionnaire
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
-                                <li>
-                                    @Html.ActionLink("Questions", "Index", "Question_Bank")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Question Topic", "Index", "Question_Topic")
                                 </li>
                             </ul>
                         </li>

@@ -1152,6 +1152,17 @@
     <Content Include="Views\Member\MemberDetails.cshtml" />
     <Content Include="Views\Backup\Index.cshtml" />
     <Content Include="Views\Reporting\documentAccessReport.cshtml" />
+    <Content Include="Views\Question_Bank\Come_Back.cshtml" />
+    <Content Include="Views\Question_Bank\View.cshtml" />
+    <Content Include="Views\Questionnaire\Employee_Assessment.cshtml" />
+    <Content Include="Views\Questionnaire\Get_Questionnaire_Results.cshtml" />
+    <Content Include="Views\Questionnaire\Questionnaire_Results.cshtml" />
+    <Content Include="Views\Questionnaire\Training_Session_Assessment.cshtml" />
+    <Content Include="Views\Questionnaire\Venue_Assessment_Building.cshtml" />
+    <Content Include="Views\Questionnaire\Venue_Assessment_Building_Floor.cshtml" />
+    <Content Include="Views\Questionnaire\Venue_Assessment_Campus.cshtml" />
+    <Content Include="Views\Questionnaire\Venue_Assessment_Venue.cshtml" />
+    <Content Include="Views\Person_Session_Action_Log\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
