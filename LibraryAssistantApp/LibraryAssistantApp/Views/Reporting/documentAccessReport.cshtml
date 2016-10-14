@@ -21,48 +21,49 @@
         <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
     </div>
     <div class="panel panel-default">
-        <table id="doc-report" class="table table-condensed tbl-bordered">
-            <tbody>
-                @foreach (var item in Model.doc_types)
+        <div class="scrollable-lg">
+            <table id="doc-report" class="table table-condensed tbl-bordered">
+                <tbody>
+                    @foreach (var item in Model.doc_types)
             {
-                    <tr>
-                        <td>
-                            <h4 style="text-align:center">Type:</h4>
-                        </td>
-                        <td>
-                            <h4 style="text-align:center">@item.doc_type</h4>
-                        </td>
-                    </tr>
-                    for (i = i; i < item.doc_count; i++)
-                    {
-                        <tr class="shade-blue">
+                        <tr>
                             <td>
-                                Document ID
+                                <h4 style="text-align:center">Type:</h4>
                             </td>
                             <td>
-                                Document Name
-                            </td>
-                            <td>
-                                Document Extension
+                                <h4 style="text-align:center">@item.doc_type</h4>
                             </td>
                         </tr>
-                        <tr class="shade-blue-l">
-                            <td>
-                                @Model.docs[i].doc_id
-                            </td>
-                            <td>
-                                @Model.docs[i].doc_name
-                            </td>
-                            <td>
-                                @Model.docs[i].doc_ext
-                            </td>
-                        </tr>
-                        var t = 0;
-                        for (j = j; j < Model.docs[i].count; j++)
-                        {                            
+                        for (i = i; i < item.doc_count; i++)
+                        {
+                            <tr class="shade-blue">
+                                <td>
+                                    Document ID
+                                </td>
+                                <td>
+                                    Document Name
+                                </td>
+                                <td>
+                                    Document Extension
+                                </td>
+                            </tr>
+                            <tr class="shade-blue-l">
+                                <td>
+                                    @Model.docs[i].doc_id
+                                </td>
+                                <td>
+                                    @Model.docs[i].doc_name
+                                </td>
+                                <td>
+                                    @Model.docs[i].doc_ext
+                                </td>
+                            </tr>
+                            var t = 0;
+                            for (j = j; j < Model.docs[i].count; j++)
+                            {
                                 if (t == 0)
                                 {
-                                t = 1;
+                                    t = 1;
                                     <tr class="shade-green">
                                         <td>
                                             Username
@@ -75,24 +76,24 @@
                                         </td>
                                     </tr>
                                 }
-                            <tr class="shade-green-l">
-                                <td>
-                                    @Model.doc_access[j].Person_Session_Log.Person_ID
-                                </td>
-                                <td>
-                                    @Model.doc_access[j].Session_ID
-                                </td>
-                                <td>
-                                    @Model.doc_access[j].Access_DateTime
-                                </td>
-                            </tr>
+                                <tr class="shade-green-l">
+                                    <td>
+                                        @Model.doc_access[j].Person_Session_Log.Person_ID
+                                    </td>
+                                    <td>
+                                        @Model.doc_access[j].Session_ID
+                                    </td>
+                                    <td>
+                                        @Model.doc_access[j].Access_DateTime
+                                    </td>
+                                </tr>
+                            }
                         }
+                        <tr></tr>
                     }
-                    <tr>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>

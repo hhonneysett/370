@@ -19,120 +19,155 @@
 }
 
 
-<h2>Current Questionnaires</h2>
+<h3>Questionnaires</h3>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Search Criteria</div>
-    <div class="panel-body">
-        <p>
-            <b>Search by Questionnaire Name</b>
-            <br />
-            @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value = (string)ViewBag.Search })
-            <br />
-        </p>
+<div class="col-md-8">
+    <h4 class="bg-info-1 shaded">
+        Questionnaire Details
+    </h4>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table id="tbl-quest-3" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Assessment_Type)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Question_Topic.Topic_Name)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count() == 0)
+                    {
+                        <tr>
+                            <td colspan="4">No rows match search criteria</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.Questionnaire_ID">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Assessment_Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Question_Topic.Topic_Name)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group">
+                @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit" })
+            </div>
+            <div class="btn-group">
+                @Html.ActionLink("Details", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-view" })
+            </div>
+            <div class="btn-group">
+                @Html.ActionLink("Delete", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-delete" })
+            </div>
+            <div class="btn-group pull-right">
+                <button id="Select_Button" type="button" class="btn btn-primary" onclick="Create()">Create New</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <p>
-            <b>Search by Topic</b>
-            <br />
-            @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
-        </p>
 
-        <p>
-            <b>Search by Assessment Type</b>
-            <br />
-            @Html.DropDownList("Assessment_Type",new List<SelectListItem>
+
+<div class="col-md-4">
+    <h4 class="bg-info-1 shaded">
+        Search
+    </h4>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="control-label">
+                        Name
+                    </label>
+                    <div class="form-group-sm">
+                        @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value = (string)ViewBag.Search })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="control-label">
+                        Topic
+                    </label>
+                    <div class="form-group-sm">
+                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="control-label">
+                        Assesment Type
+                    </label>
+                    <div class="form-group-sm">
+                        @Html.DropDownList("Assessment_Type", new List<SelectListItem>
                      {
                         new SelectListItem{ Text="Other", Value = "Other" },
                         new SelectListItem{ Text="Venue", Value = "Venue" },
                         new SelectListItem{ Text="Employee", Value = "Employee" },
                         new SelectListItem{ Text="Training Session", Value = "Training Session" }
                      }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
-        </p>      
-
-
-        @if (ViewBag.CheckBox == "false")
-        {
-            <p>
-                <b>Include in-active questionaires</b>
-                @Html.CheckBox("Include in-active questionaires", false, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox" })
-            </p>
-
-        }
-        else
-        {
-            <p>
-                <b>Include in-active questionaires</b>
-                @Html.CheckBox("Include in-active questionaires", true, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox", @data_toggle = "tooltip", @title = "All questionnaires, including in-actives ones, will be shown when ticked." })
-            </p>
-
-        }
-        
-        <input type="submit" class="btn btn-default" value="Search" onclick="Search();" /> | <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questionnaires" type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Index","Questionnaire")'" /> <button id="Select_Button" type="button" class="btn btn-default pull-right" onclick="Create()">Create New Questionnaire</button>
-
-
-        
-        
-        
-
-    </div>
-</div>
-
-
-
-<div class="panel panel-default">
-    <div class="panel-heading">Results</div>
-    <div class="panel-body">
-
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Assessment_Type)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Question_Topic.Topic_Name)
-                </th>
-                <th>Actions</th>
-            </tr>
-
-            @if (Model.Count() == 0)
-            {
-                <tr>
-                    <td colspan="4">No rows match search criteria</td>
-                </tr>
-            }
-            else
-            {
-
-                foreach (var item in Model)
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="padding-top:10px">
+                @if (ViewBag.CheckBox == "false")
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Assessment_Type)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Question_Topic.Topic_Name)
-                        </td>
-                        <td>
-                            <input type="button" class="btn btn-default " value="Delete" onclick="location.href='@Url.Action("Delete", "Questionnaire", new { id = item.Questionnaire_ID })'" /> |
-                            <input  type="button" class="btn btn-default " value="Edit" onclick="location.href='@Url.Action("Edit", "Questionnaire", new { id = item.Questionnaire_ID })'" /> |
-                            <input  type="button" class="btn btn-default " value="Details" onclick="location.href='@Url.Action("Details", "Questionnaire", new { id = item.Questionnaire_ID })'" />
-                        </td>
-                    </tr>
+                    <ul style="list-style:none">
+                        <li>
+                            <label class="control-label" for="CheckBox">In-active Questionnaires</label>
+                            @Html.CheckBox("Include in-active questionaires", false, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox" })
+                        </li>
+                    </ul>
                 }
-            }
-        </table>
+                else
+                {
+                    <ul style="list-style:none">
+                        <li>
+                            <label class="control-label" for="CheckBox">In-active Questionnaires</label>
+                            @Html.CheckBox("Include in-active questionaires", true, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox", @data_toggle = "tooltip", @title = "Search for in-active questionnaires if selected." })
+                        </li>
+                    </ul>
+                }
+            </div>
 
-
-
-
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group-sm">
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-primary" value="Search" onclick="Search();" />
+                        </div>
+                        <div class="btn-group">
+                            <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questionnaires" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index","Questionnaire")'" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
 
 
 <script>
@@ -154,7 +189,6 @@
         window.location.href = "/Questionnaire/Create?Name=" + Search + "&Topic=" + Topic + "&Assessment_Type=" + Assessment_Type ;
         
     }
-
 </script>
 
 <style>
@@ -198,4 +232,22 @@
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#tbl-quest-3').DataTable();
+        $('#tbl-quest-3 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selectedrow')) {
+                $(this).removeClass('selectedrow');
+            }
+            else {
+                table.$('tr.selectedrow').removeClass('selectedrow');
+                $(this).addClass('selectedrow');
+            }
+            $('.btn-edit').attr('href', '/Questionnaire/Edit/' + $(this).attr('id'));
+            $('.btn-delete').attr('href', '/Questionnaire/Delete/' + $(this).attr('id'));
+            $('.btn-view').attr('href', '/Questionnaire/Details/' + $(this).attr('id'));
+        });
+    });
 </script>

@@ -26,10 +26,10 @@
 <h3>Question Bank</h3>
 
 <div class="col-md-8">
+    <h4 class="bg-info-1 shaded">
+        Questions
+    </h4>
     <div class="panel panel-default">
-        <div class="panel-heading">
-            Question results
-        </div>
         <div class="panel-body scrollable">
             <table id="tbl-quest-1" class="table table-bordered table-condensed">
                 <thead>
@@ -85,20 +85,22 @@
     </div>
 </div>
 <div class="col-md-4">
+    <h4 class="bg-info-1 shaded">
+        Search
+    </h4>
     <div class="panel panel-default">
-        <div class="panel-heading">Search questions</div>
         <div class="panel-body">
 
             @using (Html.BeginForm("Index", "Question_Bank", FormMethod.Get))
             {
                 <p>
-                    <b>Search Topic</b>
+                    <b>Topic</b>
                     <br />
                     @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
                 </p>
 
                 <p>
-                    <b>Search by Question Name</b>
+                    <b>Question Name</b>
                     <br />
                     @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search" })
                     <br />
@@ -107,25 +109,38 @@
                 if (ViewBag.NewTopic == "YES")
                 {
                     <div class="btn-group">
-                        <input type="submit" class="btn btn-primary" value="Search" />
-                        <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index")'" />
+                        <input type="submit" class="btn btn-primary" value="Search" />                        
                     </div>
                     <div class="btn-group">
-                        <button style="margin-left: 3px;" id="Select_Button" type="button" class="btn btn-primary" onclick="create()">Create New Question</button>
-                        <input style="margin-left: 3px;" type="button" class='btn btn-primary' value="Finish creating new topic" onclick="location.href='@Url.Action("Finished","Question_Topic", new { ViewBag.TopicName })'" />
-                    </div>
+                        <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index")'" />
+                    </div>                
                 }
                 else
                 {
                     <div class="btn-group">
                         <input type="submit" class="btn btn-primary" value="Search" />
-                        <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index")'" />
                     </div>
+                    <div class="btn-group">
+                        <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index")'" />
+                    </div>                      
                 }
             }
         </div>
     </div>
 </div>
+@if (ViewBag.NewTopic == "YES")
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="btn-group">
+                <button style="margin-left: 3px;" id="Select_Button" type="button" class="btn btn-primary" onclick="create()">Create New Question</button>
+            </div>
+            <div class="btn-group">
+                <input style="margin-left: 3px;" type="button" class='btn btn-primary' value="Finish creating new topic" onclick="location.href='@Url.Action("Finished","Question_Topic", new { ViewBag.TopicName })'" />
+            </div>
+        </div>
+    </div>
+}
 
 <script>
     function create()

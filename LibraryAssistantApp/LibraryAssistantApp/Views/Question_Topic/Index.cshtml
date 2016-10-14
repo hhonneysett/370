@@ -23,10 +23,11 @@
 
 <h3>Questionnaire Topics</h3>
 
+<h4 class="bg-info-1 shaded">Topic Details</h4>
 <div class="panel panel-default">
-    <div class="panel-heading">
+    @*<div class="panel-heading">
         All Topics
-    </div>
+    </div>*@
     <div class="panel-body">
         <table id="tbl-quest-2" class="table table-bordered">
             <thead>
@@ -111,10 +112,15 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#tbl-quest-2').DataTable();
-        $('#tbl-quest-2 tbody tr').click(function () {
-            $('#tbl-quest-2 tr').removeClass('selectedrow');
-            $(this).addClass('selectedrow');
+        var table = $('#tbl-quest-2').DataTable();
+        $('#tbl-quest-2 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selectedrow')) {
+                $(this).removeClass('selectedrow');
+            }
+            else {
+                table.$('tr.selectedrow').removeClass('selectedrow');
+                $(this).addClass('selectedrow');
+            }
             $('.btn-edit').attr('href', '/Question_Topic/Edit/' + $(this).attr('id'));
             $('.btn-delete').attr('href', '/Question_Topic/Delete/' + $(this).attr('id'));
         });

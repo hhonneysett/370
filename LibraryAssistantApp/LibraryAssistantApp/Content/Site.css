@@ -94,6 +94,20 @@ table tbody tr :hover {
     padding: 15px 0 15px 15px;
 }
 
+.bg-info-1 {
+    background-color: rgb(189,215,238);
+}
+
+.bg-title {
+    text-align: center;
+}
+
+.bg-dropdown {
+     position:absolute; 
+     top:172px;
+     right:220px 
+}
+
 /*td shading*/
 .shade-blue {
     background-color: rgb(47,117,181);
@@ -108,6 +122,11 @@ table tbody tr :hover {
     color: black;
 }
 .shade-blue-l {
+    background-color: rgb(189,215,238);
+    color:black;
+}
+
+#blue-1 {
     background-color: rgb(189,215,238);
     color:black;
 }
@@ -148,4 +167,9 @@ table tbody tr :hover {
 .scrollable {
      overflow:auto; 
      height:450px;
+}
+
+.scrollable-lg {
+     overflow:auto; 
+     height:600px;
 }
