@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "deleteCategory";
-    Layout = (string)Session["layout"];
 }
 
 <h2>Delete Category</h2>
@@ -30,7 +29,7 @@
 
         <div class="form-actions no-color">
             @Html.ActionLink("Back", "viewCategory", "Trainer", htmlAttributes: new { @class = "btn btn-default" })
-            <input type="submit" value="Delete" class="btn btn-default" />
+            <input type="submit" value="Delete" class="btn btn-primary" />
         </div>
     }
 </div>

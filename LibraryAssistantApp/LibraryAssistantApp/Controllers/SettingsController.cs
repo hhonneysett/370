@@ -55,6 +55,13 @@ namespace LibraryAssistantApp.Controllers
 
             ViewBag.TrainingDuration = trainingdurations;
 
+            //get disussion room session durations
+            List<string> discussiondurations = (from d in settings.Elements("discussionduration")
+                                              select d.Value).ToList();
+            discussiondurations.Sort();
+
+            ViewBag.DiscussionDuration = discussiondurations;
+
             //get opening times
             string openTime = (from d in settings.Elements("opentime")
                                      select d.Value).First();
@@ -298,6 +305,71 @@ namespace LibraryAssistantApp.Controllers
                 //return list of durations
                 IEnumerable<string> durations = (from el in doc.Elements("trainingduration")
                                                  select el.Value).ToArray();
+                return Json(durations, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //delete discussion duration
+        [HttpPost]
+        public JsonResult deleteDiscussionDuration(string time)
+        {
+            //get xml
+            var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
+            XElement doc = XElement.Load(settingsPath);
+
+            //remove selected time
+            (from c in doc.Elements("discussionduration")
+             where c.Value == time
+             select c).Remove();
+
+            //save changes
+            doc.Save(settingsPath);
+
+            //return list of remaining durations
+            IEnumerable<string> durations = (from el in doc.Elements("discussionduration")
+                                             select el.Value).ToArray();
+            return Json(durations, JsonRequestBehavior.AllowGet);
+        }
+
+        //add discussion duration
+        [HttpPost]
+        public JsonResult addDiscussionDuration(int hour, int min)
+        {
+            //get string hour
+            var shour = "";
+            if (hour < 10)
+                shour = "0" + hour.ToString();
+            else shour = hour.ToString();
+
+            //get string minuntes
+            var smin = "";
+            if (min < 9)
+                smin = "0" + min.ToString();
+            else smin = min.ToString();
+
+            //get string time
+            var time = shour + ":" + smin;
+
+            //check if time already exists
+            //get xml
+            var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
+            XElement doc = XElement.Load(settingsPath);
+
+            var check = (from c in doc.Elements("discussionduration")
+                         where c.Value == time
+                         select c);
+
+            if (check.Any())
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else
+            {
+                doc.Add(new XElement("discussionduration", time));
+                //save xml
+                doc.Save(settingsPath);
+                //return list of durations
+                IEnumerable<string> durations = (from el in doc.Elements("discussionduration")
+                                                 select el.Value).ToArray();
+                durations.OrderBy(c => c);
                 return Json(durations, JsonRequestBehavior.AllowGet);
             }
         }

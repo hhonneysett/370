@@ -838,43 +838,6 @@ namespace LibraryAssistantApp.Controllers
             return PartialView(venueRatingList);          
         }
 
-        //show further training session details
-        [HttpGet]
-        public PartialViewResult addTrainingSessionDetails(int id)
-        {
-            //create local variable of selected venue
-            var venue = db.Venues.Where(v => v.Venue_ID == id).First();
-            ViewBag.Venue = venue;
-            Session["venueSelect"] = venue;
-
-            //create local variable of session details
-            var session = (TrainingSessionModel)Session["sessionDetails"];
-
-            //create local variable of venue timeslot lists
-            var timeslotList = (List<venueTimeslot>)Session["timeslotList"];
-
-            //get timeslots available for the selected venue
-            List<timeslot> available = new List<timeslot>();
-
-            //go through the venue timeslots and check for the venue
-            foreach(venueTimeslot vt in timeslotList)
-            {
-                foreach(Venue v in vt.venues)
-                {
-                    if (v.Venue_ID.Equals(venue.Venue_ID))
-                    {
-                        available.Add(vt.timeslot);
-                    }
-                }
-            }
-
-            //assing the avialable timeslots to a session variable
-            Session["availableVen"] = available;
-           
-            //return partial view
-            return PartialView();
-        }
-
         //get available trainers
         [HttpGet]
         public PartialViewResult getTrainers(int id)
@@ -955,21 +918,25 @@ namespace LibraryAssistantApp.Controllers
             var endDate = timeslot.endDate;
             var venue = (Venue)Session["venueSelect"];
             List<Clash> clashlist = new List<Clash>();
+            var bookings = db.Venue_Booking.ToList();
+            var personbookings = db.Venue_Booking_Person.ToList();
 
             switch (repeatType)
             {
                 case "daily":
                     for (int i = 1; i <= multiple; i++)
                     {
-                        var clash = (from a in db.Venue_Booking
-                                    where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
+                        var venues = (from a in bookings
+                                    where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate)
                                     select a).ToList();
+                        var clash = venues.Where(v => v.Venue_ID == venue.Venue_ID && v.Booking_Status == "Confirmed").ToList();
+
                         if (clash.Any())
                         {
 
                             foreach(var c in clash)
                             {
-                                var vbp = db.Venue_Booking_Person.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
+                                var vbp = personbookings.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).FirstOrDefault();
 
                                 var cl = new Clash();
                                 cl.date = c.DateTime_From.ToShortDateString();
@@ -999,14 +966,15 @@ namespace LibraryAssistantApp.Controllers
                 case "weekly":
                     for (int i = 1; i <= multiple; i++)
                     {
-                        var clash = from a in db.Venue_Booking
+                        var venues = from a in bookings
                                     where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
                                     select a;
+                        var clash = venues.Where(v => v.Venue_ID == venue.Venue_ID && v.Booking_Status == "Confirmed").ToList();
                         if (clash.Any())
                         {
                             foreach (var c in clash)
                             {
-                                var vbp = db.Venue_Booking_Person.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
+                                var vbp = personbookings.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
 
                                 var cl = new Clash();
                                 cl.date = c.DateTime_From.ToShortDateString();
@@ -1036,14 +1004,15 @@ namespace LibraryAssistantApp.Controllers
                 case "monthly":
                     for (int i = 1; i <= multiple; i++)
                     {
-                        var clash = (from a in db.Venue_Booking
+                        var venues = (from a in bookings
                                      where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
                                      select a).ToList();
+                        var clash = venues.Where(v => v.Venue_ID == venue.Venue_ID && v.Booking_Status == "Confirmed").ToList();
                         if (clash.Any())
                         {
                             foreach (var c in clash)
                             {
-                                var vbp = db.Venue_Booking_Person.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
+                                var vbp = personbookings.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
 
                                 var cl = new Clash();
                                 cl.date = c.DateTime_From.ToShortDateString();
@@ -1073,14 +1042,15 @@ namespace LibraryAssistantApp.Controllers
                 case "yearly":
                     for (int i = 1; i <= multiple; i++)
                     {
-                        var clash = from a in db.Venue_Booking
+                        var venues = from a in bookings
                                     where (a.DateTime_From >= startDate && a.DateTime_From <= endDate) || (a.DateTime_To >= startDate && a.DateTime_To <= endDate) || (a.DateTime_From <= startDate && a.DateTime_To >= endDate) && a.Venue_ID.Equals(venue.Venue_ID)
                                     select a;
+                        var clash = venues.Where(v => v.Venue_ID == venue.Venue_ID && v.Booking_Status == "Confirmed").ToList();
                         if (clash.Any())
                         {
                             foreach (var c in clash)
                             {
-                                var vbp = db.Venue_Booking_Person.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
+                                var vbp = personbookings.Where(b => b.Venue_Booking_Seq == c.Venue_Booking_Seq).First();
 
                                 var cl = new Clash();
                                 cl.date = c.DateTime_From.ToShortDateString();
@@ -1689,7 +1659,28 @@ namespace LibraryAssistantApp.Controllers
 
             switch (length)
             {
-                case 1:
+                case 9:
+                    //get the bookings for the selected campus
+                    var personBookings = (from b in db.Venue_Booking_Person
+                                   where b.Person_ID.Equals(id) && b.Venue_Booking.Booking_Type.Booking_Type_Name.Equals("Training") && (b.Venue_Booking.Booking_Status == "Confirmed" || b.Venue_Booking.Booking_Status == "Tentative")
+                                          select b.Venue_Booking);
+
+                    //create new events for each booking
+                    var trainerEvents = from e in personBookings
+                                        select new
+                                 {
+                                     id = e.Venue_Booking_Seq,
+                                     text = e.Description,
+                                     start_date = e.DateTime_From.ToString(),
+                                     end_date = e.DateTime_To.ToString(),
+                                 };
+                    //convert the new events to an array
+                    var trainerRows = trainerEvents.ToArray();
+
+                    //return the json formatted events
+                    return Json(trainerRows, JsonRequestBehavior.AllowGet);
+
+                default:
                     var campusId = Convert.ToInt32(id);
                     //get the bookings for the selected campus
                     var bookings = (from b in db.Venue_Booking
@@ -1710,29 +1701,6 @@ namespace LibraryAssistantApp.Controllers
 
                     //return the json formatted events
                     return Json(rows, JsonRequestBehavior.AllowGet);
-                case 9:
-                    //get the bookings for the selected campus
-                    var personBookings = (from b in db.Venue_Booking_Person
-                                   where b.Person_ID.Equals(id) && b.Venue_Booking.Booking_Type.Booking_Type_Name.Equals("Training")
-                                   select b.Venue_Booking);
-
-                    //create new events for each booking
-                    var trainerEvents = from e in personBookings
-                                        select new
-                                 {
-                                     id = e.Venue_Booking_Seq,
-                                     text = e.Description,
-                                     start_date = e.DateTime_From.ToString(),
-                                     end_date = e.DateTime_To.ToString(),
-                                 };
-                    //convert the new events to an array
-                    var trainerRows = trainerEvents.ToArray();
-
-                    //return the json formatted events
-                    return Json(trainerRows, JsonRequestBehavior.AllowGet);
-
-                default:
-                    return null;
             }            
         }
 
@@ -1788,6 +1756,43 @@ namespace LibraryAssistantApp.Controllers
 
 
             return PartialView(details);
+        }
+
+        //show further training session details
+        [HttpGet]
+        public PartialViewResult addTrainingSessionDetails(int id)
+        {
+            //create local variable of selected venue
+            var venue = db.Venues.Where(v => v.Venue_ID == id).First();
+            ViewBag.Venue = venue;
+            Session["venueSelect"] = venue;
+
+            //create local variable of session details
+            var session = (TrainingSessionModel)Session["sessionDetails"];
+
+            //create local variable of venue timeslot lists
+            var timeslotList = (List<venueTimeslot>)Session["timeslotList"];
+
+            //get timeslots available for the selected venue
+            List<timeslot> available = new List<timeslot>();
+
+            //go through the venue timeslots and check for the venue
+            foreach (venueTimeslot vt in timeslotList)
+            {
+                foreach (Venue v in vt.venues)
+                {
+                    if (v.Venue_ID.Equals(venue.Venue_ID))
+                    {
+                        available.Add(vt.timeslot);
+                    }
+                }
+            }
+
+            //assing the avialable timeslots to a session variable
+            Session["availableVen"] = available;
+
+            //return partial view
+            return PartialView();
         }
 
         //generate attendance register
@@ -2004,7 +2009,7 @@ namespace LibraryAssistantApp.Controllers
 
                 message.From = new MailAddress("uplibraryassistant@gmail.com");
                 message.To.Add(booking.Registered_Person.Person_Email);
-                message.Subject = "Training Session Completion";
+                message.Subject = "Training Session Cancellation";
                 message.Body = "Hi " + booking.Registered_Person.Person_Name + ", unfortunataly a training session you are registered for has been cancelled. <hr/>" + "Topic: " + booking.Venue_Booking.Topic.Topic_Name;
                 message.IsBodyHtml = true;
                 client.EnableSsl = true;

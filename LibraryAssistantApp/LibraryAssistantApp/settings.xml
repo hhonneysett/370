@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <settings>
   <scheduler>
-    <time>3:30 PM</time>
+    <time>19:00</time>
   </scheduler>
   <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\8SEJfpn.jpg</picture>
   <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\Hotline.jpg</picture>
@@ -14,4 +14,9 @@
   <trainingduration>00:30</trainingduration>
   <opentime>08:30</opentime>
   <closetime>18:00</closetime>
+  <discussionduration>01:00</discussionduration>
+  <discussionduration>01:30</discussionduration>
+  <discussionduration>02:30</discussionduration>
+  <discussionduration>03:00</discussionduration>
+  <discussionduration>00:30</discussionduration>
 </settings>

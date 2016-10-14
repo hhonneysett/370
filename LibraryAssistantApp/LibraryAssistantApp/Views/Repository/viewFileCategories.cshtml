@@ -1,0 +1,52 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Document_Category>
+
+@{
+    ViewBag.Title = "View File Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>File Categories</h2>
+
+<p>
+    @Html.ActionLink("Create New", "addFileCategory")
+</p>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table table-bordered" id="catTable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category_Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "updateFileCategory", new { id = item.Category_ID }) |
+                            @Html.ActionLink("Delete", "deleteFileCategory", new { id = item.Category_ID })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#catTable").DataTable();
+    })
+</script>

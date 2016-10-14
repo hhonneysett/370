@@ -253,12 +253,14 @@ namespace LibraryAssistantApp.Controllers
                     registered_person.Person_Password = newHashed;
                     db.Entry(registered_person).State = EntityState.Modified;
                     db.SaveChanges();
-                    TempData["Message"] = "Password Updated";
+                    TempData["Message"] = "Password updated!";
+                    TempData["classStyle"] = "success";
                     return RedirectToAction("Details");
                 }
                 else
                 {
-                    TempData["Message"] = "Invalid Password";
+                    TempData["Message"] = "Invalid password!";
+                    TempData["classStyle"] = "danger";
                     return View();
                 }
                 

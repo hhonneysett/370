@@ -438,7 +438,7 @@ namespace LibraryAssistantApp.Controllers
         {
             var idHolder = (Venue)Session["idHolder"];
 
-            var venues = db.Venues.Where(v => v.Building_Floor_ID == idHolder.Building_ID);
+            var venues = db.Venues.Where(v => v.Building_Floor_ID == idHolder.Building_Floor_ID);
 
             if (venues.Any())
                 return Json("CLASH", JsonRequestBehavior.AllowGet);
@@ -1251,6 +1251,7 @@ namespace LibraryAssistantApp.Controllers
                 var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == id).FirstOrDefault();
                 db.Common_Problem.Attach(problem);
                 db.Common_Problem.Remove(problem);
+                db.SaveChanges();
                 return RedirectToAction("viewCommonProblems");
             }
         }
@@ -1266,6 +1267,12 @@ namespace LibraryAssistantApp.Controllers
         public ActionResult addCharacteristic()
         {
             return View();
+        }
+
+        //add characteristic - partial
+        public PartialViewResult addVenueCharacteristic()
+        {
+            return PartialView();
         }
 
         //add characteristic - post

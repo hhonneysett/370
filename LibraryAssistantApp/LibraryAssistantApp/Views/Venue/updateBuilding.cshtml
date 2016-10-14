@@ -10,7 +10,7 @@
     <table>
         <tr>
             <td><b>Campus:</b></td>
-            <td style="padding-left:5px">
+            <td style="padding-left:5px;padding-bottom:5px">
                 <select id="updateBuildingCampusSelect" class="form-control">
                     @foreach (var campus in campuses)
                     {
@@ -25,8 +25,8 @@
         </tr>
     </table>
 </form>
-<button class="btn btn-default" id="btnConfirmBuildingUpdate">Update Building</button>
-<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<button class="btn btn-primary" id="btnConfirmBuildingUpdate">Update Building</button>
+<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
 <hr />
 
 <script src="~/Scripts/jquery.ambiance.js"></script>
@@ -47,6 +47,7 @@
         rules: {
             Building_Name: {
                 required: true,
+                maxlength: 30,
                 remote: {
                     url: '/Venue/checkUpdateBuilding',
                     type: 'get'
@@ -97,6 +98,10 @@
                         type: "success",
                         timeout: 5
                     });
+
+                    //hide further divs
+                    $("#buildingFloors").hide(800);
+                    $("#venues").hide(800);
                 },
                 error: function (err, result) {
                     alert("Error in assigning dataToSave" + err.responseText);

@@ -8,8 +8,8 @@
 <form id="deleteBuildingForm" name="deleteBuildingForm" class="form-group">
     <p>Are you sure you want to delete the <b>@building.Building_Name</b> building, from the @campus.Campus_Name campus?</p>
 </form>
-<button class="btn btn-default" id="btnConfirmDeleteBuilding">Yes</button>
-<button class="btn btn-default" id="btnCancelModal">Cancel</button>
+<button class="btn btn-primary" id="btnConfirmDeleteBuilding">Yes</button>
+<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
 <hr />
 
 <script src="~/Scripts/jquery.ambiance.js"></script>
@@ -68,6 +68,10 @@
                     $("#btnUpdateBuilding").prop('disabled', true);
                     $("#btnDeleteBuilding").prop('disabled', true);
                     $("#btnViewBuildingFloors").prop('disabled', true)
+
+                    //hide further divs
+                    $("#buildingFloors").hide(800);
+                    $("#venues").hide(800);
                 }
             },
             error: function (err, result) {

@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "DeleteFile";
-    Layout = (string)Session["layout"];
 }
 
 <h2>Delete File</h2>
@@ -42,8 +41,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            @Html.ActionLink("Back", "ViewFile", "Repository", htmlAttributes: new { @class = "btn btn-default" })
-            <input type="submit" value="Delete" class="btn btn-default" />
+            @Html.ActionLink("Back", "ViewFile", "Repository", htmlAttributes: new { @class = "btn btn-primary" })
+            <input type="submit" value="Delete" class="btn btn-primary" />
         </div>
     }
 </div>

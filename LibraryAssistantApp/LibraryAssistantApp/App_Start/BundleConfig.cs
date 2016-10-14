@@ -9,6 +9,10 @@ namespace LibraryAssistantApp
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                        "~/Scripts/bootbox.min.js",
+                        "~/Scripts/spin.min.js",
+                        "~/Scripts/bxSlider/jquery.bxslider.min.js",
+                        "~/Scripts/DataTable/datatables.min.js",
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.timepicker.min.js",
                         "~/Scripts/notify.min.js",
@@ -17,7 +21,6 @@ namespace LibraryAssistantApp
                         "~/Scripts/base64.js",
                         "~/Scripts/sprintf.js",
                         "~/Scripts/jspdf.js",
-                        "~/Scripts/DataTables/jquery.dataTables.min.js",
                         "~/Scripts/DataTables/dataTables.bootstrap.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -51,7 +54,8 @@ namespace LibraryAssistantApp
             bundles.Add(new ScriptBundle("~/bundles/headScripts").Include(
                 "~/Scripts/Scheduler/dhtmlxscheduler.js",
                 "~/Scripts/Scheduler/dhtmlxscheduler_agenda_view.js",
-                "~/Scripts/moment.min.js"));
+                "~/Scripts/moment.min.js",
+                "~/Scripts/server_notification.js"));
 
             //checkbox scripts
             bundles.Add(new ScriptBundle("~/bundles/checkboxjs").Include(
@@ -61,7 +65,8 @@ namespace LibraryAssistantApp
                 "~/Scripts/selectrow.js"));
             //modal script
             bundles.Add(new ScriptBundle("~/bundles/bootbox").Include(
-                "~/Scripts/bootbox.js"));
+                "~/Scripts/bootbox.min.js"));
+
             //notification 'noty' scripts
             bundles.Add(new ScriptBundle("~/bundles/noty").Include(
                 "~/Scripts/noty/jquery.noty.js",

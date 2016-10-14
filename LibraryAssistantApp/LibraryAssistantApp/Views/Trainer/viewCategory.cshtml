@@ -1,8 +1,7 @@
 ﻿@model LibraryAssistantApp.Models.CategoryModel
 
 @{
-    ViewBag.Title = "viewCategory";
-    Layout = (string)Session["layout"];
+    ViewBag.Title = "Training Categories";
 }
 
 <h2>Categories</h2>
@@ -23,16 +22,15 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <input type="submit" id="btnAddCat" class="btn btn-default" value="Add Category"/>
-                <input type="submit" id="btnUpdateCat" class="btn btn-default" value="Update Category" />
-                <input type="submit" id="btnDeleteCat" class="btn btn-default" value="Delete Category" />
+                <input type="submit" id="btnAddCat" class="btn btn-primary" value="Add Category"/>
+                <input type="submit" id="btnUpdateCat" class="btn btn-primary" value="Update Category" />
+                <input type="submit" id="btnDeleteCat" class="btn btn-primary" value="Delete Category" />
             </div>
         </div>
     </div>
 </div>
 
-@section script{
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function ()
         {
             //disable update and delete buttons on page load
@@ -62,5 +60,4 @@
                 window.location.href = "/Trainer/deleteCategory/?id=" + id;
             });
         })
-    </script>
-    }
+</script>
