@@ -21,46 +21,55 @@
     <div style="text-align:center" class="isa_success">@ViewBag.EditCompleteMessage</div>
 }
 
-<h2>Questionnaire Topics</h2>
+<h3>Questionnaire Topics</h3>
 
+<h4 class="bg-info-1 shaded">Topic Details</h4>
 <div class="panel panel-default">
-    <div class="panel-heading"><h4>All Topics</h4></div>
+    @*<div class="panel-heading">
+        All Topics
+    </div>*@
     <div class="panel-body">
-     
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Topic_Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>Actions</th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
+        <table id="tbl-quest-2" class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Topic_Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        <input type="submit" value="Edit" class="btn btn-default" onclick="location.href='@Url.Action("Edit",new { id = item.Topic_Seq })'" /> |
-                        <input type="submit" value="Delete" class="btn btn-default" onclick="location.href='@Url.Action("Delete",new { id = item.Topic_Seq })'" />
-                          
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Topic_Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
                 </tr>
-            }
-
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                    <tr id="@item.Topic_Seq">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Topic_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
-
         <div>
-            <button id="Select_Button" type="button" class="btn btn-outline btn-default btn-lg btn-block" onclick="location.href='@Url.Action("Create")'">Create New Questionnaire Topic</button>
-        </div>
 
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div style="padding-top:15px">
+            <div class="btn-group">
+                @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit" })
+            </div>
+            <div class="btn-group">
+                @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete" })
+            </div>
+            <div class="btn-group">
+                <button id="Select_Button" type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Create")'">Create New</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -100,3 +109,20 @@
             vertical-align: middle;
         }
 </style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#tbl-quest-2').DataTable();
+        $('#tbl-quest-2 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selectedrow')) {
+                $(this).removeClass('selectedrow');
+            }
+            else {
+                table.$('tr.selectedrow').removeClass('selectedrow');
+                $(this).addClass('selectedrow');
+            }
+            $('.btn-edit').attr('href', '/Question_Topic/Edit/' + $(this).attr('id'));
+            $('.btn-delete').attr('href', '/Question_Topic/Delete/' + $(this).attr('id'));
+        });
+    });
+</script>

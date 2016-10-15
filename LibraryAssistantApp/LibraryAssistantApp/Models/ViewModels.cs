@@ -826,9 +826,52 @@ namespace LibraryAssistantApp.Models
         public string email { get; set; }
     }
 
+    //document access report view model
+    public class DocumentAccess
+    {
+        public List<Document_Access_Log> doc_access { get; set; }
+        //public List<Document> documents { get; set; }
+        public List<DocType> doc_types { get; set; }
+        public List<Doc> docs { get; set; }
+        public List<DocPerson> doc_persons { get; set; }
+        public List<DocAcc> doc_acc { get; set; }
+    }
+
+    public class Document
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string type { get; set; }
+        public string person_id { get; set; }
+        public string person_name { get; set; }
+        public DateTime date_time { get; set; }
+    }
+    public class DocType
+    {
+        public string doc_type { get; set; }
+        public int doc_count { get; set; }
+    }
+    public class Doc
+    {
+        public int doc_id { get; set; }
+        public string doc_name { get; set; }
+        public string doc_ext { get; set; }
+        public int count { get; set; }
+    }
+    public class DocPerson
+    {
+        public string person_id { get; set; }
+        public string person_name { get; set; }
+        //public string person_surname { get; set; }
+        public int access_count { get; set; }
+    }
+    public class DocAcc
+    {
+        public DateTime accessed { get; set; }
+    }
+
     public class serverpath
     {
         public static string path = Path.Combine(HttpContext.Current.Server.MapPath("~"), "settings.xml");
-    } 
-   
+    }  
 }
