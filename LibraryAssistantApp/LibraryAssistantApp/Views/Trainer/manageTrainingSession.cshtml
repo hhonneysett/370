@@ -220,7 +220,7 @@
         //cancel training
         function cancelTraining() {
             $.ajax({
-                type: 'GET',
+                type: 'post',
                 url: '/Trainer/cancelTraining',
                 success: function (result) {
                     window.location.href = "/Trainer/manageTrainingSession";

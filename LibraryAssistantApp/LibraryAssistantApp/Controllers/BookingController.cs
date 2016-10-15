@@ -361,6 +361,10 @@ namespace LibraryAssistantApp.Controllers
 
             //add new venue booking to database
             db.Venue_Booking.Add(vb);
+
+            //record action
+            global.addAudit("Bookings", "Booking: Discussion Room Booking", "Create", User.Identity.Name);
+
             db.SaveChanges();
 
             //get booking seq of booking just created
@@ -571,7 +575,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // POST: Cancel selected booking
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public ActionResult captureCancel()
         {
@@ -588,6 +592,10 @@ namespace LibraryAssistantApp.Controllers
             //capture the cancellation
             db.Entry(cancelledBooking).State = EntityState.Modified;
             db.Entry(cancelledPersonBooking).State = EntityState.Modified;
+
+            //record action
+            global.addAudit("Bookings", "Bookings: Cancelled Booking", "Delete", User.Identity.Name);
+
             db.SaveChanges();
 
             //set notification information
@@ -885,6 +893,9 @@ namespace LibraryAssistantApp.Controllers
                 db.Entry(bookingUpdate).State = EntityState.Modified;
                 db.SaveChanges();
 
+                //record action
+                global.addAudit("Bookings", "Bookings: Update Booking", "Update", User.Identity.Name);
+
             }
             else
             {
@@ -1037,6 +1048,9 @@ namespace LibraryAssistantApp.Controllers
             db.Venue_Booking_Person.Add(a);
 
             db.SaveChanges();
+
+            //record action
+            global.addAudit("Bookings", "Bookings: Book Training Session", "Create", User.Identity.Name);
         }
     }
 }

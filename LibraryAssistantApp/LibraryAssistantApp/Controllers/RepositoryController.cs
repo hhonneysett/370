@@ -85,6 +85,9 @@ namespace LibraryAssistantApp.Controllers
                         db.Document_Access_Log.Add(ac);
                         db.SaveChanges();
 
+                        //record action
+                        global.addAudit("Repository", "Repository: Add File", "Create", User.Identity.Name);
+
                         //save file to server
                         model.uploadFile.SaveAs(path);
                         TempData["Message"] = "File successfully uploaded";
@@ -179,6 +182,9 @@ namespace LibraryAssistantApp.Controllers
                 db.Document_Access_Log.Add(ac);
                 db.SaveChanges();
 
+                //record action
+                global.addAudit("Repository", "Repository: Update File", "Update", User.Identity.Name);
+
                 TempData["Message"] = "File successfuly updated";
                 TempData["classStyle"] = "success";
                 return RedirectToAction("ViewFile");
@@ -254,6 +260,9 @@ namespace LibraryAssistantApp.Controllers
             db.Document_Access_Log.Add(ac);
             db.SaveChanges();
 
+            //record action
+            global.addAudit("Repository", "Repository: Delete File", "Delete", User.Identity.Name);
+
             deleteFile.Document_Status = "Deleted";
             var virtualDirectoryPath = deleteFile.Directory_Path;
             if (System.IO.File.Exists(virtualDirectoryPath))
@@ -299,6 +308,10 @@ namespace LibraryAssistantApp.Controllers
                 };
                 db.Document_Type.Add(a);
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Add File Type", "Create", User.Identity.Name);
+
                 TempData["classStyle"] = "success";
                 TempData["Message"] = "File type successfully added";
                 return RedirectToAction("ViewFileType");
@@ -347,6 +360,10 @@ namespace LibraryAssistantApp.Controllers
                     type.Description = model.Description;
                     db.Entry(type).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    //record action
+                    global.addAudit("Repository", "Repository: Update File Type", "Update", User.Identity.Name);
+
                     TempData["classStyle"] = "success";
                     TempData["Message"] = "File type successfuly updated";
                     return RedirectToAction("ViewFileType");
@@ -384,6 +401,10 @@ namespace LibraryAssistantApp.Controllers
                 db.Document_Type.Attach(type);
                 db.Document_Type.Remove(type);
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Delete File Type", "Delete", User.Identity.Name);
+
                 TempData["Message"] = "Successfully deleted file type!";
                 TempData["classStyle"] = "success";
                 return RedirectToAction("ViewFileType");
@@ -418,6 +439,10 @@ namespace LibraryAssistantApp.Controllers
 
                 db.Document_Category.Add(category);
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Add File Category", "Create", User.Identity.Name);
+
                 TempData["Message"] = "Document category successfully added!";
                 TempData["classStyle"] = "success";
                 return RedirectToAction("viewFileCategories");
@@ -456,6 +481,10 @@ namespace LibraryAssistantApp.Controllers
                 category.Description = model.description;
                 db.Entry(category).State = EntityState.Modified;
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Update File Category", "Update", User.Identity.Name);
+
                 return RedirectToAction("viewFileCategories");
             }
             else
@@ -493,6 +522,10 @@ namespace LibraryAssistantApp.Controllers
                 db.Document_Category.Attach(category);
                 db.Document_Category.Remove(category);
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Delete File Category", "Delete", User.Identity.Name);
+
                 TempData["Message"] = "File category successfully deleted!";
                 TempData["classStyle"] = "success";
                 return RedirectToAction("viewFileCategories");

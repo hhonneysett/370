@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryAssistantApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -97,8 +98,11 @@ namespace LibraryAssistantApp.Controllers
 
             doc.Save(settingsPath);
 
+            //record action
+            global.addAudit("Settings", "Settings: Delete Picture", "Delete", User.Identity.Name);
+
             //get pictures
-            IEnumerable<XElement> pictures = from el in doc.Elements("picture")
+            IEnumerable <XElement> pictures = from el in doc.Elements("picture")
                                              select el;
 
             List<string> spictures = new List<string>();
@@ -123,6 +127,9 @@ namespace LibraryAssistantApp.Controllers
             XElement doc = XElement.Load(settingsPath);
 
             doc.Element("scheduler").Element("time").Value = time;
+
+            //record action
+            global.addAudit("Settings", "Settings: Update Email Time", "Update", User.Identity.Name);
 
             doc.Save(settingsPath);
         }
@@ -222,6 +229,9 @@ namespace LibraryAssistantApp.Controllers
                     //To save file, use SaveAs method
                     file.SaveAs(Server.MapPath("~/img/") + fileName); //File will be saved in application root
                     doc.Add(new XElement("picture", Server.MapPath("~/img/") + fileName));
+
+                    //record action
+                    global.addAudit("Settings", "Settings: Upload Photo", "Create", User.Identity.Name);
                 }
                 else return Json(false, JsonRequestBehavior.AllowGet);               
             }
@@ -260,6 +270,9 @@ namespace LibraryAssistantApp.Controllers
 
             //save changes
             doc.Save(settingsPath);
+
+            //record action
+            global.addAudit("Settings", "Settings: Delete Training Duration", "Delete", User.Identity.Name);
 
             //return list of remaining durations
             IEnumerable<string> durations = (from el in doc.Elements("trainingduration")
@@ -305,6 +318,10 @@ namespace LibraryAssistantApp.Controllers
                 //return list of durations
                 IEnumerable<string> durations = (from el in doc.Elements("trainingduration")
                                                  select el.Value).ToArray();
+
+                //record action
+                global.addAudit("Settings", "Settings: Add Training Duration", "Create", User.Identity.Name);
+
                 return Json(durations, JsonRequestBehavior.AllowGet);
             }
         }
@@ -324,6 +341,9 @@ namespace LibraryAssistantApp.Controllers
 
             //save changes
             doc.Save(settingsPath);
+
+            //record action
+            global.addAudit("Settings", "Settings: Delete Discussion Duration", "Delete", User.Identity.Name);
 
             //return list of remaining durations
             IEnumerable<string> durations = (from el in doc.Elements("discussionduration")
@@ -369,6 +389,10 @@ namespace LibraryAssistantApp.Controllers
                 //return list of durations
                 IEnumerable<string> durations = (from el in doc.Elements("discussionduration")
                                                  select el.Value).ToArray();
+
+                //record action
+                global.addAudit("Settings", "Settings: Add Discussion Duration", "Create", User.Identity.Name);
+
                 durations.OrderBy(c => c);
                 return Json(durations, JsonRequestBehavior.AllowGet);
             }
@@ -392,6 +416,10 @@ namespace LibraryAssistantApp.Controllers
             {
                 doc.Element("opentime").Value = time;
                 doc.Save(settingsPath);
+
+                //record action
+                global.addAudit("Settings", "Settings: Update Open Time", "Update", User.Identity.Name);
+
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
             else return Json(false, JsonRequestBehavior.AllowGet);        
@@ -415,6 +443,10 @@ namespace LibraryAssistantApp.Controllers
             {
                 doc.Element("closetime").Value = time;
                 doc.Save(settingsPath);
+
+                //record action
+                global.addAudit("Settings", "Settings: Update Closin Time", "Update", User.Identity.Name);
+
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
             else return Json(false, JsonRequestBehavior.AllowGet);

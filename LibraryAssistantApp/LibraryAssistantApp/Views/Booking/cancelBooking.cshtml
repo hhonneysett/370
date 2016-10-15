@@ -54,8 +54,8 @@
         $(document).ready(function () {
             $('#btnCancelBooking').click(function () {
                 $.ajax({
-                    type: 'GET',
                     url: '/Booking/captureCancel',
+                    type: 'POST',
                     success: function (result) {
                         window.location.href = result;
                     },

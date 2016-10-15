@@ -74,6 +74,8 @@ namespace LibraryAssistantApp.Controllers
                     db.Categories.Add(a);
                     db.SaveChanges();
 
+                    //record action
+                    global.addAudit("Training Sessions", "Training Sessions: Add Training Category", "Create", User.Identity.Name);
 
                     TempData["Message"] = "Category successfully added";
                     TempData["classStyle"] = "success";
@@ -128,6 +130,9 @@ namespace LibraryAssistantApp.Controllers
                             //capture the updated category
                             db.Entry(model).State = EntityState.Modified;
                             db.SaveChanges();
+
+                            //record action
+                            global.addAudit("Training Sessions", "Training Sessions: Update Training Category", "Update", User.Identity.Name);
 
                             //display success message
                             TempData["Message"] = "Category successfully updated";
@@ -191,6 +196,9 @@ namespace LibraryAssistantApp.Controllers
                 //delete the selected category from the database
                 db.Categories.Remove(selectedCat);
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Training Sessions", "Training Sessions: Delete Training Category", "Delete", User.Identity.Name);
 
                 //alert successful deletion
                 TempData["Message"] = "Category successfully deleted";
@@ -325,6 +333,8 @@ namespace LibraryAssistantApp.Controllers
                                 db.Entry(model).State = EntityState.Modified;
                                 db.SaveChanges();
 
+                                //record action
+                                global.addAudit("Training Sessions", "Training Sessions: Update Training Topic", "Update", User.Identity.Name);
 
                                 //display success message
                                 TempData["Message"] = "Topic successfully updated";
@@ -465,6 +475,9 @@ namespace LibraryAssistantApp.Controllers
                     db.Topics.Add(model);
                     db.SaveChanges();
 
+                    //record action
+                    global.addAudit("Training Sessions", "Training Sessions: Add Training Topic", "Create", User.Identity.Name);
+
                     var newTopicSeq = (from t in db.Topics
                                        where t.Topic_Name.Equals(model.Topic_Name)
                                        select t.Topic_Seq).FirstOrDefault();
@@ -549,6 +562,9 @@ namespace LibraryAssistantApp.Controllers
             db.Topics.Remove(topic);
 
             db.SaveChanges();
+
+            //record action
+            global.addAudit("Training Sessions", "Training Sessions: Delete Training Topic", "Delete", User.Identity.Name);
 
             TempData["Message"] = "Topic successfully deleted";
             TempData["classStyle"] = "success";
@@ -1135,6 +1151,9 @@ namespace LibraryAssistantApp.Controllers
                     db.Venue_Booking.Add(a);
                     db.SaveChanges();
 
+                    //record action
+                    global.addAudit("Training Sessions", "Training Sessions: Add Training Session", "Create", User.Identity.Name);
+
                     //get booking seq of newly created booking
                     var bookingSeq = a.Venue_Booking_Seq;
 
@@ -1169,6 +1188,10 @@ namespace LibraryAssistantApp.Controllers
 
                 case "daily":
                     Venue_Booking booking = new Venue_Booking();
+
+                    //record action
+                    global.addAudit("Training Sessions", "Training Sessions: Add Training Session", "Create", User.Identity.Name);
+
                     for (int i = 1; i <= multiple; i++)
                     {
                         //create instance of new venue booking object
@@ -1257,6 +1280,10 @@ namespace LibraryAssistantApp.Controllers
 
                 case "weekly":
                     Venue_Booking weeklyBooking = new Venue_Booking();
+
+                    //record action
+                    global.addAudit("Training Sessions", "Training Sessions: Add Training Session", "Create", User.Identity.Name);
+
                     for (int i = 1; i <= multiple; i++)
                     {
                         //create instance of new venue booking object
@@ -1346,6 +1373,10 @@ namespace LibraryAssistantApp.Controllers
 
                 case "monthly":
                     Venue_Booking monthlyBooking = new Venue_Booking();
+
+                    //record action
+                    global.addAudit("Training Sessions", "Training Sessions: Add Training Session", "Create", User.Identity.Name);
+
                     for (int i = 1; i <= multiple; i++)
                     {
                         //create instance of new venue booking object
@@ -1435,6 +1466,10 @@ namespace LibraryAssistantApp.Controllers
 
                 case "yearly":
                     Venue_Booking yearlyBooking = new Venue_Booking();
+
+                    //record action
+                    global.addAudit("Training Sessions", "Training Sessions: Add Training Session", "Create", User.Identity.Name);
+
                     for (int i = 1; i <= multiple; i++)
                     {
                         //create instance of new venue booking object
@@ -1873,7 +1908,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //submit attendance
-        [HttpGet]
+        [HttpPost]
         public void submitAttendance(string attended, int? document)
         {
             List<string> studentAtt = Deserialise<List<string>>(attended);
@@ -1901,6 +1936,9 @@ namespace LibraryAssistantApp.Controllers
                     db.Entry(booking).State = EntityState.Modified;
 
                     db.SaveChanges();
+
+                    //record action
+                    global.addAudit("Training Sessions", "Training Sessions: Update Training Attendance", "Update", User.Identity.Name);
 
                     MailMessage message = new MailMessage();
                     SmtpClient client = new SmtpClient();
@@ -1992,7 +2030,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //cancel training
-        [HttpGet]
+        [HttpPost]
         public void cancelTraining()
         {
             var bookingSeq = (int)Session["selectedSession"];
@@ -2040,6 +2078,9 @@ namespace LibraryAssistantApp.Controllers
 
             db.SaveChanges();
 
+            //record action
+            global.addAudit("Training Sessions", "Training Sessions: Cancel Training Session", "Delete", User.Identity.Name);
+
         }
 
         //add training category - get
@@ -2065,6 +2106,9 @@ namespace LibraryAssistantApp.Controllers
                 };
                 db.Categories.Add(category);
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Training Sessions", "Training Sessions: Add Training Category", "Create", User.Identity.Name);
 
                 var cl = db.Categories.ToList();
                 var ca = (from c in cl
@@ -2112,6 +2156,9 @@ namespace LibraryAssistantApp.Controllers
 
                 db.Topic_Category.Add(ct);
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Training Sessions", "Training Sessions: Add Training Topic", "Create", User.Identity.Name);
 
                 var cl = db.Categories.ToList();
                 var ca = (from c in cl
