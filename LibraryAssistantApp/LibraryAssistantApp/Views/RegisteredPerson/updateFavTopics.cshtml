@@ -33,7 +33,7 @@
                             <option value="@topic.Topic_Seq">@topic.Topic_Name</option>
                         }
                     </select>
-                    <input type="button" value="Add Topic" class="btn btn-default" style="margin-top:5px" id="btnAddFavTop" disabled/>
+                    <input type="button" value="Add Topic" class="btn btn-primary" style="margin-top:5px" id="btnAddFavTop" disabled/>
                 </div>
                 <div class="col-md-6">
                     <hr />
@@ -44,11 +44,11 @@
                             <option value="@topic.Topic_Seq">@topic.Topic.Topic_Name</option>
                         }
                     </select>
-                    <input type="button" value="Remove Topic" class="btn btn-default" style="margin-top:5px" id="btnRemFavTop" disabled/>
+                    <input type="button" value="Remove Topic" class="btn btn-primary" style="margin-top:5px" id="btnRemFavTop" disabled/>
                 </div>
             </div>
         </div>
-        @Html.ActionLink("Back", "Details", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-default" })
+        @Html.ActionLink("Back", "Details", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-primary" })
     </div>
 </div>
 
