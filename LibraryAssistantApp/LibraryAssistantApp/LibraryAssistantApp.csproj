@@ -462,6 +462,8 @@
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bxSlider\jquery.bxslider.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
@@ -752,6 +754,7 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
     <Compile Include="Controllers\PersonTypeController.cs" />
+    <Compile Include="Controllers\Person_Session_Action_LogController.cs" />
     <Compile Include="Controllers\QuestionnaireController.cs" />
     <Compile Include="Controllers\Question_BankController.cs" />
     <Compile Include="Controllers\Question_TopicController.cs" />
@@ -1163,6 +1166,7 @@
     <Content Include="Views\Questionnaire\Venue_Assessment_Campus.cshtml" />
     <Content Include="Views\Questionnaire\Venue_Assessment_Venue.cshtml" />
     <Content Include="Views\Person_Session_Action_Log\Index.cshtml" />
+    <Content Include="Views\Reporting\BookingReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

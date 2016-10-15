@@ -833,4 +833,40 @@ namespace LibraryAssistantApp.Models
     {
         public DateTime accessed { get; set; }
     }
+
+    public class BookingsReport
+    {
+        public List<BookingR> bookingsreportlist { get; set; }
+        public BookingTotal Total { get; set; }
+    }
+
+    public class BookingR
+    {
+        public int total { get; set; }
+        public string monthname { get; set; }
+        public string monthyear { get; set; }
+        public int trainingCount { get; set; }
+        public int discussionCount { get; set; }
+        public int confirmedCount { get; set; }
+        public int activeCount { get; set; }
+        public int cancelledCount { get; set; }
+        public int tenativeCount { get; set; }
+        public int completeCount { get; set; }
+        public int studentCount { get; set; }
+        public int trainerCount { get; set; }
+    }
+
+    public class BookingTotal
+    {
+        public int discussionTotal { get; set; }
+        public int trainingTotal { get; set; }
+        public int studentTotal { get; set; }
+        public int trainerTotal { get; set; }
+        public int activeTotal { get; set; }
+        public int confirmedTotal { get; set; }
+        public int completeTotal { get; set; }
+        public int cancelledTotal { get; set; }
+        public int tenativeTotal { get; set; }
+        public int bookingTotal { get; set; }
+    }
 }

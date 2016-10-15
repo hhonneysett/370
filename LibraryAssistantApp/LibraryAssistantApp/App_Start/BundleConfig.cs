@@ -80,6 +80,9 @@ namespace LibraryAssistantApp
                 "~/Scripts/noty/themes/default.js",
                 "~/Scripts/noty/themes/relax.js"
                 ));
+            //chart.js
+            bundles.Add(new ScriptBundle("~/bundles/chart.js").Include(
+                "~/Scripts/Chart.js"));
         }
     }
 }

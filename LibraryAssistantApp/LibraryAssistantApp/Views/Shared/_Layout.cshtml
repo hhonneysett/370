@@ -168,6 +168,9 @@
                         <li>
                             @Html.ActionLink("Training Attendance Log", "trainingAttendance", "Reporting")
                         </li>
+                        <li>
+                            @Html.ActionLink("Audit Log", "Index", "Person_Session_Action_Log")
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -286,6 +289,7 @@
     @Scripts.Render("~/bundles/noty")
     @Scripts.Render("~/bundles/bootbox")
     @Scripts.Render("~/bundles/checkboxjs")
+    @Scripts.Render("~/bundles/chart.js")
 
     <!--Metis menu scripts-->
 

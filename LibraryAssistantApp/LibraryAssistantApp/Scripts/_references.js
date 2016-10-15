@@ -4,6 +4,7 @@
 /// <reference path="bootbox.min.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="bxslider/jquery.bxslider.min.js" />
+/// <reference path="chart.min.js" />
 /// <reference path="checkbox.js" />
 /// <reference path="datatable/datatables.min.js" />
 /// <reference path="datatables/autofill.bootstrap.min.js" />
