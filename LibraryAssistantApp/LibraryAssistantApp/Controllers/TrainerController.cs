@@ -2042,6 +2042,88 @@ namespace LibraryAssistantApp.Controllers
 
         }
 
+        //add training category - get
+        public PartialViewResult addTrainingCategory()
+        {
+            return PartialView();
+        }
+
+        //add training category - post
+        [HttpPost]
+        public JsonResult addTrainingCategory(string name, string description)
+        {
+            var categories = db.Categories.ToList();
+            var check = categories.Where(c => c.Category_Name.ToLower() == name.ToLower());
+            if (check.Any())
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else
+            {
+                var category = new Category
+                {
+                    Category_Name = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower()),
+                    Description = description,
+                };
+                db.Categories.Add(category);
+                db.SaveChanges();
+
+                var cl = db.Categories.ToList();
+                var ca = (from c in cl
+                          select new
+                          {
+                              id = c.Category_ID,
+                              name = c.Category_Name,
+                          }).ToArray();
+                return Json(ca, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //add training topic - get
+        public PartialViewResult addTrainingTopic()
+        {
+            var categories = db.Categories.ToList();
+            ViewBag.Categories = categories;
+            return PartialView();
+        }
+
+        //add training topic - post
+        [HttpPost]
+        public JsonResult addTrainingTopic(string name, string description, int category)
+        {
+            var topics = db.Topics.ToList();
+            var check = topics.Where(t => t.Topic_Name.ToLower() == name.ToLower());
+            if (check.Any())
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else
+            {
+                var topic = new Topic
+                {
+                    Topic_Name = name,
+                    Description = description,
+                };
+
+                db.Topics.Add(topic);
+                db.SaveChanges();
+
+                var ct = new Topic_Category
+                {
+                    Category_ID = category,
+                    Topic_Seq = topic.Topic_Seq,
+                };
+
+                db.Topic_Category.Add(ct);
+                db.SaveChanges();
+
+                var cl = db.Categories.ToList();
+                var ca = (from c in cl
+                          select new
+                          {
+                              id = c.Category_ID,
+                              name = c.Category_Name,
+                          }).ToArray();
+                return Json(ca, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         //controler dependant classes
         private T Deserialise<T>(string json)
         {

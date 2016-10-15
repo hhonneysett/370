@@ -1013,7 +1013,6 @@
     <Content Include="Views\Trainer\updateTopic.cshtml" />
     <Content Include="Views\Trainer\addTopic.cshtml" />
     <Content Include="Views\Trainer\deleteTopic.cshtml" />
-    <Content Include="Views\Trainer\addTrainingSession.cshtml" />
     <Content Include="Views\Trainer\getTrainingVenues.cshtml" />
     <Content Include="Views\Trainer\addTrainingSessionDetails.cshtml" />
     <Content Include="Views\Trainer\getTrainers.cshtml" />
@@ -1138,6 +1137,8 @@
     <Content Include="Views\Repository\addFileCategory.cshtml" />
     <Content Include="Views\Repository\updateFileCategory.cshtml" />
     <Content Include="Views\Repository\deleteFileCategory.cshtml" />
+    <Content Include="Views\Trainer\addTrainingCategory.cshtml" />
+    <Content Include="Views\Trainer\addTrainingTopic.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

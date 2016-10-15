@@ -149,5 +149,25 @@ namespace LibraryAssistantApp.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
             else return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+        //check training category
+        public JsonResult checkTrainingCategory(string categoryname)
+        {
+            var categories = db.Categories.ToList();
+            var check = categories.Where(c => c.Category_Name.ToLower() == categoryname.ToLower());
+            if (check.Any())
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        //check training topic
+        public JsonResult checkTrainingTopic(string topicname)
+        {
+            var topics = db.Topics.ToList();
+            var check = topics.Where(t => t.Topic_Name.ToLower() == topicname.ToLower());
+            if (check.Any())
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else return Json(true, JsonRequestBehavior.AllowGet);
+        }
     }
 }
