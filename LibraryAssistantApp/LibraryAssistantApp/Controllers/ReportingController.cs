@@ -292,7 +292,8 @@ namespace LibraryAssistantApp.Controllers
 
             return View(reportList);
         }
-
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult BookingReport(int? year)
         {
             if (year == null)
@@ -307,7 +308,7 @@ namespace LibraryAssistantApp.Controllers
             var groupedDate = from b in bookingslist
                               where b.DateTime_From.Year == year
                            group b by new { month = b.DateTime_From.Month, year = b.DateTime_From.Year } into d
-                           select new { dt = string.Format("{0}/{1}", d.Key.month, d.Key.year), dcount = d.Count() };
+                           select new { dt = string.Format("{0}/{1}", d.Key.month, d.Key.year), dcount = d.Count(), d.Key.month };
             var monthYear = "";
             var bookings = new List<BookingR>();
             foreach (var item in bookingslist)
@@ -325,6 +326,7 @@ namespace LibraryAssistantApp.Controllers
                         foreach (var m in singlemonth)
                         {
                             booking.total = booking.total + m.dcount;
+                            booking.month = m.month;
                         }
                         var type = from b in bookingslist
                                    where string.Format("{0}/{1}", b.DateTime_From.Month, b.DateTime_From.Year) == monthYear
@@ -393,7 +395,9 @@ namespace LibraryAssistantApp.Controllers
                 bookTotal.trainingTotal += item.trainingCount;
             }
             viewModel.Total = bookTotal;
-            viewModel.bookingsreportlist = bookings;
+            viewModel.bookingsreportlist = (from b in bookings
+                                           orderby b.month ascending
+                                           select b).ToList();
 
             var groupedYear = (from b in bookingslist
                                where b.DateTime_From.Year != year
@@ -414,50 +418,6 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Year = selectListItems;
 
             return View(viewModel);
-        }
-       
+        }       
     }
 }
-
-//foreach (var item in groupedDate)
-//{
-//    if (monthYear == item.dt)
-//    {
-//        booking.total = booking.total + item.dcount;
-//        if (item.bt == "Discussion Room")
-//        {
-//            booking.discussionCount = item.tcount;
-//        }
-//        else if (item.bt == "Training")
-//        {
-//            booking.trainingCount = item.tcount;
-//        }
-//    }
-//    else if (monthYear != item.dt)
-//    {
-//        if (booking != null)
-//        {
-//            bookingsList.Add(booking);
-//        }
-//        monthYear = item.dt;
-//        booking.monthyear = item.dt;
-//        booking.total = item.dcount;
-//        if (item.bt == "Discussion Room")
-//        {
-//            booking.discussionCount = item.tcount;
-//        }
-//        else if (item.bt == "Training")
-//        {
-//            booking.trainingCount = item.tcount;
-//        }
-//    }
-//}
-//var groupedType = from b in bookingslist
-//                  group b by new { type = b.Booking_Type.Booking_Type_Name } into d
-//                  select new { bt = d.Key.type, tcount = d.Count() };
-//var groupedStatus = from b in bookingslist
-//                    group b by new { status = b.Booking_Status } into d
-//                    select new { bs = d.Key.status, scount = d.Count() };
-//var groupedAttendee = from b in bookingslist
-//                      group b by new { attendee = b.Venue_Booking_Person } into d
-//                      select new { at = d.Key.attendee };

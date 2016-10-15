@@ -854,6 +854,7 @@ namespace LibraryAssistantApp.Models
         public int completeCount { get; set; }
         public int studentCount { get; set; }
         public int trainerCount { get; set; }
+        public int month { get; set; }
     }
 
     public class BookingTotal

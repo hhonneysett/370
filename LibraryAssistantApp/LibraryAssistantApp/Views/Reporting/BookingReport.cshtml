@@ -168,7 +168,22 @@
             </div>
         </div>
     </div>
-    <canvas id="myChart" max-width="400" max-height="400"></canvas>
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="bg-success shaded">Bookings per month for @ViewBag.YearSelected</h4>
+                    <canvas id="linechart" width="400" max-height="400"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="bg-warning shaded">Attendee type pie chart</h4>
+                <canvas id="piechart" width="400" max-height="400"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h4 class="bg-info shaded">Booking type pie chart</h4>
+                <canvas id="piechart2" width="400" max-height="400"></canvas>
+        </div>
+    </div>
 </body>
 </html>
 
@@ -178,20 +193,24 @@
             var a = $(this).children(':selected').attr('id');
             window.location.replace("/Reporting/BookingReport?year=" + a);
         });
-        var myArray = new Array();
-        for (var i = 0; i <= @Model.bookingsreportlist.Count(); i++)
+        var arrayTotal = new Array();
+        @foreach (var item in Model.bookingsreportlist)
         {
-            var b = Model.bookingsreportlist[i].monthname;
-            myArray.push({ b });
-        }
-        var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
-            type: 'line',
+            @:arrayTotal.push(@item.total);
+                                }
+        var arrayMonths = new Array();
+                @foreach (var item in Model.bookingsreportlist)
+        {
+            @:arrayMonths.push('@item.monthname');
+                }
+        var ctx = document.getElementById("linechart");
+        var linechart = new Chart(ctx, {
+            type: 'bar',
             data: {
-                labels: b,
+                labels: arrayMonths,
                 datasets: [{
-                    label: '#Booking per Month',
-                    data: ['@Model.bookingsreportlist[0].total', '@Model.bookingsreportlist[1].total', '@Model.bookingsreportlist[2].total'],
+                    label: '#Bookings: @ViewBag.YearSelected',
+                    data: arrayTotal,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -220,6 +239,53 @@
                     }]
                 }
             }
+        });
+        var data = {
+            labels: [
+                "Students",
+                "Trainers"
+            ],
+            datasets: [
+                {
+                    data: [@Model.Total.studentTotal, @Model.Total.trainerTotal],
+                    backgroundColor: [
+                        "#FF6384",
+                        "#36A2EB"
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF6384",
+                        "#36A2EB"
+                    ]
+                }]
+        };
+        var ptx = document.getElementById("piechart");
+        var myPieChart = new Chart(ptx,{
+            type: 'pie',
+            data: data
+        });
+        var data2 = {
+            labels: [
+                "Discussion Room",
+                "Training Room"
+            ],
+            datasets: [
+                {
+                    data: [@Model.Total.discussionTotal, @Model.Total.trainingTotal],
+                    backgroundColor: [
+                        "#FF6384",
+                        "#FFCE56",
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF6384",
+                        "#FFCE56",
+                        
+                    ]
+                }]
+        };
+        var ptx2 = document.getElementById("piechart2");
+        var myPieChart = new Chart(ptx2, {
+            type: 'pie',
+            data: data2
         });
     });
 </script>
