@@ -4,33 +4,38 @@
     var clashes = (List<Clash>)Session["clashlist"];
 }
 
-<form id="viewClashes" class="form-group">
-    <table id="clashTable">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Timeslot</th>
-                <th>Topic</th>
-                <th>Trainer</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var clash in clashes)
-            {
+<div class="modal-header text-center">
+    <h3 class="modal-title">Existing Clashes</h3>
+</div>
+<div class="modal-body">
+    <form id="viewClashes" class="form-group">
+        <table id="clashTable">
+            <thead>
                 <tr>
-                    <td>@clash.date</td>
-                    <td>@clash.timeslot</td>
-                    <td>@clash.topic</td>
-                    <td>@clash.trainer</td>
-                    <td><a href="mailto:@clash.email">@clash.email</a> </td>
+                    <th>Date</th>
+                    <th>Timeslot</th>
+                    <th>Topic</th>
+                    <th>Trainer</th>
+                    <th>Email</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</form>
-<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
-<hr />
+            </thead>
+            <tbody>
+                @foreach (var clash in clashes)
+                {
+                    <tr>
+                        <td>@clash.date</td>
+                        <td>@clash.timeslot</td>
+                        <td>@clash.topic</td>
+                        <td>@clash.trainer</td>
+                        <td><a href="mailto:@clash.email">@clash.email</a> </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+    <button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+    <hr />
+</div>
 
 <script type="text/javascript">
     //cancel button
