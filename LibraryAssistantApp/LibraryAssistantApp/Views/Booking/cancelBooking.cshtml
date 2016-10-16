@@ -44,7 +44,7 @@
     <hr />
 
         <div class="form-actions no-color">
-            @Html.ActionLink("Back", "ViewBookings", "Booking", htmlAttributes: new { @class = "btn btn-default" })
+            @Html.ActionLink("Back", "ViewBookings", "Booking", htmlAttributes: new { @class = "btn btn-primary" })
             <input type="submit" value="Cancel Booking" class="btn btn-primary" id="btnCancelBooking" />
         </div>
 </div>
@@ -54,8 +54,8 @@
         $(document).ready(function () {
             $('#btnCancelBooking').click(function () {
                 $.ajax({
-                    type: 'GET',
                     url: '/Booking/captureCancel',
+                    type: 'POST',
                     success: function (result) {
                         window.location.href = result;
                     },

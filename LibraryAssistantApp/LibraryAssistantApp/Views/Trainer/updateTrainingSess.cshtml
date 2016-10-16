@@ -1,0 +1,240 @@
+﻿@model LibraryAssistantApp.Models.TrainingDetailsModel
+@using LibraryAssistantApp.Models
+
+@{
+    ViewBag.Title = "Update Training Session";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var buildings = (List<Building>)ViewBag.Buildings;
+    var venues = (List<Venue>)ViewBag.Venues;
+    var statuses = (List<Booking_Status>)ViewBag.Statuses;
+}
+
+<h2>Update Training Session</h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+            <form id="updateTrainingForm" class="form-group">
+                <table>
+                    <tr>
+                        <td><b>Booking Type:</b></td>
+                        <td style="padding-left:10px;padding-bottom:10px">@Model.bookingType</td>
+                    </tr>
+                    <tr>
+                        <td><b>Category:</b></td>
+                        <td style="padding-left:10px;padding-bottom:10px">@Model.category</td>
+                    </tr>
+                    <tr>
+                        <td><b>Topic:</b></td>
+                        <td style="padding-left:10px;padding-bottom:10px">@Model.topic</td>
+                    </tr>
+                    <tr>
+                        <td><b>Date:</b></td>
+                        <td style="padding-left:10px;padding-bottom:10px">@Model.date</td>
+                    </tr>
+                    <tr>
+                        <td><b>Timeslot:</b></td>
+                        <td style="padding-left:10px;padding-bottom:10px">@Model.timeslot</td>
+                    </tr>
+                    <tr>
+                        <td><b>Campus:</b></td>
+                        <td style="padding-left:10px;padding-bottom:10px">@Model.campus</td>
+                    </tr>
+                    <tr>
+                        <td><b>Building:</b></td>
+                        <td style="padding-left:5px;padding-bottom:5px">
+                            <select id="trainingbuildingup" class="form-control" name="building">
+                                @foreach (var building in buildings)
+                                {
+                                    <option id="@building.Building_ID">@building.Building_Name</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Venue:</b></td>
+                        <td style="padding-left:5px;padding-bottom:5px">
+                            <select id="trainingvenueup" class="form-control" name="venue">
+                                @foreach (var venue in venues)
+                                {
+                                    <option id="@venue.Venue_ID">@venue.Venue_Name</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Description:</b></td>
+                        <td style="padding-left:5px;padding-bottom:5px"><input class="form-control" value="@Model.description" id="trainingdesc" name="desc" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>Trainer:</b></td>
+                        <td style="padding-left:5px;padding-bottom:5px">
+                            <div class="input-group">
+                                <input class="form-control" value="@Model.trainer" id="trainingtrainer" name="trainer" readonly />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" id="selecttrainer" type="button"><span class="fa fa-search"></span></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Booking Status:</b></td>
+                        <td style="padding-left:5px;padding-bottom:5px">
+                            <select id="trainingstatus" class="form-control" required>
+                                <option id="Cancelled">Cancelled</option>
+                                <option id="Confirmed">Confirmed</option>
+                                <option id="Tentative">Tentative</option>
+                                <option id="Complete">Complete</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr />
+            <button type="button" class="btn btn-primary" id="updateTraining"><span class="fa fa-floppy-o"></span> Save Changes</button>
+        </div>
+    </div>  
+
+<div id="loading" style="width:100%; height:100%"></div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //set building
+        $("#trainingbuildingup").val("@Model.building");
+
+        //set booking status
+        $("#trainingstatus").val("@Model.status");
+
+        //set venue
+        $("#trainingvenueup").append($("<option selected />").text("@Model.venue").prop('id', "@Model.v_id"));
+
+        //select trainer
+        $("#selecttrainer").click(function () {
+            var target = '/Trainer/selectUpdateTrainer'
+
+            $("#myModal .modal-content").load(target, function () {
+                $("#myModal").modal("show");
+            });
+        })
+
+        //initiate validation
+        $("#updateTrainingForm").validate({
+            rules: {
+                building: "required",
+                venue: "required",
+                trainer: "required",
+                desc: {
+                    required: true,
+                    maxlength: 50,
+                },
+            },
+            errorClass: "my-error-class",
+        });
+
+        //get available venues
+        $("#trainingbuildingup").change(function () {
+            var id = $("#trainingbuildingup").children(":selected").prop('id');
+            $.ajax({
+                url: '/Trainer/getTrainingUpVenues',
+                type: 'get',
+                data: { building: id },
+                success: function (result) {
+                    var options = $("#trainingvenueup");
+
+                    //remove existing options from the select to add new options
+                    options.children().remove();
+
+                    options.append($("<option disabled selected value />").text("-- select venue --"));
+
+                    if (result.length == 0) {
+                        options.children().remove();
+                        options.append($("<option disabled selected value />").text("-- no venue available --"));
+                    }
+
+                    //add an option to the select for each building
+                    result.forEach(function (entry) {
+                        options.append($("<option />").prop('id', entry.id).text(entry.name));
+                    });
+                }
+            })
+        })
+
+        //laoding div
+        var $loading = $('#loading').hide();
+        $(document)
+          .ajaxStart(function () {
+              $loading.show();
+          })
+          .ajaxStop(function () {
+              $loading.hide();
+          });
+
+        //loading div
+        var opts = {
+            lines: 13 // The number of lines to draw
+        , length: 28 // The length of each line
+        , width: 14 // The line thickness
+        , radius: 42 // The radius of the inner circle
+        , scale: 0.3 // Scales overall size of the spinner
+        , corners: 1 // Corner roundness (0..1)
+        , color: '#000' // #rgb or #rrggbb or array of colors
+        , opacity: 0.25 // Opacity of the lines
+        , rotate: 0 // The rotation offset
+        , direction: 1 // 1: clockwise, -1: counterclockwise
+        , speed: 1 // Rounds per second
+        , trail: 60 // Afterglow percentage
+        , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+        , zIndex: 2e9 // The z-index (defaults to 2000000000)
+        , className: 'spinner' // The CSS class to assign to the spinner
+        , top: '50%' // Top position relative to parent
+        , left: '50%' // Left position relative to parent
+        , shadow: false // Whether to render a shadow
+        , hwaccel: false // Whether to use hardware acceleration
+        , position: 'absolute' // Element positioning
+        }
+        var target = document.getElementById('loading')
+        var spinner = new Spinner(opts).spin(target);
+
+        //capture update
+        $("#updateTraining").click(function () {
+            var check = $("#updateTrainingForm").valid();
+            if (check)
+            {
+                $.ajax({
+                    url: '/Trainer/updateTrainingSess',
+                    type: 'post',
+                    data: { status: $("#trainingstatus").children(":selected").prop('id'), venue: $("#trainingvenueup").children(":selected").prop('id'), desc: $("#trainingdesc").val(), trainer: $("#trainingtrainer").val() },
+                    success: function (result) {
+                        if (result) {
+                            window.location.href = "/Trainer/manageTrainingSession";
+                        } else {
+                            $.ambiance({
+                                message: "Invalid training session details!",
+                                title: "Errpr!",
+                                type: "error",
+                                timeout: 5
+                            });
+                        }
+                    }
+                })
+            }
+        })
+    })
+</script>

@@ -146,7 +146,7 @@
                 $("#btnLogAtt").hide();
 
                 $.ajax({
-                    type: 'GET',
+                    type: 'post',
                     url: '/Trainer/submitAttendance',
                     data: { attended: JSON.stringify(checked), document: document },
                     success: function (result) {                       

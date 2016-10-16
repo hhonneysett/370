@@ -217,6 +217,9 @@ namespace LibraryAssistantApp.Controllers
 
                 db.ResetPasswordRequests.Remove(deletePass);
 
+                //create entry in action log
+                global.addAudit("Students", "Student: Reset Password", "Update", Pass.Person_ID);
+
                 db.SaveChanges();
 
                 TempData["Message"] = "Your password has been reset!";

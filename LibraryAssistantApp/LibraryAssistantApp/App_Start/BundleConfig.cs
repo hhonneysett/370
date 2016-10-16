@@ -13,6 +13,7 @@ namespace LibraryAssistantApp
                         "~/Scripts/spin.min.js",
                         "~/Scripts/bxSlider/jquery.bxslider.min.js",
                         "~/Scripts/DataTable/datatables.min.js",
+                        "~/Scripts/jquery.ambiance.js",
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.timepicker.min.js",
                         "~/Scripts/notify.min.js",

@@ -136,6 +136,9 @@ namespace LibraryAssistantApp.Controllers
                 db.Person_Role.Add(personRole);
                 db.SaveChanges();
 
+                //record action
+                global.addAudit("Students", "Students: Registration", "Create", newStudent.Person_ID);
+
                 Session.Remove("newStudent");
                 Session.Remove("OTP");
 
@@ -196,6 +199,10 @@ namespace LibraryAssistantApp.Controllers
 
                     db.Entry(registered_Person).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    //record action
+                    global.addAudit("Students", "Students: Update Profile", "Update", User.Identity.Name);
+
                     TempData["Message"] = "Details successfully updated!";
                     TempData["classStyle"] = "success";
                     return RedirectToAction("Details");
@@ -253,6 +260,10 @@ namespace LibraryAssistantApp.Controllers
                     registered_person.Person_Password = newHashed;
                     db.Entry(registered_person).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    //record action
+                    global.addAudit("Students", "Students: Update Password", "Update", User.Identity.Name);
+
                     TempData["Message"] = "Password updated!";
                     TempData["classStyle"] = "success";
                     return RedirectToAction("Details");
@@ -387,7 +398,7 @@ namespace LibraryAssistantApp.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public void addTopic(int id)
         {
@@ -400,6 +411,9 @@ namespace LibraryAssistantApp.Controllers
 
             db.Person_Topic.Add(newTopic);
             db.SaveChanges();
+
+            //record action
+            global.addAudit("Students", "Students: Add Fav Topic", "Create", User.Identity.Name);
 
             //get list of topics student already favourites
             var favTopics = db.Person_Topic.Where(t => t.Person_ID == User.Identity.Name).Include(t => t.Topic).ToList();
@@ -417,7 +431,7 @@ namespace LibraryAssistantApp.Controllers
             Session["availTopics"] = availableTopics;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public void removeTopic(int id)
         {
@@ -425,6 +439,9 @@ namespace LibraryAssistantApp.Controllers
 
             db.Person_Topic.Remove(removeTop);
             db.SaveChanges();
+
+            //record action
+            global.addAudit("Students", "Students: Remove Fav Topic", "Delete", User.Identity.Name);
 
             //get list of topics student already favourites
             var favTopics = db.Person_Topic.Where(t => t.Person_ID == User.Identity.Name).Include(t => t.Topic).ToList();
