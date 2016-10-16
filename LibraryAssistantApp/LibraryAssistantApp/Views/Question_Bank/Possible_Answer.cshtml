@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Possible Answers as: @ViewBag.Style_Type_ID</h2>
+<h3>Possible Answers</h3>
 
 @Html.Hidden("Topic_Name", (string)ViewBag.Topic_Name, new { id = "Topic_Name" })
 @Html.Hidden("Topic_Des", (string)ViewBag.Topic_Des, new { id = "Topic_Des" })
@@ -15,19 +15,33 @@
 @Html.Hidden("Style_Type_ID", (string)ViewBag.Style_Type_ID, new { id = "Style_Type_ID" })
 @Html.Hidden("NewTopic", (string)ViewBag.NewTopic, new { id = "NewTopic" })
 
+<div class="row" style="padding-top:10px; padding-left:25px">
+    <p><strong>To add answers to this question:</strong></p>
+    <ul style="padding-bottom:5px; padding-top:5px">
+        <li>
+            <p>Provide up to 5 answers in the input boxes below.</p>
+        </li>
+        <li>
+            <p>Click the 'Save Changes' button when you are done.</p>
+        </li>
+    </ul>
+    <p class="text-info"><strong>Note:</strong> this question is of style type: <strong>@ViewBag.Style_Type_ID</strong></p>
+</div>
 
-<div class="panel panel-default">
-    <div class="panel-heading"><h4>Add possible answers</h4></div>
+<h4 class="bg-info shaded">
+    Provide possible answers
+</h4>
+@*<div class="panel panel-default">
     <div class="panel-body">
       
         <div style="text-align:center; padding-bottom: 20px;">
             <h4><u>Question: @ViewBag.Question_Text</u></h4>
-        </div>
+        </div>*@
 
         @Html.Partial("_PossibleAnswer")
 
-            </div>
-        </div>
+            @*</div>
+        </div>*@
               
         
 

@@ -48,9 +48,6 @@ namespace LibraryAssistantApp.Controllers
             db.Campus.Add(newCampus);
             db.SaveChanges();
 
-            //record action
-            global.addAudit("Venues", "Venues: Add Campus", "Create", User.Identity.Name);
-
             var campuses = db.Campus.ToList();
             var jsonObj = (from c in campuses
                            select new
@@ -109,9 +106,6 @@ namespace LibraryAssistantApp.Controllers
                 db.Campus.Remove(campus);
                 db.SaveChanges();
 
-                //record action
-                global.addAudit("Venues", "Venues: Delete Campus", "Delete", User.Identity.Name);
-
                 var campuses = db.Campus.ToList();
                 var jsonObj = (from c in campuses
                                select new
@@ -146,9 +140,6 @@ namespace LibraryAssistantApp.Controllers
             campus.Campus_Name = a;
             db.Entry(campus).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-
-            //record action
-            global.addAudit("Venues", "Venues: Update Campus", "Update", User.Identity.Name);
 
             var campuses = db.Campus.ToList();
             var jsonObj = (from c in campuses
@@ -219,9 +210,6 @@ namespace LibraryAssistantApp.Controllers
             db.Buildings.Add(building);
             db.SaveChanges();
 
-            //record action
-            global.addAudit("Venues", "Venues: Add Building", "Create", User.Identity.Name);
-
             var buildings = db.Buildings.Where(b => b.Campus_ID == idHolder.Campus_ID).ToList();
 
             var jsonObj = from b in buildings
@@ -288,9 +276,6 @@ namespace LibraryAssistantApp.Controllers
                 db.Buildings.Remove(building);
                 db.SaveChanges();
 
-                //record action
-                global.addAudit("Venues", "Venues: Delete Building", "Delete", User.Identity.Name);
-
                 var buildings = db.Buildings.Where(b => b.Campus_ID == idHolder.Campus_ID).ToList();
                 var jsonObj = from b in buildings
                               select new
@@ -332,9 +317,6 @@ namespace LibraryAssistantApp.Controllers
 
             db.Entry(building).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-
-            //record action
-            global.addAudit("Venues", "Venues: Update Building", "Update", User.Identity.Name);
 
             var buildings = db.Buildings.Where(b => b.Campus_ID == idHolder.Campus_ID).ToList();
 
@@ -406,9 +388,6 @@ namespace LibraryAssistantApp.Controllers
             db.Building_Floor.Add(building_floor);
             db.SaveChanges();
 
-            //record action
-            global.addAudit("Venues", "Venues: Add Floor", "Create", User.Identity.Name);
-
             var floors = db.Building_Floor.Where(f => f.Building_ID == idHolder.Building_ID).ToList();
             var jsonObj = from f in floors
                           select new
@@ -459,7 +438,7 @@ namespace LibraryAssistantApp.Controllers
         {
             var idHolder = (Venue)Session["idHolder"];
 
-            var venues = db.Venues.Where(v => v.Building_Floor_ID == idHolder.Building_Floor_ID);
+            var venues = db.Venues.Where(v => v.Building_Floor_ID == idHolder.Building_ID);
 
             if (venues.Any())
                 return Json("CLASH", JsonRequestBehavior.AllowGet);
@@ -469,9 +448,6 @@ namespace LibraryAssistantApp.Controllers
                 db.Building_Floor.Attach(building_floor);
                 db.Building_Floor.Remove(building_floor);
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Delete Floor", "Delete", User.Identity.Name);
 
                 var buildingFloors = db.Building_Floor.Where(f => f.Building_ID == idHolder.Building_ID).ToList();
                 var jsonObj = from f in buildingFloors
@@ -610,9 +586,6 @@ namespace LibraryAssistantApp.Controllers
             db.Venues.Add(venue);
             db.SaveChanges();
 
-            //record action
-            global.addAudit("Venues", "Venues: Add Venue", "Create", User.Identity.Name);
-
             foreach (int characteristic in characteristics)
             {
                 var ch = new Venue_Characteristic
@@ -701,9 +674,6 @@ namespace LibraryAssistantApp.Controllers
                 db.Venues.Remove(venue);
 
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Delete Venue", "Delete", User.Identity.Name);
 
                 var venues = db.Venues.Where(v => v.Building_Floor_ID == idHolder.Building_Floor_ID).ToList();
                 var jsonObj = (from v in venues
@@ -805,9 +775,6 @@ namespace LibraryAssistantApp.Controllers
             }
 
             db.SaveChanges();
-
-            //record action
-            global.addAudit("Venues", "Venues: Update Venue", "Update", User.Identity.Name);
 
             var venues = db.Venues.Where(v => v.Building_Floor_ID == idHolder.Building_Floor_ID).ToList();
             var jsonObj = (from v in venues
@@ -1035,9 +1002,6 @@ namespace LibraryAssistantApp.Controllers
 
             db.Venue_Problem.Add(vp);
             db.SaveChanges();
-
-            //record action
-            global.addAudit("Venues", "Venues: Add Venue Problem", "Create", User.Identity.Name);
         }
 
         //view venue problems
@@ -1102,10 +1066,6 @@ namespace LibraryAssistantApp.Controllers
             problem.Person_ID_Closed = User.Identity.Name;
             db.Entry(problem).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-
-            //record action
-            global.addAudit("Venues", "Venues: Resolve Problem", "Update", User.Identity.Name);
-
             return id.ToString();
         }
 
@@ -1129,9 +1089,6 @@ namespace LibraryAssistantApp.Controllers
 
                 db.Common_Problem_Type.Add(type);
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Add Problem Type", "Create", User.Identity.Name);
 
                 return RedirectToAction("viewProblemTypes");
             }
@@ -1174,10 +1131,6 @@ namespace LibraryAssistantApp.Controllers
                 db.Common_Problem_Type.Attach(type);
                 db.Common_Problem_Type.Remove(type);
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Delete Problem Types", "Delete", User.Identity.Name);
-
                 return RedirectToAction("viewProblemTypes");
             }
             
@@ -1198,10 +1151,6 @@ namespace LibraryAssistantApp.Controllers
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Update Problem Types", "Update", User.Identity.Name);
-
                 return RedirectToAction("viewProblemTypes");
             }
             else return View();
@@ -1230,10 +1179,6 @@ namespace LibraryAssistantApp.Controllers
             {
                 db.Common_Problem.Add(model);
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Add Common Problem", "Create", User.Identity.Name);
-
                 return RedirectToAction("viewCommonProblems");
             }
             else return View();         
@@ -1269,10 +1214,6 @@ namespace LibraryAssistantApp.Controllers
 
                 db.Entry(problem).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Update Common Problem", "Update", User.Identity.Name);
-
                 return RedirectToAction("viewCommonProblems");
             }
             else
@@ -1310,11 +1251,6 @@ namespace LibraryAssistantApp.Controllers
                 var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == id).FirstOrDefault();
                 db.Common_Problem.Attach(problem);
                 db.Common_Problem.Remove(problem);
-                db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Delete Common Problem", "Delete", User.Identity.Name);
-
                 return RedirectToAction("viewCommonProblems");
             }
         }
@@ -1332,12 +1268,6 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
-        //add characteristic - partial
-        public PartialViewResult addVenueCharacteristic()
-        {
-            return PartialView();
-        }
-
         //add characteristic - post
         [HttpPost]
         public ActionResult addCharacteristic(Characteristic model)
@@ -1346,10 +1276,6 @@ namespace LibraryAssistantApp.Controllers
             {
                 db.Characteristics.Add(model);
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Add Characteristic", "Create", User.Identity.Name);
-
                 return RedirectToAction("viewCharacteristics");
             }
             else
@@ -1380,10 +1306,6 @@ namespace LibraryAssistantApp.Controllers
             c.Description = model.description;
             db.Entry(c).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-
-            //record action
-            global.addAudit("Venues", "Venues: Update Characteristic", "Update", User.Identity.Name);
-
             return RedirectToAction("viewCharacteristics");
         }
 
@@ -1415,10 +1337,6 @@ namespace LibraryAssistantApp.Controllers
                 db.Characteristics.Attach(c);
                 db.Characteristics.Remove(c);
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Venues", "Venues: Delete Characteristic", "Delete", User.Identity.Name);
-
                 TempData["Message"] = "Characteristic Succesfully Deleted";
                 TempData["classStyle"] = "success";
                 return RedirectToAction("viewCharacteristics");

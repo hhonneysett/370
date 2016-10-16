@@ -176,8 +176,8 @@ namespace LibraryAssistantApp.Controllers
                         db.Person_Session_Action_Log.Add(psal);
                         db.SaveChanges();
                         // -------------------------------Action Log ----------------------------------------//
-
-
+                        ViewBag.Description = question_Topic.Description;
+                        ViewBag.Name = question_Topic.Topic_Name;
                         ViewBag.Topic = question_Topic.Topic_Seq;
                         return View("Edit_Some_More");
                     }
@@ -207,6 +207,7 @@ namespace LibraryAssistantApp.Controllers
                     db.SaveChanges();
                     // -------------------------------Action Log ----------------------------------------//
 
+                    ViewBag.Name = question_Topic.Topic_Name;
                     ViewBag.Topic = question_Topic.Topic_Seq;
                     return View("Edit_Some_More");
                 }                             

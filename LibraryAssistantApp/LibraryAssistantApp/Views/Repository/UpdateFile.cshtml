@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "UpdateFile";
+    Layout = (string)Session["layout"];
 }
 
 <h2>Update File</h2>
@@ -58,8 +59,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Back", "ViewFile", "Repository", htmlAttributes: new { @class = "btn btn-primary" })
-                <input type="submit" value="Save Changes" class="btn btn-primary" />
+                @Html.ActionLink("Back", "ViewFile", "Repository", htmlAttributes: new { @class = "btn btn-default" })
+                <input type="submit" value="Save Changes" class="btn btn-default" />
             </div>
         </div>
     </div>

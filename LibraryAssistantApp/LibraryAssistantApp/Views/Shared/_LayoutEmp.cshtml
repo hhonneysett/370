@@ -169,17 +169,11 @@
                     @{
                         if (Request.IsAuthenticated)
                         {
-                            <a href="/Account/Logout" aria-expanded="false">
-                                <span class="navbar-custom-item-icon fa fa-sign-out fa-fw"></span>
-                                Logout
-                            </a>
+                            @Html.ActionLink("Logout", "Logout", "Account")
                         }
                         else
                         {
-                            <a href="/Account/Login" aria-expanded="false">
-                                <span class="navbar-custom-item-icon fa fa-sign-in fa-fw"></span>
-                                Login
-                            </a>
+                            @Html.ActionLink("Login", "Login", "Account")
                         }
                     }
                 </li>

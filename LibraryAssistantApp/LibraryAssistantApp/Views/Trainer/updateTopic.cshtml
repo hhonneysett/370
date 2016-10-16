@@ -2,7 +2,8 @@
     @using LibraryAssistantApp.Models
 
 @{
-    ViewBag.Title = "Update Topic";
+    ViewBag.Title = "updateTopic";
+    Layout = (string)Session["layout"];
     var category = (IEnumerable<Category>)ViewBag.Category;
 }
 
@@ -48,9 +49,9 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Back", "viewTopic", "Trainer", htmlAttributes: new { @class = "btn btn-primary" })
-                <input type="submit" value="Save" class="btn btn-primary" name="submitButton"/>
-                <input type="submit" value="Delete Topic" class="btn btn-primary" name="submitButton" />
+                @Html.ActionLink("Back", "viewTopic", "Trainer", htmlAttributes: new { @class = "btn btn-default" })
+                <input type="submit" value="Save" class="btn btn-default" name="submitButton"/>
+                <input type="submit" value="Delete Topic" class="btn btn-default" name="submitButton" />
             </div>
         </div>
     </div>

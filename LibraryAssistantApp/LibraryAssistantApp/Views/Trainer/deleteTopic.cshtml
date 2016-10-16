@@ -2,7 +2,8 @@
     @using LibraryAssistantApp.Models
 
 @{
-    ViewBag.Title = "Delete Topic";
+    ViewBag.Title = "deleteTopic";
+    Layout = (string)Session["layout"];
     var category = (Category)ViewBag.Category;
 }
 
@@ -35,7 +36,7 @@
 
         <div class="form-actions no-color">
             @Html.ActionLink("Back", "viewTopic", "Trainer", htmlAttributes: new { @class = "btn btn-default" })
-            <input type="submit" value="Delete" class="btn btn-primary" />
+            <input type="submit" value="Delete" class="btn btn-default" />
         </div>
     }
 </div>

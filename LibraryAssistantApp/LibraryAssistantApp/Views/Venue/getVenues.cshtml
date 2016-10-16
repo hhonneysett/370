@@ -67,19 +67,15 @@
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" id="btnAddVenue" data-toggle="modal" data-target="#myModal">Add Venue</button>
+                <button class="btn btn-default btn-block" id="btnAddVenue" data-toggle="modal" data-target="#myModal">Add Venue</button>
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateVenue">Update Venue</button>
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnUpdateVenue">Update Venue</button>
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteVenue">Delete Venue</button>
-            </div>
-
-            <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" id="btnAddCharacteristicVenue">Add Characteristic</button>
+                <button class="btn btn-default btn-block" style="padding-bottom:10px" disabled id="btnDeleteVenue">Delete Venue</button>
             </div>
         </div>
 
@@ -109,15 +105,6 @@
     //update a venue modal
     $("#btnUpdateVenue").click(function () {
         var target = '/Venue/updateVenue/?id=' + $("#venueTable tbody tr.alert-info").prop('id')
-
-        $("#myModal .modal-body").load(target, function () {
-            $("#myModal").modal("show");
-        });
-    })
-
-    //add characteristic
-    $("#btnAddCharacteristicVenue").click(function () {
-        var target = '/Venue/addVenueCharacteristic';
 
         $("#myModal .modal-body").load(target, function () {
             $("#myModal").modal("show");

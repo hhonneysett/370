@@ -11,7 +11,7 @@
     <table>
         <tr>
             <td><b>Campus:</b></td>
-            <td style="padding-left:5px; padding-bottom:5px">
+            <td style="padding-left:5px">
                 <select id="updateBuildingFloorCampusSelect" class="form-control">
                     @foreach (var campus in campuses)
                     {
@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <td><b>Building:</b></td>
-            <td style="padding-left:5px; padding-bottom:5px">
+            <td style="padding-left:5px">
                 <select id="updateBuildingFloorBuildingSelect" class="form-control">
                     @foreach (var building in buildings)
                     {
@@ -33,12 +33,12 @@
         </tr>
         <tr>
             <td><b>Building Name:</b></td>
-            <td style="padding-left:5px; padding-bottom:5px">@Html.EditorFor(model => model.Floor_Name, new { htmlAttributes = new { @class = "form-control", @id = "floorName" } })</td>
+            <td style="padding-left:5px">@Html.EditorFor(model => model.Floor_Name, new { htmlAttributes = new { @class = "form-control", @id = "floorName" } })</td>
         </tr>
     </table>
 </form>
-<button class="btn btn-primary" id="btnConfirmBuildingFloorUpdate">Update Building</button>
-<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+<button class="btn btn-default" id="btnConfirmBuildingFloorUpdate">Update Building</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
 <hr />
 
 <script src="~/Scripts/jquery.ambiance.js"></script>
@@ -61,7 +61,6 @@
         rules: {
             Floor_Name: {
                 required: true,
-                maxlength: 30,
                 remote: {
                     url: '/Venue/checkUpdateFloor',
                     type: 'get',
@@ -157,9 +156,6 @@
                         type: "success",
                         timeout: 5
                     });
-
-                    //hide further divs
-                    $("#venues").hide(800);
                 },
                 error: function (err, result) {
                     alert("Error in assigning dataToSave" + err.responseText);

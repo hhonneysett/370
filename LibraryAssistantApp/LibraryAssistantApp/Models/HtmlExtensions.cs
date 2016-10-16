@@ -33,14 +33,13 @@ namespace LibraryAssistantApp.Models
 
         private static MvcHtmlString FormatNotification(string message, string classStyle)
         {
-            var row = new TagBuilder("div");
+            var row = new TagBuilder("div message");
             var col = new TagBuilder("div");
             var span1 = new TagBuilder("span");
             var span2 = new TagBuilder("span");
             col.AddCssClass("alert alert-" + classStyle);
             span1.AddCssClass("glyphicon glyphicon-exclamation-sign");
             span2.AddCssClass("sr-only");
-            row.AddCssClass("serverMessage col-md-3 pull-right");
             span2.SetInnerText("Error:");
             col.InnerHtml = span1.ToString() + span2.ToString() + " " + message;
             row.InnerHtml = col.ToString();
