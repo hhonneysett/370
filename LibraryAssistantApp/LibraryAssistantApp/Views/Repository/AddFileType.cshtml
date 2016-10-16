@@ -5,6 +5,7 @@
 }
 
 <h2>Add File Type</h2>
+<h4 class="bg-info shaded">Provide the new file type details below:</h4>
 
 @using (Html.BeginForm()) 
 {
@@ -16,7 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Type_Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Type_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Type_Name, new { htmlAttributes = new { @class = "form-control", @title = "Enter file type name." } })
                 @Html.ValidationMessageFor(model => model.Type_Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -24,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @title = "Enter file type description." } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>

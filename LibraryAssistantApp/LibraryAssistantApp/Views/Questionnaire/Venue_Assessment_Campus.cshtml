@@ -18,63 +18,21 @@
 <div>
     <h3>Campus selection</h3>
 </div>
-
-<div class="col-md-6">
-    <h4 class="bg-info shaded">
-        Questionnaire Details
-    </h4>
-    <div class="panel panel-default">
-        <table class="table table-striped table-bordered">
-            <thead>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><label>Name</label></td>
-                    <td>@ViewBag.Name</td>
-                </tr>
-
-                <tr>
-                    <td><label>Description</label></td>
-                    <td>@ViewBag.Description</td>
-                </tr>
-
-                <tr>
-                    <td><label>Activates on</label></td>
-                    <td>@ViewBag.Active_From</td>
-                </tr>
-                <tr>
-                    <td><label>Expires on</label></td>
-                    <td>@ViewBag.Active_To</td>
-                </tr>
-                <tr>
-                    <td><label>Assessment Type</label></td>
-                    <td>@ViewBag.Assessment_Type</td>
-                </tr>
-                <tr>
-                    <td><label>Topic</label></td>
-                    <td>@ViewBag.TopicName</td>
-                </tr>
-
-
-            </tbody>
-        </table>
-    </div>
+<div class="row" style="padding-top:0px; padding-left:25px">
+    <p><strong>Instructions:</strong></p>
+    <ul style="padding-bottom:5px; padding-top:5px">
+        <li>
+            <p>Select the campus to be assessed.</p>
+        </li>
+        <li>
+            <p>Click the 'Proceed' button.</p>
+        </li>
+    </ul>
 </div>
 
-    <div>
-        <label class="text-danger" id="Error"></label>
-    </div>
-    <div class="row" style="padding-top:0px; padding-left:25px">
-        <p><strong>Instructions:</strong></p>
-        <ul style="padding-bottom:5px; padding-top:5px">
-            <li>
-                <p>Select the campus to be assessed.</p>
-            </li>
-            <li>
-                <p>Click the 'Proceed' button.</p>
-            </li>
-        </ul>
-    </div>
+
+   
+  <div class="row">
     <div class="col-md-6">
         <h4 class="bg-info shaded">
             List of Campuses
@@ -115,24 +73,80 @@
                             }
             </table>
         </div>
-        <div class="form-group">
-            @if (ViewBag.Edit_or_New != "Edit")
-            {
-                <div class="btn-group">
-                    <input title="Return to the 'Create Questionnaire' screen." type="submit" class="btn btn-primary " value="Back" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />
-                </div>
-                <div class="btn-group">
-                    <input title="Proceed to select the building." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
-                </div>
-            }
-            else
-            {
-                <div class="btn-group">
-                    <input title="Proceed to select the building." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
-                </div>
-            }
-        </div>
+       
     </div>
+
+
+
+      <div class="col-md-6">
+          <h4 class="bg-info shaded">
+              Questionnaire Details
+          </h4>
+          <div class="panel panel-default">
+              <table class="table table-striped table-bordered">
+                  <thead>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td><label>Name</label></td>
+                          <td>@ViewBag.Name</td>
+                      </tr>
+
+                      <tr>
+                          <td><label>Description</label></td>
+                          <td>@ViewBag.Description</td>
+                      </tr>
+
+                      <tr>
+                          <td><label>Activates on</label></td>
+                          <td>@ViewBag.Active_From</td>
+                      </tr>
+                      <tr>
+                          <td><label>Expires on</label></td>
+                          <td>@ViewBag.Active_To</td>
+                      </tr>
+                      <tr>
+                          <td><label>Assessment Type</label></td>
+                          <td>@ViewBag.Assessment_Type</td>
+                      </tr>
+                      <tr>
+                          <td><label>Topic</label></td>
+                          <td>@ViewBag.TopicName</td>
+                      </tr>
+
+
+                  </tbody>
+              </table>
+          </div>
+      </div>
+
+
+</div>
+
+<div class="form-group">
+    @if (ViewBag.Edit_or_New != "Edit")
+            {
+        <div class="btn-group">
+            <input title="Return to the 'Create Questionnaire' screen." type="submit" class="btn btn-primary " value="Back" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />
+        </div>
+                <div class="btn-group">
+                    <input title="Proceed to select the building." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
+                </div>
+    }
+    else
+    {
+        <div class="btn-group">
+            <input title="Proceed to select the building." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
+        </div>
+    }
+    <div>
+        <label class="text-danger" id="Error"></label>
+    </div>
+</div>
+
+
+
+
 
     <script>
         function Submit() {

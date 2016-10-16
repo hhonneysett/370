@@ -19,76 +19,119 @@
 @Html.Hidden("SelectedBuilding", (int)ViewBag.SelectedBuilding, new { id = "SelectedBuilding" })
 @Html.Hidden("SelectedBuildingFloor", (int)ViewBag.SelectedBuildingFloor, new { id = "SelectedBuildingFloor" })
 
-<h3 >Venue Selection</h3>
-<div>
-    <label class="text-danger" id="Error"></label>
-</div>
-<div class="row" style="padding-top:0px; padding-left:25px">
-    <p><strong>Instructions:</strong></p>
-    <ul style="padding-bottom:5px; padding-top:5px">
-        <li>
-            <p>Select a venue.</p>
-        </li>
-        <li>
-            <p>Click the 'Proceed' button.</p>
-        </li>
-    </ul>
-</div>
-@*<h4 data_toggle = "tooltip" title = "Your current selection of Campus >> Building >> BuildingFloor" style="float: right" ; display: inline-block;">Selected: @ViewBag.SelectedCampusName >> @ViewBag.SelectedBuildingName >> Level @ViewBag.SelectedBuildingFloorName</h4>*@
+<h3>Venue Selection</h3>
+
 
 <div class="row">
+    <div class="col-md-6">
+        <p><strong>Instructions:</strong></p>
+        <ul style="padding-bottom:5px; padding-top:5px">
+            <li>
+                <p>Select a venue.</p>
+            </li>
+            <li>
+                <p>Click the 'Proceed' button.</p>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="col-md-6">
+        <h5 class="bg-info shaded">
+            Venue Details
+        </h5>
+        <div class="panel panel-default">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            Campus
+                        </th>
+                        <th>
+                            Building
+                        </th>
+                        <th>
+                            Floor
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @ViewBag.SelectedCampusName
+                        </td>
+                        <td>
+                            @ViewBag.SelectedBuildingName
+                        </td>
+                        <td>
+                            @ViewBag.SelectedBuildingFloorName
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    @*<h4 data_toggle = "tooltip" title = "Your current selection of Campus >> Building >> BuildingFloor" style="float: right" ; display: inline-block;">Selected: @ViewBag.SelectedCampusName >> @ViewBag.SelectedBuildingName >> Level @ViewBag.SelectedBuildingFloorName</h4>*@
+
+    <div class="row">
     <div class="col-md-6">
         <h5 class="bg-info shaded">
             List of Venues for Building Floor: <strong>@ViewBag.SelectedBuildingFloorName</strong>
         </h5>
         <div class="panel panel-default">
-                    <table class="table table-bordered">
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        Venue
+                    </th>
+                    <th style="text-align:center;">
+                        Selected
+                    </th>
+                </tr>
+
+
+                @if (Model.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="2">There are no venues for the selected building floor</td>
+                    </tr>
+                }
+                else
+                {
+
+
+                    int i = 0;
+                    foreach (var item in Model)
+                    {
                         <tr>
-                            <th>
-                                Venue
-                            </th>
-                            <th style="text-align:center;">
-                                Selected
-                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Venue_Name)
+                            </td>
+                            @if (ViewBag.SelectedVenue == item.Venue_ID)
+                            {
+                                <td style="text-align:center;">
+                                    <input checked="checked" type="radio" name="radio" id="Venue @i" value="@item.Venue_ID" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="text-align:center;">
+                                    <input type="radio" name="radio" id="Venue @i" value="@item.Venue_ID" />
+                                </td>
+                            }
+
+                            @{i++;}
                         </tr>
 
-
-                        @if (Model.Count() == 0)
-                        {
-                            <tr>
-                                <td colspan="2">There are no venues for the selected building floor</td>
-                            </tr>
-                        }
-                        else
-                        {
-
-
-                            int i = 0;
-                            foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Venue_Name)
-                                    </td>
-                                    @if (ViewBag.SelectedVenue == item.Venue_ID)
-                                    {
-                                        <td style="text-align:center;">
-                                            <input checked="checked" type="radio" name="radio" id="Venue @i" value="@item.Venue_ID" />
-                                        </td>
                                     }
-                                    else
-                                    {
-                                        <td style="text-align:center;">
-                                            <input type="radio" name="radio" id="Venue @i" value="@item.Venue_ID" />
-                                        </td>
-                                    }
-
-                                    @{i++;}
-                                </tr>
-
-                                            }
-                                        }
-                    </table>
+                                }
+            </table>
         </div>
     </div>
 
@@ -134,101 +177,74 @@
             </table>
         </div>
     </div>
+</div>
 
 
 
-    <div class="col-md-6">
-        <h5 class="bg-info shaded">
-            Venue Details
-        </h5>
-        <div class="panel panel-default">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>
-                            Campus
-                        </th>
-                        <th>
-                            Building
-                        </th>
-                        <th>
-                            Floor
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            @ViewBag.SelectedCampusName
-                        </td>
-                        <td>
-                            @ViewBag.SelectedBuildingName
-                        </td>
-                        <td>
-                            @ViewBag.SelectedBuildingFloorName
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
+
+
+       
+    <div class="btn-group">
+        <input title="Return to the 'Select Buidling floor' screen." type="submit" class="btn btn-primary " value="Back" onclick="location.href='@Url.Action("Back_From_Venue","Questionnaire", new {ViewBag.SelectedBuildingFloor, ViewBag.SelectedBuilding, ViewBag.SelectedCampus, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic, ViewBag.Edit_or_New})'" />
     </div>
-</div>
-<div class="btn-group">
-    <input title="Return to the 'Select Buidling floor' screen." type="submit" class="btn btn-primary " value="Back" onclick="location.href='@Url.Action("Back_From_Venue","Questionnaire", new {ViewBag.SelectedBuildingFloor, ViewBag.SelectedBuilding, ViewBag.SelectedCampus, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic, ViewBag.Edit_or_New})'" />
-</div>
-<div class="btn-group">
-    <input title="Submit the selected venue and proceed to assign questions to the questionnaire." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
-</div>
+    <div class="btn-group">
+        <input title="Submit the selected venue and proceed to assign questions to the questionnaire." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
+    </div>
 
-<script>
-    function Submit() {
-        var count = document.getElementById("Count").value;
-        var Selected = "";
-        document.getElementById("Error").innerHTML = "";
-        var Answered = "False";
+    <div>
+        <label class="text-danger" id="Error"></label>
+    </div>
+
+    <script>
+        function Submit() {
+            var count = document.getElementById("Count").value;
+            var Selected = "";
+            document.getElementById("Error").innerHTML = "";
+            var Answered = "False";
 
 
-        for (var i = 0; i < count; i++) {
-            var Name = "Venue " + i;
-            if (document.getElementById(Name).checked) {
-                Answered = "True";
-                Selected = document.getElementById("Venue " + i).value;
+            for (var i = 0; i < count; i++) {
+                var Name = "Venue " + i;
+                if (document.getElementById(Name).checked) {
+                    Answered = "True";
+                    Selected = document.getElementById("Venue " + i).value;
+                }
             }
-        }
-        if (Answered == "True") {
-            var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
-            var Name = document.getElementById("Name").value;
-            var Description = document.getElementById("Description").value;
-            var Active_From = document.getElementById("Active_From").value;
-            var Active_To = document.getElementById("Active_To").value;
-            var Assessment_Type = document.getElementById("Assessment_Type").value;
-            var Topic = document.getElementById("Topic").value;
-            var Edit_or_New = document.getElementById("Edit_or_New").value;
-            var SelectedCampus = document.getElementById("SelectedCampus").value;
-            var SelectedBuilding = document.getElementById("SelectedBuilding").value;
-            var SelectedBuildingFloor = document.getElementById("SelectedBuildingFloor").value;
+            if (Answered == "True") {
+                var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
+                var Name = document.getElementById("Name").value;
+                var Description = document.getElementById("Description").value;
+                var Active_From = document.getElementById("Active_From").value;
+                var Active_To = document.getElementById("Active_To").value;
+                var Assessment_Type = document.getElementById("Assessment_Type").value;
+                var Topic = document.getElementById("Topic").value;
+                var Edit_or_New = document.getElementById("Edit_or_New").value;
+                var SelectedCampus = document.getElementById("SelectedCampus").value;
+                var SelectedBuilding = document.getElementById("SelectedBuilding").value;
+                var SelectedBuildingFloor = document.getElementById("SelectedBuildingFloor").value;
 
-            if (Edit_or_New == "Edit") {
-                window.location.href = "/Questionnaire/UpdateSelectedVenue?Venue_ID=" + Selected + "&SelectedBuildingFloor=" + SelectedBuildingFloor + "&SelectedBuilding=" + SelectedBuilding + "&SelectedCampus=" + SelectedCampus + "&Questionnaire_ID=" + Questionnaire_ID
+                if (Edit_or_New == "Edit") {
+                    window.location.href = "/Questionnaire/UpdateSelectedVenue?Venue_ID=" + Selected + "&SelectedBuildingFloor=" + SelectedBuildingFloor + "&SelectedBuilding=" + SelectedBuilding + "&SelectedCampus=" + SelectedCampus + "&Questionnaire_ID=" + Questionnaire_ID
+                }
+                else {
+                    window.location.href = "/Questionnaire/SelectedVenue?Venue_ID=" + Selected + "&SelectedBuildingFloor=" + SelectedBuildingFloor + "&SelectedBuilding=" + SelectedBuilding + "&SelectedCampus=" + SelectedCampus + "&Questionnaire_ID=" + Questionnaire_ID + "&Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic=" + Topic;
+                }
+
+
+
             }
             else {
-                window.location.href = "/Questionnaire/SelectedVenue?Venue_ID=" + Selected + "&SelectedBuildingFloor=" + SelectedBuildingFloor + "&SelectedBuilding=" + SelectedBuilding + "&SelectedCampus=" + SelectedCampus + "&Questionnaire_ID=" + Questionnaire_ID + "&Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic=" + Topic;
+                document.getElementById("Error").innerHTML = "Please select a venue to continue";
             }
 
-
-
-        }
-        else {
-            document.getElementById("Error").innerHTML = "Please select a venue to continue";
         }
 
-    }
-
-</script>
+    </script>
 
 
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>

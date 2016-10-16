@@ -5,43 +5,57 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>File Categories</h2>
+<h2>Manage File Categories</h2>
+<hr />
 
-<p>
-    @Html.ActionLink("Create New", "addFileCategory")
-</p>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <table class="table table-bordered" id="catTable">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Category_Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+<div class="row">
+    <div class="col-md-12">
+        <p class="text-muted"><b>Instuctions:</b></p>
+        <ul class="text-muted" style="padding-bottom:10px">
+            <li>Update or delete a file category by selecting an option.</li>
+            <li>Add a new file category by clicking the 'Add File' button.</li>
+        </ul>
+        <h4 class="bg-info shaded">Existing file categories:</h4>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-bordered" id="catTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Category_Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
             {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "updateFileCategory", new { id = item.Category_ID }) |
-                            @Html.ActionLink("Delete", "deleteFileCategory", new { id = item.Category_ID })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "updateFileCategory", new { id = item.Category_ID }) |
+                                    @Html.ActionLink("Delete", "deleteFileCategory", new { id = item.Category_ID })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @Html.ActionLink("Create New", "addFileCategory", null, new { @class = "btn btn-primary"})
     </div>
 </div>
 

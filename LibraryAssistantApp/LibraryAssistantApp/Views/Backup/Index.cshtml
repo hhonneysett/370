@@ -1,0 +1,247 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Backup and Restore</h3>
+<hr />
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4 class="bg-info shaded">Backup System</h4>
+        <p style="padding-bottom:15px; padding-top:15px; padding-left:15px">Backup the current state of the system.</p>
+        <div class="form-group">
+            <div class="btn-group">
+                <div class="col-md-offset-4 col-md-6">
+                    <input id="btn-backup" type="button" value="Backup" class="btn btn-primary" title="Backs up current state of the system."/>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <h4 class="bg-info shaded">Restore System</h4>
+        <p style="padding-top:15px; padding-left:15px">Restore the system to a previous state.</p>
+        <ul style="padding-top:15px; padding-bottom:15px;">
+            <li>
+                <p>Choose a backup file with the extension '.bak'.</p>
+            </li>
+            <li>
+                <p>Click the 'Restore' button once a backup file has been selected.</p>
+            </li>
+        </ul>
+        <div class="form-group">
+            <div class="btn-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input id="btn-select" type="file" class="btn btn-default" title="Choose a valid LibraryAssistant_*.bak file."/>
+                </div>
+            </div>
+            <div class="btn-group" style="padding-left:15px">
+                <div class="col-md-offset-2 col-md-6">
+                    <input id="btn-restore" type="button" value="Restore" class="btn btn-primary" title="Restores the system to the state of the .bak file chosen."/>
+                </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+}
+<div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
+
+<script>
+    $(document).ready(function () {
+        $('#btn-backup').click(function (event) {
+            event.preventDefault();
+            bootbox.confirm({
+                title: "Backup database?",
+                message: "Do you want to backup the system database?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '@Url.Action("BackupDatabase", "Backup")',
+                            beforeSend: function () {
+                                $('.loading').show();
+                            },
+                            success: function (result) {
+                                if (result)
+                                {
+                                    bootbox.alert({
+                                        message: "The database has been backed up successfully.",
+                                        size: 'small',
+                                        callback: (function () {
+                                            var n = noty({
+                                                layout: 'topRight',
+                                                text: 'Success! The system has been backed up.',
+                                                type: 'success',
+                                                animation: {
+                                                    open: 'animated bounceInRight',
+                                                    close: 'animated bounceOutRight',
+                                                    easing: 'swing',
+                                                    speed: 500
+                                                },
+                                                timeout: 5000,
+                                            });
+                                        })
+                                    })
+                                }
+                                if (!result)
+                                {
+                                    bootbox.alert({
+                                        message: "Something went wrong! Try again, or contact a database administrator.",
+                                        size: 'small'
+                                    });
+                                }
+                            }
+                        }).done(function () {
+                            $('.loading').hide();
+                        });
+                    }
+                }
+            });
+        })
+        $('#btn-restore').click(function (event) {
+            event.preventDefault();
+            bootbox.confirm({
+                title: "Restore database?",
+                message: "Are you sure you want to restore database with the selected backup file?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        var a = $('#btn-select').val();
+                        $.ajax({
+                            type: 'GET',
+                            data: { path : JSON.stringify(a) },
+                            url: '@Url.Action("RestoreDatabase", "Backup")',
+                            beforeSend: function () {
+                                $('.loading').show();
+                            },
+                            success: function (result) {
+                                if (result == true)
+                                {
+                                    bootbox.alert({
+                                        message: "The database has been restored successfully.",
+                                        size: 'small',
+                                        callback: (function () {
+                                            var n = noty({
+                                                layout: 'topRight',
+                                                text: 'Success!. The system has been restored.',
+                                                type: 'success',
+                                                animation: {
+                                                    open: 'animated bounceInRight',
+                                                    close: 'animated bounceOutRight',
+                                                    easing: 'swing',
+                                                    speed: 500
+                                                },
+                                                timeout: 5000,
+                                            });
+                                        })
+                                    })
+                                }
+                                if (result == false)
+                                {
+                                    bootbox.alert({       
+                                        message: "Something went wrong! The could be invalid, or the user failed to log in to the database server. <b/> File: " + a,
+                                        size: 'small',
+                                        callback: (function () {
+                                            var n = noty({
+                                                layout: 'topRight',
+                                                text: 'Operation terminated.',
+                                                type: 'error',
+                                                animation: {
+                                                    open: 'animated bounceInRight',
+                                                    close: 'animated bounceOutRight',
+                                                    easing: 'swing',
+                                                    speed: 500
+                                                },
+                                                timeout: 5000,
+                                            });
+                                        })
+                                    });
+                                }
+                                if (result == "extension")
+                                {
+                                    bootbox.alert({
+                                        message: "File is invalid. Please ensure the file has a '.bak' extension. <b/> File:" + a,
+                                        size: 'small',
+                                        callback: (function () {
+                                            var n = noty({
+                                                layout: 'topRight',
+                                                text: 'Operation terminated.',
+                                                type: 'error',
+                                                animation: {
+                                                    open: 'animated bounceInRight',
+                                                    close: 'animated bounceOutRight',
+                                                    easing: 'swing',
+                                                    speed: 500
+                                                },
+                                                timeout: 5000,
+                                            });
+                                        })
+                                    });
+                                }
+                                if (result == "log") {
+                                    bootbox.alert({
+                                        message: "File is invalid. Make sure the file is a backup of Library Assistant and not a Log file. <b/> File: " + a,
+                                        size: 'small',
+                                        callback: (function () {
+                                            var n = noty({
+                                                layout: 'topRight',
+                                                text: 'Operation terminated.',
+                                                type: 'error',
+                                                animation: {
+                                                    open: 'animated bounceInRight',
+                                                    close: 'animated bounceOutRight',
+                                                    easing: 'swing',
+                                                    speed: 500
+                                                },
+                                                timeout: 5000,
+                                            });
+                                        })
+                                    });
+                                }
+                                if (result == "library") {
+                                    bootbox.alert({
+                                        message: "File is invalid. Make sure the file is a backup of Library Assistant. <b/> File: " + a,
+                                        size: 'small',
+                                        callback: (function () {
+                                            var n = noty({
+                                                layout: 'topRight',
+                                                text: 'Operation terminated.',
+                                                type: 'error',
+                                                animation: {
+                                                    open: 'animated bounceInRight',
+                                                    close: 'animated bounceOutRight',
+                                                    easing: 'swing',
+                                                    speed: 500
+                                                },
+                                                timeout: 5000,
+                                            });
+                                        })
+                                    });
+                                }
+                            }
+                        }).done(function () {
+                            $('.loading').hide();
+                        });
+                    }
+                }
+            });
+        })
+    })
+</script>

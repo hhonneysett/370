@@ -5,6 +5,7 @@
 }
 
 <h2>Add File</h2>
+<h4 class="bg-info shaded">Provide the new file details below:</h4>
 
 @using (Html.BeginForm("AddFile", "Repository", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -16,7 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Document_Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Document_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Document_Name, new { htmlAttributes = new { @class = "form-control", @title = "Enter file name." } })
                 @Html.ValidationMessageFor(model => model.Document_Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -24,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @title = "Enter file description." } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -32,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Category_ID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Category_ID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Category_ID", null, htmlAttributes: new { @class = "form-control", @title = "Select file category." })
                 @Html.ValidationMessageFor(model => model.Category_ID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -40,7 +41,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Document_Type_ID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Document_Type_ID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Document_Type_ID", null, htmlAttributes: new { @class = "form-control", @title = "Select file type." })
                 @Html.ValidationMessageFor(model => model.Document_Type_ID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -48,7 +49,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.uploadFile, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" name="uploadFile" required/>
+                <input type="file" name="uploadFile" required title="Select file to upload."/>
                 @Html.ValidationMessageFor(model => model.uploadFile, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -56,7 +57,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 @Html.ActionLink("Back", "ViewFile", "Repository", htmlAttributes: new { @class = "btn btn-primary" })
-                <input type="submit" value="Add File" class="btn btn-primary" />
+                <input type="submit" value="Add File" class="btn btn-primary" title="Submit new file."/>
             </div>
         </div>
     </div>
