@@ -22,22 +22,56 @@
 
 
 <h3>Building Floor selection</h3>
-<div>
-    <label class="text-danger" id="Error"></label>
-</div>
-<div class="row" style="padding-top:0px; padding-left:25px">
-    <p><strong>Instructions:</strong></p>
-    <ul style="padding-bottom:5px; padding-top:5px">
-        <li>
-            <p>Select a building floor.</p>
-        </li>
-        <li>
-            <p>Click the 'Proceed' button.</p>
-        </li>
-    </ul>
-</div>
+
 
 <div class="row">
+    <div class="col-md-6">
+        <p><strong>Instructions:</strong></p>
+        <ul style="padding-bottom:5px; padding-top:5px">
+            <li>
+                <p>Select a building floor.</p>
+            </li>
+            <li>
+                <p>Click the 'Proceed' button.</p>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="col-md-6">
+        <h5 class="bg-info shaded">
+            Venue Details
+        </h5>
+        <div class="panel panel-default">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            Campus
+                        </th>
+                        <th>
+                            Building
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @ViewBag.SelectedCampusName
+                        </td>
+                        <td>
+                            @ViewBag.SelectedBuildingName
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="row">
     <div class="col-md-6">
         <h5 class="bg-info shaded">
             List of Floors for Building: <strong>@ViewBag.SelectedBuildingName</strong>
@@ -133,88 +167,65 @@
             </table>
         </div>
     </div>
-
-
-    <div class="col-md-4">
-        <h5 class="bg-info shaded">
-            Venue Details
-        </h5>
-            <div class="panel panel-default">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Campus
-                                </th>
-                                <th>
-                                    Building
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    @ViewBag.SelectedCampusName
-                                </td>
-                                <td>
-                                    @ViewBag.SelectedBuildingName
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-            </div>
-        </div>
-</div>
-<div class="btn-group">
-    <input title="Return to the 'Select Building' screen" type="submit" class="btn btn-primary " value="Back" onclick="location.href='@Url.Action("Back_From_BuildingFloors","Questionnaire", new {ViewBag.SelectedBuilding, ViewBag.SelectedCampus, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic, ViewBag.Edit_or_New})'" />
-</div>
-<div class="btn-group">
-    <input title="Proceed to select the venue." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
 </div>
 
-<script>
-    function Submit() {
-        var count = document.getElementById("Count").value;
-        var Selected = "";
-        document.getElementById("Error").innerHTML = "";
-        var Answered = "False";
 
 
-        for (var i = 0; i < count; i++) {
-            var Name = "BuildingFloor " + i;
-            if (document.getElementById(Name).checked) {
-                Answered = "True";
-                Selected = document.getElementById("BuildingFloor " + i).value;
+
+    
+    <div class="btn-group">
+        <input title="Return to the 'Select Building' screen" type="submit" class="btn btn-primary " value="Back" onclick="location.href='@Url.Action("Back_From_BuildingFloors","Questionnaire", new {ViewBag.SelectedBuilding, ViewBag.SelectedCampus, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic, ViewBag.Edit_or_New})'" />
+    </div>
+    <div class="btn-group">
+        <input title="Proceed to select the venue." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
+    </div>
+    <div>
+        <label class="text-danger" id="Error"></label>
+    </div>
+
+    <script>
+        function Submit() {
+            var count = document.getElementById("Count").value;
+            var Selected = "";
+            document.getElementById("Error").innerHTML = "";
+            var Answered = "False";
+
+
+            for (var i = 0; i < count; i++) {
+                var Name = "BuildingFloor " + i;
+                if (document.getElementById(Name).checked) {
+                    Answered = "True";
+                    Selected = document.getElementById("BuildingFloor " + i).value;
+                }
             }
+            if (Answered == "True") {
+                var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
+                var Name = document.getElementById("Name").value;
+                var Description = document.getElementById("Description").value;
+                var Active_From = document.getElementById("Active_From").value;
+                var Active_To = document.getElementById("Active_To").value;
+                var Assessment_Type = document.getElementById("Assessment_Type").value;
+                var Topic = document.getElementById("Topic").value;
+                var Edit_or_New = document.getElementById("Edit_or_New").value;
+                var SelectedCampus = document.getElementById("SelectedCampus").value;
+                var SelectedBuilding = document.getElementById("SelectedBuilding").value;
+
+
+                window.location.href = "/Questionnaire/SelectedBuildingFloor?BuildingFloor_ID=" + Selected + "&SelectedBuilding=" + SelectedBuilding + "&SelectedCampus=" + SelectedCampus + "&Questionnaire_ID=" + Questionnaire_ID + "&Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic=" + Topic + "&Edit_or_New=" + Edit_or_New;
+
+
+            }
+            else {
+                document.getElementById("Error").innerHTML = "Please select a building floor to continue";
+            }
+
         }
-        if (Answered == "True") {
-            var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
-            var Name = document.getElementById("Name").value;
-            var Description = document.getElementById("Description").value;
-            var Active_From = document.getElementById("Active_From").value;
-            var Active_To = document.getElementById("Active_To").value;
-            var Assessment_Type = document.getElementById("Assessment_Type").value;
-            var Topic = document.getElementById("Topic").value;
-            var Edit_or_New = document.getElementById("Edit_or_New").value;
-            var SelectedCampus = document.getElementById("SelectedCampus").value;
-            var SelectedBuilding = document.getElementById("SelectedBuilding").value;
+
+    </script>
 
 
-            window.location.href = "/Questionnaire/SelectedBuildingFloor?BuildingFloor_ID=" + Selected + "&SelectedBuilding=" + SelectedBuilding + "&SelectedCampus=" + SelectedCampus + "&Questionnaire_ID=" + Questionnaire_ID + "&Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic=" + Topic + "&Edit_or_New=" + Edit_or_New;
-
-
-        }
-        else {
-            document.getElementById("Error").innerHTML = "Please select a building floor to continue";
-        }
-
-    }
-
-</script>
-
-
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>

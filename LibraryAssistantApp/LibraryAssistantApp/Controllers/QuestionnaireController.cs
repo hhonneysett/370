@@ -96,6 +96,213 @@ namespace LibraryAssistantApp.Controllers
 
 
         [Authorize]
+        public ActionResult Respond_to_questionnaire_Search(string Search, int? Topic, string Assessment_Type)
+        {
+            ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic);
+
+            ViewBag.Assessment_Type = Assessment_Type;
+            ViewBag.Search = Search;
+
+            if (Topic == null && Assessment_Type == "")
+            {
+                int Count_questionnaires = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).Count();
+                int Count_Response = 0;
+                string[] AnswerDates = new string[Count_questionnaires];
+                List<Questionnaire> Q_IDs = new List<Questionnaire>();
+                Q_IDs = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList();
+                string[] RowsResponded = new string[Count_questionnaires];
+                for (int i = 0; i < Count_questionnaires; i++)
+                {
+                    int getitem = Q_IDs[i].Questionnaire_ID;
+                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
+                    if (Count_Response > 0)
+                    {
+                        RowsResponded[i] = "Yes";
+                    }
+                    else
+                    {
+                        RowsResponded[i] = "No";
+                    }
+                    string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
+
+                    if (Answer == "0001/01/01 12:00:00 AM")
+                    {
+                        AnswerDates[i] = "Not yet responded";
+                    }
+                    else
+                    {
+                        AnswerDates[i] = Answer;
+                    }
+
+
+
+                }
+                ViewBag.RowsRespond = RowsResponded;
+                ViewBag.AnswerDates = AnswerDates;
+                return View("Respond_to_questionnaire", db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList());
+            }
+            else if (Topic != null && Assessment_Type == "")
+            {
+
+                int Count_questionnaires = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).Count();
+                int Count_Response = 0;
+                string[] AnswerDates = new string[Count_questionnaires];
+                List<Questionnaire> Q_IDs = new List<Questionnaire>();
+                Q_IDs = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList();
+                string[] RowsResponded = new string[Count_questionnaires];
+                for (int i = 0; i < Count_questionnaires; i++)
+                {
+                    int getitem = Q_IDs[i].Questionnaire_ID;
+                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
+                    if (Count_Response > 0)
+                    {
+                        RowsResponded[i] = "Yes";
+                    }
+                    else
+                    {
+                        RowsResponded[i] = "No";
+                    }
+                    string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
+
+                    if (Answer == "0001/01/01 12:00:00 AM")
+                    {
+                        AnswerDates[i] = "Not yet responded";
+                    }
+                    else
+                    {
+                        AnswerDates[i] = Answer;
+                    }
+
+
+
+                }
+                ViewBag.RowsRespond = RowsResponded;
+                ViewBag.AnswerDates = AnswerDates;
+                return View("Respond_to_questionnaire", db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList());
+            }
+            else if (Topic == null && Assessment_Type != "")
+            {
+
+                int Count_questionnaires = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).Count();
+                int Count_Response = 0;
+                string[] AnswerDates = new string[Count_questionnaires];
+                List<Questionnaire> Q_IDs = new List<Questionnaire>();
+                Q_IDs = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList();
+                string[] RowsResponded = new string[Count_questionnaires];
+                for (int i = 0; i < Count_questionnaires; i++)
+                {
+                    int getitem = Q_IDs[i].Questionnaire_ID;
+                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
+                    if (Count_Response > 0)
+                    {
+                        RowsResponded[i] = "Yes";
+                    }
+                    else
+                    {
+                        RowsResponded[i] = "No";
+                    }
+                    string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
+
+                    if (Answer == "0001/01/01 12:00:00 AM")
+                    {
+                        AnswerDates[i] = "Not yet responded";
+                    }
+                    else
+                    {
+                        AnswerDates[i] = Answer;
+                    }
+
+
+
+                }
+                ViewBag.RowsRespond = RowsResponded;
+                ViewBag.AnswerDates = AnswerDates;
+                return View("Respond_to_questionnaire", db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList());
+            }
+            else if (Topic != null && Assessment_Type != "")
+            {
+
+                int Count_questionnaires = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).Count();
+                int Count_Response = 0;
+                string[] AnswerDates = new string[Count_questionnaires];
+                List<Questionnaire> Q_IDs = new List<Questionnaire>();
+                Q_IDs = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList();
+                string[] RowsResponded = new string[Count_questionnaires];
+                for (int i = 0; i < Count_questionnaires; i++)
+                {
+                    int getitem = Q_IDs[i].Questionnaire_ID;
+                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
+                    if (Count_Response > 0)
+                    {
+                        RowsResponded[i] = "Yes";
+                    }
+                    else
+                    {
+                        RowsResponded[i] = "No";
+                    }
+                    string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
+
+                    if (Answer == "0001/01/01 12:00:00 AM")
+                    {
+                        AnswerDates[i] = "Not yet responded";
+                    }
+                    else
+                    {
+                        AnswerDates[i] = Answer;
+                    }
+
+
+
+                }
+                ViewBag.RowsRespond = RowsResponded;
+                ViewBag.AnswerDates = AnswerDates;
+                return View("Respond_to_questionnaire", db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList());
+            }
+            else
+            {
+                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                var questionnaires = db.Questionnaires.Where(X => X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now).ToList();
+                int Count_Response = 0;
+                int Count_questionnaires = db.Questionnaires.Where(X => X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now).Count();
+                string[] AnswerDates = new string[Count_questionnaires];
+
+                List<Questionnaire> Q_IDs = new List<Questionnaire>();
+                Q_IDs = db.Questionnaires.Where(X => X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now).ToList();
+                string[] RowsResponded = new string[Count_questionnaires];
+                for (int i = 0; i < Count_questionnaires; i++)
+                {
+                    int getitem = Q_IDs[i].Questionnaire_ID;
+                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
+                    if (Count_Response > 0)
+                    {
+                        RowsResponded[i] = "Yes";
+                    }
+                    else
+                    {
+                        RowsResponded[i] = "No";
+                    }
+
+                    string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
+
+                    if (Answer == "0001/01/01 12:00:00 AM")
+                    {
+                        AnswerDates[i] = "Not yet responded";
+                    }
+                    else
+                    {
+                        AnswerDates[i] = Answer;
+                    }
+
+
+
+                }
+                ViewBag.RowsRespond = RowsResponded;
+                ViewBag.AnswerDates = AnswerDates;
+                return View("Index", questionnaires.ToList());
+            }
+        }
+
+        [Authorize]
         public ActionResult Get_questionnaire_Results_Search(string Search, int? Topic, string Assessment_Type)
         {
             ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic);
@@ -322,144 +529,6 @@ namespace LibraryAssistantApp.Controllers
             }
             return View("Get_Questionnaire_Results");
 
-        }
-        [Authorize]
-        public ActionResult Respond_to_questionnaire_Search(string Search, int? Topic, string Assessment_Type)
-        {
-            ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic);
-
-            ViewBag.Assessment_Type = Assessment_Type;
-            ViewBag.Search = Search;
-
-            if (Topic == null && Assessment_Type == "")
-            {
-                int Count_questionnaires = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).Count();
-                int Count_Response = 0;
-
-                List<Questionnaire> Q_IDs = new List<Questionnaire>();
-                Q_IDs = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList();
-                string[] RowsResponded = new string[Count_questionnaires];
-                for (int i = 0; i < Count_questionnaires; i++)
-                {
-                    int getitem = Q_IDs[i].Questionnaire_ID;
-                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
-                    if (Count_Response > 0)
-                    {
-                        RowsResponded[i] = "Yes";
-                    }
-                    else
-                    {
-                        RowsResponded[i] = "No";
-                    }
-                }
-
-                ViewBag.RowsRespond = RowsResponded;
-                return View("Respond_to_questionnaire", db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList());
-            }
-            else if (Topic != null && Assessment_Type == "")
-            {
-
-                int Count_questionnaires = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).Count();
-                int Count_Response = 0;
-
-                List<Questionnaire> Q_IDs = new List<Questionnaire>();
-                Q_IDs = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList();
-                string[] RowsResponded = new string[Count_questionnaires];
-                for (int i = 0; i < Count_questionnaires; i++)
-                {
-                    int getitem = Q_IDs[i].Questionnaire_ID;
-                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
-                    if (Count_Response > 0)
-                    {
-                        RowsResponded[i] = "Yes";
-                    }
-                    else
-                    {
-                        RowsResponded[i] = "No";
-                    }
-                }
-                ViewBag.RowsRespond = RowsResponded;
-                return View("Respond_to_questionnaire", db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList());
-            }
-            else if (Topic == null && Assessment_Type != "")
-            {
-
-                int Count_questionnaires = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).Count();
-                int Count_Response = 0;
-
-                List<Questionnaire> Q_IDs = new List<Questionnaire>();
-                Q_IDs = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList();
-                string[] RowsResponded = new string[Count_questionnaires];
-                for (int i = 0; i < Count_questionnaires; i++)
-                {
-                    int getitem = Q_IDs[i].Questionnaire_ID;
-                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
-                    if (Count_Response > 0)
-                    {
-                        RowsResponded[i] = "Yes";
-                    }
-                    else
-                    {
-                        RowsResponded[i] = "No";
-                    }
-                }
-                ViewBag.RowsRespond = RowsResponded;
-                return View("Respond_to_questionnaire", db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList());
-            }
-            else if (Topic != null && Assessment_Type != "")
-            {
-
-                int Count_questionnaires = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).Count();
-                int Count_Response = 0;
-
-                List<Questionnaire> Q_IDs = new List<Questionnaire>();
-                Q_IDs = db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList();
-                string[] RowsResponded = new string[Count_questionnaires];
-                for (int i = 0; i < Count_questionnaires; i++)
-                {
-                    int getitem = Q_IDs[i].Questionnaire_ID;
-                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
-                    if (Count_Response > 0)
-                    {
-                        RowsResponded[i] = "Yes";
-                    }
-                    else
-                    {
-                        RowsResponded[i] = "No";
-                    }
-                }
-                ViewBag.RowsRespond = RowsResponded;
-                return View("Respond_to_questionnaire", db.Questionnaires.Where(X => X.Name.Contains(Search) && X.Topic_Seq == Topic && X.Assessment_Type == Assessment_Type && X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now || Search == null).ToList());
-            }
-            else
-            {
-                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
-                var questionnaires = db.Questionnaires.Where(X => X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now).ToList();
-                int Count_Response = 0;
-                int Count_questionnaires = db.Questionnaires.Where(X => X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now).Count();
-
-
-                List<Questionnaire> Q_IDs = new List<Questionnaire>();
-                Q_IDs = db.Questionnaires.Where(X => X.Active_To >= DateTime.Now && X.Active_From <= DateTime.Now).ToList();
-                string[] RowsResponded = new string[Count_questionnaires];
-                for (int i = 0; i < Count_questionnaires; i++)
-                {
-                    int getitem = Q_IDs[i].Questionnaire_ID;
-                    Count_Response = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Count();
-                    if (Count_Response > 0)
-                    {
-                        RowsResponded[i] = "Yes";
-                    }
-                    else
-                    {
-                        RowsResponded[i] = "No";
-                    }
-
-
-                }
-                ViewBag.RowsRespond = RowsResponded;
-                return View("Index", questionnaires.ToList());
-            }
         }
         [Authorize]
         public ActionResult Save_Questionnaire_Responses(int Questionnaire_ID, string Question1, string Question2, string Question3, string Question4, string Question5, string Question1_Reply, string Question2_Reply, string Question3_Reply, string Question4_Reply, string Question5_Reply)
