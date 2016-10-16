@@ -6,16 +6,17 @@
 }
 
 <h2>Manage Training Sessions</h2>
-
+<h4 class="bg-info shaded">Training Sessions Calendar View:</h4>
 <hr />
 
 <form id="manageTraining">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
+            <p class="text-muted"><b>Note:</b> Select a training session booking from the calendar to access further options.</p>
+        </div>
+        <div class="col-md-8">            
+            <h4 class="bg-warning shaded">Existing Training Sessions:</h4>
             <div id="existingTraining" class="panel panel-default">
-                <div class="panel-heading">
-                    Existing Training Sessions
-                </div>
                 <div class="panel-body">
 
                     <div class="col-md-12">
@@ -24,7 +25,7 @@
                                 <text class="control-label"><b>Campus:</b></text>
                             </div>
                             <div class="col-md-8">
-                                <select id="manageCampusSelect" class="form-control col-md-4">
+                                <select id="manageCampusSelect" class="form-control col-md-4" title="Filter training sessions by campus.">
                                     <option disabled selected value="0">--select a campus--</option>
                                     @foreach (var campus in Campus)
                                     {
@@ -35,11 +36,11 @@
                         </div>
                         <div class="form-group col-md-6">
                             <div class="col-md-4">
-                                <text class="control-label"><b>Trainer ID:</b></text>
+                                <text class="control-label"><b>Username:</b></text>
                             </div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="trainerID" placeholder="Enter Trainer ID" name="trainerID">
-                                <input type="button" value="Submit" id="btnTrainerID" class="btn btn-primary" style="margin-top: 15px" />
+                                <input type="text" class="form-control" id="trainerID" placeholder="Enter username" name="trainerID" title="Enter username of person who made the booking.">
+                                <input type="button" value="Submit" id="btnTrainerID" class="btn btn-primary" style="margin-top: 15px" title="Filter training sessions by username."/>
                             </div>
                         </div>
                     </div>
@@ -65,7 +66,14 @@
             </div>
         </div>
 
-        <div class="col-md-4" id="trainingDetails" hidden></div>
+        <div class="col-md-4" id="trainingDetails" >
+            <h4 class="bg-warning shaded">Training Session Details:</h4>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4 class="text-center">No Training Session Selected</h4>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 
@@ -220,7 +228,7 @@
         //cancel training
         function cancelTraining() {
             $.ajax({
-                type: 'GET',
+                type: 'post',
                 url: '/Trainer/cancelTraining',
                 success: function (result) {
                     window.location.href = "/Trainer/manageTrainingSession";

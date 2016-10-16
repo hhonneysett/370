@@ -94,6 +94,31 @@ namespace LibraryAssistantApp.Controllers
         {            
             if (ModelState.IsValid)
             {
+                //check duration against closing time
+                //get xml
+                XElement d = XElement.Load(serverpath.path);
+                var close = d.Elements("closetime").First();
+                var dclose = Convert.ToDateTime(close.Value).TimeOfDay;
+                var sesstime = Convert.ToDateTime(model.inTime).TimeOfDay;
+                var length = Convert.ToDateTime(model.length).TimeOfDay;
+                var sessend = sesstime.Add(length);
+                if (sessend > dclose)
+                {
+                    ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+                    TempData["Message"] = "Session proceeds past library closing time!";
+                    TempData["classStyle"] = "warning";
+                    //get xml
+                    var sp = Path.Combine(Server.MapPath("~"), "settings.xml");
+                    XElement document = XElement.Load(sp);
+
+                    //get list of durations
+                    List<string> dur = (from el in document.Elements("discussionduration")
+                                        select el.Value).ToList();
+                    dur.Sort();
+                    ViewBag.Durations = dur;
+                    return RedirectToAction("BookDiscussionRoom");
+                }
+
                 var dateToday = DateTime.Today;
                 if (model.date.Date > dateToday.Date)
                 {
@@ -361,6 +386,10 @@ namespace LibraryAssistantApp.Controllers
 
             //add new venue booking to database
             db.Venue_Booking.Add(vb);
+
+            //record action
+            global.addAudit("Bookings", "Booking: Discussion Room Booking", "Create", User.Identity.Name);
+
             db.SaveChanges();
 
             //get booking seq of booking just created
@@ -424,6 +453,7 @@ namespace LibraryAssistantApp.Controllers
         {
             //create local list
             IEnumerable<Venue_Booking> bookings;
+            List<Venue_Booking_Person> person_bookings = new List<Venue_Booking_Person>();
 
             //switch to get bookings based on idType
             switch (idType)
@@ -435,6 +465,13 @@ namespace LibraryAssistantApp.Controllers
                     bookings = (from a in db.Venue_Booking
                                 where bookingSeq.Contains(a.Venue_Booking_Seq)
                                 select a);
+
+                    person_bookings = (from p in db.Venue_Booking_Person
+                                       where p.Person_ID == id && p.Attendee_Status == "Active"
+                                       select p).ToList();
+
+                    Session["personBookings"] = person_bookings;
+
                     break;
                 case "venueID":
                     var test = id;
@@ -442,6 +479,7 @@ namespace LibraryAssistantApp.Controllers
                     bookings = (from c in db.Venue_Booking
                                 where c.Venue_ID.Equals(venueID) && c.Booking_Status.Equals("Active")
                                 select c);
+                    Session["personBookings"] = null; 
                     break;
                 default:
                     bookings = (from d in db.Venue_Booking
@@ -451,6 +489,8 @@ namespace LibraryAssistantApp.Controllers
 
             //create list type of bookings
             List<Venue_Booking> listOfBookings = bookings.ToList();
+
+            Session["personalBookings"] = listOfBookings;
 
             //create an event list
             var eventList = from e in listOfBookings
@@ -571,7 +611,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // POST: Cancel selected booking
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public ActionResult captureCancel()
         {
@@ -579,15 +619,26 @@ namespace LibraryAssistantApp.Controllers
 
             //get selected booking object from database
             var cancelledBooking = db.Venue_Booking.Where(b => b.Venue_Booking_Seq.Equals(a.booking_seq)).FirstOrDefault();
-            var cancelledPersonBooking = db.Venue_Booking_Person.Where(p => p.Venue_Booking_Seq.Equals(a.booking_seq)).FirstOrDefault();
+            var cancelledPersonBooking = db.Venue_Booking_Person.Where(p => p.Venue_Booking_Seq.Equals(a.booking_seq) && p.Person_ID == User.Identity.Name).FirstOrDefault();
 
             //change booking status to cancelled
-            cancelledBooking.Booking_Status = "Cancelled";
-            cancelledPersonBooking.Attendee_Status = "Cancelled";
+            if (cancelledBooking.Booking_Type_Seq == 2)
+            {
+                cancelledPersonBooking.Attendee_Status = "Cancelled";
+            }
+            else
+            {
+                cancelledPersonBooking.Attendee_Status = "Cancelled";
+                cancelledBooking.Booking_Status = "Cancelled";
+            }
 
             //capture the cancellation
             db.Entry(cancelledBooking).State = EntityState.Modified;
             db.Entry(cancelledPersonBooking).State = EntityState.Modified;
+
+            //record action
+            global.addAudit("Bookings", "Bookings: Cancelled Booking", "Delete", User.Identity.Name);
+
             db.SaveChanges();
 
             //set notification information
@@ -655,7 +706,7 @@ namespace LibraryAssistantApp.Controllers
 
         //GET: Get venues for selected building that are available
         [Authorize]
-        public JsonResult getUpdateVenues(DateTime start, DateTime time, int building, int campus, int length)
+        public JsonResult getUpdateVenues(DateTime start, DateTime time, int building, int campus, string length)
         {
             //get the time and date components
             var bookingTime = time.TimeOfDay;
@@ -665,7 +716,7 @@ namespace LibraryAssistantApp.Controllers
             DateTime startDateTime = new DateTime(booingDate.Year, booingDate.Month, booingDate.Day, bookingTime.Hours, bookingTime.Minutes, bookingTime.Seconds);
 
             //calculate the end time of the new session
-            TimeSpan duration = new TimeSpan(0, length, 0);
+            var duration = Convert.ToDateTime(length).TimeOfDay;
             DateTime endDateTime = startDateTime.Add(duration);
 
             var venues = db.findBookingVenuesFunc(startDateTime, endDateTime, "Discussion", campus);
@@ -692,18 +743,40 @@ namespace LibraryAssistantApp.Controllers
         [Authorize]
         public void updateStatus(string status)
         {
+            var bookings = (List<Venue_Booking>)Session["personalBookings"];
+            var person_bookings = (List<Venue_Booking_Person>)Session["personBookings"];
+
             var a = (BookingDetailsModel)Session["selectedBookingDetails"];
 
             var updatedBooking = (from b in db.Venue_Booking
                                   where b.Venue_Booking_Seq.Equals(a.booking_seq)
                                   select b).FirstOrDefault();
 
-            var updatedPersonBooking = (from p in db.Venue_Booking_Person
-                                        where p.Venue_Booking_Seq.Equals(a.booking_seq)
-                                        select p).FirstOrDefault();
+            Venue_Booking_Person updatedPersonBooking;
 
-            updatedBooking.Booking_Status = status;
-            updatedPersonBooking.Attendee_Status = status;
+            if (person_bookings == null)
+            {
+                updatedPersonBooking = (from p in db.Venue_Booking_Person
+                                            where p.Venue_Booking_Seq.Equals(a.booking_seq)
+                                            select p).FirstOrDefault();
+            }
+            else
+            {
+                var personid = person_bookings[0].Person_ID;
+                updatedPersonBooking = (from p in db.Venue_Booking_Person
+                                        where p.Venue_Booking_Seq == a.booking_seq && p.Person_ID == personid
+                                        select p).FirstOrDefault();
+            }
+
+            if (updatedPersonBooking.Attendee_Type == "Student" && updatedBooking.Booking_Type_Seq == 2)
+            {
+                updatedPersonBooking.Attendee_Status = status;
+            }
+            else
+            {
+                updatedBooking.Booking_Status = status;
+                updatedPersonBooking.Attendee_Status = status;
+            }
 
             db.Entry(updatedBooking).State = EntityState.Modified;
             db.Entry(updatedPersonBooking).State = EntityState.Modified;
@@ -787,7 +860,9 @@ namespace LibraryAssistantApp.Controllers
             {
                 TempData["Message"] = "Unfortunately unable to update training session!";
                 TempData["classStyle"] = "danger";
-                return RedirectToAction("ViewBookings");
+                if (User.IsInRole("Admin"))
+                    return RedirectToAction("employeeViewBookings");
+                else return RedirectToAction("ViewBookings");
             }
             else
             {
@@ -806,7 +881,7 @@ namespace LibraryAssistantApp.Controllers
                     building_id = booking.Building_ID,
                     building_floor_id = booking.Building_Floor_ID,
                     venue_id = booking.Venue_ID,
-                    length = booking.DateTime_To.Subtract(booking.DateTime_From).TotalMinutes,
+                    length = booking.DateTime_To.Subtract(booking.DateTime_From).ToString().Substring(0, 5),
                 };
 
                 //get xml
@@ -868,7 +943,7 @@ namespace LibraryAssistantApp.Controllers
                 DateTime startDateTime = new DateTime(bookingDate.Year, bookingDate.Month, bookingDate.Day, timeTimespan.Hours, timeTimespan.Minutes, timeTimespan.Seconds);
 
                 //calculate the end time of the new session
-                TimeSpan duration = new TimeSpan(0, Convert.ToInt32(model.length), 0);
+                var duration = Convert.ToDateTime(model.length).TimeOfDay;
                 DateTime endDateTime = startDateTime.Add(duration);
 
                 var buildingFloorId = (from b in db.Building_Floor
@@ -884,6 +959,9 @@ namespace LibraryAssistantApp.Controllers
 
                 db.Entry(bookingUpdate).State = EntityState.Modified;
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Bookings", "Bookings: Update Booking", "Update", User.Identity.Name);
 
             }
             else
@@ -1037,6 +1115,9 @@ namespace LibraryAssistantApp.Controllers
             db.Venue_Booking_Person.Add(a);
 
             db.SaveChanges();
+
+            //record action
+            global.addAudit("Bookings", "Bookings: Book Training Session", "Create", User.Identity.Name);
         }
     }
 }

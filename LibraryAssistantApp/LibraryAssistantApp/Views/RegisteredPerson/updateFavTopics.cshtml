@@ -88,8 +88,8 @@
             var id = $("#availTopicsSelect").children(":selected").val();
             var text = $("#availTopicsSelect").children(":selected").text();
             $.ajax({
-                type: 'GET',
                 url: '/RegisteredPerson/addTopic',
+                type: 'post',
                 data: { id: id },
                 success: function (result) {
                     //remove selected topic from available list and add it to the favourites list
@@ -107,8 +107,8 @@
             var id = $("#favouriteTopicSelect").children(":selected").val();
             var text = $("#favouriteTopicSelect").children(":selected").text();
             $.ajax({
-                type: 'GET',
                 url: '/RegisteredPerson/removeTopic',
+                type: 'post',
                 data: { id: id },
                 success: function (result) {
                     //remove selected topic from available list and add it to the favourites list

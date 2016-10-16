@@ -6,18 +6,21 @@
 }
 
 <h2>Book Training Session</h2>
-
+<h4 class="bg-info shaded">Provide training session details:</h4>
 <hr />
 
 <div class="row">
     <div class="col-md-6">
+        <p class="text-muted"><b>Booking a training session</b>:</p>
+        <ul style="padding-bottom:10px">
+            <li><p class="text-muted">Provide the requested training session details below.</p></li>
+            <li><p class="text-muted">Once you have selected the requested training session click the 'Book Training Session' button and confirm your booking.</p></li>
+        </ul>            
+
+        <h4 class="bg-warning shaded">Select A Category</h4>
         <div class="panel panel-default">
             <div class="panel-body">
-                <h4>Select A Category</h4>
-
-                <hr />
-
-                <select class="form-control" id="bkTrainingCat">
+            <select class="form-control" id="bkTrainingCat" title="Preferred training category.">
                     <option disabled selected value>--select category--</option>
                     @foreach (var category in categories)
                     {

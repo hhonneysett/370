@@ -13,6 +13,7 @@ namespace LibraryAssistantApp
                         "~/Scripts/spin.min.js",
                         "~/Scripts/bxSlider/jquery.bxslider.min.js",
                         "~/Scripts/DataTable/datatables.min.js",
+                        "~/Scripts/jquery.ambiance.js",
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.timepicker.min.js",
                         "~/Scripts/notify.min.js",
@@ -42,12 +43,14 @@ namespace LibraryAssistantApp
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/bootstrap.css",
-                        "~/Content/site.css", 
+                        "~/Content/site.css",
                         "~/Content/navbar-style.css",
-                        "~/Content/metisMenu.css", 
+                        "~/Content/metisMenu.css",
                         "~/Content/font-awesome.css",
                         "~/Content/jquery.timepicker.min.css",
                         "~/Content/dhtmlxscheduler.css",
+                        "~/Content/jquery.bxslider.css",
+                        "~/Content/jquery.ambiance.css",
                         //"~/Content/DataTables/css/jquery.dataTables.min.css",
                         "~/Content/DataTables/css/dataTables.bootstrap.min.css"));
 
