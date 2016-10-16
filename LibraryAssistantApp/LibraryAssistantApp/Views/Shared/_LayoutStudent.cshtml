@@ -69,10 +69,10 @@
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
-                            @Html.ActionLink("Respond To Questionnaire", "Respond_to_questionnaire", "Questionnaire")
+                            @Html.ActionLink("Take Questionnaire", "Respond_to_questionnaire", "Questionnaire")
                         </li>   
                         <li>
-                            @Html.ActionLink("Report Problem", "reportProblem", "Venue")
+                            @Html.ActionLink("Report Venue Problem", "reportProblem", "Venue")
                         </li>                     
                     </ul>
                 </li>
@@ -133,9 +133,7 @@
     </div>
 
     <div class="container body-content">
-        <div class="row" style="padding-top:10px">
             @Html.Notification()
-        </div>
         @RenderBody()
         <hr />
         <footer>

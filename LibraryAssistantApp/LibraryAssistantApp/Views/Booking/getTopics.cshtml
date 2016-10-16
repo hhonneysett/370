@@ -5,7 +5,7 @@
 }
 
 <div id="topicPanel">
-    <h4 class="bg-warning shaded">Select A Topic:</h4>
+    <h4 class="bg-warning shaded">Select a Topic:</h4>
     <div class="panel panel-default">
         <div class="panel-body">
             @{
@@ -38,7 +38,7 @@
             data: "id=" + id,
             success: function (result) {
                 $('#bkTrainingBookings').replaceWith(result);
-                $("#sessionToggle").show(800);
+                $("#sessionToggle").show();
 
                 $("#btnBkTraining").prop('disabled', true)
             },

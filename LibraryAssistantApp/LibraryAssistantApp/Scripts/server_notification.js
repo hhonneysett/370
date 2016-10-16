@@ -5,5 +5,5 @@
 
     setTimeout(function () {
         $('.serverMessage').hide('slide', { direction: 'up' });
-    }, 3000);
+    }, 5000);
 })
