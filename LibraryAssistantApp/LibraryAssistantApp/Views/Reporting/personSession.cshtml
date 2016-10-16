@@ -8,48 +8,53 @@
 <link rel="stylesheet" href="~/Content/datatables.min.css" />
 <script src="~/Scripts/DataTable/datatables.min.js"></script>
 
-<h2>Person Session Report</h2>
+<div>
+    <h2>Person Session Report</h2>
+    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed" title="Export report to PDF."><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+</div>
 <hr />
 
-
 <div class="row">
+    <h4 class="bg-info shaded">
+        User Session Report
+    </h4>
     <div class="col-md-12">
-        <table id="report">
-            <thead>
-                <tr>
-                    <th>
-                        Person ID
-                    </th>
-                    <th>
-                        Person
-                    </th>
-                    <th>
-                        Total Sessions
-                    </th>
-                    <th>
-                        Total Session Duration (h)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table id="report" class="table table-bordered" title="Session log results.">
+                    <thead>
+                        <tr class="shade-blue">
+                            <th>
+                                Person ID
+                            </th>
+                            <th>
+                                Person
+                            </th>
+                            <th>
+                                Total Sessions
+                            </th>
+                            <th>
+                                Total Session Duration (h)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
             {
-                    <tr>
-                        <td>@item.person.Person_ID</td>
-                        <td>@item.person.Person_Name @item.person.Person_Surname</td>
-                        <td>@item.count</td>
-                        <td>@item.totalTime</td>
-                    </tr>
+                            <tr>
+                                <td>@item.person.Person_ID</td>
+                                <td>@item.person.Person_Name @item.person.Person_Surname</td>
+                                <td>@item.count</td>
+                                <td>@item.totalTime</td>
+                            </tr>
 
-                }
-            </tbody>
-        </table>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>         
-
-<hr />   
-
-        <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+</div>
 
 <iframe id="txtArea1" style="display:none"></iframe>
 

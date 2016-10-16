@@ -718,7 +718,9 @@ namespace LibraryAssistantApp.Models
         public string Crud_Operation;
         public string Person_Name;
         public DateTime TimePerformed;
-        public string Area;        
+        public string Area;
+        public int Session_ID { get; set; }
+        public string Username { get; set; }        
     }
 
     public class checkedCharacteristics

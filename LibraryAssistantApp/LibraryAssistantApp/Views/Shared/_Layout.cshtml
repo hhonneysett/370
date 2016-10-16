@@ -163,6 +163,9 @@
                             @Html.ActionLink("Document Access Log", "documentAccessReport", "Reporting")
                         </li>
                         <li>
+                            @Html.ActionLink("Document Usage Report", "documentAccess", "Reporting")
+                        </li>
+                        <li>
                             @Html.ActionLink("Action Log", "personSessionAction", "Reporting")
                         </li>
                         <li>
@@ -196,7 +199,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        @*<li>
                             <a href="#">
                                 Access Control
                                 <span class="fa arrow"></span>
@@ -209,7 +212,7 @@
                                     @Html.ActionLink("Person Types", "Index", "PersonType")
                                 </li>
                             </ul>
-                        </li>
+                        </li>*@
                         <li>
                             <a href="#">
                                 Venues
@@ -296,13 +299,9 @@
 
     <!--Metis menu scripts-->
 
-
-
-    @Scripts.Render("~/Scripts/timepickerInt.js")
-    @Scripts.Render("~/Scripts/timepickerInt.js")
     @Scripts.Render("~/Scripts/siteScripts.js")
-    <script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    @*<script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
     @RenderSection("script", required: false)
 </body>
 </html>

@@ -32,8 +32,9 @@ namespace LibraryAssistantApp.Controllers
                 string PersonID = db.Person_Session_Log.Where(X => X.Session_ID == Session_ID).Select(Y => Y.Person_ID).Single();
 
                 mylog.Person_Name = db.Registered_Person.Where(X => X.Person_ID == PersonID).Select(Y => Y.Person_Name).Single();
-
                 int Action_ID = logwithdata[i].Action_ID;
+                mylog.Username = PersonID;
+                mylog.Session_ID = Session_ID;
                 mylog.Area = db.Actions.Where(X => X.Action_ID == Action_ID).Select(Y => Y.Action_Name).Single();
                 mylog.Crud_Operation = logwithdata[i].Crud_Operation;
                 log.Add(mylog);

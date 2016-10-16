@@ -9,45 +9,46 @@
 <script src="~/Scripts/DataTable/datatables.min.js"></script>
 
 <div>
-    <h2>Action Usage Report</h2>
-    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+    <h2>Action Report</h2>
+    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed" title="Export report to pdf."><span class="fa fa-file-pdf-o"></span> Export PDF</button>
 </div>
 <hr />
-
-
 <div class="row">
+    <h4 class="bg-info shaded">
+        Actions Performed Report
+    </h4>
     <div class="col-md-12">
-        <table class="table" id="report">
-            <thead>
-                <tr>
-                    <th>Action ID</th>
-                    <th>
-                        Action Name
-                    </th>
-                    <th>
-                        Action Description
-                    </th>
-                    <th>
-                        Access Times
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.action.Action_ID</td>
-                        <td>@item.action.Action_Name</td>
-                        <td>@item.action.Action_Description</td>
-                        <td>@item.access</td>
-                    </tr>
-
-                }
-            </tbody>
-        </table>
-
-        <hr />
-
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-bordered" id="report" title="Actions log results.">
+                    <thead>
+                        <tr class="shade-blue">
+                            <th>Action ID</th>
+                            <th>
+                                Action Name
+                            </th>
+                            <th>
+                                Action Description
+                            </th>
+                            <th>
+                                Access Times
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.action.Action_ID</td>
+                                <td>@item.action.Action_Name</td>
+                                <td>@item.action.Action_Description</td>
+                                <td>@item.access</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

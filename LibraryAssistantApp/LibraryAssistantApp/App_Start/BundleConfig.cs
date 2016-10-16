@@ -11,14 +11,22 @@ namespace LibraryAssistantApp
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.timepicker.min.js",
+                        "~/Scripts/jquery-ui-1.12.1.js",
+                        "~/Scripts/jquery-ui-1.12.1.min.js",
                         "~/Scripts/notify.min.js",
                         "~/Scripts/jquery.base64.js",
                         "~/Scripts/tableExport.js",
+                        "~/Scripts/bxSlider/jquery.bxslider.min.js",
                         "~/Scripts/base64.js",
                         "~/Scripts/sprintf.js",
-                        "~/Scripts/jspdf.js",
                         "~/Scripts/DataTables/jquery.dataTables.min.js",
-                        "~/Scripts/DataTables/dataTables.bootstrap.min.js"));
+                        "~/Scripts/DataTables/dataTables.bootstrap.min.js",
+                        "~/Scripts/FileSaver.min.js",
+                        "~/Scripts/jspdf.min.js",
+                        "~/Scripts/jspdf.js",
+                        "~/Scripts/jspdf.plugin.autotable.js",
+                        "~/Scripts/tableExport.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",
@@ -45,6 +53,7 @@ namespace LibraryAssistantApp
                         "~/Content/font-awesome.css",
                         "~/Content/jquery.timepicker.min.css",
                         "~/Content/dhtmlxscheduler.css",
+                        "~/Content/jquery.bxslider.css",
                         //"~/Content/DataTables/css/jquery.dataTables.min.css",
                         "~/Content/DataTables/css/dataTables.bootstrap.min.css"));
 

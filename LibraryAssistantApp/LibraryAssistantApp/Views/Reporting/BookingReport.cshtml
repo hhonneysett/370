@@ -35,7 +35,7 @@
                     </div>
                 </div>
             <div class="panel-body">
-                <table class="table table-bordered">
+                <table id="tbl-booking-r" class="table table-bordered" title="Booking log results.">
                     <thead>
                         <tr class="shade-blue">
                             <th>
@@ -288,4 +288,7 @@
             data: data2
         });
     });
+    function demoFromHTML() {
+        $('#tbl-booking-r').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7', pdfOrientation: 'l',  pdfFormat: 'a3' });
+    };
 </script>

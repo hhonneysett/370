@@ -6,9 +6,9 @@
         <div class="col-md-offset-1">
             <div class="input-group">
                 <span class="input-group-addon">
-                    <input type="checkbox" class="topics-cb" />
+                    <input type="checkbox" class="topics-cb" title="Select all topics for this category."/>
                 </span>
-                <select id="categoryList" class="form-control">
+                <select id="categoryList" class="form-control" title="Filter trainer topics by category.">
                     <option selected>All Topics</option>
                     @foreach (var item in ViewBag.Categories)
                     {
