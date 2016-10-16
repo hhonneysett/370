@@ -1,23 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <settings>
   <scheduler>
-    <time>19:00</time>
+    <time>3:30 PM</time>
   </scheduler>
+  <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\8SEJfpn.jpg</picture>
+  <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\Hotline.jpg</picture>
+  <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\850041-minimalistic-wallpaper.png</picture>
   <trainingduration>01:00</trainingduration>
   <trainingduration>02:00</trainingduration>
   <trainingduration>02:30</trainingduration>
   <trainingduration>01:30</trainingduration>
+  <picture>C:\Users\Heyden\Desktop\LibraryAssistantApp\LibraryAssistantApp\img\850194-minimalistic-wallpaper.png</picture>
   <trainingduration>00:30</trainingduration>
   <opentime>08:30</opentime>
   <closetime>18:00</closetime>
-  <discussionduration>01:00</discussionduration>
-  <discussionduration>01:30</discussionduration>
-  <discussionduration>02:30</discussionduration>
-  <discussionduration>03:00</discussionduration>
-  <discussionduration>00:30</discussionduration>
-  <picture>C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\img\image_1.jpg</picture>
-  <picture>C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\img\image_2.jpg</picture>
-  <picture>C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\img\image_3.jpg</picture>
-  <picture>C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\img\image_4.jpg</picture>
-  <picture>C:\Users\Heyden\Documents\GitHub\370\LibraryAssistantApp\LibraryAssistantApp\img\image_5.jpg</picture>
 </settings>

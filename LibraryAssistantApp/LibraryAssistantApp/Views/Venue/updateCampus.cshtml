@@ -4,8 +4,8 @@
     <label class="control-label">Campus Name:</label>
     @Html.EditorFor(model => model.Campus_Name, new { htmlAttributes = new { @class = "form-control", @id = "campusName" } })
 </form>
-<button class="btn btn-primary" id="btnConfirmUpdate">Update Campus</button>
-<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+<button class="btn btn-default" id="btnConfirmUpdate">Update Campus</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
 <hr />
 
 <script src="~/Scripts/jquery.ambiance.js"></script>
@@ -17,12 +17,17 @@
         $('#myModal').modal('toggle');
     })
 
+    //add lettersonly method
+    jQuery.validator.addMethod("lettersonly", function (value, element) {
+        return this.optional(element) || /^[a-z]+$/i.test(value);
+    }, "Letters only please");
+
     //start form validation
     $("#updateCampusForm").validate({
         rules: {
             Campus_Name: {
                 required: true,
-                maxlength: 30,
+                lettersonly: true,
                 remote: {
                     url: "/Venue/checkUpdateCampus",
                     type: "get"

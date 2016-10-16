@@ -16,36 +16,45 @@
 @Html.Hidden("Edit_or_New", (string)ViewBag.Edit_or_New, new { id = "Edit_or_New" })
 @Html.Hidden("SelectedCampus", (int)ViewBag.SelectedCampus, new { id = "SelectedCampus" })
 
-<h2 style="display: inline-block;">Building selection</h2> <h4 data_toggle = "tooltip" title = "Your current selection of Campus" style="float: right"; display: inline-block;">Selected: @ViewBag.SelectedCampusName</h4>
+<h3>Building selection</h3>
+<div>
+    <label class="text-danger" id="Error"></label>
+</div>
 
-<div class="panel panel-default">
-    <div class="panel-heading"><h4>List of buildings within the selected campus</h4></div>
-    <div class="panel-body">
-        <div>
-            <label class="text-danger" id="Error"></label>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover">
+<div class="row" style="padding-top:0px; padding-left:25px">
+    <p><strong>Instructions:</strong></p>
+    <ul style="padding-bottom:5px; padding-top:5px">
+        <li>
+            <p>Select the building to be assessed.</p>
+        </li>
+        <li>
+            <p>Click the 'Proceed' button.</p>
+        </li>
+    </ul>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h5 class="bg-info shaded">
+            List of Buildings for Campus: <strong>@ViewBag.SelectedCampusName</strong>
+        </h5>
+        <div class="panel panel-default">
+            <table class="table table-bordered">
                 <tr>
                     <th>
                         Building Name
                     </th>
                     <th style="text-align:center;">
-                        Selected
+                        Select
                     </th>
                 </tr>
-
-
                 @if (Model.Count() == 0)
                 {
                     <tr>
-                        <td colspan="2">No buildings in the selected campus</td>
+                        <td colspan="2">No buildings in the selected campus.</td>
                     </tr>
                 }
                 else
                 {
-
-
                     int i = 0;
                     foreach (var item in Model)
                     {
@@ -68,19 +77,45 @@
 
                             @{i++;}
                         </tr>
-
                                     }
                                 }
             </table>
-
-
         </div>
-
-      
-            <input type="submit" class="btn btn-default " value="Back" onclick="location.href='@Url.Action("Back_From_Buildings","Questionnaire", new {ViewBag.SelectedCampus, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic, ViewBag.Edit_or_New})'" />   <input type="button" class="btn btn-default pull-right" value="Continue" onclick="Submit()" />
-     
     </div>
-
+    <div class="col-md-4">
+        <h5 class="bg-info shaded">
+            Venue Details
+        </h5>
+        <div class="panel panel-default">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            Campus
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @ViewBag.SelectedCampusName
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @*<div class="col-md-4">
+        <div class="panel panel-default">
+            <h4 data_toggle="tooltip" title="Your current selection of Campus" style="float: right; display: inline-block;">Campus: @ViewBag.SelectedCampusName</h4>
+        </div>
+    </div>*@
+</div>
+<div class="btn-group">
+    <input type="submit" class="btn btn-primary" value="Back" onclick="location.href='@Url.Action("Back_From_Buildings","Questionnaire", new {ViewBag.SelectedCampus, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic, ViewBag.Edit_or_New})'" />
+</div>
+<div class="btn-group">
+    <input type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
 </div>
 
 <script>
@@ -109,9 +144,9 @@
             var Edit_or_New = document.getElementById("Edit_or_New").value;
             var SelectedCampus = document.getElementById("SelectedCampus").value;
 
-        
+
             window.location.href = "/Questionnaire/SelectedBuilding?Building_ID=" + Selected + "&SelectedCampus=" + SelectedCampus + "&Questionnaire_ID=" + Questionnaire_ID + "&Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic=" + Topic+ "&Edit_or_New=" + Edit_or_New;
-           
+
         }
         else {
             document.getElementById("Error").innerHTML = "Please select a building to continue";

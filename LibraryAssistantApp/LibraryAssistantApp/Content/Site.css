@@ -173,11 +173,3 @@ table tbody tr :hover {
      overflow:auto; 
      height:600px;
 }
-
-.bx-wrapper img {
-    display: block;
-}
-
-.bx-wrapper li {
-    text-align: center;
-}

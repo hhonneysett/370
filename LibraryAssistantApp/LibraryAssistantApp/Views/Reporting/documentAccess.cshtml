@@ -11,42 +11,43 @@
 <h2>Document Access Report</h2>
 
 <hr />
-
-
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-bordered" id="report">
-            <thead>
-                <tr>
-                    <th>
-                        Document Sequence
-                    </th>
-                    <th>
-                        Document Name
-                    </th>
-                    <th>Document Category</th>
-                    <th>
-                        Access Times
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.document.Document_Seq</td>
-                        <td>@item.document.Document_Name</td>
-                        <td>@item.document.Document_Category.Category_Name</td>
-                        <td>@item.access</td>
-                    </tr>
-
-                }
-            </tbody>
-        </table>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-bordered" id="report" title="Document access log results.">
+                    <thead>
+                        <tr class="shade-blue">
+                            <th>
+                                Document Sequence
+                            </th>
+                            <th>
+                                Document Name
+                            </th>
+                            <th>Document Category</th>
+                            <th>
+                                Times Accessed
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.document.Document_Seq</td>
+                                <td>@item.document.Document_Name</td>
+                                <td>@item.document.Document_Category.Category_Name</td>
+                                <td>@item.access</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+<button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed" title="Export report to PDF."><span class="fa fa-file-pdf-o"></span> Export PDF</button>
 
 <iframe id="txtArea1" style="display:none"></iframe>
 

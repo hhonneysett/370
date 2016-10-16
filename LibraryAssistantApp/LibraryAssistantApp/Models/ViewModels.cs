@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Web;
-using System.IO;
+
 
 namespace LibraryAssistantApp.Models
 {
@@ -88,12 +90,10 @@ namespace LibraryAssistantApp.Models
 
     public class AddFileModel
     {
-        [Required(ErrorMessage = "Please provide a file name"), MaxLength(30)]
+        [Required(ErrorMessage = "Please provide a file name")]
         [Display(Name = "File Name")]
-        [Remote("checkFilename", "Validate", ErrorMessage ="Filename already exists")]
         public string Document_Name { get; set; }
 
-        [Required, MaxLength(50)]
         public string Description { get; set; }
 
         [Display(Name = "Category")]
@@ -144,46 +144,12 @@ namespace LibraryAssistantApp.Models
 
     public class AddFileTypeModel
     {
-        [Required(ErrorMessage = "Please provide a file type name"), MaxLength(30)]
-        [Display(Name = "File Type Name")]
-        [Remote("checkFileType", "Validate", ErrorMessage ="File type already exists")]
-        public string Type_Name { get; set; }
-
-        [Display(Name = "File Type Description")]
-        [Required, MaxLength(50)]
-        public string Description { get; set; }
-    }
-
-    public class UpdateFileType
-    {
-        [Required(ErrorMessage = "Please provide a file type name"), MaxLength(30)]
+        [Required(ErrorMessage = "Please provide a file type name")]
         [Display(Name = "File Type Name")]
         public string Type_Name { get; set; }
 
         [Display(Name = "File Type Description")]
-        [Required, MaxLength(50)]
         public string Description { get; set; }
-    }
-
-    public class AddFileCategory
-    {
-        [Required, MaxLength(30), Display(Name ="Category Name")]
-        [Remote("checkFileCategory", "Validate", ErrorMessage ="Category already exits")]
-        public string name { get; set; }
-
-        [Required, MaxLength(50), Display(Name ="Description")]
-        public string description { get; set; }
-    }
-
-    public class UpdateFileCategory
-    {
-        [Required, MaxLength(30), Display(Name = "Category Name")]
-        public string name { get; set; }
-
-        [Required, MaxLength(50), Display(Name = "Description")]
-        public string description { get; set; }
-
-        public int id { get; set; }
     }
 
     public class GetTypesModel
@@ -210,8 +176,8 @@ namespace LibraryAssistantApp.Models
         public DateTime time { get; set; }
 
         [Required(ErrorMessage = "Please provide a length selection")]
-        [Display(Name = "Duration")]
-        public string length { get; set; }
+        [Display(Name = "Duration (Minutes)")]
+        public int length { get; set; }
 
         [Required(ErrorMessage = "Please provide a campus selection")]
         [Display(Name = "Campus")]
@@ -222,7 +188,7 @@ namespace LibraryAssistantApp.Models
 
     public class EmpDiscussionRoomBooking
     {
-        [Display(Name = "Username")]
+        [Display(Name = "Person ID")]
         [Remote("loginCheckPerson", "Validate", ErrorMessage = "Not a registered person ID")]
         [Required(ErrorMessage ="Please enter a person ID")]
         public string person_id { get; set; }
@@ -239,8 +205,8 @@ namespace LibraryAssistantApp.Models
         public DateTime time { get; set; }
 
         [Required(ErrorMessage = "Please provide a length selection")]
-        [Display(Name = "Duration")]
-        public string length { get; set; }
+        [Display(Name = "Duration (Minutes)")]
+        public int length { get; set; }
 
         [Required(ErrorMessage = "Please provide a campus selection")]
         [Display(Name = "Campus")]
@@ -315,8 +281,8 @@ namespace LibraryAssistantApp.Models
         public string time { get; set; }
 
         [Required(ErrorMessage = "Please provide a length selection")]
-        [Display(Name = "Duration")]
-        public string length { get; set; }
+        [Display(Name = "Duration (Minutes)")]
+        public double length { get; set; }
 
         [Display(Name = "Campus")]
         [Required(ErrorMessage ="Please select a campus")]
@@ -344,12 +310,10 @@ namespace LibraryAssistantApp.Models
         public int categoryId { get; set; }
 
         [Display(Name ="Category Name")]
-        [Required(ErrorMessage ="Please provide a category name"), MaxLength(30)]
-        [Remote("checkCategory", "Validate", ErrorMessage ="Category already exists")]
+        [Required(ErrorMessage ="Please provide a category name")]
         public string categoryName { get; set; }
 
         [Display(Name ="Description")]
-        [Required(ErrorMessage ="Please provide a description"), MaxLength(50)]
         public string description { get; set; }
   
     }
@@ -429,17 +393,6 @@ namespace LibraryAssistantApp.Models
         public string venue { get; set; }
 
         public bool attendance { get; set; }
-
-        [Display(Name ="Description")]
-        public string description { get; set; }
-
-        [Display(Name ="Trainer")]
-        public string trainer { get; set; }
-
-        public string v_id { get; set; }
-
-        [Display(Name ="Status")]
-        public string status { get; set; }
     }
 
     public class AttendanceModel
@@ -765,7 +718,9 @@ namespace LibraryAssistantApp.Models
         public string Crud_Operation;
         public string Person_Name;
         public DateTime TimePerformed;
-        public string Area;        
+        public string Area;
+        public int Session_ID { get; set; }
+        public string Username { get; set; }        
     }
 
     public class checkedCharacteristics
@@ -797,7 +752,7 @@ namespace LibraryAssistantApp.Models
     public class problemTypeModel
     {
         [Display(Name ="Problem Type Name"), Required, MaxLength(30)]
-        [Remote("checkProblemType", "Validate", ErrorMessage = "Problem type already exists")]
+        [Remote("checkProblem", "Validate", ErrorMessage = "Problem type already exists")]
         public string name { get; set; }
 
         [Display(Name = "Problem Type Description"), Required, MaxLength(100)]
@@ -881,8 +836,40 @@ namespace LibraryAssistantApp.Models
         public DateTime accessed { get; set; }
     }
 
-    public class serverpath
+    public class BookingsReport
     {
-        public static string path = Path.Combine(HttpContext.Current.Server.MapPath("~"), "settings.xml");
-    }  
+        public List<BookingR> bookingsreportlist { get; set; }
+        public BookingTotal Total { get; set; }
+    }
+
+    public class BookingR
+    {
+        public int total { get; set; }
+        public string monthname { get; set; }
+        public string monthyear { get; set; }
+        public int trainingCount { get; set; }
+        public int discussionCount { get; set; }
+        public int confirmedCount { get; set; }
+        public int activeCount { get; set; }
+        public int cancelledCount { get; set; }
+        public int tenativeCount { get; set; }
+        public int completeCount { get; set; }
+        public int studentCount { get; set; }
+        public int trainerCount { get; set; }
+        public int month { get; set; }
+    }
+
+    public class BookingTotal
+    {
+        public int discussionTotal { get; set; }
+        public int trainingTotal { get; set; }
+        public int studentTotal { get; set; }
+        public int trainerTotal { get; set; }
+        public int activeTotal { get; set; }
+        public int confirmedTotal { get; set; }
+        public int completeTotal { get; set; }
+        public int cancelledTotal { get; set; }
+        public int tenativeTotal { get; set; }
+        public int bookingTotal { get; set; }
+    }
 }

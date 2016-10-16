@@ -8,65 +8,61 @@
     @{
         if (Model.Any())
         {
-            <div id="headingTwo" class="bg-warning shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="venueSummary">Select Venue:</b></div>
+            <div id="headingTwo"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="venueSummary">Select Venue:</b></div>
             <hr />
             <div id="toggleTwo" class="row">
                 <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <table id="venueTable" class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Building
-                                        </th>
-                                        <th>
-                                            Floor
-                                        </th>
-                                        <th>
-                                            Venue
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.venue.Capacity)
-                                        </th>
-                                        <th>
-                                            Characteristics
-                                        </th>
-                                        <th>
-                                            Match
-                                        </th>
+                        <table id="venueTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Building
+                                    </th>
+                                    <th>
+                                        Floor
+                                    </th>
+                                    <th>
+                                        Venue
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.venue.Capacity)
+                                    </th>
+                                    <th>
+                                        Characteristics
+                                    </th>
+                                    <th>
+                                        Match
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr id="@item.venue.Venue_ID">
+                                        <td class="building">
+                                            @item.building
+                                        </td>
+                                        <td class="floor">
+                                            @item.floor
+                                        </td>
+                                        <td class="venue">
+                                            @item.venue.Venue_Name
+                                        </td>
+                                        <td>
+                                            @item.venue.Capacity
+                                        </td>
+                                        <td>
+                                            @item.characteristics
+                                        </td>
+                                        <td>
+                                            @item.rating %
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr id="@item.venue.Venue_ID">
-                                            <td class="building">
-                                                @item.building
-                                            </td>
-                                            <td class="floor">
-                                                @item.floor
-                                            </td>
-                                            <td class="venue">
-                                                @item.venue.Venue_Name
-                                            </td>
-                                            <td>
-                                                @item.venue.Capacity
-                                            </td>
-                                            <td>
-                                                @item.characteristics
-                                            </td>
-                                            <td>
-                                                @item.rating %
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                }
+                            </tbody>
+                        </table>
 
-                    <input type="button" id="trainingProTwo" class="btn btn-primary" value="Proceed" />
+                    <input type="button" id="trainingProTwo" class="btn btn-default" value="Proceed" />
                 </div>
             </div>            
         }

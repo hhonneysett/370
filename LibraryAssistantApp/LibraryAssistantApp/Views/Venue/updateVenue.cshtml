@@ -16,7 +16,7 @@
         <tr>
             <td><b>Campus:</b></td>
             <td style="padding-left:5px; padding-bottom:5px">
-                <select id="updateVenueCampusSelect" class="form-control" required>
+                <select id="updateVenueCampusSelect" class="form-control">
                     @foreach (var campus in campuses)
                     {
                         <option id="@campus.Campus_ID" class="@campus.Campus_ID">@campus.Campus_Name</option>
@@ -27,7 +27,7 @@
         <tr>
             <td><b>Building:</b></td>
             <td style="padding-left:5px; padding-bottom:5px">
-                <select id="updateVenueBuildingSelect" class="form-control" required>
+                <select id="updateVenueBuildingSelect" class="form-control">
                     @foreach (var building in buildings)
                     {
                         <option id="@building.Building_ID" class="@building.Building_ID">@building.Building_Name</option>
@@ -38,7 +38,7 @@
         <tr>
             <td><b>Floor:</b></td>
             <td style="padding-left:5px; padding-bottom:5px">
-                <select id="updateVenueFloorSelect" class="form-control" required>
+                <select id="updateVenueFloorSelect" class="form-control">
                     @foreach (var floor in floors)
                     {
                         <option id="@floor.Building_Floor_ID" class="@floor.Building_Floor_ID">@floor.Floor_Name</option>
@@ -49,7 +49,7 @@
         <tr>
             <td><b>Type:</b></td>
             <td style="padding-left:5px; padding-bottom:5px">
-                <select id="updateVenueTypeSelect" class="form-control" required>
+                <select id="updateVenueTypeSelect" class="form-control">
                     @foreach (var type in types)
                     {
                         <option id="@type.Venue_Type1" class="@type.Venue_Type1">@type.Venue_Type1</option>
@@ -59,7 +59,7 @@
         </tr>
         <tr>
             <td><b>Venue Name:</b></td>
-            <td style="padding-left:5px; padding-bottom:5px"><input type="text" required id="venueName" name="venueName" value="@Model.Venue_Name" class="form-control" maxlength="30"/></td>
+            <td style="padding-left:5px; padding-bottom:5px"><input type="text" required id="venueName" name="venueName" value="@Model.Venue_Name" class="form-control"/></td>
         </tr>
         <tr>
             <td><b>Capacity:</b></td>
@@ -80,8 +80,8 @@
     }
 </div>
 
-<button class="btn btn-primary" id="btnConfirmVenueUpdate">Update Building</button>
-<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+<button class="btn btn-default" id="btnConfirmVenueUpdate">Update Building</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
 <hr />
 
 <script type="text/javascript">

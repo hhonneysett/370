@@ -1,9 +1,9 @@
-﻿using Quartz;
-using Quartz.Impl;
-using System.Xml.Linq;
-using System.IO;
-using LibraryAssistantApp.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
+using Quartz;
+using Quartz.Impl;
 
 namespace LibraryAssistantApp.Models
 {
@@ -11,17 +11,6 @@ namespace LibraryAssistantApp.Models
     {
         public static void Start()
         {
-            //read XML
-            XElement settings = XElement.Load(serverpath.path);
-            //get time
-            XElement scheduler = (from el in settings.Elements("scheduler")
-                                  select el).FirstOrDefault();
-            string time = scheduler.Element("time").Value;
-
-            var hour = time.Substring(0, 2);
-            var minutes = time.Substring(3, 2);
-
-
             IJobDetail emailJob = JobBuilder.Create<EmailJob>()
                 .WithIdentity("job1")
                 .Build();
@@ -35,7 +24,7 @@ namespace LibraryAssistantApp.Models
                     .ForJob(emailJob)
                     .WithIdentity("trigger1")
                     .StartNow()
-                    .WithCronSchedule("0 " + minutes + " "  + hour +" * * ?")
+                    .WithCronSchedule("0 15 10 * * ?")
                     .Build();
 
             ISchedulerFactory sf = new StdSchedulerFactory();

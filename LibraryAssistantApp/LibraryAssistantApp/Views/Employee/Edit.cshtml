@@ -6,9 +6,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Update Employee</h3>
+<h2>Update Employee</h2>
 <hr />
-<h5>Update employee details below</h5>
+<h4 class="bg-info shaded">Update employee details below</h4>
 <br />
 
 @using (Html.BeginForm())
@@ -19,43 +19,44 @@
         <div class="form-group">
             @Html.LabelFor(model => model.person_id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.person_id, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+                @Html.EditorFor(model => model.person_id, new { htmlAttributes = new { @class = "form-control", @disabled = true, @title="Username cannot be updated." } })
                 @Html.ValidationMessageFor(model => model.person_id, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.person_name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.person_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.person_name, new { htmlAttributes = new { @class = "form-control", @title="Name must be alphabetic, can include white space." } })
                 @Html.ValidationMessageFor(model => model.person_name, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.person_surname, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.person_surname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.person_surname, new { htmlAttributes = new { @class = "form-control", @title="Surname must be alphabetic, can include white space." } })
                 @Html.ValidationMessageFor(model => model.person_surname, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.person_email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control", @title="Email address must be in the correct format." } })
                 @Html.ValidationMessageFor(model => model.person_email, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="btn-reset" type="button" value="Reset Password" class="btn btn-default" />
+                <input id="btn-reset" type="button" value="Reset Password" class="btn btn-primary" title="Resets the employee password, a new password is sent to the employees email address on record" />
             </div>
         </div>
         
-        <h5>Employee Roles:</h5>
+        <h4 class="bg-info shaded">Employee Roles:</h4>
         <br />
         <div class="row">
+            <p class="text-muted" style="padding-left:35px"><strong>Note:</strong> If trainer is selected the option to assign topics will appear.</p>
             <div class="col-md-4 col-md-offset-2">
                 <div class="panel panel-default">
-                    <table class="table" id="emp-roles">
+                    <table class="table" id="emp-roles" title="Click the checkboxes to update employee roles.">
                         <thead>
                             <tr>
                                 <th>
@@ -86,15 +87,15 @@
         </div>
 
         <div id="topics" hidden="@TempData["Check1"]">
-            <h5>Trainer Topics:</h5>
+            <h4 class="bg-info shaded">Trainer Topics:</h4>
             <div class="col-md-4 col-md-offset-2">
                 <div class="row" style="padding-bottom:15px">
                     <div class="col-md-offset-1">
                         <div class="input-group">
                             <span class="input-group-addon">
-                                <input type="checkbox" class="topics-cb" />
+                                <input type="checkbox" class="topics-cb" title="Add all trainer topics for the selected category."/>
                             </span>
-                            <select id="categoryList" class="form-control">
+                            <select id="categoryList" class="form-control" title="Filter trainer topics by category.">
                                 <option selected>All Topics</option>
                                 @foreach (var item in ViewBag.Categories)
                                 {
@@ -113,7 +114,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="btn-submit" type="submit" value="Save Changes" class="btn btn-default" />
+                <input id="btn-submit" type="submit" value="Save Changes" class="btn btn-primary" title="Save changes made to this employee." />
             </div>
         </div>
     </div>

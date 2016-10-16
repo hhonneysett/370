@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -458,10 +458,53 @@
     <Content Include="Content\morris.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\loginStyle.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Scripts\base64.js" />
-    <Content Include="Scripts\bxSlider\jquery.bxslider.min.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bxSlider\jquery.bxslider.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
@@ -538,6 +581,15 @@
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
     <Content Include="Scripts\DataTable\datatables.min.js" />
     <Content Include="Scripts\dynamicUnobtrusive.js" />
+    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\FileSaver.min.js" />
+    <Content Include="Scripts\html2canvas.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.ambiance.js" />
     <Content Include="Scripts\jquery.base64.js" />
     <Content Include="Content\jquery.timepicker.min.css" />
@@ -545,10 +597,11 @@
     <Content Include="Content\navbar-style.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jspdf.js" />
+    <Content Include="Scripts\jspdf.min.js" />
+    <Content Include="Scripts\jspdf.plugin.autotable.js" />
     <Content Include="Scripts\Login\index.js" />
     <Content Include="Scripts\Morris Charts\morris.min.js" />
     <Content Include="Scripts\Morris Charts\raphael-min.js" />
-    <Content Include="Scripts\server_notification.js" />
     <Content Include="Scripts\spin.min.js" />
     <Content Include="Scripts\noty\jquery.noty.js" />
     <Content Include="Scripts\noty\layouts\bottom.js" />
@@ -568,47 +621,6 @@
     <Content Include="Scripts\noty\themes\relax.js" />
     <Content Include="Scripts\sprintf.js" />
     <Content Include="Scripts\tableExport.js" />
-    <Content Include="Content\themes\base\accordion.css" />
-    <Content Include="Content\themes\base\all.css" />
-    <Content Include="Content\themes\base\autocomplete.css" />
-    <Content Include="Content\themes\base\base.css" />
-    <Content Include="Content\themes\base\button.css" />
-    <Content Include="Content\themes\base\core.css" />
-    <Content Include="Content\themes\base\datepicker.css" />
-    <Content Include="Content\themes\base\dialog.css" />
-    <Content Include="Content\themes\base\draggable.css" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="Content\themes\base\jquery-ui.css" />
-    <Content Include="Content\themes\base\jquery-ui.min.css" />
-    <Content Include="Content\themes\base\menu.css" />
-    <Content Include="Content\themes\base\progressbar.css" />
-    <Content Include="Content\themes\base\resizable.css" />
-    <Content Include="Content\themes\base\selectable.css" />
-    <Content Include="Content\themes\base\selectmenu.css" />
-    <Content Include="Content\themes\base\slider.css" />
-    <Content Include="Content\themes\base\sortable.css" />
-    <Content Include="Content\themes\base\spinner.css" />
-    <Content Include="Content\themes\base\tabs.css" />
-    <Content Include="Content\themes\base\theme.css" />
-    <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="gif\rolling-md-light.gif" />
@@ -647,14 +659,11 @@
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\checkbox.js" />
     <Content Include="Scripts\datetimePicker.js" />
     <Content Include="Scripts\notify.min.js" />
     <Content Include="Scripts\Scheduler\dhtmlxscheduler.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
-    <Content Include="Scripts\jquery-ui-1.12.0.js" />
-    <Content Include="Scripts\jquery-ui-1.12.0.min.js" />
     <Content Include="Scripts\jquery.timepicker.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -709,10 +718,8 @@
     <Content Include="Scripts\lang\zh-tw.js" />
     <Content Include="Scripts\loginForm.js" />
     <Content Include="Scripts\metisMenuScripts.js" />
-    <Content Include="Scripts\jquery-3.1.0.js" />
-    <Content Include="Scripts\jquery-3.1.0.min.js" />
-    <Content Include="Scripts\jquery-3.1.0.slim.js" />
-    <Content Include="Scripts\jquery-3.1.0.slim.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -733,6 +740,7 @@
     <Content Include="Scripts\Scheduler\dhtmlxscheduler_agenda_view.js" />
     <Content Include="Scripts\selectrow.js" />
     <Content Include="Scripts\siteScripts.js" />
+    <Content Include="Scripts\tableExport.min.js" />
     <Content Include="Scripts\timepickerInt.js" />
     <Content Include="Scripts\venueMaintainence.js" />
     <Content Include="Web.config">
@@ -753,6 +761,7 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\PersonTopicController.cs" />
     <Compile Include="Controllers\PersonTypeController.cs" />
+    <Compile Include="Controllers\Person_Session_Action_LogController.cs" />
     <Compile Include="Controllers\QuestionnaireController.cs" />
     <Compile Include="Controllers\Question_BankController.cs" />
     <Compile Include="Controllers\Question_TopicController.cs" />
@@ -839,7 +848,6 @@
     <Compile Include="Models\findBookingVenues_Result.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\global.cs" />
     <Compile Include="Models\HtmlExtensions.cs" />
     <Compile Include="Models\JobScheduler.cs" />
     <Compile Include="Models\LibraryAssistantModel.Context.cs">
@@ -969,8 +977,6 @@
     </Content>
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Scripts\jquery-3.1.0.min.map" />
-    <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\RegisteredPerson\Details.cshtml" />
     <Content Include="Views\RegisteredPerson\UpdateDetails.cshtml" />
@@ -1014,6 +1020,7 @@
     <Content Include="Views\Trainer\updateTopic.cshtml" />
     <Content Include="Views\Trainer\addTopic.cshtml" />
     <Content Include="Views\Trainer\deleteTopic.cshtml" />
+    <Content Include="Views\Trainer\addTrainingSession.cshtml" />
     <Content Include="Views\Trainer\getTrainingVenues.cshtml" />
     <Content Include="Views\Trainer\addTrainingSessionDetails.cshtml" />
     <Content Include="Views\Trainer\getTrainers.cshtml" />
@@ -1060,6 +1067,26 @@
     <Content Include="Views\Employee\Topics.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\Delete_.cshtml" />
+    <Content Include="Views\Venues\Create.cshtml" />
+    <Content Include="Views\Venues\Delete.cshtml" />
+    <Content Include="Views\Venues\Details.cshtml" />
+    <Content Include="Views\Venues\Edit.cshtml" />
+    <Content Include="Views\Venues\Index.cshtml" />
+    <Content Include="Views\Building_Floor\Create.cshtml" />
+    <Content Include="Views\Building_Floor\Delete.cshtml" />
+    <Content Include="Views\Building_Floor\Details.cshtml" />
+    <Content Include="Views\Building_Floor\Edit.cshtml" />
+    <Content Include="Views\Building_Floor\Index.cshtml" />
+    <Content Include="Views\Buildings\Create.cshtml" />
+    <Content Include="Views\Buildings\Delete.cshtml" />
+    <Content Include="Views\Buildings\Details.cshtml" />
+    <Content Include="Views\Buildings\Edit.cshtml" />
+    <Content Include="Views\Buildings\Index.cshtml" />
+    <Content Include="Views\Campus\Create.cshtml" />
+    <Content Include="Views\Campus\Delete.cshtml" />
+    <Content Include="Views\Campus\Details.cshtml" />
+    <Content Include="Views\Campus\Edit.cshtml" />
+    <Content Include="Views\Campus\Index.cshtml" />
     <Content Include="Views\Question_Bank\Create.cshtml" />
     <Content Include="Views\Question_Bank\Delete.cshtml" />
     <Content Include="Views\Question_Bank\Edit.cshtml" />
@@ -1132,16 +1159,19 @@
     <Content Include="Views\Member\Delete.cshtml" />
     <Content Include="Views\Member\MemberDetails.cshtml" />
     <Content Include="Views\Backup\Index.cshtml" />
-    <Content Include="Views\Venue\addVenueCharacteristic.cshtml" />
-    <Content Include="Views\Repository\DeleteFileType.cshtml" />
-    <Content Include="Views\Repository\viewFileCategories.cshtml" />
-    <Content Include="Views\Repository\addFileCategory.cshtml" />
-    <Content Include="Views\Repository\updateFileCategory.cshtml" />
-    <Content Include="Views\Repository\deleteFileCategory.cshtml" />
-    <Content Include="Views\Trainer\addTrainingCategory.cshtml" />
-    <Content Include="Views\Trainer\addTrainingTopic.cshtml" />
-    <Content Include="Views\Trainer\updateTrainingSess.cshtml" />
-    <Content Include="Views\Trainer\selectUpdateTrainer.cshtml" />
+    <Content Include="Views\Reporting\documentAccessReport.cshtml" />
+    <Content Include="Views\Question_Bank\Come_Back.cshtml" />
+    <Content Include="Views\Question_Bank\View.cshtml" />
+    <Content Include="Views\Questionnaire\Employee_Assessment.cshtml" />
+    <Content Include="Views\Questionnaire\Get_Questionnaire_Results.cshtml" />
+    <Content Include="Views\Questionnaire\Questionnaire_Results.cshtml" />
+    <Content Include="Views\Questionnaire\Training_Session_Assessment.cshtml" />
+    <Content Include="Views\Questionnaire\Venue_Assessment_Building.cshtml" />
+    <Content Include="Views\Questionnaire\Venue_Assessment_Building_Floor.cshtml" />
+    <Content Include="Views\Questionnaire\Venue_Assessment_Campus.cshtml" />
+    <Content Include="Views\Questionnaire\Venue_Assessment_Venue.cshtml" />
+    <Content Include="Views\Person_Session_Action_Log\Index.cshtml" />
+    <Content Include="Views\Reporting\BookingReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1187,8 +1217,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

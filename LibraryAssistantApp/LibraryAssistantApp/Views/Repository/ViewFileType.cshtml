@@ -2,49 +2,37 @@
 
 @{
     ViewBag.Title = "View File Types";
+    Layout = (string)Session["layout"];
 }
 
 <h2>Existing File Types</h2>
+<hr />
+@Html.ActionLink("Add File Type", "AddFileType", "Repository", htmlAttributes: new { @class="btn btn-default"})
 
-@Html.ActionLink("Add File Type", "AddFileType", "Repository")
+<hr />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Document_Type_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <table class="table table-bordered" id="typeTable">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Document_Type_Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-            {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Document_Type_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "UpdateFileType", new { id = item.Document_Type_ID }) |
-                            @Html.ActionLink("Delete", "DeleteFileType", new { id = item.Document_Type_ID })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Document_Type_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "UpdateFileType", new { id=item.Document_Type_ID })
+        </td>
+    </tr>
+}
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#typeTable").DataTable();
-    })
-</script>
+</table>

@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using System.Xml.Linq;
 
 namespace LibraryAssistantApp.Controllers
 {
@@ -13,14 +11,12 @@ namespace LibraryAssistantApp.Controllers
     {
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
-        //view booings - student side
         [Authorize]
         public ActionResult ViewBookings()
         {
             return View();
         }
 
-        //view bookings - employee side
         [Authorize(Roles ="Admin, Employee")]
         public ActionResult employeeViewBookings()
         {
@@ -39,24 +35,6 @@ namespace LibraryAssistantApp.Controllers
         public ActionResult BookDiscussionRoom()
         {
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
-
-            //get xml
-            var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
-            XElement doc = XElement.Load(settingsPath);
-
-            //get list of durations
-            List<string> durations = (from el in doc.Elements("discussionduration")
-                                             select el.Value).ToList();
-            durations.Sort();
-            ViewBag.Durations = durations;
-
-            //get start/closing time
-            var open = doc.Elements("opentime").First();
-            var close = doc.Elements("closetime").First();
-
-            ViewBag.Open = open;
-            ViewBag.Close = close;
-
             return View();
         }
 
@@ -65,23 +43,6 @@ namespace LibraryAssistantApp.Controllers
         [Authorize(Roles ="Admin, Employee")]
         public ActionResult employeeBookDiscussionRoom()
         {
-            //get xml
-            var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
-            XElement doc = XElement.Load(settingsPath);
-
-            //get list of durations
-            List<string> durations = (from el in doc.Elements("discussionduration")
-                                      select el.Value).ToList();
-            durations.Sort();
-            ViewBag.Durations = durations;
-
-            //get start/closing time
-            var open = doc.Elements("opentime").First();
-            var close = doc.Elements("closetime").First();
-
-            ViewBag.Open = open;
-            ViewBag.Close = close;
-
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
             return View();
         }
@@ -94,33 +55,8 @@ namespace LibraryAssistantApp.Controllers
         {            
             if (ModelState.IsValid)
             {
-                //check duration against closing time
-                //get xml
-                XElement d = XElement.Load(serverpath.path);
-                var close = d.Elements("closetime").First();
-                var dclose = Convert.ToDateTime(close.Value).TimeOfDay;
-                var sesstime = Convert.ToDateTime(model.inTime).TimeOfDay;
-                var length = Convert.ToDateTime(model.length).TimeOfDay;
-                var sessend = sesstime.Add(length);
-                if (sessend > dclose)
-                {
-                    ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
-                    TempData["Message"] = "Session proceeds past library closing time!";
-                    TempData["classStyle"] = "warning";
-                    //get xml
-                    var sp = Path.Combine(Server.MapPath("~"), "settings.xml");
-                    XElement document = XElement.Load(sp);
-
-                    //get list of durations
-                    List<string> dur = (from el in document.Elements("discussionduration")
-                                        select el.Value).ToList();
-                    dur.Sort();
-                    ViewBag.Durations = dur;
-                    return RedirectToAction("BookDiscussionRoom");
-                }
-
                 var dateToday = DateTime.Today;
-                if (model.date.Date > dateToday.Date)
+                if (model.date > dateToday)
                 {
                     model.time = Convert.ToDateTime(model.inTime);
 
@@ -132,7 +68,7 @@ namespace LibraryAssistantApp.Controllers
                     DateTime startDateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
 
                     //calculate the end time of the new session
-                    var duration = Convert.ToDateTime(model.length).TimeOfDay;
+                    TimeSpan duration = new TimeSpan(0, model.length, 0);
                     DateTime endDateTime = startDateTime.Add(duration);
                     model.date = startDateTime;
                     model.endDate = endDateTime;
@@ -142,7 +78,6 @@ namespace LibraryAssistantApp.Controllers
                                        where c.Campus_ID.Equals(model.campus_ID)
                                        select c.Campus_Name).FirstOrDefault();
                     model.campus_name = campus_name;
-                    model.person_id = User.Identity.Name;
 
                     //capture the submitted booking details to a session variable
                     Session["details"] = model;
@@ -164,27 +99,9 @@ namespace LibraryAssistantApp.Controllers
                     ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
                     TempData["Message"] = "Invalid date selection, date is in the past.";
                     TempData["classStyle"] = "warning";
-                    //get xml
-                    var sp = Path.Combine(Server.MapPath("~"), "settings.xml");
-                    XElement document = XElement.Load(sp);
-
-                    //get list of durations
-                    List<string> dur = (from el in document.Elements("discussionduration")
-                                              select el.Value).ToList();
-                    dur.Sort();
-                    ViewBag.Durations = dur;
                     return View(model);
                 }
             }
-            //get xml
-            var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
-            XElement doc = XElement.Load(settingsPath);
-
-            //get list of durations
-            List<string> durations = (from el in doc.Elements("discussionduration")
-                                      select el.Value).ToList();
-            durations.Sort();
-            ViewBag.Durations = durations;
             ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
             return View(model);
         }
@@ -205,17 +122,17 @@ namespace LibraryAssistantApp.Controllers
                     //check if the submitted person id is valid
                     if (validPersonId.Any())
                     {
-                        model.time = Convert.ToDateTime(model.inTime);
-
                         //get the time and date components
-                        var time = model.time.TimeOfDay;
+                        var dtTime = Convert.ToDateTime(model.time);
+
+                        var time = dtTime.TimeOfDay;
                         var date = model.date.Date;
 
                         //calculate the start time of the new session
                         DateTime startDateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
 
                         //calculate the end time of the new session
-                        var duration = Convert.ToDateTime(model.length).TimeOfDay;
+                        TimeSpan duration = new TimeSpan(0, model.length, 0);
                         DateTime endDateTime = startDateTime.Add(duration);
                         model.date = startDateTime;
                         model.endDate = endDateTime;
@@ -226,20 +143,24 @@ namespace LibraryAssistantApp.Controllers
                                            select c.Campus_Name).FirstOrDefault();
                         model.campus_name = campus_name;
 
-                        var discussionModel = new DiscussionRoomBooking
+                        //capture the submitted booking details to a session variable
+
+                        //convert to discussionroombooking
+
+                        DiscussionRoomBooking convert = new DiscussionRoomBooking
                         {
-                            person_id = model.person_id,
-                            inTime = model.inTime,
-                            date = model.date,
-                            endDate = model.endDate,
                             campus_ID = model.campus_ID,
                             campus_name = model.campus_name,
+                            date = model.date,
+                            endDate = model.endDate,
+                            inTime = model.inTime,
                             length = model.length,
+                            person_id = model.person_id,
                             time = model.time,
+
                         };
 
-                        //capture the submitted booking details to a session variable
-                        Session["details"] = discussionModel;
+                        Session["details"] = convert;
 
                         //get all available venues according to the submitted criteria
                         var venues = db.findBookingVenuesFunc(startDateTime, endDateTime, "Discussion", model.campus_ID);
@@ -258,29 +179,11 @@ namespace LibraryAssistantApp.Controllers
                         ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
                         TempData["Message"] = "Invalid date selection, date is in the past.";
                         TempData["classStyle"] = "warning";
-                        //get xml
-                        var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
-                        XElement doc = XElement.Load(settingsPath);
-
-                        //get list of durations
-                        List<string> durations = (from el in doc.Elements("discussionduration")
-                                                  select el.Value).ToList();
-                        durations.Sort();
-                        ViewBag.Durations = durations;
                         return View(model);
                     }
                 }
                 else
                 {
-                    //get xml
-                    var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
-                    XElement doc = XElement.Load(settingsPath);
-
-                    //get list of durations
-                    List<string> durations = (from el in doc.Elements("discussionduration")
-                                              select el.Value).ToList();
-                    durations.Sort();
-                    ViewBag.Durations = durations;
                     ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
                     TempData["Message"] = "Invalid Person ID";
                     TempData["classStyle"] = "warning";
@@ -386,10 +289,6 @@ namespace LibraryAssistantApp.Controllers
 
             //add new venue booking to database
             db.Venue_Booking.Add(vb);
-
-            //record action
-            global.addAudit("Bookings", "Booking: Discussion Room Booking", "Create", User.Identity.Name);
-
             db.SaveChanges();
 
             //get booking seq of booking just created
@@ -398,7 +297,14 @@ namespace LibraryAssistantApp.Controllers
 
             //set properties of venue booking person object
             vbp.Venue_Booking_Seq = bookingSeq;
-            vbp.Person_ID = details.person_id;          
+            if (details.person_id == null)
+            {
+                vbp.Person_ID = User.Identity.Name;
+            }
+            else
+            {
+                vbp.Person_ID = details.person_id;
+            }          
             vbp.Attendee_Type = "Student";
             vbp.Attendee_Status = "Active";
 
@@ -453,7 +359,6 @@ namespace LibraryAssistantApp.Controllers
         {
             //create local list
             IEnumerable<Venue_Booking> bookings;
-            List<Venue_Booking_Person> person_bookings = new List<Venue_Booking_Person>();
 
             //switch to get bookings based on idType
             switch (idType)
@@ -465,13 +370,6 @@ namespace LibraryAssistantApp.Controllers
                     bookings = (from a in db.Venue_Booking
                                 where bookingSeq.Contains(a.Venue_Booking_Seq)
                                 select a);
-
-                    person_bookings = (from p in db.Venue_Booking_Person
-                                       where p.Person_ID == id && p.Attendee_Status == "Active"
-                                       select p).ToList();
-
-                    Session["personBookings"] = person_bookings;
-
                     break;
                 case "venueID":
                     var test = id;
@@ -479,7 +377,6 @@ namespace LibraryAssistantApp.Controllers
                     bookings = (from c in db.Venue_Booking
                                 where c.Venue_ID.Equals(venueID) && c.Booking_Status.Equals("Active")
                                 select c);
-                    Session["personBookings"] = null; 
                     break;
                 default:
                     bookings = (from d in db.Venue_Booking
@@ -489,8 +386,6 @@ namespace LibraryAssistantApp.Controllers
 
             //create list type of bookings
             List<Venue_Booking> listOfBookings = bookings.ToList();
-
-            Session["personalBookings"] = listOfBookings;
 
             //create an event list
             var eventList = from e in listOfBookings
@@ -611,7 +506,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         // POST: Cancel selected booking
-        [HttpPost]
+        [HttpGet]
         [Authorize]
         public ActionResult captureCancel()
         {
@@ -619,26 +514,15 @@ namespace LibraryAssistantApp.Controllers
 
             //get selected booking object from database
             var cancelledBooking = db.Venue_Booking.Where(b => b.Venue_Booking_Seq.Equals(a.booking_seq)).FirstOrDefault();
-            var cancelledPersonBooking = db.Venue_Booking_Person.Where(p => p.Venue_Booking_Seq.Equals(a.booking_seq) && p.Person_ID == User.Identity.Name).FirstOrDefault();
+            var cancelledPersonBooking = db.Venue_Booking_Person.Where(p => p.Venue_Booking_Seq.Equals(a.booking_seq)).FirstOrDefault();
 
             //change booking status to cancelled
-            if (cancelledBooking.Booking_Type_Seq == 2)
-            {
-                cancelledPersonBooking.Attendee_Status = "Cancelled";
-            }
-            else
-            {
-                cancelledPersonBooking.Attendee_Status = "Cancelled";
-                cancelledBooking.Booking_Status = "Cancelled";
-            }
+            cancelledBooking.Booking_Status = "Cancelled";
+            cancelledPersonBooking.Attendee_Status = "Cancelled";
 
             //capture the cancellation
             db.Entry(cancelledBooking).State = EntityState.Modified;
             db.Entry(cancelledPersonBooking).State = EntityState.Modified;
-
-            //record action
-            global.addAudit("Bookings", "Bookings: Cancelled Booking", "Delete", User.Identity.Name);
-
             db.SaveChanges();
 
             //set notification information
@@ -706,7 +590,7 @@ namespace LibraryAssistantApp.Controllers
 
         //GET: Get venues for selected building that are available
         [Authorize]
-        public JsonResult getUpdateVenues(DateTime start, DateTime time, int building, int campus, string length)
+        public JsonResult getUpdateVenues(DateTime start, DateTime time, int building, int campus, int length)
         {
             //get the time and date components
             var bookingTime = time.TimeOfDay;
@@ -716,7 +600,7 @@ namespace LibraryAssistantApp.Controllers
             DateTime startDateTime = new DateTime(booingDate.Year, booingDate.Month, booingDate.Day, bookingTime.Hours, bookingTime.Minutes, bookingTime.Seconds);
 
             //calculate the end time of the new session
-            var duration = Convert.ToDateTime(length).TimeOfDay;
+            TimeSpan duration = new TimeSpan(0, length, 0);
             DateTime endDateTime = startDateTime.Add(duration);
 
             var venues = db.findBookingVenuesFunc(startDateTime, endDateTime, "Discussion", campus);
@@ -743,40 +627,18 @@ namespace LibraryAssistantApp.Controllers
         [Authorize]
         public void updateStatus(string status)
         {
-            var bookings = (List<Venue_Booking>)Session["personalBookings"];
-            var person_bookings = (List<Venue_Booking_Person>)Session["personBookings"];
-
             var a = (BookingDetailsModel)Session["selectedBookingDetails"];
 
             var updatedBooking = (from b in db.Venue_Booking
                                   where b.Venue_Booking_Seq.Equals(a.booking_seq)
                                   select b).FirstOrDefault();
 
-            Venue_Booking_Person updatedPersonBooking;
-
-            if (person_bookings == null)
-            {
-                updatedPersonBooking = (from p in db.Venue_Booking_Person
-                                            where p.Venue_Booking_Seq.Equals(a.booking_seq)
-                                            select p).FirstOrDefault();
-            }
-            else
-            {
-                var personid = person_bookings[0].Person_ID;
-                updatedPersonBooking = (from p in db.Venue_Booking_Person
-                                        where p.Venue_Booking_Seq == a.booking_seq && p.Person_ID == personid
+            var updatedPersonBooking = (from p in db.Venue_Booking_Person
+                                        where p.Venue_Booking_Seq.Equals(a.booking_seq)
                                         select p).FirstOrDefault();
-            }
 
-            if (updatedPersonBooking.Attendee_Type == "Student" && updatedBooking.Booking_Type_Seq == 2)
-            {
-                updatedPersonBooking.Attendee_Status = status;
-            }
-            else
-            {
-                updatedBooking.Booking_Status = status;
-                updatedPersonBooking.Attendee_Status = status;
-            }
+            updatedBooking.Booking_Status = status;
+            updatedPersonBooking.Attendee_Status = status;
 
             db.Entry(updatedBooking).State = EntityState.Modified;
             db.Entry(updatedPersonBooking).State = EntityState.Modified;
@@ -793,7 +655,7 @@ namespace LibraryAssistantApp.Controllers
             var details = (DiscussionRoomBooking)Session["details"];
             var venues = db.findBookingVenuesFunc(details.date, details.endDate, "Discussion", details.campus_ID).ToList();
 
-            if (characteristics != null)
+            if (characteristics.Any())
             {
                 //get list of all venues venue_id
                 var venueListId = (from a in venues
@@ -840,7 +702,7 @@ namespace LibraryAssistantApp.Controllers
             if (capacity > 0)
             {
                 venues = (from venue in venues
-                          where venue.Capacity >= capacity
+                          where venue.Capacity.Equals(capacity)
                           select venue).ToList();
             }
                  
@@ -856,68 +718,39 @@ namespace LibraryAssistantApp.Controllers
 
             var booking = db.Venue_Booking.Where(b => b.Venue_Booking_Seq.Equals(bookingDetails.booking_seq)).FirstOrDefault();
 
-            if (booking.Booking_Type.Booking_Type_Name == "Training")
+            UpdateBookingModel a = new UpdateBookingModel
             {
-                TempData["Message"] = "Unfortunately unable to update training session!";
-                TempData["classStyle"] = "danger";
-                if (User.IsInRole("Admin"))
-                    return RedirectToAction("employeeViewBookings");
-                else return RedirectToAction("ViewBookings");
-            }
-            else
-            {
-                UpdateBookingModel a = new UpdateBookingModel
-                {
-                    booking_seq = bookingDetails.booking_seq,
-                    building = bookingDetails.building,
-                    campus = bookingDetails.campus,
-                    date = bookingDetails.date,
-                    startDate = booking.DateTime_From,
-                    endDate = booking.DateTime_To,
-                    person_id = bookingDetails.person_id,
-                    time = booking.DateTime_From.TimeOfDay.ToString(),
-                    venue = bookingDetails.venue,
-                    campus_id = booking.Campus_ID,
-                    building_id = booking.Building_ID,
-                    building_floor_id = booking.Building_Floor_ID,
-                    venue_id = booking.Venue_ID,
-                    length = booking.DateTime_To.Subtract(booking.DateTime_From).ToString().Substring(0, 5),
-                };
+                booking_seq = bookingDetails.booking_seq,
+                building = bookingDetails.building,
+                campus = bookingDetails.campus,
+                date = bookingDetails.date,
+                startDate = booking.DateTime_From,
+                endDate = booking.DateTime_To,
+                person_id = bookingDetails.person_id,
+                time = booking.DateTime_From.TimeOfDay.ToString(),
+                venue = bookingDetails.venue,
+                campus_id = booking.Campus_ID,
+                building_id = booking.Building_ID,
+                building_floor_id = booking.Building_Floor_ID,
+                venue_id = booking.Venue_ID,
+                length = booking.DateTime_To.Subtract(booking.DateTime_From).TotalMinutes,
+            };
+            ViewBag.Campus = from c in db.Campus
+                                select c;
 
-                //get xml
-                var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
-                XElement doc = XElement.Load(settingsPath);
+            ViewBag.Building = from b in db.Buildings
+                               where b.Campus_ID.Equals(booking.Campus_ID)
+                               select b;
 
-                //get list of durations
-                List<string> durations = (from el in doc.Elements("discussionduration")
-                                          select el.Value).ToList();
-                durations.Sort();
-                ViewBag.Durations = durations;
+            var venues = db.findBookingVenuesFunc(booking.DateTime_From, booking.DateTime_To, "Discussion", booking.Campus_ID).ToList();
+            var currentVenue = db.Venues.Where(v => v.Venue_ID.Equals(booking.Venue_ID)).FirstOrDefault();
+            venues.Add(currentVenue);
 
-                //get start/closing time
-                var open = doc.Elements("opentime").First();
-                var close = doc.Elements("closetime").First();
+            ViewBag.Venue = venues;
 
-                ViewBag.Open = open;
-                ViewBag.Close = close;
+            ModelState.Clear();
 
-                ViewBag.Campus = from c in db.Campus
-                                 select c;
-
-                ViewBag.Building = from b in db.Buildings
-                                   where b.Campus_ID.Equals(booking.Campus_ID)
-                                   select b;
-
-                var venues = db.findBookingVenuesFunc(booking.DateTime_From, booking.DateTime_To, "Discussion", booking.Campus_ID).ToList();
-                var currentVenue = db.Venues.Where(v => v.Venue_ID.Equals(booking.Venue_ID)).FirstOrDefault();
-                venues.Add(currentVenue);
-
-                ViewBag.Venue = venues;
-
-                ModelState.Clear();
-
-                return View(a);
-            }           
+            return View(a);
         }
 
         [HttpPost]
@@ -943,7 +776,7 @@ namespace LibraryAssistantApp.Controllers
                 DateTime startDateTime = new DateTime(bookingDate.Year, bookingDate.Month, bookingDate.Day, timeTimespan.Hours, timeTimespan.Minutes, timeTimespan.Seconds);
 
                 //calculate the end time of the new session
-                var duration = Convert.ToDateTime(model.length).TimeOfDay;
+                TimeSpan duration = new TimeSpan(0, Convert.ToInt32(model.length), 0);
                 DateTime endDateTime = startDateTime.Add(duration);
 
                 var buildingFloorId = (from b in db.Building_Floor
@@ -959,9 +792,6 @@ namespace LibraryAssistantApp.Controllers
 
                 db.Entry(bookingUpdate).State = EntityState.Modified;
                 db.SaveChanges();
-
-                //record action
-                global.addAudit("Bookings", "Bookings: Update Booking", "Update", User.Identity.Name);
 
             }
             else
@@ -1014,7 +844,7 @@ namespace LibraryAssistantApp.Controllers
         [Authorize]
         public PartialViewResult getAvailableTrainingSess(int id)
         {
-            var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id && b.DateTime_From > DateTime.Today).ToList();
+            var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id).ToList();
 
             var filtered = new List<Venue_Booking>();
 
@@ -1115,9 +945,6 @@ namespace LibraryAssistantApp.Controllers
             db.Venue_Booking_Person.Add(a);
 
             db.SaveChanges();
-
-            //record action
-            global.addAudit("Bookings", "Bookings: Book Training Session", "Create", User.Identity.Name);
         }
     }
 }

@@ -5,143 +5,149 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Audit log</h2>
+<div>
+    <h2>Audit log</h2>
+    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+</div>
 
+<div class="row">
+    <div class="col-md-9">
+        <h4 class="bg-info shaded">
+            Audit Log Report
+        </h4>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table id="tbl-audit-log" class="table table-bordered" title="Audit log results.">
+                    <thead>
+                        <tr class="shade-blue">
+                            <th>
+                                Session
+                            </th>
+                            <th>
+                                Username
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Operation
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                            <th>
+                                Area
+                            </th>
+                            <th>
+                                Date & Time
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count() == 0)
+            {
+                            <tr>
+                                <td colspan="4">No rows match search criteria</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Session_ID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Username)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Person_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Crud_Operation)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Action_Performed)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Area)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TimePerformed)
+                                    </td>
 
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Search Criteria</div>
-    <div class="panel-body">
-
-        <p>
-            <b>Search by  Name</b>
-            <br />
-            
-            @Html.Editor("Names", new { htmlAttributes = new { @class = "form-control", id = "Names", @value = ViewBag.Names } })
-            <br />
-        </p>
-
-        <p>
-            <b>Search by  Operation</b>
-            <br />
-            @Html.DropDownList("Crud_Operation", new List<SelectListItem>
+    <div class="col-md-3">
+        <h4 class="bg-info shaded">
+            Search
+        </h4>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Name</label>
+                    @Html.Editor("Names", new { htmlAttributes = new { @class = "form-control", id = "Names", @value = ViewBag.Names, @title="Filter by users name" } })
+                </div>
+                <div class="form-group">
+                    <Label>Operation</Label>
+                    @Html.DropDownList("Crud_Operation", new List<SelectListItem>
                      {
                         new SelectListItem{ Text="Create", Value = "Create" },
                         new SelectListItem{ Text="Edit", Value = "Edit" },
                         new SelectListItem{ Text="Delete", Value = "Delete" },
                         new SelectListItem{ Text="Respond", Value = "Respond" },
-                     }, "All", htmlAttributes: new { @class = "form-control", id = "Crud_Operation", @value = (string)ViewBag.Crud_Operation })
-            <br />
-        </p>
-
-        <p>
-            <b>Search by  system area</b>
-            <br />
-            @Html.DropDownList("Areas", null, "All", htmlAttributes: new { @class = "form-control", id = "Areas" })
-
-            <br />
-        </p>
-
-        <p>
-            <b>Search by date</b>
-            <br />
-            @Html.Editor("DateSearch", new { htmlAttributes = new { @class = "datepick form-control", id = "From", @value = ViewBag.DateSearch } })
-            <br />
-        </p>
-
-
-        <script>
-            $('.datepick').each(function () {
-                $(this).datepicker();
-            });
-
-        </script>
-
-
-        <input type="submit" value="Search" class="btn btn-default" onclick="go()" /> | <input type="submit" value="Clear" class="btn btn-default" onclick="Clear()" />
+                     }, "All", htmlAttributes: new { @class = "form-control", id = "Crud_Operation", @value = (string)ViewBag.Crud_Operation, @title = "Filter by create/read/update/delete operation." })
+                </div>
+                <div class="form-group">
+                    <label>Area</label>
+                    @Html.DropDownList("Areas", null, "All", htmlAttributes: new { @class = "form-control", id = "Areas", @title = "Filter by system area." })
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    @Html.Editor("DateSearch", new { htmlAttributes = new { @class = "datepick form-control", id = "From", @value = ViewBag.DateSearch, @title="Pick a date to filter by." } })
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="btn-group">
+                    <input type="submit" value="Search" class="btn btn-primary" onclick="go()" title="Search audit log." />
+                </div>
+                <div class="btn-group">
+                    <input type="submit" value="Clear" class="btn btn-primary" onclick="Clear()" title="Clear audit log search." />
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     function go() {
-
         var Names = document.getElementById("Names").value;
         var Areas = document.getElementById("Areas").value;
         var From = document.getElementById("From").value;
         var Crud_Operation = document.getElementById("Crud_Operation").value;
-        
         if (From == "") {
             From = "11/11/1111";
         }
-
         window.location.href = "/Person_Session_Action_Log/Search?Names=" + Names + "&Areas=" + Areas + "&From=" + From + "&Crud_Operation=" + Crud_Operation;
-
     }
     function Clear() {
-
         window.location.href = "/Person_Session_Action_Log/Index?";
-
     }
-
 </script>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Results</div>
-    <div class="panel-body">
-
-
-        <table class="table">
-            <tr>
-                <th>
-                    Person
-                </th>
-                <th>
-                    Operation
-                </th>
-                <th>
-                    Action Performaed
-                </th>
-                <th>
-                    Area of the system
-                </th>
-                <th>
-                    Time of occurance
-                </th>
-                <th></th>
-            </tr>
-
-            @if (Model.Count() == 0)
-            {
-                <tr>
-                    <td colspan="4">No rows match search criteria</td>
-                </tr>
-            }
-            else
-            {
-
-
-                foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Person_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Crud_Operation)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Action_Performed)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Area)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TimePerformed)
-                        </td>
-
-                    </tr>
-                }
-            }
-        </table>
-    </div>
-</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tbl-audit-log').DataTable();
+        $('.datepick').each(function () {
+            $(this).datepicker();
+        });
+    });
+</script>

@@ -12,44 +12,44 @@
     var catlist = (IEnumerable<Category>)TempData["_Categories"];
 }
 
-<h3>Create Employee</h3>
+<h2>Create Employee</h2>
 <hr />
-<h5>New Employee Details:</h5>
+<h4 class="bg-info shaded">New Employee Details:</h4>
 <br />
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <div class="col-md-12">
-            <div class="form-group">
-                @Html.LabelFor(model => model.person_id, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.person_id, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.person_id, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.person_id, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.person_id, new { htmlAttributes = new { @class = "form-control", @title = "Enter a valid UP username, starting with 'p' followed with 8 numbers." } })
+                        @Html.ValidationMessageFor(model => model.person_id, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-12">
+            <div class="col-md-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.person_name, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.person_name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.person_name, new { htmlAttributes = new { @class = "form-control", @title = "Name must be alphabetic, can contain whitespace." } })
                         @Html.ValidationMessageFor(model => model.person_name, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.person_surname, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.person_surname, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.person_surname, new { htmlAttributes = new { @class = "form-control", @title = "Surname must be alphabetic, can contain whitespace." } })
                         @Html.ValidationMessageFor(model => model.person_surname, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.person_email, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control", @title = "Enter an email address, must be in the correct format." } })
                         @Html.ValidationMessageFor(model => model.person_email, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -61,16 +61,19 @@
                         @Html.ValidationMessageFor(model => model.Person_Type, "", new { @class = "text-danger" })
                     </div>
                 </div>
+            </div>
         </div>
 
-        <h5>Employee Roles:</h5>
+        <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
+        <h4 class="bg-info shaded">Employee Roles:</h4>
         <br />
         <div class="row">
+            <p class="text-muted" style="padding-left:35px"><strong>Note:</strong> If trainer is selected the option to assign topics will appear.</p>
             <div class="col-md-4 col-md-offset-2">
                 <div id="emp-deets" class="panel panel-default">
                     @if (ViewBag.Check1 == true)
                 {
-                        <table id="tbl-roles" class="table">
+                        <table id="tbl-roles" class="table" title="Use the checkboxes to assign employee roles.">
                             <thead>
                                 <tr>
                                     <th>
@@ -99,7 +102,7 @@
         </div>
 
         <div id="topic-parent" hidden>
-            <h5>Trainer Topics:</h5>
+            <h4 class="bg-warning shaded">Trainer Topics:</h4>
             <br/>        
             <div id="div-topics">
 
@@ -108,9 +111,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="btn-create" type="submit" value="Create" formmethod="post" formaction="Create" class="btn btn-default" />
+                <input id="btn-create" type="submit" value="Create" formmethod="post" formaction="Create" class="btn btn-primary" title="Finish creating the new employee." />
             </div>
-            <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
         </div>
         <div>
             @Html.ActionLink("Back to List", "Index")

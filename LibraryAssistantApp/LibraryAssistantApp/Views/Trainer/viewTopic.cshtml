@@ -1,12 +1,12 @@
 ﻿@model LibraryAssistantApp.Models.CategoryModel
 @using LibraryAssistantApp.Models
 @{
-    ViewBag.Title = "Training Topics";
+    ViewBag.Title = "viewTopic";
+    Layout = (string)Session["layout"];
     var category = (IEnumerable<Category>)ViewBag.Category;
 }
 
 <h2>Topics</h2>
-<hr />
 
 <div class="row">
     <div class="col-md-12">
@@ -19,7 +19,6 @@
                     @Html.LabelFor(model => model.categoryName, htmlAttributes: new { })
                     <div>
                         <select id="categorySelect" class="form-control">
-                            <option disabled selected value="">--select category--</option>
                             @foreach(var item in category)
                             {
                                 <option value="@item.Category_ID">@item.Category_Name</option>
@@ -37,9 +36,9 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <input type="submit" id="btnAddTop" class="btn btn-primary" value="Add Topic" />
-                <input type="submit" id="btnUpdateTop" class="btn btn-primary" value="Update Topic" />
-                <input type="submit" id="btnDeleteTop" class="btn btn-primary" value="Delete Topic" />
+                <input type="submit" id="btnAddTop" class="btn btn-default" value="Add Topic" />
+                <input type="submit" id="btnUpdateTop" class="btn btn-default" value="Update Topic" />
+                <input type="submit" id="btnDeleteTop" class="btn btn-default" value="Delete Topic" />
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@
 
 <div class="row" id="detailsThree">
 
-    <div id="headingThree" class="bg-warning shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select Timeslot:</b></div>
+    <div id="headingThree"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select Timeslot:</b></div>
 
     <hr />
 
@@ -33,17 +33,11 @@
                 </div>
             </div>
 
-            <div class="col-md-9" id="possibleTrainers">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <h3>No Timeslot Selected</h3>
-                    </div>
-                </div>
-            </div>
+            <div class="col-md-9" id="possibleTrainers"></div>
         </div>
 
         <div class="row col-md-12">
-            <input type="button" class="btn btn-primary" id="trainingProThree" value="Proceed" />
+            <input type="button" class="btn btn-default" id="trainingProThree" value="Proceed" />
         </div>
     </div>   
 </div>
@@ -58,7 +52,6 @@
             data: "id=" + id,
             success: function (result) {
                 $('#possibleTrainers').replaceWith(result);
-                $("#trainingProThree").prop('disabled', true);
             },
             error: function (err, result) {
                 alert("Error in assigning dataToSave" + err.responseText);
