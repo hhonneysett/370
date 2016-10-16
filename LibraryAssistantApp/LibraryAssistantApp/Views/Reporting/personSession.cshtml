@@ -34,7 +34,7 @@
                                 Total Sessions
                             </th>
                             <th>
-                                Total Session Duration (h)
+                                Total Session Duration (dd:hh:mm:ss)
                             </th>
                         </tr>
                     </thead>
@@ -45,7 +45,7 @@
                                 <td>@item.person.Person_ID</td>
                                 <td>@item.person.Person_Name @item.person.Person_Surname</td>
                                 <td>@item.count</td>
-                                <td>@item.totalTime</td>
+                                <td>@item.totalTime.ToString(@"dd\:hh\:mm\:ss")</td>
                             </tr>
 
                         }

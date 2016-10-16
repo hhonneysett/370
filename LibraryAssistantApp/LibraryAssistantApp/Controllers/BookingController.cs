@@ -119,8 +119,8 @@ namespace LibraryAssistantApp.Controllers
                     return RedirectToAction("BookDiscussionRoom");
                 }
 
-                var dateToday = DateTime.Today;
-                if (model.date.Date > dateToday.Date)
+                var checktime = model.date.Add(Convert.ToDateTime(model.inTime).TimeOfDay);
+                if (checktime > DateTime.Now)
                 {
                     model.time = Convert.ToDateTime(model.inTime);
 
@@ -191,13 +191,39 @@ namespace LibraryAssistantApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles="Admin, Employee")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult employeeBookDiscussionRoom(EmpDiscussionRoomBooking model)
         {
             if (ModelState.IsValid)
             {
-                var dateToday = DateTime.Today;
-                if (model.date > dateToday)
+
+                //check duration against closing time
+                //get xml
+                XElement d = XElement.Load(serverpath.path);
+                var close = d.Elements("closetime").First();
+                var dclose = Convert.ToDateTime(close.Value).TimeOfDay;
+                var sesstime = Convert.ToDateTime(model.inTime).TimeOfDay;
+                var length = Convert.ToDateTime(model.length).TimeOfDay;
+                var sessend = sesstime.Add(length);
+                if (sessend > dclose)
+                {
+                    ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+                    TempData["Message"] = "Session proceeds past library closing time!";
+                    TempData["classStyle"] = "warning";
+                    //get xml
+                    var sp = Path.Combine(Server.MapPath("~"), "settings.xml");
+                    XElement document = XElement.Load(sp);
+
+                    //get list of durations
+                    List<string> dur = (from el in document.Elements("discussionduration")
+                                        select el.Value).ToList();
+                    dur.Sort();
+                    ViewBag.Durations = dur;
+                    return RedirectToAction("BookDiscussionRoom");
+                }
+
+                var checktime = model.date.Add(Convert.ToDateTime(model.inTime).TimeOfDay);
+                if (checktime > DateTime.Now)
                 {
                     //get person object
                     var validPersonId = db.Registered_Person.Where(p => p.Person_ID.Equals(model.person_id));
@@ -256,7 +282,7 @@ namespace LibraryAssistantApp.Controllers
                     else
                     {
                         ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
-                        TempData["Message"] = "Invalid date selection, date is in the past.";
+                        TempData["Message"] = "Invalid Person ID";
                         TempData["classStyle"] = "warning";
                         //get xml
                         var settingsPath = Path.Combine(Server.MapPath("~"), "settings.xml");
@@ -282,7 +308,7 @@ namespace LibraryAssistantApp.Controllers
                     durations.Sort();
                     ViewBag.Durations = durations;
                     ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
-                    TempData["Message"] = "Invalid Person ID";
+                    TempData["Message"] = "Invalid date selection, date is in the past";
                     TempData["classStyle"] = "warning";
                     return View(model);
                 }          

@@ -29,7 +29,6 @@ namespace LibraryAssistantApp.Controllers
                 PersonSessionReportModel reportPerson = new PersonSessionReportModel();
 
                 reportPerson.person = person;
-                reportPerson.totalTime = 0;
                 reportPerson.count = 0;
 
                 foreach (var session in sessions)
@@ -39,9 +38,7 @@ namespace LibraryAssistantApp.Controllers
                         TimeSpan time = session.Login_DateTime.TimeOfDay;
                         TimeSpan end = session.Logout_DateTime.TimeOfDay;
                         TimeSpan duration = end - time;
-                        double dDuration = duration.TotalHours;
-                        double round = Math.Round(dDuration, 2);
-                        reportPerson.totalTime = reportPerson.totalTime + round;
+                        reportPerson.totalTime = reportPerson.totalTime + duration;
                         reportPerson.count = reportPerson.count + 1;
                     }
                 }

@@ -498,7 +498,7 @@ namespace LibraryAssistantApp.Models
     {
         public Registered_Person person { get; set; }
         public int count { get; set; }
-        public double totalTime { get; set; }
+        public TimeSpan totalTime { get; set; }
     }
 
     public class DocumentAccessReportModel
