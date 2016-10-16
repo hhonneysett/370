@@ -429,6 +429,16 @@ namespace LibraryAssistantApp.Models
         public string venue { get; set; }
 
         public bool attendance { get; set; }
+
+        [Display(Name ="Description")]
+        public string description { get; set; }
+
+        [Display(Name ="Trainer")]
+        public string trainer { get; set; }
+
+        public string v_id { get; set; }
+
+        public string status { get; set; }
     }
 
     public class AttendanceModel

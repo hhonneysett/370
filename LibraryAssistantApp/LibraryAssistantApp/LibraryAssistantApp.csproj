@@ -1141,6 +1141,8 @@
     <Content Include="Views\Repository\deleteFileCategory.cshtml" />
     <Content Include="Views\Trainer\addTrainingCategory.cshtml" />
     <Content Include="Views\Trainer\addTrainingTopic.cshtml" />
+    <Content Include="Views\Trainer\updateTrainingSess.cshtml" />
+    <Content Include="Views\Trainer\selectUpdateTrainer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

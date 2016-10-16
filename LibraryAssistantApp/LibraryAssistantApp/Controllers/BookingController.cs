@@ -94,6 +94,31 @@ namespace LibraryAssistantApp.Controllers
         {            
             if (ModelState.IsValid)
             {
+                //check duration against closing time
+                //get xml
+                XElement d = XElement.Load(serverpath.path);
+                var close = d.Elements("closetime").First();
+                var dclose = Convert.ToDateTime(close.Value).TimeOfDay;
+                var sesstime = Convert.ToDateTime(model.inTime).TimeOfDay;
+                var length = Convert.ToDateTime(model.length).TimeOfDay;
+                var sessend = sesstime.Add(length);
+                if (sessend > dclose)
+                {
+                    ViewBag.Campus_ID = new SelectList(db.Campus, "Campus_ID", "Campus_Name");
+                    TempData["Message"] = "Session proceeds past library closing time!";
+                    TempData["classStyle"] = "warning";
+                    //get xml
+                    var sp = Path.Combine(Server.MapPath("~"), "settings.xml");
+                    XElement document = XElement.Load(sp);
+
+                    //get list of durations
+                    List<string> dur = (from el in document.Elements("discussionduration")
+                                        select el.Value).ToList();
+                    dur.Sort();
+                    ViewBag.Durations = dur;
+                    return View(model);
+                }
+
                 var dateToday = DateTime.Today;
                 if (model.date.Date > dateToday.Date)
                 {
@@ -428,6 +453,7 @@ namespace LibraryAssistantApp.Controllers
         {
             //create local list
             IEnumerable<Venue_Booking> bookings;
+            List<Venue_Booking_Person> person_bookings = new List<Venue_Booking_Person>();
 
             //switch to get bookings based on idType
             switch (idType)
@@ -439,6 +465,13 @@ namespace LibraryAssistantApp.Controllers
                     bookings = (from a in db.Venue_Booking
                                 where bookingSeq.Contains(a.Venue_Booking_Seq)
                                 select a);
+
+                    person_bookings = (from p in db.Venue_Booking_Person
+                                       where p.Person_ID == id && p.Attendee_Status == "Active"
+                                       select p).ToList();
+
+                    Session["personBookings"] = person_bookings;
+
                     break;
                 case "venueID":
                     var test = id;
@@ -446,6 +479,7 @@ namespace LibraryAssistantApp.Controllers
                     bookings = (from c in db.Venue_Booking
                                 where c.Venue_ID.Equals(venueID) && c.Booking_Status.Equals("Active")
                                 select c);
+                    Session["personBookings"] = null; 
                     break;
                 default:
                     bookings = (from d in db.Venue_Booking
@@ -455,6 +489,8 @@ namespace LibraryAssistantApp.Controllers
 
             //create list type of bookings
             List<Venue_Booking> listOfBookings = bookings.ToList();
+
+            Session["personalBookings"] = listOfBookings;
 
             //create an event list
             var eventList = from e in listOfBookings
@@ -700,18 +736,40 @@ namespace LibraryAssistantApp.Controllers
         [Authorize]
         public void updateStatus(string status)
         {
+            var bookings = (List<Venue_Booking>)Session["personalBookings"];
+            var person_bookings = (List<Venue_Booking_Person>)Session["personBookings"];
+
             var a = (BookingDetailsModel)Session["selectedBookingDetails"];
 
             var updatedBooking = (from b in db.Venue_Booking
                                   where b.Venue_Booking_Seq.Equals(a.booking_seq)
                                   select b).FirstOrDefault();
 
-            var updatedPersonBooking = (from p in db.Venue_Booking_Person
-                                        where p.Venue_Booking_Seq.Equals(a.booking_seq)
-                                        select p).FirstOrDefault();
+            Venue_Booking_Person updatedPersonBooking;
 
-            updatedBooking.Booking_Status = status;
-            updatedPersonBooking.Attendee_Status = status;
+            if (person_bookings == null)
+            {
+                updatedPersonBooking = (from p in db.Venue_Booking_Person
+                                            where p.Venue_Booking_Seq.Equals(a.booking_seq)
+                                            select p).FirstOrDefault();
+            }
+            else
+            {
+                var personid = person_bookings[0].Person_ID;
+                updatedPersonBooking = (from p in db.Venue_Booking_Person
+                                        where p.Venue_Booking_Seq == a.booking_seq && p.Person_ID == personid
+                                        select p).FirstOrDefault();
+            }
+
+            if (updatedPersonBooking.Attendee_Type == "Student" && updatedBooking.Booking_Type_Seq == 2)
+            {
+                updatedPersonBooking.Attendee_Status = status;
+            }
+            else
+            {
+                updatedBooking.Booking_Status = status;
+                updatedPersonBooking.Attendee_Status = status;
+            }
 
             db.Entry(updatedBooking).State = EntityState.Modified;
             db.Entry(updatedPersonBooking).State = EntityState.Modified;
@@ -795,7 +853,9 @@ namespace LibraryAssistantApp.Controllers
             {
                 TempData["Message"] = "Unfortunately unable to update training session!";
                 TempData["classStyle"] = "danger";
-                return RedirectToAction("ViewBookings");
+                if (User.IsInRole("Admin"))
+                    return RedirectToAction("employeeViewBookings");
+                else return RedirectToAction("ViewBookings");
             }
             else
             {

@@ -26,7 +26,7 @@
                             <tr>
                                 <td><b>Category:</b></td>
                                 <td style="padding-left:10px; padding-bottom:15px">
-                                    <div class="input-group" style="width:100%">                                       
+                                    <div class="input-group" style="width:100%" title="Category for new training session">                                       
                                         <select class="form-control" id="trainingCategory" name="category" style="display:inline">
                                             <option disabled selected value="">-- select a category --</option>
                                             @foreach (var category in categories)
@@ -43,7 +43,7 @@
                             <tr>
                                 <td><b>Topic:</b></td>
                                 <td style="padding-left:10px; padding-bottom:15px">
-                                    <div class="input-group" style="width:100%">
+                                    <div class="input-group" style="width:100%" title="Topic for new training session">
                                         <select class="form-control" id="trainingTopic" disabled name="topic">
                                             <option disabled selected value="">-- no category --</option>
                                         </select>
@@ -55,13 +55,13 @@
                             </tr>
                             <tr>
                                 <td><b>Date:</b></td>
-                                <td style="padding-left:10px; padding-bottom:15px">
+                                <td style="padding-left:10px; padding-bottom:15px" title="Preferred training session date">
                                     <input type="text" id="datepicker" name="date" class="form-control" placeholder="-- select date --" />
                                 </td>
                             </tr>
                             <tr>
                                 <td><b>Duration:</b></td>
-                                <td style="padding-left:10px; padding-bottom:15px">
+                                <td style="padding-left:10px; padding-bottom:15px" title="Preferred training session duration">
                                     <select class="form-control" id="trainingDuration" name="duration">
                                         <option disabled selected value="">-- select duration --</option>
                                         @foreach (var time in trainingDurations)
@@ -73,7 +73,7 @@
                             </tr>
                             <tr>
                                 <td><b>Campus:</b></td>
-                                <td style="padding-left:10px; padding-bottom:15px">
+                                <td style="padding-left:10px; padding-bottom:15px" title="Campus to host training session">
                                     <select class="form-control" id="trainingCampus" name="campus">
                                         <option disabled selected value="">-- select campus --</option>
                                         @foreach (var campus in campuses)
@@ -86,7 +86,7 @@
                             <tr>
                                 <td></td>
                                 <td style="padding-left:10px">
-                                    <button class="btn btn-primary" id="trainingProOne">Proceed</button>
+                                    <button class="btn btn-primary" id="trainingProOne" title="Proceed to select a venue">Proceed</button>
                                 </td>
                             </tr>
                         </table>
