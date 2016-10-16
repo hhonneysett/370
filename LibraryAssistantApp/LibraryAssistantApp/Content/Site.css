@@ -126,6 +126,10 @@ table tbody tr :hover {
     color:black;
 }
 
+.shade-yellow-l {
+    background-color: rgb(255, 255, 153);
+}
+
 #blue-1 {
     background-color: rgb(189,215,238);
     color:black;
@@ -180,4 +184,12 @@ table tbody tr :hover {
 
 .bx-wrapper li {
     text-align: center;
+}
+
+
+.drop-fixed {
+    position:absolute;
+    top:18px;
+    right:20px;
+    max-width:200px;
 }

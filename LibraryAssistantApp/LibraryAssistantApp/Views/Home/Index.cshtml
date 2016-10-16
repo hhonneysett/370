@@ -12,9 +12,7 @@
 </ul>
 
 <script type="text/javascript">
-
     $(document).ready(function () {
-
         $.ajax({
             url: '/Home/getPictures',
             async: false,
@@ -24,10 +22,8 @@
                 result.forEach(function (entry) {
                     $("#picSlider").append('<li><img src="' + entry + '" /></li>')
                 });
-
             }
         });
-
         $('.bxslider').bxSlider({
             mode: 'fade',
             captions: true,
@@ -36,6 +32,5 @@
             slideWidth: 600
         });
     });
-
 </script>
 

@@ -11,44 +11,50 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="col-md-12">
-                    <text class="control-label"><b>Filter By Category</b></text>
-                    <select class="form-control" id="favouriteCategorySelect">
-                        <option selected value="all">All</option>
-                        @foreach (var item in categories)
-                        {
-                            <option value="@item.Category_ID">@item.Category_Name</option>
-                        }
-                    </select>
-                </div>
+        <h4 class="bg-info shaded text-muted" style="text-align:center">
+            <strong>Favourite topics</strong> and get notified when a training session is created
+        </h4>
+    </div>
+</div>
 
-                <div class="col-md-6">
-                    <hr />
-                    <text><b>Available Topics</b></text>
-                    <select size="5"class="form-control" id="availTopicsSelect">
-                        @foreach (var topic in availTopics)
-                        {
-                            <option value="@topic.Topic_Seq">@topic.Topic_Name</option>
-                        }
-                    </select>
-                    <input type="button" value="Add Topic" class="btn btn-primary" style="margin-top:5px" id="btnAddFavTop" disabled/>
-                </div>
-                <div class="col-md-6">
-                    <hr />
-                    <text><b>Favourite Topics</b></text>
-                    <select size="5" class="form-control" id="favouriteTopicSelect">
-                        @foreach (var topic in favTopics)
-                        {
-                            <option value="@topic.Topic_Seq">@topic.Topic.Topic_Name</option>
-                        }
-                    </select>
-                    <input type="button" value="Remove Topic" class="btn btn-primary" style="margin-top:5px" id="btnRemFavTop" disabled/>
-                </div>
-            </div>
+<div class="row" style="padding-bottom:25px">            
+    <div class="col-md-6">
+        <div>
+            <h4 class="bg-warning shaded">
+                Available Course Topics
+            </h4>
+            <select class="form-control drop-fixed" id="favouriteCategorySelect">
+                <option selected value="all">All</option>
+                @foreach (var item in categories)
+            {
+                    <option value="@item.Category_ID">@item.Category_Name</option>
+                }
+            </select>
         </div>
-        @Html.ActionLink("Back", "Details", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-primary" })
+        <select size="8" class="form-control" id="availTopicsSelect" style="height:250px; max-width:800px">
+            @foreach (var topic in availTopics)
+            {
+                <option value="@topic.Topic_Seq">@topic.Topic_Name</option>
+            }
+        </select>
+        <input type="button" value="Add Topic" class="btn btn-primary" style="margin-top:5px" id="btnAddFavTop" disabled />
+    </div>
+    <div class="col-md-6" style="padding-bottom:15px">
+        <h4 class="bg-warning shaded">
+            My Topics
+        </h4>
+        <select size="8" class="form-control" id="favouriteTopicSelect" style="height:250px; max-width:800px">
+            @foreach (var topic in favTopics)
+            {
+                <option value="@topic.Topic_Seq">@topic.Topic.Topic_Name</option>
+            }
+        </select>
+        <input type="button" value="Remove" class="btn btn-primary" style="margin-top:5px" id="btnRemFavTop" disabled />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">    
+        @Html.ActionLink("Back to Profile", "Details", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-primary", @title="Back to user profile." })
     </div>
 </div>
 

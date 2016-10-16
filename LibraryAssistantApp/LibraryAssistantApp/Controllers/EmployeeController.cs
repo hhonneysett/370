@@ -531,7 +531,8 @@ namespace LibraryAssistantApp.Controllers
             var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "MD5");
             Registered_Person rp = db.Registered_Person.Find(id);
             rp.Person_Password = hashed;
-
+            db.Entry(rp).State = EntityState.Modified;
+            db.SaveChanges();
             //Email start
             MailMessage message = new MailMessage();
             SmtpClient client = new SmtpClient();
@@ -548,7 +549,6 @@ namespace LibraryAssistantApp.Controllers
             client.Credentials = new System.Net.NetworkCredential("uplibraryassistant@gmail.com", "tester123#");
             client.Send(message);
             //Email end
-
             return RedirectToAction("Edit", id);
         }
 
