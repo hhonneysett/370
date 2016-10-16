@@ -193,3 +193,9 @@ table tbody tr :hover {
     right:20px;
     max-width:200px;
 }
+
+.serverMessage {
+    position: absolute;
+    top:60px;
+    left:70%;
+}

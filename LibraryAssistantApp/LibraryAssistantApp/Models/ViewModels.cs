@@ -28,7 +28,7 @@ namespace LibraryAssistantApp.Models
         [Display(Name ="Username")]
         [Required(ErrorMessage ="Please provide a student number")]
         [RegularExpression(@"[u][0-9]{8}", ErrorMessage ="Invalid student number")]
-        [Remote("validateStudentNumber", "Validate", ErrorMessage ="You are not a student at TUKS or are already registered")]
+        [Remote("validateStudentNumber", "Validate", ErrorMessage ="Username already registered")]
         public string Person_ID { get; set; }
 
         [Required(ErrorMessage = "Please provide a name", AllowEmptyStrings = false), StringLength(30), Display(Name = "Name")]
@@ -47,10 +47,10 @@ namespace LibraryAssistantApp.Models
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
         [Display(Name = "Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-        [StringLength(50, MinimumLength = 5, ErrorMessage = "Password must be 5 characters long")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Password must be minimum 5 characters")]
         public string Person_Password { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Confirm password does not match."), Display(Name = "Confirm Password")]
+        [System.ComponentModel.DataAnnotations.Compare("Person_Password", ErrorMessage = "Passwords do not match"), Display(Name = "Confirm Password")]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         [Required(ErrorMessage ="Please confirm password")]
         public string Confirm_Password { get; set; }
@@ -466,7 +466,7 @@ namespace LibraryAssistantApp.Models
     {
         [Remote("checkRegPerson", "Validate", ErrorMessage ="Student number is not registered")]
         [RegularExpression(@"[u][0-9]{8}", ErrorMessage = "Invalid student number")]
-        [Display(Name ="Student Number")]
+        [Display(Name ="Username")]
         public string personId { get; set; }
     }
 
