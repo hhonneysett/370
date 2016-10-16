@@ -4,42 +4,57 @@
     ViewBag.Title = "View File Types";
 }
 
-<h2>Existing File Types</h2>
+<h2>Manage File Types</h2>
+<hr />
 
-@Html.ActionLink("Add File Type", "AddFileType", "Repository")
-
-<div class="panel panel-default">
-    <div class="panel-body">
-        <table class="table table-bordered" id="typeTable">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Document_Type_Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+<div class="row">
+    <div class="col-md-12">
+        <p class="text-muted"><b>Instuctions:</b></p>
+        <ul class="text-muted" style="padding-bottom:10px">
+            <li>Update or delete a file type by selecting an option.</li>
+            <li>Add a new file type by clicking the 'Add File Type' button.</li>
+        </ul>
+        <h4 class="bg-info shaded">Existing file types:</h4>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-bordered" id="typeTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Document_Type_Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
             {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Document_Type_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "UpdateFileType", new { id = item.Document_Type_ID }) |
-                            @Html.ActionLink("Delete", "DeleteFileType", new { id = item.Document_Type_ID })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Document_Type_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "UpdateFileType", new { id = item.Document_Type_ID }) |
+                                    @Html.ActionLink("Delete", "DeleteFileType", new { id = item.Document_Type_ID })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @Html.ActionLink("Add File Type", "AddFileType", "Repository", null, new { @class = "btn btn-primary"})
     </div>
 </div>
 

@@ -1,7 +1,7 @@
 ﻿@model LibraryAssistantApp.Models.UpdateFileType
 
 @{
-    ViewBag.Title = "UpdateFileType";
+    ViewBag.Title = "Update File Type";
 }
 
 <h2>Update File Type</h2>
@@ -11,13 +11,13 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Please provide updated file type details:</h4>
+        <h4 class="bg-info shaded">Please provide updated file type details:</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Type_Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Type_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Type_Name, new { htmlAttributes = new { @class = "form-control", @title = "Enter file type name." } })
                 @Html.ValidationMessageFor(model => model.Type_Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -25,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @title = "Enter file type description." } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -33,7 +33,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 @Html.ActionLink("Back", "ViewFileType", "Repository", htmlAttributes: new { @class = "btn btn-primary" })
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" title="Submit updated file type details."/>
             </div>
         </div>
     </div>
