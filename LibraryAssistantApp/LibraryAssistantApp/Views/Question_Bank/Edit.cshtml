@@ -4,109 +4,74 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Update Question</h3>
-@using (Html.BeginForm())
-{<div class="row" style="padding-top:15px; padding-left:25px">
-        <p><strong>Update question details:</strong></p>
-        <ul style="padding-bottom:0px; padding-top:5px">
-            <li>
-                <p>Click 'Proceed' to update answers related to this question.</p>
-            </li>
-            <li>
-                <p style="color:darkred"><strong>Note:</strong> Changes made to style type will require completely new possible answers for this question.</p>
-            </li>
-        </ul>
-    </div>
-<div class="form-horizontal">
-    <div class="col-md-8">
-        <h4 class="bg-info shaded">
-            Question Details
-        </h4>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                @Html.AntiForgeryToken()
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    @Html.HiddenFor(model => model.Question_Seq)
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Question_Text, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>Edit Question </h3></div>
+    <div class="panel-body">
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownList("Topic_Seq", null, htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <ul class="text-muted" style="padding-top:15px; list-style:none">
-                            <li>
-                                <p>Style type represents the way in which your question will be displayed. e.g. radio buttons.</p>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Style_Type_ID, "Style Type", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownList("Style_Type_ID", null, htmlAttributes: new { @class = "form-control", id = "StyleType_Dropdown" })
-                            @Html.ValidationMessageFor(model => model.Style_Type_ID, "", new { @class = "text-danger" })
-                        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Question Details</h4>
+                <hr />
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Question_Seq)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Question_Text, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Topic_Seq", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Style_Type_ID, "Style Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Style_Type_ID", null, htmlAttributes: new { @class = "form-control", id = "StyleType_Dropdown" })
+                        @Html.ValidationMessageFor(model => model.Style_Type_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+               
             </div>
-        </div>
-    </div>
-    <div class="row" style="padding-bottom:10px">
-        <div class="col-md-6 col-md-offset-6">
-            <div class="form-actions">
-                <div class="btn-group">
-                    <input data-toggle="tooltip" data-placement="right" title="Edit possible answers" type="submit" value="Proceed" class="btn btn-primary" />
-                </div>
-                <div class="btn-group">
-                    <div class="isa_info" id="Warning"></div>
-                </div>
-            </div>
-        </div>
+
+
+            <div>
+             
+                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index")'" /> <input data-toggle="tooltip" data-placement="right" title="Edit possible answers" type="submit" value="Next" class="btn btn-default pull-right" /> <div class="isa_info" id="Warning"></div>
+
+             </div>
+        }
     </div>
 </div>
-}
-@Html.ActionLink("Back to List", "Index")
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
+<script>
+    $(document).ready(function(){
 
-        $("#StyleType_Dropdown").one("click", function () {
-            var n = noty({
-                layout: 'topRight',
-                text: 'Changes to style type: <br />New answers will need to be assigned to this question!',
-                type: 'warning',
-                animation: {
-                    open: 'animated bounceInRight',
-                    close: 'animated bounceOutLeft',
-                    easing: 'swing',
-                    speed: 500
-                },
-                timeout: false,
-            });
+        $("#StyleType_Dropdown").mouseenter(function () {
+            document.getElementById("Warning").innerHTML = "If the style type is changed then all previously saved possible answers will be deleted and new possible answers must be created."
+            document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
         });
 
-        //$("#StyleType_Dropdown").mouseenter(function () {
-        //    document.getElementById("Warning").innerHTML = "If the style type is changed then all previously saved possible answers will be deleted and new possible answers must be created."
-        //    document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
-        //});
 
-
-        //$("#StyleType_Dropdown"). mouseout(function () {
-        //    document.getElementById("Warning").innerHTML = ""
-        //    document.getElementById("Warning").style.backgroundColor = "white";
-        //});
+        $("#StyleType_Dropdown"). mouseout(function () {
+            document.getElementById("Warning").innerHTML = ""
+            document.getElementById("Warning").style.backgroundColor = "white";
+        });
     })
 </script>
 

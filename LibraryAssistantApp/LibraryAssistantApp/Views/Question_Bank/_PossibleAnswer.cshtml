@@ -2,78 +2,55 @@
 
 
 
-<div class="panel panel-default">
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th colspan="2">
-                    <h4 style="padding-left:20px">Question: @ViewBag.Question_Text</h4>
-                </th>
-            </tr>
-            <tr id="blue-1">
-                <th style="text-align:center;">
-                    <h4>Display Order</h4>
-                </th>
-                <th style="text-align:center;">
-                    <h4>Answer</h4>
-                </th>
-            </tr>
-        </thead>
-        <tbody style="text-align:center">
-            @if (ViewBag.Style_Type_ID != "True or False")
-            {
+<table class="table">
+    <tr>
+        <th>
+            <h4>Display Order</h4>
+        </th>
+        <th>
+            <h4>Answer Text</h4>
+        </th>
+    </tr>
 
-                for (int i = 1; i <= 5; i++)
-                {
-                    <tr>
-                        <td>
-                            @i
-                            @Html.Hidden("Display_Order" + i, i, new { id = "Display_Order" + i })
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                @Html.TextBox("Answer_Text" + i, null, new { @class = "form-control", id = "Answer_Text" + i, style="max-width:800px; display:block" } )
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                for (int i = 1; i <= 2; i++)
-                {
-                    <tr>
-                        <td>
-                            @i
-                            @Html.Hidden("Display_Order" + i, i, new { id = "Display_Order" + i })
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                @Html.TextBox("Answer_Text" + i, null, new  { @class = "form-control", id = "Answer_Text" + i, style = "max-width:800px; display:block" } )
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-    <div class="panel-body">
-        @Html.Hidden("EditNewPossibleAnswer", (string)ViewBag.EditNewPossibleAnswer, new { id = "EditNewPossibleAnswer" })
-        @if (ViewBag.EditNewPossibleAnswer == "No")
+    @if (ViewBag.Style_Type_ID != "True or False")
+    {
+
+        for (int i = 1; i <= 5; i++)
         {
-            <div class="btn-group">
-                <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Possible_Answer_Back", new { ViewBag.Style_Type_ID, ViewBag.Question_Seq, ViewBag.Question_Text, ViewBag.Topic_Seq, ViewBag.Topic_Name, ViewBag.Topic_Des })'" />
-            </div>
-            <div class="btn-group">
-                <input data-toggle="tooltip" data-placement="right" title="Finish creating question" type="submit" value="Save Changes" class="btn btn-primary" onclick="validateInput();" />
-            </div>
-            <div class="btn-group">
-                <div style="text-align:center" class="text-danger" id="Error_Topic_Seq"></div>
-            </div>
-        } 
-    </div>
-</div>
+            <tr>
+                <td>
+                    @i
+                    @Html.Hidden("Display_Order" + i, i, new { id = "Display_Order" + i })
+                </td>
+                <td>
+                    @Html.TextBox("Answer_Text" + i, null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text" + i } })
 
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        for (int i = 1; i <= 2; i++)
+        {
+            <tr>
+                <td>
+                    @i
+                    @Html.Hidden("Display_Order" + i, i, new { id = "Display_Order" + i })
+                </td>
+                <td>
+                    @Html.TextBox("Answer_Text" + i, null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text" + i } })
+
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+
+@Html.Hidden("EditNewPossibleAnswer", (string)ViewBag.EditNewPossibleAnswer, new { id = "EditNewPossibleAnswer" })
+@if (ViewBag.EditNewPossibleAnswer == "No")
+{<input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Possible_Answer_Back", new { ViewBag.Style_Type_ID, ViewBag.Question_Seq, ViewBag.Question_Text, ViewBag.Topic_Seq, ViewBag.Topic_Name, ViewBag.Topic_Des })'" /> } <input data-toggle="tooltip" data-placement="right" title="Finish creating question" type="submit" value="Create" class="btn btn-default pull-right" onclick="validateInput();" /> <strong><div style="text-align:center" class="text-danger" id="Error_Topic_Seq"></div></strong>
 
 <script>
     function RunURL() {
@@ -162,10 +139,10 @@
             }
             else {
                 if (Answer_Text1 == "" && Answer_Text2 == "") {
-                    document.getElementById("Error_Topic_Seq").innerHTML = "At least two possible answers are required.";
+                    document.getElementById("Error_Topic_Seq").innerHTML = "At least two possible answers are required";
                 }
                 else if (Answer_Text1 != "" && Answer_Text2 == "" && Answer_Text3 == "" && Answer_Text4 == "" && Answer_Text5 == "") {
-                    document.getElementById("Error_Topic_Seq").innerHTML = "At least two possible answers are required.";
+                    document.getElementById("Error_Topic_Seq").innerHTML = "At least two possible answers are required";
                 }
                 else {
                     var unique = "Yes";

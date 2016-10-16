@@ -10,47 +10,46 @@
 
 <div>
     <h2>Training Session Attendance Report</h2>
-    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed" title="Export report to PDF"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
 </div>
 <hr />
+
+
 <div class="row">
     <div class="col-md-12">
-        <h4 class="bg-info shaded">
-            Attenance Report Details
-        </h4>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table class="table table-bordered" id="report" title="Attendance log results.">
-                    <thead>
-                        <tr class="shade-blue">
-                            <th>
-                                Training Session
-                            </th>
-                            <th>
-                                Date
-                            </th>
-                            <th>
-                                Venue Name
-                            </th>
-                            <th>
-                                Attendance
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.training.Description</td>
-                                <td>@item.training.DateTime_From.ToShortDateString()</td>
-                                <td>@item.training.Venue.Venue_Name</td>
-                                <td>@item.attended</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <table class="table table-bordered" id="report">
+            <thead>
+                <tr>
+                    <th>
+                        Training Session
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Venue Name
+                    </th>
+                    <th>
+                        Attendance
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.training.Description</td>
+                        <td>@item.training.DateTime_From.ToShortDateString()</td>
+                        <td>@item.training.Venue.Venue_Name</td>
+                        <td>@item.attended</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+        <hr />
+
     </div>
 </div>
 

@@ -6,62 +6,13 @@
 
 @Html.Hidden("Topic", (int)ViewBag.Topic, new { id = "Topic" })
 
-<h3>Update Question Topic</h3>
-<div class="row" style="padding-top:15px; padding-left:25px">
-    <p><strong>Update questions associated to this topic?</strong></p>
-    <ul style="padding-bottom:10px; padding-top:15px">
-        <li>
-            <p>Click 'Update Questions' to be taken to the question bank.</p>
-        </li>
-        <li>
-            <p>From the question bank you are able to update questions related to this topic.</p>
-        </li>
-        <li style="color:chocolate">
-            <p>Click 'Finished' if you are finished updating this topic.</p>
-        </li>
-    </ul>
-</div>
-<div class="row" style="padding-top:5px">
-    <div class="col-md-6">
-        <div class="bg-info shaded">
-            <h4>Topic Details:</h4>
-        </div>
-        <div class="panel panel-default">
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td>
-                            <label>Topic:</label>
-                        </td>
-                        <td>
-                            @ViewBag.Name
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Description:</label>
-                        </td>
-                        <td>
-                            @ViewBag.Description
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="panel-body">
-                <div class="btn-group">
-                    <input type="button" value="Update Questions" class="btn btn-primary" onclick="Go();" />
-                </div>
-                <div class="btn-group">
-                    <input type="button" value="Finished" class="btn btn-primary" onclick="location.href='@Url.Action("FinishEdit","Question_Topic", new {ViewBag.Topic })'" />
-                </div>
-            </div>
-        </div>
-    </div>
-</div>        
+<h2>Would you like to edit associated questions of this topic?</h2>
+
+<input type="button" value="Yes" class="btn btn-default" onclick="Go();"/> <input type="button" value="No" class="btn btn-default" onclick="location.href='@Url.Action("FinishEdit","Question_Topic", new {ViewBag.Topic })'" />            
 
 <script>
-    function Go() {
-        var Topic = document.getElementById("Topic").value;
-        window.location.href = "/Question_Bank/Index?Topic=" + Topic + "&Search=" + " ";
-        }
+                        function Go() {
+                            var Topic = document.getElementById("Topic").value;
+                            window.location.href = "/Question_Bank/Index?Topic=" + Topic + "&Search=" + " ";
+                            }
 </script>

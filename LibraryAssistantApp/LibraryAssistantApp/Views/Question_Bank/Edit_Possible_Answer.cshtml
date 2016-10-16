@@ -5,46 +5,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Update Possible Answers</h3>
+<h2>Edit Possible Answers as: @ViewBag.Style_Type_ID</h2>
 
 @Html.Hidden("Question_Seq", (int)ViewBag.Question_Seq, new { id = "Question_Seq" })
 @Html.Hidden("Style_Type_ID", (string)ViewBag.Style_Type_ID, new { id = "Style_Type_ID" })
 
-<div class="row" style="padding-top:10px; padding-left:25px">
-    <p><strong>To add answers to this question:</strong></p>
-    <ul style="padding-bottom:5px; padding-top:5px">
-        <li>
-            <p>Provide up to 5 answers in the input boxes below.</p>
-        </li>
-        <li>
-            <p>Click the 'Save Changes' button when you are done.</p>
-        </li>
-    </ul>
-    <p class="text-info"><strong>Note:</strong> this question is of style type: <strong>@ViewBag.Style_Type_ID</strong></p>
-</div>
-
-<h4 class="bg-info shaded">
-    Possible answers
-</h4>
-
 <div class="panel panel-default">
-    <table class="table table-bordered table-striped">
-        <thead>
+    <div class="panel-heading"><h4>Possible answers of existing question</h4></div>
+    <div class="panel-body">
+
+        <div style="text-align:center; padding-bottom: 20px;">
+            <h4><u>Question: @ViewBag.Question_Text</u></h4>
+        </div>
+
+
+        <table class="table">
             <tr>
-                <th colspan="2">
-                    <h4 style="padding-left:20px">Question: @ViewBag.Question_Text</h4>
-                </th>
-            </tr>
-            <tr id="blue-1">
-                <th style="text-align:center;">
+                <th>
                     <h4>Display Order</h4>
                 </th>
-                <th style="text-align:center;">
-                    <h4>Answer</h4>
+                <th>
+                    <h4>Answer Text</h4>
                 </th>
             </tr>
-        </thead>
-        <tbody style="text-align:center">
+
             @if (ViewBag.Style_Type_ID == "True or False")
             {
                 <tr>
@@ -53,19 +37,20 @@
                         @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
                     </td>
                     <td>
-                        @Html.TextBox("Answer_Text1", null, new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1, style = "max-width:800px; display:block" })
+                        @Html.TextBox("Answer_Text1", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1 } })
                     </td>
                 </tr>
 
-                    <tr>
-                        <td>
-                            2
-                            @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
-                        </td>
-                        <td>
-                            @Html.TextBox("Answer_Text2", null, new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2, style = "max-width:800px; display:block" })
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        2
+                        @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text2", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2 } })
+                    </td>
+                </tr>
+
             }
             else
             {
@@ -75,58 +60,57 @@
                         @Html.Hidden("Display_Order1", 1, new { id = "Display_Order1" })
                     </td>
                     <td>
-                        @Html.TextBox("Answer_Text1", null, new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1, style = "max-width:800px; display:block" })
+                        @Html.TextBox("Answer_Text1", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text1", @value = ViewBag.Answer_Text1 } })
                     </td>
                 </tr>
-                    <tr>
-                        <td>
-                            2
-                            @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
-                        </td>
-                        <td>
-                            @Html.TextBox("Answer_Text2", null, new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2, style = "max-width:800px; display:block" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            3
-                            @Html.Hidden("Display_Order3", 3, new { id = "Display_Order3" })
-                        </td>
-                        <td>
-                            @Html.TextBox("Answer_Text3", null, new { @class = "form-control", id = "Answer_Text3", @value = ViewBag.Answer_Text3, style = "max-width:800px; display:block" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            4
-                            @Html.Hidden("Display_Order4", 4, new { id = "Display_Order4" })
-                        </td>
-                        <td>
-                            @Html.TextBox("Answer_Text4", null, new { @class = "form-control", id = "Answer_Text4", @value = ViewBag.Answer_Text4, style = "max-width:800px; display:block" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            5
-                            @Html.Hidden("Display_Order5", 5, new { id = "Display_Order5" })
-                        </td>
-                        <td>
-                            @Html.TextBox("Answer_Text5", null, new { @class = "form-control", id = "Answer_Text5", @value = ViewBag.Answer_Text5, style = "max-width:800px; display:block" })
-                        </td>
-                    </tr>
+
+                <tr>
+                    <td>
+                        2
+                        @Html.Hidden("Display_Order2", 2, new { id = "Display_Order2" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text2", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text2", @value = ViewBag.Answer_Text2 } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        3
+                        @Html.Hidden("Display_Order3", 3, new { id = "Display_Order3" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text3", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text3", @value = ViewBag.Answer_Text3 } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        4
+                        @Html.Hidden("Display_Order4", 4, new { id = "Display_Order4" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text4", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text4", @value = ViewBag.Answer_Text4 } })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        5
+                        @Html.Hidden("Display_Order5", 5, new { id = "Display_Order5" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Answer_Text5", null, new { htmlAttributes = new { @class = "form-control", id = "Answer_Text5", @value = ViewBag.Answer_Text5 } })
+                    </td>
+                </tr>
+
             }
-        </tbody>
-    </table>
-    <div class="panel-body">
-        <div class="btn-group">
-            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", new {ViewBag.id})'" />
-        </div>
-        <div class="btn-group">
-            <input data-toggle="tooltip" data-placement="right" title="Finish updating  question" type="submit" value="Save Changes" class="btn btn-primary" onclick="validateInput();" />
-        </div>
-        <div class="btn-group">
-            <div style="text-align:center" class="text-danger" id="Error_Topic_Seq"></div>
-        </div>
+        </table>
+
+        
+
+        <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("Edit", new {ViewBag.id})'" /> <input data-toggle="tooltip" data-placement="right" title="Finish updating  question"  type="submit" value="Submit" class="btn btn-default pull-right" onclick="validateInput();" /><label class="text-danger" id="Error_Topic_Seq"></label>
+
     </div>
 </div>
 

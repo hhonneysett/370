@@ -16,55 +16,28 @@
 @Html.Hidden("Edit_or_New", (string)ViewBag.Edit_or_New, new { id = "Edit_or_New" })
 
 
-<div>
-    <h3>Employee to Assess</h3>
-</div>
-<div class="col-md-offset-1">
-    <div class="row" style="padding-top:5px; padding-left:25px">
-        <p><strong>Instructions:</strong></p>
-        <ul style="padding-bottom:5px; padding-top:5px">
-            <li>
-                <p>Select an employee to be assessed.</p>
-            </li>
-            <li>
-                <p>Click the 'Proceed' button to assign questions to this questionnaire.</p>
-            </li>
-        </ul>
-    </div>
-</div>
-<div class="col-md-10 col-md-offset-1">
-    <h4 class="bg-info shaded">
-        List of Employees
-    </h4>
-    <div class="scrollable">
-        <table id="tbl-quest-4" class="table table-bordered">
-            <thead>
+<h2>Select an employee to be assessed by this questionnaire</h2>
+
+<div class="panel panel-default">
+    <div class="panel-heading">List of Employees</div>
+    <div class="panel-body">        
+        <div>
+            <label class="text-danger" id="Error"></label>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
                 <tr>
-                    <th>
-                        Username
-                    </th>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Surname
+                    <th >
+                        Employee Name
                     </th>
                     <th style="text-align:center;">
                         Selected
                     </th>
                 </tr>
-            </thead>
-            <tbody>
                 @{int i = 0; }
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Person_ID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Person_Surname)
-                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Person_Name)
                         </td>
@@ -80,75 +53,69 @@
                                 <input type="radio" name="radio" id="Person @i" value="@item.Person_ID" />
                             </td>
                         }
-
+                        
                         @{i++;}
                     </tr>
+
                             }
-            </tbody>
-        </table>
-    </div>
-    <div class="panel panel-default">
-            <div class="panel-body">
-                @if (ViewBag.Edit_or_New != "Edit")
-            {
-                    <div class="btn-group pull-right">
-                        <input type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
-                    </div>
-                    <div class="btn-group">
-                        <input type="submit" class="btn btn-primary" value="Back" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />
-                    </div>
-                }
-                else
-                {
-                    <div class="btn-group pull-right">
-                        <input type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
-                    </div>
-                }
-                <div class="pull-left">
-                    <label class="text-danger" id="Error"></label>
-                </div>
-            </div>
+            </table>
+            
+
         </div>
-    </div>
 
-    <script>
-        function Submit() {
-            var count = document.getElementById("Count").value;
-            var Selected = "";
-            document.getElementById("Error").innerHTML = "";
-            var Answered = "False";
-            for (var i = 0; i < count; i++) {
-                var Name = "Person " + i;
-                if (document.getElementById(Name).checked) {
-                    Answered = "True";
-                    Selected = document.getElementById("Person " + i).value;
-                }
+            @if (ViewBag.Edit_or_New != "Edit")
+            {
+                <input type="submit" class="btn btn-default " value="Back" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />   <input type="button" class="btn btn-default pull-right" value="Continue" onclick="Submit()" />
             }
-            if (Answered == "True") {
-                var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
-                var Name = document.getElementById("Name").value;
-                var Description = document.getElementById("Description").value;
-                var Active_From = document.getElementById("Active_From").value;
-                var Active_To = document.getElementById("Active_To").value;
-                var Assessment_Type = document.getElementById("Assessment_Type").value;
-                var Topic = document.getElementById("Topic").value;
-                var Edit_or_New = document.getElementById("Edit_or_New").value;
+            else
+            {
+                <input type="button" class="btn btn-default pull-right" value="Continue" onclick="Submit()" />
+            }
 
-                if (Edit_or_New == "Edit") {
-                    window.location.href = "/Questionnaire/UpdateEmployee?Employee_ID=" + Selected + "&Questionnaire_ID=" + Questionnaire_ID;
-                }
-                else {
-                    window.location.href = "/Questionnaire/SelectedEmployee?Employee_ID=" + Selected + "&Questionnaire_ID=" + Questionnaire_ID + "&Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic=" + Topic;
-                }
-            }
-            else {
-                document.getElementById("Error").innerHTML = "Please select an employee to continue";
+
+        </div>
+    
+</div>
+
+<script>
+    function Submit() {
+        var count = document.getElementById("Count").value;
+        var Selected = "";
+        document.getElementById("Error").innerHTML = "";
+        var Answered = "False";
+      
+        
+        for (var i = 0; i < count; i++) {
+            var Name = "Person " + i;
+            if (document.getElementById(Name).checked) {
+                Answered = "True";
+                Selected = document.getElementById("Person " + i).value;
             }
         }
-    </script>
+        if (Answered == "True") {
+            var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
+            var Name = document.getElementById("Name").value;
+            var Description = document.getElementById("Description").value;
+            var Active_From = document.getElementById("Active_From").value;
+            var Active_To = document.getElementById("Active_To").value;
+            var Assessment_Type = document.getElementById("Assessment_Type").value;
+            var Topic = document.getElementById("Topic").value;
+            var Edit_or_New = document.getElementById("Edit_or_New").value;
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            //var table = $('#tbl-quest-4').DataTable();
-        });
-    </script>
+            if (Edit_or_New == "Edit") {
+                window.location.href = "/Questionnaire/UpdateEmployee?Employee_ID=" + Selected + "&Questionnaire_ID=" + Questionnaire_ID;
+            }
+            else {
+                window.location.href = "/Questionnaire/SelectedEmployee?Employee_ID=" + Selected + "&Questionnaire_ID=" + Questionnaire_ID + "&Name=" + Name + "&Description=" + Description + "&Active_From=" + Active_From + "&Active_To=" + Active_To + "&Assessment_Type=" + Assessment_Type + "&Topic=" + Topic;
+            }
+            
+            
+            
+        }
+        else {
+            document.getElementById("Error").innerHTML = "Please select an employee to continue";
+        }
+
+    }
+    
+</script>

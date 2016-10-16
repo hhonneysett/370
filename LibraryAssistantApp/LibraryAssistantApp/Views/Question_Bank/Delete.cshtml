@@ -4,91 +4,67 @@
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Delete Question</h3>
 
-@{
-    var alertcolor = "alert-warning";
-}
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>Are you sure you want to delete this question?</h3></div>
+    <div class="panel-body">
 
-@if (ViewBag.Error != null)
-{
-    alertcolor = "alert-danger";
-}
-<div class="row">
-    <div class="col-md-6">
-        <div class="alert @alertcolor" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign"></span>
-            <span class="sr-only">Error:</span>
-            @if (ViewBag.Error != null)
-            {
-                @ViewBag.Error
-            }
-            else
-            {
-                @:Are you sure you want to delete this question?
-        }
-        </div>
-    </div>
-</div>
+        <p>All saved possible answers for this question will be deleted aswell.</p>
+        <div>
 
-<div class="form-horizontal" style="padding-bottom:35px">
-@using (Html.BeginForm())
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Question_Text)
+              
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Question_Text)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Question_Topic.Topic_Name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Question_Topic.Topic_Name)
+                </dd>
+
+
+
+            </dl>
+
+            @using (Html.BeginForm())
             {
-    @Html.AntiForgeryToken()
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <label>
-                        Question Details:
-                    </label>
-                </div>
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => model.Question_Text)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.Question_Topic.Topic_Name, htmlAttributes: new { @class = "control-label" })
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => model.Question_Topic.Topic_Name)
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 col-md-offset-1">
-            <div class="form-actions no-color">
-                @if (ViewBag.Error != null)
-                {
-                    <input disabled type="submit" value="Delete" class="btn btn-primary" />
-                }
-                else
-                {
-                    <p style="color:red">All associated possible answers will be deleted.</p>
-                    <input type="submit" value="Delete" class="btn btn-primary" />
-                    if (ViewBag.OnlyQinT != null)
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    
+                    @if (ViewBag.Error != null)
                     {
-                        <div style="text-align:center" class="isa_warning">@ViewBag.OnlyQinT</div>
+                        <input disabled type="submit" value="Delete" class="btn btn-default" />
+                        <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index")'" />
+                        <div style="text-align:center" class="isa_warning">@ViewBag.Error</div>
+
                     }
-                }
-            </div>
+                    else
+                    {
+                        <input type="submit" value="Delete" class="btn btn-default" />
+                        <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index")'" />
+
+                        if (ViewBag.OnlyQinT != null)
+                        {
+                            <div style="text-align:center" class="isa_warning">@ViewBag.OnlyQinT</div>
+                        }
+                    }
+
+                     
+                </div>
+            }
         </div>
     </div>
-}
 </div>
-@Html.ActionLink("Back to List", "Index")
-
 <style>
     .isa_info, .isa_success, .isa_warning, .isa_error {
         margin: 10px 0px;

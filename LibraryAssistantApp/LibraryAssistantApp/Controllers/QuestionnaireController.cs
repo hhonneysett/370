@@ -4071,7 +4071,7 @@ namespace LibraryAssistantApp.Controllers
             string Questionnaire_Name = db.Questionnaires.Where(X => X.Questionnaire_ID == Questionnaire_ID).Select(Y => Y.Name).Single();
             db.SaveChanges();
             ViewBag.EditComplete = "Yes";
-            ViewBag.EditCompleteMessage = "Questionnaire '" + Questionnaire_Name + "' successfully updated.";
+            ViewBag.EditCompleteMessage = "Questionnaire '" + Questionnaire_Name + "' successfully edited.";
             ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
             var questionnaires = db.Questionnaires.Include(q => q.Question_Topic);
 
@@ -4604,7 +4604,7 @@ namespace LibraryAssistantApp.Controllers
             if (Count > 0)
             {
                 ViewBag.CannotEdit = "true";
-                ViewBag.CannotEditError = "Updates to this questionnaire have been limited because the questionnaire has been responded to.";
+                ViewBag.CannotEditError = "This questionnaire has been responded to, therefore, limited editing options are available.";
             }
 
             return View("Edit", questionnaire);
@@ -4659,7 +4659,7 @@ namespace LibraryAssistantApp.Controllers
                 ViewBag.DeleteComplete = "No";
                 ViewBag.CreateComplete = "No";
                 ViewBag.EditComplete = "Yes";
-                ViewBag.EditCompleteMessage = "Questionnaire '" + Name + "' successfully updated.";
+                ViewBag.EditCompleteMessage = "Questionnaire '" + Name + "' successfully edited.";
 
                 // -------------------------------Action Log ----------------------------------------//
                 string name = db.Questionnaires.Where(X => X.Questionnaire_ID == Questionnaire_ID).Select(Y => Y.Name).Single();
@@ -4672,6 +4672,8 @@ namespace LibraryAssistantApp.Controllers
                 db.Person_Session_Action_Log.Add(psal);
                 db.SaveChanges();
                 // -------------------------------Action Log ----------------------------------------//
+
+
                 return View("Index",questionnaires.ToList());
             }
         }

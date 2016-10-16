@@ -1,97 +1,86 @@
 ﻿@model IEnumerable<LibraryAssistantApp.Models.Campus>
 
-    @{
+@{
     ViewBag.Title = "Venue_Assessment_Campus";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+}
 
-    @Html.Hidden("Name", (string)ViewBag.Name, new { id = "Name" })
-    @Html.Hidden("Description", (string)ViewBag.Description, new { id = "Description" })
-    @Html.Hidden("Active_From", (DateTime)ViewBag.Active_From, new { id = "Active_From" })
-    @Html.Hidden("Active_To", (DateTime)ViewBag.Active_To, new { id = "Active_To" })
-    @Html.Hidden("Assessment_Type", (string)ViewBag.Assessment_Type, new { id = "Assessment_Type" })
-    @Html.Hidden("Topic", (int)ViewBag.Topic, new { id = "Topic" })
-    @Html.Hidden("Questionnaire_ID", (int)ViewBag.Questionnaire_ID, new { id = "Questionnaire_ID" })
-    @Html.Hidden("Count", (int)ViewBag.Count, new { id = "Count" })
-    @Html.Hidden("Edit_or_New", (string)ViewBag.Edit_or_New, new { id = "Edit_or_New" })
+@Html.Hidden("Name", (string)ViewBag.Name, new { id = "Name" })
+@Html.Hidden("Description", (string)ViewBag.Description, new { id = "Description" })
+@Html.Hidden("Active_From", (DateTime)ViewBag.Active_From, new { id = "Active_From" })
+@Html.Hidden("Active_To", (DateTime)ViewBag.Active_To, new { id = "Active_To" })
+@Html.Hidden("Assessment_Type", (string)ViewBag.Assessment_Type, new { id = "Assessment_Type" })
+@Html.Hidden("Topic", (int)ViewBag.Topic, new { id = "Topic" })
+@Html.Hidden("Questionnaire_ID", (int)ViewBag.Questionnaire_ID, new { id = "Questionnaire_ID" })
+@Html.Hidden("Count", (int)ViewBag.Count, new { id = "Count" })
+@Html.Hidden("Edit_or_New", (string)ViewBag.Edit_or_New, new { id = "Edit_or_New" })
 
-<div>
-    <h3>Campus selection</h3>
+<h2></h2>
+
+<h2 style="display: inline-block;">Campus selection</h2>
+<h4 style="float:right" display: inline-block;">Selected: </h4>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>List of campuses</h4></div>
+    <div class="panel-body">
+        <div>
+            <label class="text-danger" id="Error"></label>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <tr>
+                    <th>
+                        Campus Name
+                    </th>
+                    <th style="text-align:center;">
+                        Selected
+                    </th>
+                </tr>
+                @{int i = 0; }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Campus_Name)
+                        </td>
+                        @if (ViewBag.SelectedCampus == item.Campus_ID)
+                        {
+                            <td style="text-align:center;">
+                                <input checked="checked" type="radio" name="radio" id="Campus @i" value="@item.Campus_ID" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align:center;">
+                                <input type="radio" name="radio" id="Campus @i" value="@item.Campus_ID" />
+                            </td>
+                        }
+
+                        @{i++;}
+                    </tr>
+
+                            }
+            </table>
+
+
+        </div>
+
+        @if (ViewBag.Edit_or_New != "Edit")
+            {
+            <input type="submit" class="btn btn-default " value="Back" onclick="location.href='@Url.Action("Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />   <input type="button" class="btn btn-default pull-right" value="Continue" onclick="Submit()" />
+        }
+        else
+        {
+            <input type="button" class="btn btn-default pull-right" value="Continue" onclick="Submit()" />
+        }
+
+
+    </div>
+
 </div>
-<div>
-    <label class="text-danger" id="Error"></label>
-</div>
-                      <div class="row" style="padding-top:0px; padding-left:25px">
-                          <p><strong>Instructions:</strong></p>
-                          <ul style="padding-bottom:5px; padding-top:5px">
-                              <li>
-                                  <p>Select the campus to be assessed.</p>
-                              </li>
-                              <li>
-                                  <p>Click the 'Proceed' button.</p>
-                              </li>
-                          </ul>
-                      </div>
-                      <div class="col-md-6">
-                          <h4 class="bg-info shaded">
-                              List of Campuses
-                          </h4>
-                          <div class="panel panel-default">
-                              <table class="table table-bordered">
-                                  <tr>
-                                      <th>
-                                          Campus Name
-                                      </th>
-                                      <th style="text-align:center;">
-                                          Select
-                                      </th>
-                                  </tr>
-                                  @{int i = 0; }
-                                  @foreach (var item in Model)
-                                  {
-                                  <tr>
-                                      <td>
-                                          @Html.DisplayFor(modelItem => item.Campus_Name)
-                                      </td>
-                                      @if (ViewBag.SelectedCampus == item.Campus_ID)
-                                      {
-                                      <td style="text-align:center;">
-                                          <input checked="checked" type="radio" name="radio" id="Campus @i" value="@item.Campus_ID" />
-                                      </td>
-                                      }
-                                      else
-                                      {
-                                      <td style="text-align:center;">
-                                          <input type="radio" name="radio" id="Campus @i" value="@item.Campus_ID" />
-                                      </td>
-                                      }
 
-                                      @{i++;}
-                                  </tr>
-
-                                  }
-                              </table>
-                          </div>
-                          <div class="form-group">
-                              @if (ViewBag.Edit_or_New != "Edit")
-                              {
-                              <div class="btn-group">
-                                  <input type="submit" class="btn btn-primary " value="Back" onclick="location.href='@Url.Action(" Back_From_QQuestions","Questionnaire", new { ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic})'" />
-                              </div>
-                              <div class="btn-group">
-                                  <input type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
-                              </div>
-                              }
-                              else
-                              {
-                              <div class="btn-group">
-                                  <input type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
-                              </div>
-                              }
-                          </div>
-                      </div>
-
-    <script>
+<script>
     function Submit() {
         var count = document.getElementById("Count").value;
         var Selected = "";
@@ -125,4 +114,4 @@
 
     }
 
-    </script>
+</script>

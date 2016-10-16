@@ -16,22 +16,13 @@ namespace LibraryAssistantApp
                         "~/Scripts/jquery.ambiance.js",
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.timepicker.min.js",
-                        "~/Scripts/jquery-ui-1.12.1.js",
-                        "~/Scripts/jquery-ui-1.12.1.min.js",
                         "~/Scripts/notify.min.js",
                         "~/Scripts/jquery.base64.js",
                         "~/Scripts/tableExport.js",
-                        "~/Scripts/bxSlider/jquery.bxslider.min.js",
                         "~/Scripts/base64.js",
                         "~/Scripts/sprintf.js",
-                        "~/Scripts/DataTables/jquery.dataTables.min.js",
-                        "~/Scripts/DataTables/dataTables.bootstrap.min.js",
-                        "~/Scripts/FileSaver.min.js",
-                        "~/Scripts/jspdf.min.js",
                         "~/Scripts/jspdf.js",
-                        "~/Scripts/jspdf.plugin.autotable.js",
-                        "~/Scripts/tableExport.js"
-                        ));
+                        "~/Scripts/DataTables/dataTables.bootstrap.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",
@@ -97,9 +88,6 @@ namespace LibraryAssistantApp
                 "~/Scripts/noty/themes/default.js",
                 "~/Scripts/noty/themes/relax.js"
                 ));
-            //chart.js
-            bundles.Add(new ScriptBundle("~/bundles/chart.js").Include(
-                "~/Scripts/Chart.js"));
         }
     }
 }

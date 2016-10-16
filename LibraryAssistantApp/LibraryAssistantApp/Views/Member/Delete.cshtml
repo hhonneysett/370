@@ -13,7 +13,7 @@
     }
 }
 
-<h2>Delete Member</h2>
+<h3>Delete Member</h3>
 
 <div class="col-md-10">
     <div class="alert @alertcolor" role="alert">
@@ -35,7 +35,7 @@
                             Member Details
                         </label>
                     </div>
-                    <table class="table table-bordered" title="Details of the selected member.">
+                    <table class="table table-bordered">
                         <tbody>
                             <tr>
                                 <td>
@@ -82,7 +82,7 @@
                             Roles
                         </label>
                     </div>
-                    <table class="table table-bordered" title="Roles for the selected member.">
+                    <table class="table table-bordered">
                         <tbody>
                             @if (Model.person_role.Count() != 0)
                             {
@@ -103,7 +103,7 @@
 
         <div class="col-md-11 col-md-offset-1">
             <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-primary" @TempData["Disabled"] title="Delete the selected member." /> |
+                <input type="submit" value="Delete" class="btn btn-default" @TempData["Disabled"] /> |
                 @Html.ActionLink("Back to List", "Index")
             </div>
         </div>

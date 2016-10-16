@@ -103,13 +103,10 @@
                     </a>
                     <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            @Html.ActionLink("Questionnaires", "Index", "Questionnaire")
+                            @Html.ActionLink("Create Questionnaire", "Create", "Questionnaire")
                         </li>
                         <li>
-                            @Html.ActionLink("Question Bank", "Index", "Question_Bank")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Question Topics", "Index", "Question_Topic")
+                            @Html.ActionLink("View All Questionnaires", "Index", "Questionnaire")
                         </li>
                     </ul>
                 </li>
@@ -120,16 +117,10 @@
                     </a>
                     <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            @Html.ActionLink("Bookings Report", "BookingReport", "Reporting")
-                        </li>
-                        <li>
                             @Html.ActionLink("Session Log", "personSession", "Reporting")
                         </li>
                         <li>
                             @Html.ActionLink("Document Access Log", "documentAccessReport", "Reporting")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Document Usage Report", "documentAccess", "Reporting")
                         </li>
                         <li>
                             @Html.ActionLink("Action Log", "personSessionAction", "Reporting")
@@ -139,9 +130,6 @@
                         </li>
                         <li>
                             @Html.ActionLink("Training Attendance Log", "trainingAttendance", "Reporting")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Audit Log", "Index", "Person_Session_Action_Log")
                         </li>
                     </ul>
                 </li>
@@ -165,7 +153,21 @@
                                 </li>
                             </ul>
                         </li>
-                        @*<li>
+                        <li>
+                            <a href="#">
+                                Questionnaire
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
+                                <li>
+                                    @Html.ActionLink("Questions", "Index", "Question_Bank")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Question Topic", "Index", "Question_Topic")
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
                             <a href="#">
                                 Access Control
                                 <span class="fa arrow"></span>
@@ -178,7 +180,7 @@
                                     @Html.ActionLink("Person Types", "Index", "PersonType")
                                 </li>
                             </ul>
-                        </li>*@
+                        </li>
                         <li>
                             <a href="#">
                                 Venues
@@ -289,11 +291,12 @@
     @Scripts.Render("~/bundles/noty")
     @Scripts.Render("~/bundles/bootbox")
     @Scripts.Render("~/bundles/checkboxjs")
-    @Scripts.Render("~/bundles/chart.js")
 
+    @Scripts.Render("~/Scripts/timepickerInt.js")
+    @Scripts.Render("~/Scripts/timepickerInt.js")
     @Scripts.Render("~/Scripts/siteScripts.js")
-    @*<script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     @RenderSection("script", required: false)
 </body>
 </html>

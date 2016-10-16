@@ -10,45 +10,44 @@
 
 <div>
     <h2>Venue Usuage Report</h2>
-    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed" title="Export report to PDF."><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
 </div>
 <hr />
+
+
 <div class="row">
     <div class="col-md-12">
-        <h4 class="bg-info shaded">
-            Usage Details Per Venue
-        </h4>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table id="report" title="Venue usage log results.">
-                    <thead>
-                        <tr class="shade-blue">
-                            <th>Campus</th>
-                            <th>
-                                Building
-                            </th>
-                            <th>
-                                Venue Name
-                            </th>
-                            <th>
-                                Bookings Made
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.campus</td>
-                                <td>@item.building</td>
-                                <td>@item.venue.Venue_Name</td>
-                                <td>@item.count</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <table id="report" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Campus</th>
+                    <th>
+                        Building
+                    </th>
+                    <th>
+                        Venue Name
+                    </th>
+                    <th>
+                        Bookings Made
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.campus</td>
+                        <td>@item.building</td>
+                        <td>@item.venue.Venue_Name</td>
+                        <td>@item.count</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+        <hr />
+
     </div>
 </div>
 

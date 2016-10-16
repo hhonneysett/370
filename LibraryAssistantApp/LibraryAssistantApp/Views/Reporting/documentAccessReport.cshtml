@@ -16,16 +16,13 @@
     <title>documentAccessReport</title>
 </head>
 <body>
-    <div style="padding-bottom:10px">
+    <div>
         <h2>Document Access Log</h2>
-        <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed" title="Export report to PDF"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+        <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed"><span class="fa fa-file-pdf-o"></span> Export PDF</button>
     </div>
-    <h4 class="bg-info shaded">
-        Documents Accessed Per Type
-    </h4>
     <div class="panel panel-default">
         <div class="scrollable-lg">
-            <table id="doc-report" class="table table-condensed tbl-bordered" title="Document log results.">
+            <table id="doc-report" class="table table-condensed tbl-bordered">
                 <tbody>
                     @foreach (var item in Model.doc_types)
             {
