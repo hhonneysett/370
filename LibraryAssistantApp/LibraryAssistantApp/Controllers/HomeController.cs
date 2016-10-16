@@ -17,8 +17,6 @@ namespace LibraryAssistantApp.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            if (User.IsInRole("Admin"))
-                return RedirectToAction("Index", "Dashboard");
             return View();                  
         }
 

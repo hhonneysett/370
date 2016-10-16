@@ -59,7 +59,7 @@
                             </ul>
                         </li>
                         <li>
-                            @Html.ActionLink("View Personal Bookings", "ViewBookings", "Booking")
+                            @Html.ActionLink("View Personal Bookings", "employeeViewBookings", "Booking")
                         </li>
                     </ul>
                 </li>
@@ -76,7 +76,7 @@
                             </a>
                             <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    @Html.ActionLink("Create Training Session", "addNewTrainingSession", "Trainer")
+                                    @Html.ActionLink("Create Training Session", "addTrainingSession", "Trainer")
                                 </li>
                                 <li>
                                     @Html.ActionLink("Manage Training Sessions", "manageTrainingSession", "Trainer")
@@ -94,6 +94,40 @@
                                 </li>
                             </ul>
                         </li>
+                    </ul>
+                </li>
+                @*<li>
+                    <a href="#" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-hospital-o fa-fw"></span>
+                        Venues
+                    </a>
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
+                        <li>
+                            <a href="#">View Problems</a>
+                        </li>
+                        <li>
+                            <a href="#">Report Problem</a>
+                        </li>
+                        <li>
+                            <a href="#">Update Problem Status</a>
+                        </li>
+                    </ul>
+                </li>*@
+                <li>
+                    <a href="#" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-graduation-cap fa-fw"></span>
+                        Tutorials
+                    </a>
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
+                        <li>
+                            @Html.ActionLink("Manage Repository", "ViewFile", "Repository")
+                        </li>
+                        <li>
+                            @Html.ActionLink("View Library Map", "ViewMap", "Repository")
+                        </li>
+                        @*<li>
+                            <a href="#">View Tutorials</a>
+                        </li>*@
                     </ul>
                 </li>
                 <li>
@@ -186,28 +220,20 @@
                             </a>
                             <ul class="nav-third-level animated fadeIn" aria-expanded="false">
                                 <li>
-                                    @Html.ActionLink("Maintain Venues", "venueMaintainence", "Venue")
+                                    @Html.ActionLink("Maintain Venues", "Index", "Venues")
+                                </li>
+                                @*<li>
+                                    <a href="#">Venue Types</a>
+                                </li>*@
+                                @*<li>
+                                    <a href="#">Characteristics</a>
+                                </li>*@
+                                @*<li>
+                                    <a href="#">Common Problem Types</a>
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Venue Characteristics", "viewCharacteristics", "Venue")
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Problems
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
-                                <li>
-                                    @Html.ActionLink("Common Problems", "viewCommonProblems", "Venue")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Common Problem Types", "viewProblemTypes", "Venue")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("View Venue Problems", "viewProblems", "Venue")
-                                </li>
+                                    <a href="#">Common Problems</a>
+                                </li>*@
                             </ul>
                         </li>
                         <li>
@@ -225,21 +251,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#">
-                                Document Repository
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
-                                <li>
-                                    @Html.ActionLink("Manage Files", "ViewFile", "Repository")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("File Types", "ViewFileType", "Repository")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("File Categories", "viewFileCategories", "Repository")
-                                </li>
-                            </ul>
+                            @Html.ActionLink("File Types", "ViewFileType", "Repository")
                         </li>
                         <li>
                             @Html.ActionLink("Backup and Restore", "Index", "Backup")
@@ -252,17 +264,11 @@
                     @{
                         if (Request.IsAuthenticated)
                         {
-                            <a href="/Account/Logout" aria-expanded="false">
-                                <span class="navbar-custom-item-icon fa fa-sign-out fa-fw"></span>
-                                Logout
-                            </a>
+                            @Html.ActionLink("Logout", "Logout", "Account")
                         }
                         else
                         {
-                            <a href="/Account/Login" aria-expanded="false">
-                                <span class="navbar-custom-item-icon fa fa-sign-in fa-fw"></span>
-                                Login
-                            </a>
+                            @Html.ActionLink("Login", "Login", "Account")
                         }
                     }
                 </li>
@@ -290,6 +296,8 @@
     @Scripts.Render("~/bundles/bootbox")
     @Scripts.Render("~/bundles/checkboxjs")
     @Scripts.Render("~/bundles/chart.js")
+
+    <!--Metis menu scripts-->
 
     @Scripts.Render("~/Scripts/siteScripts.js")
     @*<script src="~/Scripts/jquery.validate.js"></script>

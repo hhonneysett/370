@@ -16,8 +16,8 @@
         </tr>
     </table>
 </form>
-<button class="btn btn-primary" id="btnAddBuildingModal">Add Building</button>
-<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+<button class="btn btn-default" id="btnAddBuildingModal">Add Building</button>
+<button class="btn btn-default" id="btnCancelModal">Cancel</button>
 <hr />
 
 <script src="~/Scripts/jquery.ambiance.js"></script>
@@ -39,7 +39,6 @@
         rules: {
             buildingName: {
                 required: true,
-                maxlength: 30,
                 remote: {
                     url: '/Venue/checkBuilding',
                     type: 'get'
