@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
 }
 
 @if (ViewBag.ErrorMessage != null)
@@ -11,112 +11,125 @@
 
 }
 
-<h2>Select a questionnaire to respond to</h2>
+<h2>Available Questionnaires</h2>
+<div class="row" style="padding-top:10px; padding-left:25px">
+    <p class="text-muted"><strong>To answer to a questionnaire:</strong></p>
+    <ul style="padding-bottom:5px; padding-top:5px">
+        <li class="text-muted">
+            <p>Search for a questionnaire.</p>
+        </li>
+        <li class="text-muted">
+            <p>Click the respond button in the 'Actions' column.</p>
+        </li>
+    </ul>
+</div>
+<div class="row">
+    <div class="col-md-9">
+        <h4 class="bg-info shaded">
+            Select a questionnaire to respond to
+        </h4>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table id="tbl-quest-6" class="table table-bordered table-condensed" title="Questionnaires">
+                    <thead>
+                        <tr class="shade-blue">
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Assessment_Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Question_Topic.Topic_Name)
+                            </th>
+                            <th>Answered Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count() == 0)
+            {
+                            <tr>
+                                <td colspan="4">No rows match search criteria</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            int i = 0;
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Assessment_Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Question_Topic.Topic_Name)
+                                    </td>
+                                    <td>
+                                        @ViewBag.AnswerDates[i]
+                                    </td>
+                                    @if (ViewBag.RowsRespond[i] == "Yes")
+                                    {
+                                        <td>
+                                            <input type="button" class="btn btn-default btn-block" value="Respond" onclick="Resubmit(@item.Questionnaire_ID)" />
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <input type="button" class="btn btn-default btn-block" value="Respond" onclick="location.href='@Url.Action("Answering_Questionnaire", "Questionnaire", new { id = item.Questionnaire_ID })'" />
+                                        </td>
+                                    }
 
-
-
-<div class="panel panel-default">
-    <div class="panel-heading">Search Criteria</div>
-    <div class="panel-body">
-        <p>
-            <b>Search by Questionnaire Name</b>
-            <br />
-            @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value = (string)ViewBag.Search })
-            <br />
-        </p>
-
-        <p>
-            <b>Search by Topic</b>
-            <br />
-            @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
-        </p>
-
-        <p>
-            <b>Search by Assessment Type</b>
-            <br />
-            @Html.DropDownList("Assessment_Type", new List<SelectListItem>
+                                    @{i++;}
+                                </tr>
+                                            }
+                                        }
+                    </tbody>
+                </table>
+                @*<input type="button" class="btn btn-" value="Respond to a random questionnaire" onclick="RespondToRandom();" />*@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h4 class="bg-info shaded">
+            Search
+        </h4>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                    <b>Questionnaire Name</b>
+                <div class="form-group-sm">
+                    @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value = (string)ViewBag.Search, @title="Search questionnaire by name." })
+                </div>
+                <br/>
+                    <b>Topic</b>
+                <div class="form-group-sm">
+                    @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic", @title = "Filter questionnaire by topic." })
+                </div>
+                <br/>
+                    <b>Assessment Type</b>
+                <div class="form-group-sm">
+                    @Html.DropDownList("Assessment_Type", new List<SelectListItem>
                      {
                         new SelectListItem{ Text="Other", Value = "Other" },
                         new SelectListItem{ Text="Venue", Value = "Venue" },
                         new SelectListItem{ Text="Employee", Value = "Employee" },
                         new SelectListItem{ Text="Training Session", Value = "Training Session" }
-                     }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
-        </p>
-
-
-        <input type="submit" class="btn btn-default" value="Search" onclick="Search();" /> | <input type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Respond_to_questionnaire","Questionnaire")'" />
-
-    </div>
-</div>
-
-
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        Results
-
-    </div>
-    <div class="panel-body">
-
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Assessment_Type)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Question_Topic.Topic_Name)
-                </th>
-                <th>Actions</th>
-                <th>Answered Date</th>
-            </tr>
-
-            @if (Model.Count() == 0)
-            {
-                <tr>
-                    <td colspan="4">No rows match search criteria</td>
-                </tr>
-            }
-            else
-            {
-                int i = 0;
-                foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Assessment_Type)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Question_Topic.Topic_Name)
-                        </td>                        
-                            @if (ViewBag.RowsRespond[i] == "Yes")
-                            {
-                                <td>
-                                    <input type="button" class="btn btn-default" value="Respond to" onclick="Resubmit(@item.Questionnaire_ID)" />
-                                </td>
-                            }
-                            else
-                            {
-                                <td>
-                                    <input type="button" class="btn btn-default" value="Respond to" onclick="location.href='@Url.Action("Answering_Questionnaire", "Questionnaire", new { id = item.Questionnaire_ID })'" />
-                                </td>
-                            }
-                           
-                        <td>
-                            @ViewBag.AnswerDates[i]
-                        </td>  
-                        @{i++;}
-                        </tr>
-                }
-            }
-        </table>
-        @*<input type="button" class="btn btn-" value="Respond to a random questionnaire" onclick="RespondToRandom();" />*@
-
+                     }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type, @title = "Filter questionnaire by topic.." })
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-primary" value="Search" title="Search questionnaires." onclick="Search();" />
+                </div>
+                <div class="btn-group">
+                    <input type="button" class="btn btn-primary" value="Clear" title="Clear search inputs." onclick="location.href='@Url.Action("Respond_to_questionnaire","Questionnaire")'" />
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -125,7 +138,6 @@
         var Search = document.getElementById("Search").value;
         var Topic = document.getElementById("Topic").value;
         var Assessment_Type = document.getElementById("Assessment_Type").value;
-
         window.location.href = "/Questionnaire/Respond_to_questionnaire_Search?Search=" + Search + "&Topic=" + Topic + "&Assessment_Type=" + Assessment_Type;
     }
     function RespondToRandom() {
@@ -133,15 +145,30 @@
         window.location.href = "/Questionnaire/Respond_To_Random?";
     }
     function Resubmit(id) {
-   
-        var r = confirm("Are you sure you want to resubmit? \nYour previous submission will be deleted.");
-        if (r == true) {
-            window.location.href = "/Questionnaire/ReSubmit?id=" + id;
-        }
+        bootbox.confirm({
+            title: "Resubmit Questionnaire?",
+            message: "Are you sure you want to resubmit? \nYour previous submission will be deleted.",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancel'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Confirm'
+                }
+            },
+            callback: function (result) {
+                if (result == true) {
+                    window.location.href = "/Questionnaire/ReSubmit?id=" + id;
+                } else {
+
+                }
+            }
+        });
+        //var r = confirm("Are you sure you want to resubmit? \nYour previous submission will be deleted.");
+        //if (r == true) {
+        //    window.location.href = "/Questionnaire/ReSubmit?id=" + id;
+        //}
     }
-  
-
-
 </script>
 
 <style>
@@ -178,3 +205,19 @@
             vertical-align: middle;
         }
 </style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#tbl-quest-6').DataTable();
+        $('#tbl-quest-6 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selectedrow')) {
+                $(this).removeClass('selectedrow');
+            }
+            else {
+                table.$('tr.selectedrow').removeClass('selectedrow');
+                $(this).addClass('selectedrow');
+            }
+            $('.btn-view').attr('href', '/Questionnaire/Answering/' + $(this).attr('id'));
+        });
+    });
+</script>

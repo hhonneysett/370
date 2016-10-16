@@ -17,13 +17,11 @@
             @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value = (string)ViewBag.Search })
             <br />
         </p>
-
         <p>
             <b>Search by Topic</b>
             <br />
             @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
         </p>
-
         <p>
             <b>Search by Assessment Type</b>
             <br />
@@ -35,14 +33,10 @@
                         new SelectListItem{ Text="Training Session", Value = "Training Session" }
                      }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
         </p>
-
-
         <input type="submit" class="btn btn-default" value="Search" onclick="Search();" /> | <input type="button" class="btn btn-default" value="Clear" onclick="location.href='@Url.Action("Get_Questionnaire_Results","Questionnaire")'" />
 
     </div>
 </div>
-
-
 
 <div class="panel panel-default">
     <div class="panel-heading">

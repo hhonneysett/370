@@ -25,7 +25,7 @@ namespace LibraryAssistantApp.Models
 
     public class CreatePersonModel
     {
-        [Display(Name ="Student Number")]
+        [Display(Name ="Username")]
         [Required(ErrorMessage ="Please provide a student number")]
         [RegularExpression(@"[u][0-9]{8}", ErrorMessage ="Invalid student number")]
         [Remote("validateStudentNumber", "Validate", ErrorMessage ="You are not a student at TUKS or are already registered")]
@@ -457,7 +457,7 @@ namespace LibraryAssistantApp.Models
 
     public class OneTimePin
     {
-        [Display(Name ="One Time Pin")]
+        [Display(Name ="OTP")]
         [Remote("checkOTP", "Validate", ErrorMessage ="Invalid OTP")]
         public int OTP { get; set; }
     }
