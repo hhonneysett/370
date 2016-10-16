@@ -3,12 +3,11 @@
 
 @{
     ViewBag.Title = "Cancel Booking";
-    Layout = (string)Session["layout"];
 }
 
 <h2>Cancel Booking</h2>
 
-<h3>Are you sure you want to cancel this booking?</h3>
+<h3 class="bg-info shaded">Are you sure you want to cancel this booking?</h3>
 <div>
     <hr />
     @{ 
@@ -45,8 +44,8 @@
     <hr />
 
         <div class="form-actions no-color">
-            @Html.ActionLink("Back", "ViewBookings", "Booking", htmlAttributes: new { @class = "btn btn-default" })
-            <input type="submit" value="Cancel Booking" class="btn btn-default" id="btnCancelBooking" />
+            @Html.ActionLink("Back", "ViewBookings", "Booking", htmlAttributes: new { @class = "btn btn-primary", @title = "Go back to view bookings screen."})
+            <input type="submit" value="Cancel Booking" class="btn btn-primary" id="btnCancelBooking" title="Confirm cancellation for selected booking." />
         </div>
 </div>
 
@@ -55,8 +54,8 @@
         $(document).ready(function () {
             $('#btnCancelBooking').click(function () {
                 $.ajax({
-                    type: 'GET',
                     url: '/Booking/captureCancel',
+                    type: 'POST',
                     success: function (result) {
                         window.location.href = result;
                     },

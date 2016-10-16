@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Add File";
-    Layout = (string)Session["layout"];
 }
 
 <h2>Add File</h2>
@@ -49,15 +48,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.uploadFile, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" name="uploadFile" />
+                <input type="file" name="uploadFile" required/>
                 @Html.ValidationMessageFor(model => model.uploadFile, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Back", "ViewFile", "Repository", htmlAttributes: new { @class = "btn btn-default"})
-                <input type="submit" value="Add File" class="btn btn-default" />
+                @Html.ActionLink("Back", "ViewFile", "Repository", htmlAttributes: new { @class = "btn btn-primary" })
+                <input type="submit" value="Add File" class="btn btn-primary" />
             </div>
         </div>
     </div>

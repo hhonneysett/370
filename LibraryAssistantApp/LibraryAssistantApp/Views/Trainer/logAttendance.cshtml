@@ -3,13 +3,12 @@
 @using LibraryAssistantApp.Models
 
 @{
-    ViewBag.Title = "logAttendance";
-    Layout = (string)Session["layout"];
+    ViewBag.Title = "Log Attendants";
     var certificates = (List<Document_Repository>)ViewBag.Certificates;
 }
 
 <h2>Log Attendance</h2>
-
+<h4 class="bg-info shaded">Please provide attendance details below:</h4>
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -18,7 +17,16 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="row">
+            <div class="col-md-12">
+                <p class="text-muted"><b>Instructions:</b></p>
+                <ul>
+                    <li><p class="text-muted">Indicate whether a student was present at the training session.</p></li>
+                    <li><p class="text-muted">Indicate whether to send a certificate.</p></li>
+                    <li><p class="text-muted">Once complete click the 'Save' button.</p></li>
+                </ul>
+            </div>
             <div class="col-md-8">
+                <h4 class="bg-warning shaded">Students Register:</h4>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <table class="table">
@@ -57,25 +65,23 @@
             </div>
 
             <div class="col-md-4">
+                <h4 class="bg-warning shaded">Send Certificates:</h4>
                 <div class="panel panel-default">
-                    <div class="text-center">
-                        <text><b>Send Certificates</b></text>
-                        <hr />
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <select class="form-control center-block" id="certificateSend">
+                                <option selected value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <select class="form-control center-block" id="certificateSend">
-                            <option selected value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </div>
-                    @{
-                        if (certificates.Any())
-                        {
-                            <div id="certificateToggle">
-                                <hr />
-                                <div class="text-center">
-                                    <text class="text-center"><b>Select Certificate File</b></text>
-                                </div>
+                </div>
+                @{
+                    if (certificates.Any())
+                    {
+                        <div id="certificateToggle">
+                            <h4 class="bg-warning shaded">Select Certificate File:</h4>
+                            <div class="panel panel-default">
                                 <table class="table text-center" id="certificateTable">
                                     <tbody>
                                         @foreach (var certificate in certificates)
@@ -87,24 +93,25 @@
                                     </tbody>
                                 </table>
                             </div>
-                        }
-                        else
-                        {
-                            <div id="certificateToggle" class="text-center">
-                                <text>No Certificates Exist</text>
-                            </div>
-                        }
+                        </div>
                     }
-                </div>
+                    else
+                    {
+                        <div id="certificateToggle" class="text-center">
+                            <h4 class="bg-warning shaded">Select Certificate File:</h4>
+                            <text>No Certificates Exist</text>
+                        </div>
+                    }
+                }
             </div>
         </div>
 
         <div class="row col-md-12">
-                <input type="submit" value="Save" class="btn btn-default" id="btnLogAtt" />
+                <input type="submit" value="Save" class="btn btn-primary" id="btnLogAtt" />
         </div>
     </div>
 
-<div id="loadingDiv"></div>
+<div id="loading"></div>
 
 @section script{
     <script type="text/javascript">
@@ -147,7 +154,7 @@
                 $("#btnLogAtt").hide();
 
                 $.ajax({
-                    type: 'GET',
+                    type: 'post',
                     url: '/Trainer/submitAttendance',
                     data: { attended: JSON.stringify(checked), document: document },
                     success: function (result) {                       
@@ -158,6 +165,42 @@
                     }
                 });                
             })
+
+            //laoding div
+            var $loading = $('#loading').hide();
+            $(document)
+              .ajaxStart(function () {
+                  $loading.show();
+              })
+              .ajaxStop(function () {
+                  $loading.hide();
+              });
+
+            //loading div
+            var opts = {
+                lines: 13 // The number of lines to draw
+            , length: 28 // The length of each line
+            , width: 14 // The line thickness
+            , radius: 42 // The radius of the inner circle
+            , scale: 0.3 // Scales overall size of the spinner
+            , corners: 1 // Corner roundness (0..1)
+            , color: '#000' // #rgb or #rrggbb or array of colors
+            , opacity: 0.25 // Opacity of the lines
+            , rotate: 0 // The rotation offset
+            , direction: 1 // 1: clockwise, -1: counterclockwise
+            , speed: 1 // Rounds per second
+            , trail: 60 // Afterglow percentage
+            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+            , zIndex: 2e9 // The z-index (defaults to 2000000000)
+            , className: 'spinner' // The CSS class to assign to the spinner
+            , top: '50%' // Top position relative to parent
+            , left: '50%' // Left position relative to parent
+            , shadow: false // Whether to render a shadow
+            , hwaccel: false // Whether to use hardware acceleration
+            , position: 'absolute' // Element positioning
+            }
+            var target = document.getElementById('loading')
+            var spinner = new Spinner(opts).spin(target);
         })
     </script>
     }

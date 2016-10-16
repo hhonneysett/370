@@ -5,16 +5,13 @@
 }
 
 <div id="topicPanel">
+    <h4 class="bg-warning shaded">Select A Topic:</h4>
     <div class="panel panel-default">
         <div class="panel-body">
-            <h4>Select A Topic</h4>
-
-            <hr />
-
             @{
                 if (topics.Any())
                 {
-                    <select id="bkTrainingTopic" class="form-control">
+                    <select id="bkTrainingTopic" class="form-control" title="Preferred topic selection.">
                         <option disabled selected value>--select topic--</option>
                         @foreach (var topic in topics)
                 {
@@ -30,3 +27,24 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $("#bkTrainingTopic").change(function () {
+        var id = $("#bkTrainingTopic").children(":selected").val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/Booking/getAvailableTrainingSess',
+            data: "id=" + id,
+            success: function (result) {
+                $('#bkTrainingBookings').replaceWith(result);
+                $("#sessionToggle").show(800);
+
+                $("#btnBkTraining").prop('disabled', true)
+            },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    })
+</script>

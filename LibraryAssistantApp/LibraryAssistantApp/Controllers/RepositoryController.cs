@@ -75,7 +75,7 @@ namespace LibraryAssistantApp.Controllers
                         db.Document_Repository.Add(a);
                         db.SaveChanges();
 
-                        var sessionLog = (Person_Session_Log)Session["loginSession"];
+                        var sessionLog = db.Person_Session_Log.Where(p => p.Person_ID == User.Identity.Name).OrderByDescending(p => p.Login_DateTime).FirstOrDefault();
 
                         Document_Access_Log ac = new Document_Access_Log();
                         ac.Access_DateTime = DateTime.Now;
@@ -84,6 +84,9 @@ namespace LibraryAssistantApp.Controllers
 
                         db.Document_Access_Log.Add(ac);
                         db.SaveChanges();
+
+                        //record action
+                        global.addAudit("Repository", "Repository: Add File", "Create", User.Identity.Name);
 
                         //save file to server
                         model.uploadFile.SaveAs(path);
@@ -153,6 +156,7 @@ namespace LibraryAssistantApp.Controllers
                     if (System.IO.File.Exists(path))
                     {
                         TempData["Message"] = "Uploaded file already exists";
+                        TempData["classStyle"] = "danger";
                         model.uploadFile = null;
                         ViewBag.Category_ID = new SelectList(db.Document_Category, "Category_ID", "Category_Name");
                         ViewBag.Document_Type_ID = new SelectList(db.Document_Type, "Document_Type_ID", "Document_Type_Name");
@@ -168,7 +172,7 @@ namespace LibraryAssistantApp.Controllers
                 db.Entry(updatedfile).State = EntityState.Modified;
                 db.SaveChanges();
 
-                var sessionLog = (Person_Session_Log)Session["loginSession"];
+                var sessionLog = db.Person_Session_Log.Where(p => p.Person_ID == User.Identity.Name).OrderByDescending(p => p.Login_DateTime).FirstOrDefault();
 
                 Document_Access_Log ac = new Document_Access_Log();
                 ac.Access_DateTime = DateTime.Now;
@@ -178,7 +182,11 @@ namespace LibraryAssistantApp.Controllers
                 db.Document_Access_Log.Add(ac);
                 db.SaveChanges();
 
+                //record action
+                global.addAudit("Repository", "Repository: Update File", "Update", User.Identity.Name);
+
                 TempData["Message"] = "File successfuly updated";
+                TempData["classStyle"] = "success";
                 return RedirectToAction("ViewFile");
             }
             else
@@ -195,7 +203,7 @@ namespace LibraryAssistantApp.Controllers
         {
             var file = db.Document_Repository.Where(f => f.Document_Seq.Equals(id)).FirstOrDefault();
 
-            var sessionLog = (Person_Session_Log)Session["loginSession"];
+            var sessionLog = db.Person_Session_Log.Where(p => p.Person_ID == User.Identity.Name).OrderByDescending(p => p.Login_DateTime).FirstOrDefault();
 
             Document_Access_Log ac = new Document_Access_Log();
             ac.Access_DateTime = DateTime.Now;
@@ -229,7 +237,7 @@ namespace LibraryAssistantApp.Controllers
                                       where c.Document_Type_ID.Equals(file.Document_Type_ID)
                                       select c.Document_Type_Name).FirstOrDefault(),
             };
-            TempData["FileDelete"] = a;
+            Session["FileDelete"] = a;
             return View(a);
         }
 
@@ -239,10 +247,10 @@ namespace LibraryAssistantApp.Controllers
         [Authorize(Roles ="Admin, Employee")]
         public ActionResult DeleteFile()
         {
-            DeleteFileModel tempdatafile = (DeleteFileModel)TempData["FileDelete"];
+            DeleteFileModel tempdatafile = (DeleteFileModel)Session["FileDelete"];
             var deleteFile = db.Document_Repository.Where(f => f.Document_Seq.Equals(tempdatafile.Document_Seq)).FirstOrDefault();
 
-            var sessionLog = (Person_Session_Log)Session["loginSession"];
+            var sessionLog = db.Person_Session_Log.Where(p => p.Person_ID == User.Identity.Name).OrderByDescending(p => p.Login_DateTime).FirstOrDefault();
 
             Document_Access_Log ac = new Document_Access_Log();
             ac.Access_DateTime = DateTime.Now;
@@ -251,6 +259,9 @@ namespace LibraryAssistantApp.Controllers
 
             db.Document_Access_Log.Add(ac);
             db.SaveChanges();
+
+            //record action
+            global.addAudit("Repository", "Repository: Delete File", "Delete", User.Identity.Name);
 
             deleteFile.Document_Status = "Deleted";
             var virtualDirectoryPath = deleteFile.Directory_Path;
@@ -262,6 +273,7 @@ namespace LibraryAssistantApp.Controllers
             db.SaveChanges();
             TempData["Message"] = "File '" + deleteFile.Document_Name + "' successfuly deleted";
             TempData["classStyle"] = "success";
+            Session.Remove("FileDelete");
             return RedirectToAction("ViewFile");
         }
 
@@ -296,9 +308,13 @@ namespace LibraryAssistantApp.Controllers
                 };
                 db.Document_Type.Add(a);
                 db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Add File Type", "Create", User.Identity.Name);
+
                 TempData["classStyle"] = "success";
                 TempData["Message"] = "File type successfully added";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ViewFileType");
             }
             else
             {
@@ -311,7 +327,7 @@ namespace LibraryAssistantApp.Controllers
         public ActionResult UpdateFileType(int id)
         {
             var fileType = db.Document_Type.Where(m => m.Document_Type_ID.Equals(id)).FirstOrDefault();
-            AddFileTypeModel a = new AddFileTypeModel
+            UpdateFileType a = new UpdateFileType
             {
                 Type_Name = fileType.Document_Type_Name,
                 Description = fileType.Description,
@@ -324,29 +340,30 @@ namespace LibraryAssistantApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles ="Admin, Employee")]
-        public ActionResult UpdateFileType(AddFileTypeModel model)
+        public ActionResult UpdateFileType(UpdateFileType model)
         {
             if (ModelState.IsValid)
             {
                 var oldFileType = (Document_Type)Session["updateFileType"];
-                var typeExists = db.Document_Type.Any(m => m.Document_Type_Name.Equals(model.Type_Name) && m.Document_Type_ID != oldFileType.Document_Type_ID);
+                var types = db.Document_Type.ToList();
+                var typeExists = types.Any(m => m.Document_Type_Name.ToLower() == model.Type_Name.ToLower() && m.Document_Type_ID != oldFileType.Document_Type_ID);
                 if (typeExists)
                 {
                     TempData["classStyle"] = "warning";
                     TempData["Message"] = "File type already exists";
-                    model.Type_Name = "TEST";
                     return View(model);
                 }
                 else
                 {
-                    Document_Type a = new Document_Type
-                    {
-                        Document_Type_ID = oldFileType.Document_Type_ID,
-                        Document_Type_Name = model.Type_Name,
-                        Description = model.Description,
-                    };
-                    db.Entry(a).State = EntityState.Modified;
+                    var type = db.Document_Type.Where(d => d.Document_Type_ID == oldFileType.Document_Type_ID).FirstOrDefault();
+                    type.Document_Type_Name = model.Type_Name;
+                    type.Description = model.Description;
+                    db.Entry(type).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    //record action
+                    global.addAudit("Repository", "Repository: Update File Type", "Update", User.Identity.Name);
+
                     TempData["classStyle"] = "success";
                     TempData["Message"] = "File type successfuly updated";
                     return RedirectToAction("ViewFileType");
@@ -355,6 +372,163 @@ namespace LibraryAssistantApp.Controllers
             else
             {
                 return View(model);
+            }
+        }
+        
+        //delete file type - get
+        public ActionResult DeleteFileType(int id)
+        {
+            Session["typeID"] = id;
+            var type = db.Document_Type.Where(t => t.Document_Type_ID == id).FirstOrDefault();
+            return View(type);
+        }
+
+        //delete file type = post
+        [HttpPost]
+        public ActionResult DeleteFileType()
+        {
+            int id = (int)Session["typeID"];
+            var type = db.Document_Type.Where(t => t.Document_Type_ID == id).FirstOrDefault();
+            var check = db.Document_Repository.Where(d => d.Document_Type_ID == id);
+            if (check.Any())
+            {
+                TempData["Message"] = "Unable to delete, file type has existing dependencies!";
+                TempData["classStyle"] = "danger";
+                return View(type);
+            }
+            else
+            {
+                db.Document_Type.Attach(type);
+                db.Document_Type.Remove(type);
+                db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Delete File Type", "Delete", User.Identity.Name);
+
+                TempData["Message"] = "Successfully deleted file type!";
+                TempData["classStyle"] = "success";
+                return RedirectToAction("ViewFileType");
+
+            }
+        }
+
+        //view file categories
+        public ActionResult viewFileCategories()
+        {
+            var categories = db.Document_Category.ToList();
+            return View(categories);
+        }
+
+        //add file category - get
+        public ActionResult addFileCategory()
+        {
+            return View();
+        }
+
+        //add file category - post
+        [HttpPost]
+        public ActionResult addFileCategory(AddFileCategory model)
+        {
+            if (ModelState.IsValid)
+            {
+                Document_Category category = new Document_Category
+                {
+                    Category_Name = model.name,
+                    Description = model.description,
+                };
+
+                db.Document_Category.Add(category);
+                db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Add File Category", "Create", User.Identity.Name);
+
+                TempData["Message"] = "Document category successfully added!";
+                TempData["classStyle"] = "success";
+                return RedirectToAction("viewFileCategories");
+            }
+            else
+            {
+                TempData["Message"] = "Invalid category details!";
+                TempData["classStyle"] = "danger";
+                return View(model);
+            }
+        }
+
+        //update file category - get
+        public ActionResult updateFileCategory(int id)
+        {
+            var category = db.Document_Category.Where(c => c.Category_ID == id).FirstOrDefault();
+            var update = new UpdateFileCategory
+            {
+                name = category.Category_Name,
+                description = category.Description,
+                id = category.Category_ID,
+            };
+            return View(update);
+        }
+
+        //update file category - post
+        [HttpPost]
+        public ActionResult updateFileCategory(UpdateFileCategory model)
+        {
+            var category = db.Document_Category.Where(c => c.Category_ID == model.id).FirstOrDefault();
+            var categories = db.Document_Category.ToList();
+            var check = categories.Any(c => c.Category_Name.ToLower() == model.name.ToLower() && c.Category_ID != model.id);
+            if (!check)
+            {
+                category.Category_Name = model.name;
+                category.Description = model.description;
+                db.Entry(category).State = EntityState.Modified;
+                db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Update File Category", "Update", User.Identity.Name);
+
+                return RedirectToAction("viewFileCategories");
+            }
+            else
+            {
+                TempData["Message"] = "Categeory already exists!";
+                TempData["classStyle"] = "danger";
+                return View(model);
+            }
+            
+        }
+
+        //delete file category - get
+        public ActionResult deleteFileCategory(int id)
+        {
+            Session["catID"] = id;
+            var category = db.Document_Category.Where(c => c.Category_ID == id).FirstOrDefault();
+            return View(category);
+        }
+
+        //delete file category - post
+        [HttpPost]
+        public ActionResult deleteFileCategory()
+        {
+            var id = (int)Session["catID"];
+            var category = db.Document_Category.Where(c => c.Category_ID == id).FirstOrDefault();
+            var check = db.Document_Repository.Where(d => d.Category_ID == id);
+            if (check.Any())
+            {
+                TempData["Message"] = "File category has existing dependencies!";
+                TempData["classStyle"] = "danger";
+                return View(category);
+            }
+            else
+            {
+                db.Document_Category.Attach(category);
+                db.Document_Category.Remove(category);
+                db.SaveChanges();
+
+                //record action
+                global.addAudit("Repository", "Repository: Delete File Category", "Delete", User.Identity.Name);
+
+                TempData["Message"] = "File category successfully deleted!";
+                TempData["classStyle"] = "success";
+                return RedirectToAction("viewFileCategories");
             }
         }
 

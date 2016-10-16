@@ -4,6 +4,8 @@
     ViewBag.Title = "Login";
 }
 
+<link rel="stylesheet" href="~/Content/jquery.ambiance.css" />
+
 <h2>Login</h2>
 
 @using (Html.BeginForm()) 
@@ -24,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Person_Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Person_Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Person_Password, new { htmlAttributes = new { @class = "form-control", @id = "passwordIn" } })
                 @Html.ValidationMessageFor(model => model.Person_Password, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -35,8 +37,23 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Log In" class="btn btn-default" />
+                <input type="submit" value="Log In" class="btn btn-primary" />
             </div>
         </div>
     </div>
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //check for caps
+        $('#passwordIn').keypress(function (e) {
+            var s = String.fromCharCode(e.which);
+            if (s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey) {
+                $.ambiance({
+                    message: "Caps is on!",
+                    timeout: 5
+                });
+            }
+        });
+    })
+</script>

@@ -70,13 +70,16 @@
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
                             @Html.ActionLink("Respond To Questionnaire", "Respond_to_questionnaire", "Questionnaire")
-                        </li>                       
+                        </li>   
+                        <li>
+                            @Html.ActionLink("Report Problem", "reportProblem", "Venue")
+                        </li>                     
                     </ul>
                 </li>
 
                 <li>
                     <a href="#" aria-expanded="false">
-                        <span class="navbar-custom-item-icon fa fa-wrench fa-fw"></span>
+                        <span class="navbar-custom-item-icon fa fa-info fa-fw"></span>
                         Information
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
@@ -96,7 +99,10 @@
                 </li>
 
                 <li>
-                    @Html.ActionLink("View Profile", "Details", "RegisteredPerson")
+                    <a href="/RegisteredPerson/Details" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-user fa-fw"></span>
+                        User Profile
+                    </a>
                 </li>
             </ul>
             <ul id="navbar-login">
@@ -104,11 +110,17 @@
                     @{
                         if (Request.IsAuthenticated)
                         {
-                            @Html.ActionLink("Logout", "Logout", "Account")
+                            <a href="/Account/Logout" aria-expanded="false">
+                                <span class="navbar-custom-item-icon fa fa-sign-out fa-fw"></span>
+                                Logout
+                            </a>
                         }
                         else
                         {
-                            @Html.ActionLink("Login", "Login", "Account")
+                            <a href="/Account/Login" aria-expanded="false">
+                                <span class="navbar-custom-item-icon fa fa-sign-in fa-fw"></span>
+                                Login
+                            </a>
                         }
                     }
                 </li>

@@ -5,6 +5,7 @@
 }
 
 <div id="bkTrainingBookings">
+    <h4 class="bg-warning shaded">Available Training Sessions:</h4>
     <div class="panel panel-default">
         <div class="panel-body">
 
@@ -34,7 +35,7 @@
                         <tbody>
                             @foreach (var booking in bookings)
                             {
-                                <tr id="@booking.id" onclick="getSelectedTraining(this)" data-assigned-id="@booking.id">
+                                <tr id="@booking.id" onclick="getSelectedTraining(this)" data-assigned-id="@booking.id" title="Select training session">
                                     <td>@booking.date</td>
                                     <td>@booking.timeslot</td>
                                     <td>@booking.campus</td>
@@ -52,5 +53,41 @@
             }          
         </div>
     </div>
-    <input class="btn btn-default" id="btnBkTraining" type="button" value="Book Training Session"/>
+    <input class="btn btn-primary" id="btnBkTraining" type="button" value="Book Training Session" title="Book selected training selection"/>
 </div>
+
+<script type="text/javascript">
+    //select available trainer
+    $("#sessionTable tbody tr").click(function () {
+
+        var selected = $(this).hasClass("alert-info");
+        $("#sessionTable tbody tr").removeClass("alert-info");
+
+        if (!selected) {
+            $(this).addClass("alert-info");
+        }
+        var buttonEnabled = $(this).hasClass("alert-info");
+        if (buttonEnabled) {
+            $("#btnBkTraining").prop('disabled', false)
+        } else {
+            $("#btnBkTraining").prop('disabled', true)
+        }
+    });
+
+    $("#btnBkTraining").click(function () {
+        getTrainingBookingDetails();
+    })
+
+    function getSelectedTraining(elem) {
+        var id = $(elem).data('assigned-id');
+        $.ajax({
+            type: 'GET',
+            url: '/Booking/sessionSelect',
+            data: "id=" + id,
+            success: function (result) { },
+            error: function (err, result) {
+                alert("Error in assigning dataToSave" + err.responseText);
+            }
+        });
+    }
+</script>

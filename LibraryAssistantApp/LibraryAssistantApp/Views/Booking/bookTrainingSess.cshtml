@@ -2,23 +2,25 @@
 
 @{
     ViewBag.Title = "Book Training Session";
-    Layout = (string)Session["layout"];
     var categories = (IEnumerable<Category>)Session["categories"];
 }
 
 <h2>Book Training Session</h2>
-
+<h4 class="bg-info shaded">Provide training session details:</h4>
 <hr />
 
 <div class="row">
     <div class="col-md-6">
+        <p class="text-muted"><b>Booking a training session</b>:</p>
+        <ul style="padding-bottom:10px">
+            <li><p class="text-muted">Provide the requested training session details below.</p></li>
+            <li><p class="text-muted">Once you have selected the requested training session click the 'Book Training Session' button and confirm your booking.</p></li>
+        </ul>            
+
+        <h4 class="bg-warning shaded">Select A Category</h4>
         <div class="panel panel-default">
             <div class="panel-body">
-                <h4>Select A Category</h4>
-
-                <hr />
-
-                <select class="form-control" id="bkTrainingCat">
+            <select class="form-control" id="bkTrainingCat" title="Preferred training category.">
                     <option disabled selected value>--select category--</option>
                     @foreach (var category in categories)
                     {
@@ -59,53 +61,48 @@
                 success: function (result) {
                     $('#topicPanel').replaceWith(result);
                     $("#topicToggle").show(800);
-
-                    $("#bkTrainingTopic").change(function () {
-                        var id = $("#bkTrainingTopic").children(":selected").val();
-
-                        $.ajax({
-                            type: 'GET',
-                            url: '/Booking/getAvailableTrainingSess',
-                            data: "id=" + id,
-                            success: function (result) {
-                                $('#bkTrainingBookings').replaceWith(result);
-                                $("#sessionToggle").show(800);
-
-                                $("#btnBkTraining").prop('disabled', true);
-
-                                //select available trainer
-                                $("#sessionTable tbody tr").click(function () {
-
-                                    var selected = $(this).hasClass("alert-info");
-                                    $("#sessionTable tbody tr").removeClass("alert-info");
-
-                                    if (!selected) {
-                                        $(this).addClass("alert-info");
-                                    }
-                                    var buttonEnabled = $(this).hasClass("alert-info");
-                                    if (buttonEnabled) {
-                                        $("#btnBkTraining").prop('disabled', false)
-                                    } else {
-                                        $("#btnBkTraining").prop('disabled', true)
-                                    }
-                                });
-
-                                $("#btnBkTraining").click(function () {
-                                    getTrainingBookingDetails();
-                                })
-
-                            },
-                            error: function (err, result) {
-                                alert("Error in assigning dataToSave" + err.responseText);
-                            }
-                        });
-                    })
-
                 },
                 error: function (err, result) {
                     alert("Error in assigning dataToSave" + err.responseText);
                 }
             });
         })
+
+        function getTrainingBookingDetails() {
+
+            //show bootbox dialog
+            bootbox.confirm({
+                title: "Confirm Booking",
+                message: function () {
+                    $(this).load('/Booking/confirmStudentTraining');
+                },
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result)
+                        studentBook();
+                }
+            });
+        }
+
+        //confirm booking
+        function studentBook() {
+            $.ajax({
+                type: 'POST',
+                url: '/Booking/captureStudentTraining',
+                success: function (result) {
+                    window.location.href = "/Booking/ViewBookings/";
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        };
     </script>
     }

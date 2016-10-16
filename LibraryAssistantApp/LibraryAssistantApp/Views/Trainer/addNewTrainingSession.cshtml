@@ -11,47 +11,60 @@
 
 <script src="~/Scripts/spin.min.js"></script>
 
-<h2>Create Training Session</h2>
-<hr />
+<div class="row">
+    <h2>Create Training Session</h2>
+    <h4 class="bg-info shaded">Provide training session detais below:</h4>
+    <hr />
+</div>
 
 <div class="row">
     <div class="col-md-9">
         <div class="row">
-            <div id="detailsOne" class="cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Training Session Details:</b></div>
+            <div id="detailsOne" class="cursor bg-warning shaded"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Training Session Details:</b></div>
             <hr />
             <div class="row" id="toggleOne">
                 <form id="TformOne" class="col-md-12">
                     <div class="col-md-6" style="padding-top:20px">
                         <table>
                             <tr>
-                                <td><b>Cateory:</b></td>
+                                <td><b>Category:</b></td>
                                 <td style="padding-left:10px; padding-bottom:15px">
-                                    <select class="form-control" id="trainingCategory" name="category">
-                                        <option disabled selected value="">-- select a category --</option>
-                                        @foreach (var category in categories)
-                                        {
-                                            <option id="@category.Category_ID">@category.Category_Name</option>
-                                        }
-                                    </select>
+                                    <div class="input-group" style="width:100%" title="Category for new training session">                                       
+                                        <select class="form-control" id="trainingCategory" name="category" style="display:inline">
+                                            <option disabled selected value="">-- select a category --</option>
+                                            @foreach (var category in categories)
+                                            {
+                                                <option id="@category.Category_ID">@category.Category_Name</option>
+                                            }
+                                        </select>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" id="addTCategory" type="button"><span class="fa fa-plus"></span></button>
+                                        </span>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td><b>Topic:</b></td>
                                 <td style="padding-left:10px; padding-bottom:15px">
-                                    <select class="form-control" id="trainingTopic" disabled name="topic">
-                                        <option disabled selected value="">-- no category --</option>
-                                    </select>
+                                    <div class="input-group" style="width:100%" title="Topic for new training session">
+                                        <select class="form-control" id="trainingTopic" disabled name="topic">
+                                            <option disabled selected value="">-- no category --</option>
+                                        </select>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" id="addTTopic" type="button"><span class="fa fa-plus"></span></button>
+                                        </span>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td><b>Date:</b></td>
-                                <td style="padding-left:10px; padding-bottom:15px">
+                                <td style="padding-left:10px; padding-bottom:15px" title="Preferred training session date">
                                     <input type="text" id="datepicker" name="date" class="form-control" placeholder="-- select date --" />
                                 </td>
                             </tr>
                             <tr>
                                 <td><b>Duration:</b></td>
-                                <td style="padding-left:10px; padding-bottom:15px">
+                                <td style="padding-left:10px; padding-bottom:15px" title="Preferred training session duration">
                                     <select class="form-control" id="trainingDuration" name="duration">
                                         <option disabled selected value="">-- select duration --</option>
                                         @foreach (var time in trainingDurations)
@@ -63,7 +76,7 @@
                             </tr>
                             <tr>
                                 <td><b>Campus:</b></td>
-                                <td style="padding-left:10px; padding-bottom:15px">
+                                <td style="padding-left:10px; padding-bottom:15px" title="Campus to host training session">
                                     <select class="form-control" id="trainingCampus" name="campus">
                                         <option disabled selected value="">-- select campus --</option>
                                         @foreach (var campus in campuses)
@@ -76,7 +89,7 @@
                             <tr>
                                 <td></td>
                                 <td style="padding-left:10px">
-                                    <button class="btn btn-default" id="trainingProOne">Proceed</button>
+                                    <button class="btn btn-primary" id="trainingProOne" title="Proceed to select a venue">Proceed</button>
                                 </td>
                             </tr>
                         </table>
@@ -111,14 +124,10 @@
 
     </div>
 
-    <div id="loading" style="width:100%; height:100%"></div>
-
-    <div class="col-md-3">
+        <div class="col-md-3">
+        <h4 class="bg-success shaded">Booking Details:</h4>
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="form-group text-center" style="padding-bottom:5px; border-bottom:solid thin lightgrey">
-                    <label class="control-label">Booking Details</label>
-                </div>
                 <div class="form-group">
                     <table id="bookingDetails">
                         <tr>
@@ -129,6 +138,10 @@
             </div>
         </div>
     </div>
+
+    <div id="loading" style="width:100%; height:100%"></div>
+
+
 </div>
 
 <!-- Modal -->
@@ -310,6 +323,24 @@
             event.preventDefault();
             // actual logic, e.g. validate the form
         });
+
+        //add category
+        $("#addTCategory").click(function () {
+            var target = "/Trainer/addTrainingCategory";
+
+            $("#myModal .modal-content").load(target, function () {
+                $("#myModal").modal("show");
+            });
+        })
+
+        //add topic
+        $("#addTTopic").click(function () {
+            var target = "/Trainer/addTrainingTopic";
+
+            $("#myModal .modal-content").load(target, function () {
+                $("#myModal").modal("show");
+            });
+        })
 
         //laoding div
         var $loading = $('#loading').hide();

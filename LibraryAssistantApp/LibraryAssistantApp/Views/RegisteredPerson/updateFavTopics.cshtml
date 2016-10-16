@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Update Favourite Topics";
-    Layout = (string)Session["layout"];
     var categories = (IEnumerable<Category>)Session["categories"];
     var availTopics = (IEnumerable<Topic>)Session["availTopics"];
     var favTopics = (IEnumerable<Person_Topic>)Session["favTopics"];
@@ -34,7 +33,7 @@
                             <option value="@topic.Topic_Seq">@topic.Topic_Name</option>
                         }
                     </select>
-                    <input type="button" value="Add Topic" class="btn btn-default" style="margin-top:5px" id="btnAddFavTop"/>
+                    <input type="button" value="Add Topic" class="btn btn-primary" style="margin-top:5px" id="btnAddFavTop" disabled/>
                 </div>
                 <div class="col-md-6">
                     <hr />
@@ -45,11 +44,11 @@
                             <option value="@topic.Topic_Seq">@topic.Topic.Topic_Name</option>
                         }
                     </select>
-                    <input type="button" value="Remove Topic" class="btn btn-default" style="margin-top:5px" id="btnRemFavTop"/>
+                    <input type="button" value="Remove Topic" class="btn btn-primary" style="margin-top:5px" id="btnRemFavTop" disabled/>
                 </div>
             </div>
         </div>
-        @Html.ActionLink("Back", "Details", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-default" })
+        @Html.ActionLink("Back", "Details", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-primary" })
     </div>
 </div>
 
@@ -89,13 +88,14 @@
             var id = $("#availTopicsSelect").children(":selected").val();
             var text = $("#availTopicsSelect").children(":selected").text();
             $.ajax({
-                type: 'GET',
                 url: '/RegisteredPerson/addTopic',
+                type: 'post',
                 data: { id: id },
                 success: function (result) {
                     //remove selected topic from available list and add it to the favourites list
                     $("#availTopicsSelect option[value='" + id + "']").remove();
                     $("#favouriteTopicSelect").append($("<option />").val(id).text(text));
+                    $("#btnAddFavTop").prop('disabled', true)
                 },
                 error: function (err, result) {
                     alert("No Topic Selected" + err.responseText);
@@ -107,18 +107,27 @@
             var id = $("#favouriteTopicSelect").children(":selected").val();
             var text = $("#favouriteTopicSelect").children(":selected").text();
             $.ajax({
-                type: 'GET',
                 url: '/RegisteredPerson/removeTopic',
+                type: 'post',
                 data: { id: id },
                 success: function (result) {
                     //remove selected topic from available list and add it to the favourites list
                     $("#favouriteTopicSelect option[value='" + id + "']").remove();
                     $("#availTopicsSelect").append($("<option />").val(id).text(text));
+                    $("#btnRemFavTop").prop('disabled', true);
                 },
                 error: function (err, result) {
                     alert("No Topic Selected");
                 }
             });
+        })
+
+        $("#availTopicsSelect").change(function () {
+            $("#btnAddFavTop").prop('disabled', false)
+        })
+
+        $("#favouriteTopicSelect").change(function () {
+            $("#btnRemFavTop").prop('disabled', false)
         })
     })
 </script>
