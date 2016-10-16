@@ -5,14 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Common Problem Types</h2>
-
-<p>
-    @Html.ActionLink("Create New", "addProblemType")
-</p>
-
+<div>
+    <h2>Common Problem Types</h2>
+    @Html.ActionLink("Create New", "addProblemType", null, new { @class = "btn btn-primary exp-fixed", @title = "Create new problem type." })
+</div>
+<hr />
 <div class="row">
     <div class="col-md-12">
+        <h4 class="bg-info shaded">Existing common problem types:</h4>
         <div class="panel panel-default">
             <div class="panel-body">
                 <table class="table table-bordered" id="typeTable">

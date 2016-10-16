@@ -145,17 +145,10 @@
         </div>
     </div>
     <div class="btn-group">
-        <input data_toggle="tooltip" title="View a preview of the selected questionnaire." type="submit" value="Preview Questionnaire" class="btn btn-primary" onclick="location.href='@Url.Action("Preview","Questionnaire", new { Model.Name})'" />
+        <input title="View the full questionnaire to see what it will look like to those responding to it" type="submit" value="Preview Questionnaire" class="btn btn-primary" onclick="location.href='@Url.Action("Preview","Questionnaire", new { Model.Name})'" />
     </div>
 </div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>

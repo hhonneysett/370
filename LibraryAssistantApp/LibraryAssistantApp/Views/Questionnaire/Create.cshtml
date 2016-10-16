@@ -35,7 +35,7 @@
                 <span class="input-group-btn">
                     <input type="button" value="Add Topic" class="btn btn-primary" onclick="location.href='@Url.Action("Create","Question_Topic")'" />
                 </span>*@
-                @Html.DropDownList("Topic", null, "Select a topic", htmlAttributes: new { @class = "form-control", id = "Topic" })
+                @Html.DropDownList("Topic", null, "Select a topic", htmlAttributes: new { @class = "form-control", id = "Topic", @title = "Select a topic for the new questionnaire." })
                 <label class="text-danger" id="Topic_validation"></label>
                 @*</div>*@
             </div>
@@ -43,28 +43,28 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "Name", @value = ViewBag.Name } })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "Name", @value = ViewBag.Name, @title = "Enter a name for the new questionnaire." } })
                 <label class="text-danger" id="Name_Validation"></label><font color="red">@ViewBag.DuplicateError</font>
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "Description", @value = ViewBag.Description } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "Description", @value = ViewBag.Description, @title = "Add a description for the new questionnaire." } })
                 <label class="text-danger" id="Description_Validation"></label>
             </div>
         </div>
         <div class="form-group">
             @Html.Label("Active Date", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Active_From, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_From", @readonly = "true", @value = ViewBag.Active_From, @data_toggle = "tooltip", @title = "Select a date upon which this new questionnaire will be active from." } })
+                @Html.EditorFor(model => model.Active_From, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_From", @readonly = "true", @value = ViewBag.Active_From, @title = "Select a date upon which this new questionnaire will be active from." } })
                 <label class="text-danger" id="Active_From_Validation"></label>
             </div>
         </div>
         <div class="form-group">
             @Html.Label("Expiry Date", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Active_To, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_To", @readonly = "true", @value = ViewBag.Active_To, @data_toggle = "tooltip", @title = "Select a date upon which this questionnaire will expire on" } })
+                @Html.EditorFor(model => model.Active_To, new { htmlAttributes = new { @class = "datepick form-control", id = "Active_To", @readonly = "true", @value = ViewBag.Active_To, @title = "Select a date upon which this questionnaire will expire on" } })
                 <label class="text-danger" id="Active_To_Validation"></label>
             </div>
         </div>
@@ -77,8 +77,8 @@
                         new SelectListItem{ Text="Venue", Value = "Venue" },
                         new SelectListItem{ Text="Employee", Value = "Employee" },
                         new SelectListItem{ Text="Training Session", Value = "Training Session" }
-                     }, "Select an assessment type", htmlAttributes: new { onchange = "CheckType()", @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
-                <label class="text-danger" id="Assessment_Type_Validation"></label>
+                     }, "Select an assessment type", htmlAttributes: new { onchange = "CheckType()", @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type, @title="What type of assessment will this questionnaire be used for." })
+                <label  class="text-danger" id="Assessment_Type_Validation"></label>
             </div>
         </div>
     </div>
@@ -94,11 +94,6 @@
 </div>
 
 
-<script type="text/javascript">
-        $('.datepick').each(function () {
-            $(this).datepicker({ minDate: 0 });
-        });
-</script>
 
 <script>
     function validateInput() {
@@ -234,6 +229,12 @@
   }
 </script>
 
+<script>
+        $('.datepick').each(function () {
+            $(this).datepicker({ minDate: 0 });
+        });
+</script>
+
 <style>
     .isa_info, .isa_success, .isa_warning, .isa_error {
         margin: 10px 0px;
@@ -270,8 +271,3 @@
         }
 </style>
 
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>

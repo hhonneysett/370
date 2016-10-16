@@ -2,7 +2,7 @@
 @model IEnumerable<LibraryAssistantApp.Models.Venue>
 
 <div id="venues">
-    <div id="venueDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingFloorSummary">Select Venue:</b></div>
+    <div id="venueDetails" class="bg-info shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingFloorSummary">Select Venue:</b></div>
     <hr />
     <div class="row" id="toggleVenue">
 
@@ -24,7 +24,7 @@
                         <tbody>
                             @foreach (Venue venue in Model)
                             {
-                                <tr id="@venue.Venue_ID">
+                                <tr id="@venue.Venue_ID" title="Select venue.">
                                     <td>
                                         @venue.Venue_Name
                                     </td>
@@ -61,7 +61,7 @@
 
         <div class="col-md-3 col-md-offset-1">
             <div id="search" style="padding-bottom:10px">
-                <input id="searchVenue" type="text" placeholder="Search Venues" /><button id="btnSearchVenues">
+                <input id="searchVenue" type="text" placeholder="Search Venues" title="Enter search criteria." /><button id="btnSearchVenues" title="Filter campus by search criteria.">
                     <span class="fa fa-search" />
                 </button>
             </div>
@@ -71,15 +71,15 @@
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateVenue">Update Venue</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateVenue" title="Update seleceted venue.">Update Venue</button>
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteVenue">Delete Venue</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteVenue" title="Delete seleceted venue.">Delete Venue</button>
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" id="btnAddCharacteristicVenue">Add Characteristic</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" id="btnAddCharacteristicVenue" title="Add a venue characteristic.">Add Characteristic</button>
             </div>
         </div>
 

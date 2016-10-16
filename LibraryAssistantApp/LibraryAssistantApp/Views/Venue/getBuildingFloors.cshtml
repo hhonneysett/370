@@ -2,7 +2,7 @@
 @model IEnumerable<LibraryAssistantApp.Models.Building_Floor>
 
 <div id="buildingFloors">
-    <div id="buildingFloorDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingFloorSummary">Select Building Floor:</b></div>
+    <div id="buildingFloorDetails" class="bg-info shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingFloorSummary">Select Building Floor:</b></div>
     <hr />
     <div class="row" id="toggleBuildingFloors">
 
@@ -18,7 +18,7 @@
                         <tbody>
                             @foreach (Building_Floor building_floor in Model)
                             {
-                                <tr id="@building_floor.Building_Floor_ID">
+                                <tr id="@building_floor.Building_Floor_ID" title="Select floor.">
                                     <td>
                                         @building_floor.Floor_Name
                                     </td>
@@ -50,7 +50,7 @@
 
         <div class="col-md-3 col-md-offset-1">
             <div id="search" style="padding-bottom:10px">
-                <input id="searchBuildingFloor" type="text" placeholder="Search Building Floors" /><button id="btnSearchBuildingFloors">
+                <input id="searchBuildingFloor" type="text" placeholder="Search Building Floors" title="Enter search criteria." /><button id="btnSearchBuildingFloors" title="Filter campus by search criteria.">
                     <span class="fa fa-search" />
                 </button>
             </div>
@@ -60,15 +60,15 @@
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateBuildingFloor">Update Building Floor</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateBuildingFloor" title="Update seleceted floor.">Update Building Floor</button>
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteBuildingFloor">Delete Building Floor</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteBuildingFloor" title="Delete seleceted floor.">Delete Building Floor</button>
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnViewVenues">View Venues</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnViewVenues" title="View buildings related to the selected floor.">View Venues</button>
             </div>
         </div>
 

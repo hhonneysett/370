@@ -49,10 +49,10 @@
             </table>
             <div class="panel-body">
                 <div class="btn-group">
-                    <input type="button" value="Update Questions" class="btn btn-primary" onclick="Go();" />
+                    <input title="Proceed to update the questions associated with this topic" type="button" value="Update Questions" class="btn btn-primary" onclick="Go();" />
                 </div>
                 <div class="btn-group">
-                    <input type="button" value="Finished" class="btn btn-primary" onclick="location.href='@Url.Action("FinishEdit","Question_Topic", new {ViewBag.Topic })'" />
+                    <input title="Finish updating the current questionnaire topic" type="button" value="Finished" class="btn btn-primary" onclick="location.href='@Url.Action("FinishEdit","Question_Topic", new {ViewBag.Topic })'" />
                 </div>
             </div>
         </div>

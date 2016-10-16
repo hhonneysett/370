@@ -1,11 +1,12 @@
 ﻿@model LibraryAssistantApp.Models.Common_Problem_Type
 
 @{
-    ViewBag.Title = "editProblemType";
+    ViewBag.Title = "Edit Problem Type";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Edit Problem Type</h2>
+<h4 class="bg-info shaded">Provide updated problem type details below:</h4>
 
 @using (Html.BeginForm())
 {
@@ -19,7 +20,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Common_Problem_Type_Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Common_Problem_Type_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Common_Problem_Type_Name, new { htmlAttributes = new { @class = "form-control", @title = "Enter problem type name." } })
                 @Html.ValidationMessageFor(model => model.Common_Problem_Type_Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -27,7 +28,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @title = "Enter problem type description." } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -41,5 +42,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "viewProblemTypes")
 </div>

@@ -7,11 +7,12 @@
 
 <h2>Delete Characteristic</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h4 class="bg-info shaded">Are you sure you want to delete this characteristic?</h4>
 <div>
     <hr />
     <div class="row">
         <div class="col-md-6">
+            <h5 class="bg-warning shaded">Characteristic details:</h5>
             <div class="panel panel-default">
                 <table class="table">
                     <tr>
@@ -31,8 +32,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-primary" /> |
-            @Html.ActionLink("Back to List", "viewCharacteristics")
+            <input type="submit" value="Delete" class="btn btn-primary" /> 
+            @Html.ActionLink("Back to List", "viewCharacteristics", null, new { @class = "btn btn-primary"})
         </div>
     }
 </div>

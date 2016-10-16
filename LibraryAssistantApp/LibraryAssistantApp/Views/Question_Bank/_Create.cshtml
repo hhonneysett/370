@@ -15,7 +15,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Style_Type_ID, "Style Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Style_Type_ID", null, "Select a style type", htmlAttributes: new { @class = "form-control", @onchange = "CallChangefunc(this.value)", id = "Style_Type_ID" })
+                @Html.DropDownList("Style_Type_ID", null, "Select a style type", htmlAttributes: new { @class = "form-control", @onchange = "CallChangefunc(this.value)", id = "Style_Type_ID", title = "Select the style in which the question will be displayed" })
                 @*@Html.DropDownList("Style_Type_ID", new SelectList(ViewBag.Style_Type_ID), "Select a style type", new { onchange = "form.submit" })*@
                 <label class="text-danger" id="Error_Style_Type_ID"></label>
                 @*@Html.ValidationMessageFor(model => model.Style_Type_ID, "", new { @class = "text-danger" , id = "Error_Style_Type_ID" })*@
@@ -39,136 +39,317 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Style_Type_ID, "Preview", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @*To display the image*@
-                @if (ViewBag.Image != null)
-                {
-                    var base64 = Convert.ToBase64String(ViewBag.Image);
-                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                    <img src='@imgSrc' style="max-width:400px; max-height:400px; border:1px solid black;" />
-                }
-                else
-                {
-                    <p>No style selected.</p>
-                }
-            </div>
-        </div>
-        <ul style="padding-bottom:15px; padding-top:15px">
-            <li>
-                <p>If the style 'Free Text' has been selected, click the 'Save Question' button.</p>
-            </li>
-            <li>
-                <p>If any other style has been selected, click the 'Add Answers' to proceed with adding possible answers.</p>
-            </li>
-        </ul>
-        @if (ViewBag.NewTopic == "YES")
-        {
-            if (ViewBag.Style_Type_IDName == "Free Text")
+           
+
+            @if (ViewBag.Style_Type_IDName == "Free Text")
             {
 
-                <div class="form-group">
-                    <div class="col-md-10 col-md-offset-2">
-                        <div class="btn-group">
-                            <input type="submit" value="Save Question" class="btn btn-primary" onclick="EnableDropDown(); validateInput()" />
+                <div class="col-md-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Please motivate your answer
                         </div>
-                        <div class="btn-group">
-                            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Create_Back_From_Create_Question", "Question_Topic", new {ViewBag.Topic_Name, ViewBag.Topic_Des })'" />
+                        <div class="panel-body">
+
+
+                            <textarea id="Question_TextArea" maxlength="300" class="form-control" rows="3"></textarea>
+
                         </div>
                     </div>
                 </div>
             }
-            else
+            else if (ViewBag.Style_Type_IDName == "Multiple Select list")
             {
-                <div class="form-group">
-                    <div class="col-md-10 col-md-offset-2">
-                        <div class="btn-group">
-                            <input type="submit" value="Add Answers" class="btn btn-primary" onclick="EnableDropDown(); validateInput()" />
+                <div class="col-md-10">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Which items would you take to the beach?
                         </div>
-                        <div class="btn-group">
-                            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Create_Back_From_Create_Question", "Question_Topic", new {ViewBag.Topic_Name, ViewBag.Topic_Des })'" />
+                        <div class="panel-body">
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">Blanket
+                                </label>
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">Umberlla
+                                </label>
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">Costume
+                                </label>
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">Sun glasses
+                                </label>
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">Beach ball
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             }
-        }
-        else
-        {
-            if (ViewBag.Style_Type_IDName == "Free Text")
+            else if (ViewBag.Style_Type_IDName == "Range")
             {
+                <div class="col-md-10">
 
-                <div class="form-group">
-                    <div class="col-md-10 col-md-offset-2">
-                        <input data-toggle="tooltip" data-placement="right" title="Finish creating the new question." type="submit" value="Save Question" class="btn btn-primary" onclick="EnableDropDown(); validateInput()" />
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            What is your mood like today?
+                        </div>
+                        <div class="panel-body">
+
+                            <div id="checkboxes">
+
+                                <span style="padding-right: 1em">
+                                    <div class="checkboxgroup">
+                                        <label for="my_radio_button_id"></label>Amazing
+                                        <input type="radio" name="radio" />
+                                    </div>
+                                </span>
+
+                                <span style="padding-right: 1em">
+                                    <div class="checkboxgroup">
+                                        <label for="my_radio_button_id"></label>Good
+                                        <input type="radio" name="radio"/>
+                                    </div>
+                                </span>
+
+                                <span style="padding-right: 1em">
+                                    <div class="checkboxgroup">
+                                        <label for="my_radio_button_id"></label>Placid
+                                        <input type="radio" name="radio"/>
+                                    </div>
+                                </span>
+
+                                <span style="padding-right: 1em">
+                                    <div class="checkboxgroup">
+                                        <label for="my_radio_button_id"></label>Bad
+                                        <input type="radio" name="radio"/>
+                                    </div>
+                                </span>
+
+                                <span style="padding-right: 1em">
+                                    <div class="checkboxgroup">
+                                        <label for="my_radio_button_id"></label>Awful
+                                        <input type="radio" name="radio"/>
+                                    </div>
+                                </span>
+
+                            </div>
+                        </div>
                     </div>
-                    @Html.ActionLink("Back to List", "Index")
                 </div>
-            }
-            else
-            {
-                <div class="form-group">
-                    <div class="col-md-10 col-md-offset-2">
-                        <input data-toggle="tooltip" data-placement="right" title="Add possible answers to the question." type="submit" value="Add Answers" class="btn btn-primary" onclick="EnableDropDown(); validateInput()" />
-                    </div>
-                    @Html.ActionLink("Back to List", "Index")
-                </div>
-            }
-        }
-    </div>
-</div>
-
-<script>
-    jQuery(document).ready(function ($) {
-
-        if (window.history && window.history.pushState) {
-
-            $(window).on('popstate', function () {
-                var hashLocation = location.hash;
-                var hashSplit = hashLocation.split("#!/");
-                var hashName = hashSplit[1];
-
-                if (hashName !== '') {
-                    var hash = window.location.hash;
-                    if (hash === '') {
-                        //Your code
-                       
-                        var Topic_Name = document.getElementById("Topic_Name").value;
-                        var Topic_Des = document.getElementById("Topic_Des").value;
-                        var NewTopic = document.getElementById("NewTopic").value;
-
-                        if (NewTopic == "YES") {
-                            window.location.href = "/Question_Topic/Create_Back_From_Create_Question?Topic_Name=" + Topic_Name + "&Topic_Des=" + Topic_Des;
-                        }
-                        else {
-                            window.location.href = "/Question_Bank/Index?";
-                        }
-
-                      
-
+                <style>
+                    .checkboxgroup {
+                        display: inline-block;
+                        text-align: center;
                     }
+
+                        .checkboxgroup label {
+                            display: block;
+                        }
+                </style>
+
+            }
+            else if (ViewBag.Style_Type_IDName == "True or False")
+            {
+                <div class="col-md-10">
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            What is your gender?
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="radio" name="radio">Male
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="radio" name="radio">Female
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else if (ViewBag.Style_Type_IDName == "Single Select list")
+            {
+                <div class="col-md-10">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            What is your favourite colour?
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="radio" id="PossibleAnswer">Blue
+                                </label>
+                            </div>
+
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="radio" id="PossibleAnswer">Green
+                                </label>
+                            </div>
+
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="radio" id="PossibleAnswer">Yellow
+                                </label>
+                            </div>
+
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="radio" id="PossibleAnswer">Red
+                                </label>
+                            </div>
+
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="radio" id="PossibleAnswer">Pink
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+
+          
+        </div>
+
+                    <ul style="padding-bottom:15px; padding-top:15px">
+                        <li>
+                            <p>If the style 'Free Text' has been selected, click the 'Save Question' button.</p>
+                        </li>
+                        <li>
+                            <p>If any other style has been selected, click the 'Add Answers' to proceed with adding possible answers.</p>
+                        </li>
+                    </ul>
+                    @if (ViewBag.NewTopic == "YES")
+                    {
+                    if (ViewBag.Style_Type_IDName == "Free Text")
+                    {
+
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <div class="btn-group">
+                                        <input title="Submit the new question" type="submit" value="Save Question" class="btn btn-primary" onclick="EnableDropDown(); validateInput()" />
+                                    </div>
+                                    <div class="btn-group">
+                                        <input title="Go back to the 'create topic' screen" type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Create_Back_From_Create_Question", "Question_Topic", new {ViewBag.Topic_Name, ViewBag.Topic_Des, ViewBag.TopicName })'" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <div class="btn-group">
+                                        <input title="Save the question and proceed to assigning possible answers to the question." type="submit" value="Add Answers" class="btn btn-primary" onclick="EnableDropDown(); validateInput()" />
+                                    </div>
+                                    <div class="btn-group">
+                                        <input title="Go back to the 'create topic' screen" type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Create_Back_From_Create_Question", "Question_Topic", new {ViewBag.Topic_Name, ViewBag.Topic_Des, ViewBag.TopicName })'" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        if (ViewBag.Style_Type_IDName == "Free Text")
+                        {
+
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <input  title="Finish creating the new question." type="submit" value="Save Question" class="btn btn-primary" onclick="EnableDropDown(); validateInput()" />
+                                </div>
+                                @Html.ActionLink("Back to List", "Index")
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <input  title="Add possible answers to the question." type="submit" value="Add Answers" class="btn btn-primary" onclick="EnableDropDown(); validateInput()" />
+                                </div>
+                                @Html.ActionLink("Back to List", "Index")
+                            </div>
+                        }
+                    }
+                </div>
+        </div>
+
+            <script>
+                jQuery(document).ready(function ($) {
+
+                    if (window.history && window.history.pushState) {
+
+                        $(window).on('popstate', function () {
+                            var hashLocation = location.hash;
+                            var hashSplit = hashLocation.split("#!/");
+                            var hashName = hashSplit[1];
+
+                            if (hashName !== '') {
+                                var hash = window.location.hash;
+                                if (hash === '') {
+                                    //Your code
+
+                                    var Topic_Name = document.getElementById("Topic_Name").value;
+                                    var Topic_Des = document.getElementById("Topic_Des").value;
+                                    var NewTopic = document.getElementById("NewTopic").value;
+
+                                    if (NewTopic == "YES") {
+                                        window.location.href = "/Question_Topic/Create_Back_From_Create_Question?Topic_Name=" + Topic_Name + "&Topic_Des=" + Topic_Des;
+                                    }
+                                    else {
+                                        window.location.href = "/Question_Bank/Index?";
+                                    }
+
+
+
+                                }
+                            }
+                        });
+
+                        window.history.pushState('forward', null, './#forward');
+                    }
+
+                });
+
+            </script>
+
+            <script>
+                function CallChangefunc(val) {
+                    var Question_Text = document.getElementById("Question_TextBox").value;
+                    var Topic_Seq = document.getElementById("Topic_Dropdownlist").value;
+                    var NewTopic = document.getElementById("NewTopic").value;
+                    var Topic_Name = document.getElementById("Topic_Name").value;
+                    var Topic_Des = document.getElementById("Topic_Des").value;
+                    window.location.href = "/Question_Bank/GetDescription?Style_Type_ID=" + val + "&Question_Text=" + Question_Text + "&Topic_Seq=" + Topic_Seq + "&NewTopic=" + NewTopic + "&Topic_Name=" + Topic_Name + "&Topic_Des=" + Topic_Des;
                 }
-            });
-
-            window.history.pushState('forward', null, './#forward');
-        }
-
-    });
-
-</script>
-
-<script>
-    function CallChangefunc(val) {
-        var Question_Text = document.getElementById("Question_TextBox").value;
-        var Topic_Seq = document.getElementById("Topic_Dropdownlist").value;
-        var NewTopic = document.getElementById("NewTopic").value;
-        var Topic_Name = document.getElementById("Topic_Name").value;
-        var Topic_Des = document.getElementById("Topic_Des").value;
-        window.location.href = "/Question_Bank/GetDescription?Style_Type_ID=" + val + "&Question_Text=" + Question_Text + "&Topic_Seq=" + Topic_Seq + "&NewTopic=" + NewTopic + "&Topic_Name=" + Topic_Name + "&Topic_Des=" + Topic_Des;
-    }
-</script>
+            </script>
 
 
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
