@@ -333,6 +333,9 @@ namespace LibraryAssistantApp.Controllers
                 //Email end
 
                 db.SaveChanges();
+
+                global.addAudit("Employees", "Employees: Create Employee", "Create", User.Identity.Name);
+
                 TempData["Msg"] = "New employee created successfully.";
                 TempData["Show"] = true;
                 TempData["color"] = "alert-success";
@@ -533,6 +536,7 @@ namespace LibraryAssistantApp.Controllers
             rp.Person_Password = hashed;
             db.Entry(rp).State = EntityState.Modified;
             db.SaveChanges();
+            global.addAudit("Employees", "Employees: Reset Password", "Update", User.Identity.Name);
             //Email start
             MailMessage message = new MailMessage();
             SmtpClient client = new SmtpClient();
@@ -603,6 +607,7 @@ namespace LibraryAssistantApp.Controllers
                     }
                 }
                 db.SaveChanges();
+                global.addAudit("Employees", "Employees: Update Employee", "Update", User.Identity.Name);
             }
             TempData["Check2"] = false;
             ViewBag.Person_Type = new SelectList(db.Person_Type, "Person_Type1", "Person_Type1", 2);
@@ -684,6 +689,8 @@ namespace LibraryAssistantApp.Controllers
             }
             db.Registered_Person.Remove(deleteEmp);
             db.SaveChanges();
+
+            global.addAudit("Employees", "Employees: Delete Employee", "Delete", User.Identity.Name);
 
             return RedirectToAction ("Index");
         }

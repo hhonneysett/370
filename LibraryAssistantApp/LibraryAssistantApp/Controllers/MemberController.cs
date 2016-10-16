@@ -147,6 +147,7 @@ namespace LibraryAssistantApp.Controllers
                 //Email end
 
                 db.SaveChanges();
+                global.addAudit("Members", "Members: Create Member", "Create", User.Identity.Name);
                 TempData["Msg"] = "New member created successfully.";
                 TempData["Show"] = true;
                 TempData["color"] = "alert-success";
@@ -187,6 +188,7 @@ namespace LibraryAssistantApp.Controllers
             rp.Person_Password = hashed;
             db.Entry(rp).State = EntityState.Modified;
             db.SaveChanges();
+            global.addAudit("Members", "Members: Reset Password", "Update", User.Identity.Name);
             //Email start
             MailMessage message = new MailMessage();
             SmtpClient client = new SmtpClient();
@@ -222,6 +224,7 @@ namespace LibraryAssistantApp.Controllers
                 rp.Person_Type = "Student";
                 db.Entry(rp).State = EntityState.Modified;
                 db.SaveChanges();
+                global.addAudit("Members", "Members: Update Member", "Update", User.Identity.Name);
                 TempData["Msg"] = "Member updated successfully.";
                 TempData["Show"] = true;
                 TempData["color"] = "alert-success";
@@ -297,7 +300,7 @@ namespace LibraryAssistantApp.Controllers
             }
             db.Registered_Person.Remove(deleteMem);
             db.SaveChanges();
-
+            global.addAudit("Members", "Members: Delete Member", "Delete", User.Identity.Name);
             return RedirectToAction("Index");
         }
     }
