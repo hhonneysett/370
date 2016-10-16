@@ -1,0 +1,125 @@
+﻿@model LibraryAssistantApp.Models.Question_Topic
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Delete Questionnaire Topic</h3>
+
+@{
+    var alertcolor = "alert-warning";
+}
+
+@if (ViewBag.Error != null)
+{
+    alertcolor = "alert-danger";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="alert @alertcolor" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <span class="sr-only">Error:</span>
+            @if (ViewBag.Error != null)
+            {
+                @ViewBag.Error
+            }
+            else
+            {
+                @:Are you sure you want to delete this questionnaire topic?
+        }
+        </div>
+    </div>
+</div>
+
+<div class="form-horizontal" style="padding-bottom:35px">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label>
+                            Topic Details:
+                        </label>
+                    </div>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.Topic_Name, htmlAttributes: new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Topic_Name)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Description)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-md-offset-1">
+                <div class="form-actions no-color">
+                    @if (@ViewBag.Error != null)
+                {
+                        <input disabled type="submit" value="Delete" class="btn btn-primary" />
+                    }
+                    else
+                    {
+                        <p style="color:red">All associated questions will be deleted.</p>
+                        <input type="submit" value="Delete" class="btn btn-primary" />
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@Html.ActionLink("Back to List", "Index")
+
+<style>
+    .isa_info, .isa_success, .isa_warning, .isa_error {
+        margin: 10px 0px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .isa_info {
+        color: #00529B;
+        background-color: #BDE5F8;
+        text-align: center;
+    }
+
+    .isa_success {
+        color: #4F8A10;
+        background-color: #DFF2BF;
+    }
+
+    .isa_warning {
+        color: #9F6000;
+        background-color: #FEEFB3;
+        text-align: center;
+    }
+
+    .isa_error {
+        color: #D8000C;
+        background-color: #FFBABA;
+        text-align: center;
+    }
+
+        .isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+            margin: 10px 22px;
+            font-size: 2em;
+            vertical-align: middle;
+        }
+</style>

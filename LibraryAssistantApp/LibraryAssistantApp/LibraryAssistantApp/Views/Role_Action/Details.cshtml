@@ -1,0 +1,66 @@
+﻿@model LibraryAssistantApp.Models.Role_Action
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Role_Action</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Create_Ind)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Create_Ind)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Read_Ind)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Read_Ind)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Update_Ind)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Update_Ind)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Delete_Ind)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Delete_Ind)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Action.Action_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Action.Action_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Role.Role_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Role.Role_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="text-center">
+    <h3>Welcome to UP Library Assistant!</h3>
+    <hr />
+</div>
+
+<ul class="bxslider" id="picSlider">
+</ul>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Home/getPictures',
+            async: false,
+            success: function (result) {
+
+                //add a new picture to the html
+                result.forEach(function (entry) {
+                    $("#picSlider").append('<li><img src="' + entry + '" /></li>')
+                });
+
+            }
+        });
+
+        $('.bxslider').bxSlider({
+            mode: 'fade',
+            captions: true,
+            pagerCustom: '#bx-pager',
+            adaptiveHeight: true,
+            slideWidth: 600
+        });
+    });
+
+</script>
+

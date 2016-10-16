@@ -1,0 +1,128 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.Question_Topic>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+@if (ViewBag.DeleteComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.DeleteCompleteMessage</div>
+}
+@if (ViewBag.CreateComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.CreateCompleteMessage</div>
+}
+@if (ViewBag.EditComplete == "Yes")
+{
+    <div style="text-align:center" class="isa_success">@ViewBag.EditCompleteMessage</div>
+}
+
+<h3>Questionnaire Topics</h3>
+
+<h4 class="bg-info-1 shaded">Topic Details</h4>
+<div class="panel panel-default">
+    @*<div class="panel-heading">
+        All Topics
+    </div>*@
+    <div class="panel-body">
+        <table id="tbl-quest-2" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Topic_Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                    <tr id="@item.Topic_Seq">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Topic_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div>
+
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div style="padding-top:15px">
+            <div class="btn-group">
+                @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit" })
+            </div>
+            <div class="btn-group">
+                @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete" })
+            </div>
+            <div class="btn-group">
+                <button id="Select_Button" type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Create")'">Create New</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .isa_info, .isa_success, .isa_warning, .isa_error {
+        margin: 10px 0px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .isa_info {
+        color: #00529B;
+        background-color: #BDE5F8;
+        text-align: center;
+    }
+
+    .isa_success {
+        color: #4F8A10;
+        background-color: #DFF2BF;
+    }
+
+    .isa_warning {
+        color: #9F6000;
+        background-color: #FEEFB3;
+        text-align: center;
+    }
+
+    .isa_error {
+        color: #D8000C;
+        background-color: #FFBABA;
+        text-align: center;
+    }
+
+        .isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+            margin: 10px 22px;
+            font-size: 2em;
+            vertical-align: middle;
+        }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#tbl-quest-2').DataTable();
+        $('#tbl-quest-2 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selectedrow')) {
+                $(this).removeClass('selectedrow');
+            }
+            else {
+                table.$('tr.selectedrow').removeClass('selectedrow');
+                $(this).addClass('selectedrow');
+            }
+            $('.btn-edit').attr('href', '/Question_Topic/Edit/' + $(this).attr('id'));
+            $('.btn-delete').attr('href', '/Question_Topic/Delete/' + $(this).attr('id'));
+        });
+    });
+</script>

@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "View Bookings";
+}
+
+<h2>View Bookings</h2>
+<hr />
+<h4 class="bg-info shaded">Bookings Calendar View:</h4>
+
+<p class="text-muted"><b>Note:</b> Click on a booking to view details and further options</p>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:55em;'>
+            <div class="dhx_cal_navline">
+                <div class="dhx_cal_prev_button">&nbsp;</div>
+                <div class="dhx_cal_next_button">&nbsp;</div>
+                <div class="dhx_cal_today_button"></div>
+                <div class="dhx_cal_date"></div>
+                <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+                <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+                <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+                <div class="dhx_cal_tab" name="agenda_tab" style="right:280px;"></div>
+            </div>
+            <div class="dhx_cal_header"></div>
+            <div class="dhx_cal_data"></div>
+        </div>
+    </div>
+</div>
+
+<div id="bookingDetailsForm"></div>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/getBookings',
+                success: function (result) {
+                    //configuration for the scheduler
+                    scheduler.config.resize_month_events = false;
+                    scheduler.config.first_hour = 8;
+                    scheduler.config.last_hour = 17;
+                    scheduler.config.start_on_monday = true;
+                    scheduler.locale.labels.agenda_tab = "Agenda";
+                    scheduler.config.readonly = true;
+
+
+                    //initialize the scheduler
+                    scheduler.init('scheduler_here', new Date(), "month");
+
+                    //create an events json object
+                    var events = [];
+
+                    //go through list of events and add each event to the json events object
+                    result.forEach(function (entry) {
+                        var event = {
+                            id : entry.id,
+                            text : entry.text,
+                            start_date : moment(entry.start_date).format('MM[/]DD[/]YYYY h:mm:ss'),
+                            end_date: moment(entry.end_date).format('MM[/]DD[/]YYYY h:mm:ss'),
+                        }
+
+                        //adds the event to the events object
+                        events.push(event);
+                    });
+
+                    //passes the events to the scheduler
+                    scheduler.parse(events, "json");//takes the name and format of the data source
+
+                    scheduler.attachEvent("onClick", function (id, e) {
+                        //any custom logic here
+
+                        bootbox.dialog({
+                            title: "Booking Details",
+                            message: function () {
+                                $(this).load('/Booking/getBookingDetails/?id=' + id);
+                            },
+                            buttons: {
+                                cancelbooking: {
+                                    label: '<i class="fa fa-times"></i> Cancel Booking',
+                                    callback: function () {
+                                        window.location.href = '@Url.Action("cancelBooking", "Booking")';
+                                    }
+                                },
+                                updatebooking: {
+                                    label: '<i class="fa fa-pencil"></i> Update Booking',
+                                    callback: function () {
+                                        location = "/Booking/updateBookingDetails";
+                                    }
+                                }
+                            },
+                            callback: function (result) {
+                                if (!result)
+                                {
+                                    return;
+                                }
+                            }
+                        });
+
+                        @*$("#bookingDetailsForm").dialog({
+                            autoOpen: true,
+                            position: { my: "center", at: "top+350", of: window },
+                            width: 1000,
+                            resizable: false,
+                            title: 'Booking Details',
+                            modal: true,
+                            open: function () {
+                                $(this).load('/Booking/getBookingDetails/?id=' + id);
+                            },
+                            buttons: {
+                                "Cancel Booking": function () {
+                                    window.location.href = '@Url.Action("cancelBooking", "Booking")';
+                                },
+                                "Update Booking": {
+                                    text: "Update Booking",
+                                    id: "btnUpdateBooking",
+                                    click: function () {
+                                        location = "/Booking/updateBookingDetails";
+                                    }
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });*@
+                    });
+                },
+                error: function (err, result) {
+                    alert("Error in assigning dataToSave" + err.responseText);
+                }
+            });
+        })
+    </script>
+}

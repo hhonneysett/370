@@ -1,0 +1,19 @@
+﻿    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>
+                    Description
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Actions)
+            {
+                <tr>
+                    <td>
+                        @item.Action_Description
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

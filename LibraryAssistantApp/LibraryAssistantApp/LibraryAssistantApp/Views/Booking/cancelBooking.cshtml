@@ -1,0 +1,69 @@
+﻿@using LibraryAssistantApp.Models
+@model LibraryAssistantApp.Models.BookingDetailsModel
+
+@{
+    ViewBag.Title = "Cancel Booking";
+}
+
+<h2>Cancel Booking</h2>
+
+<h3 class="bg-info shaded">Are you sure you want to cancel this booking?</h3>
+<div>
+    <hr />
+    @{ 
+        var bookingDetails = (BookingDetailsModel)Session["selectedBookingDetails"];
+    }
+    <table>
+    <tbody>
+        <tr>
+            <td style="padding-right:5em"><strong>Type:</strong></td>
+            <td>@bookingDetails.type</td>
+        </tr>
+        <tr>
+            <td><strong>Date:</strong></td>
+            <td>@bookingDetails.date</td>
+        </tr>
+        <tr>
+            <td><strong>Timeslot:</strong></td>
+            <td>@bookingDetails.timeslot</td>
+        </tr>
+        <tr>
+            <td><strong>Campus:</strong></td>
+            <td>@bookingDetails.campus</td>
+        </tr>
+        <tr>
+            <td><strong>Building:</strong></td>
+            <td>@bookingDetails.building</td>
+        </tr>
+        <tr>
+            <td><strong>Venue:</strong></td>
+            <td>@bookingDetails.venue</td>
+        </tr>
+    </tbody>
+</table>
+    <hr />
+
+        <div class="form-actions no-color">
+            @Html.ActionLink("Back", "ViewBookings", "Booking", htmlAttributes: new { @class = "btn btn-primary", @title = "Go back to view bookings screen."})
+            <input type="submit" value="Cancel Booking" class="btn btn-primary" id="btnCancelBooking" title="Confirm cancellation for selected booking." />
+        </div>
+</div>
+
+@section script{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnCancelBooking').click(function () {
+                $.ajax({
+                    url: '/Booking/captureCancel',
+                    type: 'POST',
+                    success: function (result) {
+                        window.location.href = result;
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                });
+            });
+        })
+    </script>
+    }

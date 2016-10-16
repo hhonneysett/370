@@ -1,0 +1,66 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.DocumentAccessReportModel>
+
+@{
+    ViewBag.Title = "Document Access Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
+
+<h2>Document Access Report</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-bordered" id="report" title="Document access log results.">
+                    <thead>
+                        <tr class="shade-blue">
+                            <th>
+                                Document Sequence
+                            </th>
+                            <th>
+                                Document Name
+                            </th>
+                            <th>Document Category</th>
+                            <th>
+                                Times Accessed
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.document.Document_Seq</td>
+                                <td>@item.document.Document_Name</td>
+                                <td>@item.document.Document_Category.Category_Name</td>
+                                <td>@item.access</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed" title="Export report to PDF."><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+
+<iframe id="txtArea1" style="display:none"></iframe>
+
+<script type="text/javascript">
+    function demoFromHTML() {
+        $('#report').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7' });
+    };
+
+    $(document).ready(function () {
+        //initiate datatable
+        $('#report').DataTable();
+    })
+</script>
+
+
+

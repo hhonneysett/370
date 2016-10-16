@@ -1,0 +1,105 @@
+﻿@model IEnumerable<LibraryAssistantApp.Models.PersonSessionReportModel>
+
+@{
+    ViewBag.Title = "Person Session Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/datatables.min.css" />
+<script src="~/Scripts/DataTable/datatables.min.js"></script>
+
+<div>
+    <h2>Person Session Report</h2>
+    <button onclick="javascript:demoFromHTML()" class="btn btn-primary exp-fixed" title="Export report to PDF."><span class="fa fa-file-pdf-o"></span> Export PDF</button>
+</div>
+<hr />
+
+<div class="row">
+    <h4 class="bg-info shaded">
+        User Session Report
+    </h4>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table id="report" class="table table-bordered" title="Session log results.">
+                    <thead>
+                        <tr class="shade-blue">
+                            <th>
+                                Person ID
+                            </th>
+                            <th>
+                                Person
+                            </th>
+                            <th>
+                                Total Sessions
+                            </th>
+                            <th>
+                                Total Session Duration (h)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+            {
+                            <tr>
+                                <td>@item.person.Person_ID</td>
+                                <td>@item.person.Person_Name @item.person.Person_Surname</td>
+                                <td>@item.count</td>
+                                <td>@item.totalTime</td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<iframe id="txtArea1" style="display:none"></iframe>
+
+<script type="text/javascript">
+    function fnExcelReport() {
+        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j = 0;
+        tab = document.getElementById('report'); // id of table
+
+        for (j = 0 ; j < tab.rows.length ; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+</script>
+
+<script type="text/javascript">
+    function demoFromHTML() {
+        $('#report').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7' });
+    };
+
+    $(document).ready(function () {
+        //initiate datatable
+        $('#report').DataTable();
+    })
+</script>
+
