@@ -31,31 +31,12 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <ul style="padding-bottom:15px;">
             <li>
-                <p>Type out a new question to be answered in a questionnaire.</p>
-            </li>
-            <li>
                 <p>Select a topic from the drowpdown or create a new topic.</p>
             </li>
+            <li>
+                <p>Type out a new question to be answered in a questionnaire.</p>
+            </li>
         </ul>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Question_Text, new
-           {
-               htmlAttributes = new
-               {
-                   @class = "form-control",
-                   id = "Question_TextBox",
-                   @Value = (string)ViewBag.Question_Text
-               }
-           })
-                <label class="text-danger" id="Error_Question_Text"></label>
-
-                @*@Html.Label("",new { @class = "text-danger", id = "Error_Question_Text" }))*@
-                @*@Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" , id = "Error_Question_Text" })*@
-            </div>
-        </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -74,6 +55,24 @@
                 }
 
 
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Question_Text, new
+           {
+               htmlAttributes = new
+               {
+                   @class = "form-control",
+                   id = "Question_TextBox",
+                   @Value = (string)ViewBag.Question_Text
+               }
+           })
+                <label class="text-danger" id="Error_Question_Text"></label>
+
+                @*@Html.Label("",new { @class = "text-danger", id = "Error_Question_Text" }))*@
+                @*@Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" , id = "Error_Question_Text" })*@
             </div>
         </div>
 

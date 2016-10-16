@@ -5,147 +5,152 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<div class="panel panel-default ">
-    <div class="panel-heading"><h2>Details</h2></div>
-    <div class="panel-body">
-
-
-
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                   
-                </thead>
-
-                <tbody>
-
-                    <tr style="text-align:center">
-                        <td colspan="2"><h3>Questionnaire</h3></td>
-                    </tr>
-
-                    <tr>
-                        <td>Name:</td>
-                        <td>@Html.DisplayFor(model => model.Name)</td>
-                    </tr>
-                    <tr>
-                        <td>Description:</td>
-                        <td>@Html.DisplayFor(model => model.Description)</td>
-                    </tr>
-                    <tr>
-                        <td>Assessment Type:</td>
-                        <td>@Html.DisplayFor(model => model.Assessment_Type)</td>
-                    </tr>
-                    <tr>
-                        <td>Create Date:</td>
-                        <td>@Html.DisplayFor(model => model.Create_Date)</td>
-                    </tr>
-                    <tr>
-                        <td>Active from:</td>
-                        <td>@Html.DisplayFor(model => model.Active_From)</td>
-                    </tr>
-                    <tr>
-                        <td>Expires on:</td>
-                        <td>@Html.DisplayFor(model => model.Active_To)</td>
-                    </tr>
-                    <tr>
-                        <td><label >Status</label></td>
-                        <td><label> @ViewBag.Status</label></td>
-                    </tr>
-
-                    @if (@ViewBag.StatusPhrase != "None" )
-                    {
+<h3>Questionnaire Details</h3>
+<div class="form-horizontal" style="padding-bottom:15px">
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="bg-info shaded">
+                Questionnaire
+            </h4>
+            <div class="panel panel-default">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                    </thead>
+                    <tbody>
                         <tr>
-                            <td>@ViewBag.StatusPhrase</td>
-                            <td>@ViewBag.Days</td>
+                            <td><label>Name</label></td>
+                            <td>@Html.DisplayFor(model => model.Name)</td>
                         </tr>
-                    }
-
-                    <tr>
-                        <td>Topic:</td>
-                        <td>@Html.DisplayFor(model => model.Question_Topic.Topic_Name)</td>
-                    </tr>
-                    <tr>
-                        <td>Creator:</td>
-                        <td>@Html.DisplayFor(model => model.Registered_Person.Person_Name)</td>
-                    </tr>
-                    <tr>
-                        <td>Amount of questions assigned:</td>
-                        <td>@ViewBag.AmountOfQuestions</td>
-                    </tr>
-
-                    <tr>
-                        <td>Current amount of responses:</td>
-                        <td>@ViewBag.Responded</td>
-                    </tr>
-
-
-                    @if (ViewBag.Person_Involved != "None")
-                    {
-
-                        <tr style="text-align:center">
-                            <td colspan="2"><h3>Employee being assessed</h3></td>
-                        </tr>
-
                         <tr>
-                            <td>Employee Name:</td>
-                            <td>@ViewBag.Person_Involved</td>
+                            <td><label>Topic</label></td>
+                            <td>@Html.DisplayFor(model => model.Question_Topic.Topic_Name)</td>
                         </tr>
-                    }
-
-                    @if (ViewBag.Selected_Training_Session != "None")
-                    {
-                        <tr  style="text-align:center" >
-                            <td colspan="2"><h3>Training session being assessed</h3></td>
-                        </tr>
-
                         <tr>
-                            <td> Time slot:</td>
-                            <td>@ViewBag.Selected_Training_Session</td>
+                            <td><label>Type</label></td>
+                            <td>@Html.DisplayFor(model => model.Assessment_Type)</td>
                         </tr>
-
                         <tr>
-                            <td>Topic:</td>
-                            <td>@ViewBag.Training_Topic</td>
+                            <td><label>Creator</label></td>
+                            <td>@Html.DisplayFor(model => model.Registered_Person.Person_Name)</td>
                         </tr>
-                    }
-
-                    @if (ViewBag.VenueName != "None")
-                    {
-                        <tr style="text-align:center">
-                            <td colspan="2"><h3>Venue being assessed</h3></td>
-                        </tr>
-
                         <tr>
-                            <td> Campus:</td>
-                            <td>@ViewBag.Campus</td>
+                            <td><label>Description</label></td>
+                            <td>@Html.DisplayFor(model => model.Description)</td>
                         </tr>
-
                         <tr>
-                            <td>Building:</td>
-                            <td>@ViewBag.BuildingName</td>
+                            <td><label>Status</label></td>
+                            <td><label style="color:darkgreen"> @ViewBag.Status</label></td>
                         </tr>
-
-                        <tr>
-                            <td>Building Floor:</td>
-                            <td>@ViewBag.BuildingFloor</td>
-                        </tr>
-
-                        <tr>
-                            <td>Venue:</td>
-                            <td>@ViewBag.VenueName</td>
-                        </tr>
-                    }
-
-                </tbody>
-                
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <div class="col-md-6">
+            <h4 class="bg-info shaded">
+                @if (ViewBag.Person_Involved != "None")
+            {
+                    @:Employee being assessed
+            }
+                @if (ViewBag.Selected_Training_Session != "None")
+            {
+                    @:Training Session being assessed
+}
+                @if (ViewBag.VenueName != "None")
+            {
+                    @:Venue being assessed
+}
+            </h4>
+            <div class="panel panel-default">
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        @if (ViewBag.Person_Involved != "None")
+                        {
+                            <tr>
+                                <td>Employee Name</td>
+                                <td>@ViewBag.Person_Involved</td>
+                            </tr>
+                        }
+                        @if (ViewBag.Selected_Training_Session != "None")
+                        {
+                            <tr>
+                                <td >Time slot</td>
+                                <td>@ViewBag.Selected_Training_Session</td>
+                            </tr>
 
-        <p>
-            <input data_toggle = "tooltip" title = "View the full questionnaire to see what it will look like to those responding to it" type="submit" value="Preview" class="btn btn-default" onclick="location.href='@Url.Action("Preview","Questionnaire", new { Model.Name})'" /> <input data_toggle = "tooltip" title = "Go back to the list of questionnaires" type="submit" value="Finish" class="btn btn-default pull-right" onclick="location.href='@Url.Action("Index","Questionnaire")'" />
-        </p>
+                            <tr>
+                                <td>Topic</td>
+                                <td>@ViewBag.Training_Topic</td>
+                            </tr>
+                        }
+                        @if (ViewBag.VenueName != "None")
+                        {
+                            <tr>
+                                <td><strong>Campus</strong></td>
+                                <td>@ViewBag.Campus</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Building</strong></td>
+                                <td>@ViewBag.BuildingName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Building Floor</strong></td>
+                                <td>@ViewBag.BuildingFloor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Venue</strong></td>
+                                <td>@ViewBag.VenueName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="bg-info shaded">
+                Additional details
+            </h4>
+            <div class="panel panel-default">
+                <table class="table table-bordered table-condensed">
+                    <tbody>
+                        <tr>
+                            <td><label>Created</label></td>
+                            <td>@Html.DisplayFor(model => model.Create_Date)</td>
+                        </tr>
+                        <tr>
+                            <td><label>Active from</label></td>
+                            <td>@Html.DisplayFor(model => model.Active_From)</td>
+                        </tr>
+                        <tr>
+                            <td><label>Expires on</label></td>
+                            <td>@Html.DisplayFor(model => model.Active_To)</td>
+                        </tr>
+                        <tr>
+                            <td><label>Questions assigned</label></td>
+                            <td>@ViewBag.AmountOfQuestions</td>
+                        </tr>
+                        <tr>
+                            <td><label>Current responses</label></td>
+                            <td>@ViewBag.Responded</td>
+                        </tr>
+                        @if (@ViewBag.StatusPhrase != "None")
+                        {
+                            <tr>
+                                <td><label>@ViewBag.StatusPhrase</label></td>
+                                <td>@ViewBag.Days</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+    <div class="btn-group">
+        <input data_toggle="tooltip" title="View a preview of the selected questionnaire." type="submit" value="Preview Questionnaire" class="btn btn-primary" onclick="location.href='@Url.Action("Preview","Questionnaire", new { Model.Name})'" />
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
 

@@ -6,9 +6,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Update Member</h3>
+<h2>Update Member</h2>
 <hr />
-<h5>Update member details below</h5>
+<div class="row" style="padding-bottom:5px">
+    <div style="padding-left:20px">
+        <p class="text-muted"><strong>Note:</strong> This form should be used when:</p>
+        <ul class="text-muted">
+            <li>
+                Potential member had trouble updating user details.
+            </li>
+            <li>
+                Member has requested updateded details by an administrator.
+            </li>
+        </ul>
+        <p class="text-warning">
+            'Reset Password' will send a new password to the email on record.
+        </p>
+    </div>
+</div>
+<h4 class="bg-info shaded">Update member details below</h4>
 <br />
 
 @using (Html.BeginForm())
@@ -19,47 +35,46 @@
         <div class="form-group">
             @Html.LabelFor(model => model.person_id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.person_id, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
+                @Html.EditorFor(model => model.person_id, new { htmlAttributes = new { @class = "form-control", @disabled = true, @title="Username cannot be updated." } })
                 @Html.ValidationMessageFor(model => model.person_id, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.person_name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.person_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.person_name, new { htmlAttributes = new { @class = "form-control", @title="Name must be alphabetic, can contain whitespace." } })
                 @Html.ValidationMessageFor(model => model.person_name, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.person_surname, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.person_surname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.person_surname, new { htmlAttributes = new { @class = "form-control", @title="Surname must be alphabetic, can contain whitespace." } })
                 @Html.ValidationMessageFor(model => model.person_surname, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.person_email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.person_email, new { htmlAttributes = new { @class = "form-control", @title="Email address must be in the correct format." } })
                 @Html.ValidationMessageFor(model => model.person_email, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="btn-reset-mem" type="button" value="Reset Password" class="btn btn-default" />
+                <input id="btn-reset-mem" type="button" value="Reset Password" class="btn btn-primary" title="Reset this members password, the new password will be sent to the members email address on record." />
             </div>
         </div>
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
+        <div class="row" style="padding-top:20px; padding-bottom:20px">
             <div class="col-md-10">
-                <input id="btn-submit" type="submit" value="Save Changes" class="btn btn-default" />
+                <input id="btn-submit" type="submit" value="Save Changes" class="btn btn-primary" title="Save changes updated for this member."/>
             </div>
         </div>
     </div>
                         }
-
-<div>
+<div class="col-md-2">
     @Html.ActionLink("Back to List", "Index")
 </div>
 
