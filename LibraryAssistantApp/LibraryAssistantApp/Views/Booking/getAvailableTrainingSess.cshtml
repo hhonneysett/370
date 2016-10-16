@@ -5,6 +5,7 @@
 }
 
 <div id="bkTrainingBookings">
+    <h4 class="bg-warning shaded">Available Training Sessions:</h4>
     <div class="panel panel-default">
         <div class="panel-body">
 
@@ -34,7 +35,7 @@
                         <tbody>
                             @foreach (var booking in bookings)
                             {
-                                <tr id="@booking.id" onclick="getSelectedTraining(this)" data-assigned-id="@booking.id">
+                                <tr id="@booking.id" onclick="getSelectedTraining(this)" data-assigned-id="@booking.id" title="Select training session">
                                     <td>@booking.date</td>
                                     <td>@booking.timeslot</td>
                                     <td>@booking.campus</td>
@@ -52,7 +53,7 @@
             }          
         </div>
     </div>
-    <input class="btn btn-primary" id="btnBkTraining" type="button" value="Book Training Session"/>
+    <input class="btn btn-primary" id="btnBkTraining" type="button" value="Book Training Session" title="Book selected training selection"/>
 </div>
 
 <script type="text/javascript">

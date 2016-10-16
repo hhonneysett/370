@@ -840,6 +840,7 @@
     <Compile Include="Models\findBookingVenues_Result.cs">
       <DependentUpon>LibraryAssistantModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\global.cs" />
     <Compile Include="Models\HtmlExtensions.cs" />
     <Compile Include="Models\JobScheduler.cs" />
     <Compile Include="Models\LibraryAssistantModel.Context.cs">
@@ -1140,6 +1141,8 @@
     <Content Include="Views\Repository\deleteFileCategory.cshtml" />
     <Content Include="Views\Trainer\addTrainingCategory.cshtml" />
     <Content Include="Views\Trainer\addTrainingTopic.cshtml" />
+    <Content Include="Views\Trainer\updateTrainingSess.cshtml" />
+    <Content Include="Views\Trainer\selectUpdateTrainer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

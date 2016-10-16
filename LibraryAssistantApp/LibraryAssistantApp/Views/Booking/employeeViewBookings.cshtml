@@ -1,40 +1,37 @@
 ﻿
 @{
-    ViewBag.Title = "ViewBookings";
+    ViewBag.Title = "View Bookings";
 }
 
 <h2>View Bookings</h2>
+<h4 class="bg-info shaded">Provide details below to view bookings:</h4>
 
 <div class="row">
     <div class="col-md-6">
+        <h4 class="bg-warning shaded">Bookings For Person:</h4>
         <div class="panel panel-default">
-            <div class="panel-heading">
-                Bookings For Person:
-            </div>
             <div class="panel-body">
                 <div class="form-group">
                     <strong>
-                        Person ID:
+                        Username:
                     </strong>
                 </div> 
                 <div class="form-group">
-                    <input type="text" id="personIdInput" placeholder="Enter Person ID" class="form-control" />
+                    <input type="text" id="personIdInput" placeholder="Enter username" class="form-control" title="Enter valid username."/>
                 </div>              
             </div>
             <div class="panel-footer">
-                <input type="submit" id="btnPersonId" class="btn btn-primary" disabled="disabled" value="Submit"/>
+                <input type="submit" id="btnPersonId" class="btn btn-primary" disabled="disabled" value="Submit" title="Filter bookings by username."/>
             </div>
         </div>
     </div>
     <div class="col-md-6">
+        <h4 class="bg-warning shaded">Bookings For Venue:</h4>
         <div class="panel panel-default">
-            <div class="panel-heading">
-                Bookings For Venue:
-            </div>
             <div class="panel-body">
                 <div class="form-group col-md-3">
                     <label>Campus:</label>
-                    <select class="form-control" id="campusSelectList">
+                    <select class="form-control" id="campusSelectList" title="Select campus to show matching buildings.">
                         <option disabled selected value> -- select a campus -- </option>
                         @foreach(var campus in (SelectList)ViewBag.Campus_ID)
                         {
@@ -44,45 +41,50 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label>Building:</label>
-                    <select class="form-control" id="buildingSelectList" disabled="disabled">
+                    <select class="form-control" id="buildingSelectList" disabled="disabled" title="Select building to show matching floors.">
                     </select>
                 </div>
                 <div class="form-group col-md-3">
-                    <label>Level:</label>
-                    <select class="form-control" disabled="disabled" id="levelSelectList">
+                    <label>Floor:</label>
+                    <select class="form-control" disabled="disabled" id="levelSelectList" title="Select floor to show matching venues.">
                     </select>
                 </div>
                 <div class="form-group col-md-3">
                     <label>Venue:</label>
-                    <select class="form-control" disabled="disabled" id="venueSelectList">
+                    <select class="form-control" disabled="disabled" id="venueSelectList" title="Select venue to filter by.">
                     </select>
                 </div>
             </div>
             <div class="panel-footer">
-                <button type="button" class="btn btn-primary" id="btnVenueSubmit" disabled="disabled">Submit</button>
+                <button type="button" class="btn btn-primary" id="btnVenueSubmit" disabled="disabled" title="Filter bookings by venue.">Submit</button>
             </div>
         </div>
     </div>
 </div>
-<hr />
-<div class="panel panel-default" id="container" hidden>
-    <div class="panel-body">
-        <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:55em; display:none'>
-            <div class="dhx_cal_navline">
-                <div class="dhx_cal_prev_button">&nbsp;</div>
-                <div class="dhx_cal_next_button">&nbsp;</div>
-                <div class="dhx_cal_today_button"></div>
-                <div class="dhx_cal_date"></div>
-                <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
-                <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
-                <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
-                <div class="dhx_cal_tab" name="agenda_tab" style="right:280px;"></div>
+<div class="row" id="empcalendar" hidden>
+    <div class="col-md-12">
+        <h4 class="bg-success shaded">Bookings Calendar View:</h4>
+        <div class="panel panel-default" id="container" hidden>
+            <div class="panel-body">
+                <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:55em; display:none'>
+                    <div class="dhx_cal_navline">
+                        <div class="dhx_cal_prev_button">&nbsp;</div>
+                        <div class="dhx_cal_next_button">&nbsp;</div>
+                        <div class="dhx_cal_today_button"></div>
+                        <div class="dhx_cal_date"></div>
+                        <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+                        <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+                        <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+                        <div class="dhx_cal_tab" name="agenda_tab" style="right:280px;"></div>
+                    </div>
+                    <div class="dhx_cal_header"></div>
+                    <div class="dhx_cal_data"></div>
+                </div>
             </div>
-            <div class="dhx_cal_header"></div>
-            <div class="dhx_cal_data"></div>
         </div>
     </div>
 </div>
+
 
 <div id="bookingDetailsForm"></div>
 
@@ -248,6 +250,8 @@
                 success: function (result) {
                     scheduler.clearAll();
                     $("#scheduler_here").show();
+                    $("#empcalendar").show();
+                    window.location.hash = '#empcalendar';
 
                     //configuration for the scheduler
                     scheduler.config.resize_month_events = false;
@@ -329,6 +333,13 @@
                                 },
                             }
                         });
+                    });
+
+                    $.ambiance({
+                        message: "Bookings loaded!",
+                        title: "Success!",
+                        type: "success",
+                        timeout: 5
                     });
                 },
                 error: function (err, result) {

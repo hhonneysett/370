@@ -14,13 +14,13 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Please enter the requested details below:</h4>
+        <h4 class="bg-info shaded">Please enter the requested details below:</h4>
         <hr />
-
+        <p class="text-muted" style="padding-bottom:5px"><b>Note:</b> Provide the initial details of your booking and proceed to select a venue</p>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10" title="Preferred discussion room session date" data-placement="right">
                 @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control", @id = "datepicker", @placeholder = " --select date-- ", @readonly = true } })
                 @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
             </div>
@@ -28,7 +28,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.inTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10" title="Preferred discussion room session time" data-placement="right">
                 @Html.EditorFor(model => model.inTime, new { htmlAttributes = new { @class = "form-control", @id = "dtime", @readonly = true, @placeholder = " --select time-- " } })
                 @Html.ValidationMessageFor(model => model.inTime, "", new { @class = "text-danger" })
             </div>
@@ -36,7 +36,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.length, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10" title="Preferred discussion room session duration" data-placement="right">
                 <select name="length" class="form-control" required>
                     <option disabled selected value=""> --select duration-- </option>
                     @foreach(var d in durations)
@@ -58,7 +58,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Submit" class="btn btn-primary" />
+                <input type="submit" value="Submit" class="btn btn-primary" title="Proceed to select booking venue"/>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
+        //initialise timepicker
         $('#dtime').timepicker({
             timeFormat: 'HH:mm',
             interval: 30,
@@ -76,7 +76,5 @@
             dropdown: true,
             scrollbar: true
         });
-
-
     })
 </script>

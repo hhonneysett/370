@@ -7,15 +7,13 @@
 
 @{ 
     var details = (DiscussionRoomBooking)Session["details"];
-    <h4>Discussion Room Booking > @details.date.ToShortDateString() > @details.time.TimeOfDay > @details.length Minutes Duration > @details.campus_ID</h4>
+    <h4 class="bg-info shaded text">Discussion Room Booking > @details.date.ToShortDateString() > @details.time.TimeOfDay > @details.length Duration > @details.campus_name</h4>
 }
 
 <div class="row">
     <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Please select a venue below:
-            </div>
+        <h4 class="bg-warning shaded">Select A Venue Below:</h4>
+        <div class="panel panel-default">                
             <div class="panel-body">
                 @{
                     var check = (List<Building>)Session["buildings"];
@@ -25,7 +23,7 @@
                         <ul class="nav nav-tabs" id="buildingTabs">
                             @foreach (var building in (List<Building>)Session["buildings"])
                             {
-                                <li><a data-toggle="tab" href="#@building.Building_ID">@building.Building_Name</a></li>
+                                <li><a data-toggle="tab" href="#@building.Building_ID" title="View venues available for this building">@building.Building_Name</a></li>
                             }
                         </ul>
 
@@ -52,7 +50,7 @@
                                             {
                                                 if (item.Building_ID.Equals(building.Building_ID))
                                                 {
-                                                    <tr onclick="AssignButtonClicked(this)" data-assigned-id="@item.Venue_ID">
+                                                    <tr onclick="AssignButtonClicked(this)" data-assigned-id="@item.Venue_ID" title="Select venue">
                                                         <td>
                                                             @Html.DisplayFor(modelItem => item.Venue_Name)
                                                         </td>
@@ -79,16 +77,14 @@
                 }
             </div>
             <div class="panel-footer">
-                @Html.ActionLink("Back", "BookDiscussionRoom", "Booking", htmlAttributes: new { @class = "btn btn-primary" })
-                <input type="submit" id="bookDiscussion" data-toggle="modal" data-target="#confirmDetails" value="Submit" class="btn btn-primary" disabled="disabled" />
+                @Html.ActionLink("Back", "BookDiscussionRoom", "Booking", htmlAttributes: new { @class = "btn btn-primary", @title = "Go back to previous screen" })
+                <input type="submit" id="bookDiscussion" data-toggle="modal" data-target="#confirmDetails" value="Submit" class="btn btn-primary" disabled="disabled" title="Submit selected venue to finalise booking" data-placement="right"/>
             </div>
         </div>
     </div>
     <div class="col-md-3">
+        <h4 class="bg-warning shaded">Additional Details:</h4> 
         <div class="panel panel-default">
-            <div class="panel panel-heading">
-                Additional Details:
-            </div>
             <div class="panel-body">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -116,7 +112,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <input type="submit" id="apply" value="Apply" class="btn btn-primary" onclick="getFilters()"/>
+                <input type="submit" id="apply" value="Apply" class="btn btn-primary" onclick="getFilters()" title="Filter available venues" data-placement="right"/>
             </div>
         </div>
     </div>
