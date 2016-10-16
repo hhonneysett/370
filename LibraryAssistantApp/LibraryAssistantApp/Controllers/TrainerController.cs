@@ -1886,7 +1886,7 @@ namespace LibraryAssistantApp.Controllers
                            select vb).Include(r => r.Registered_Person).ToList();
 
             var certificates = (from dr in db.Document_Repository
-                                where dr.Document_Category.Category_Name.Equals("Certificate")
+                                where dr.Document_Category.Category_Name.Equals("Certificate") && dr.Document_Status == "Active"
                                 select dr).ToList();
 
             ViewBag.Certificates = certificates;

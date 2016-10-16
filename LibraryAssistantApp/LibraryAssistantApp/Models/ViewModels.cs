@@ -316,7 +316,7 @@ namespace LibraryAssistantApp.Models
 
         [Required(ErrorMessage = "Please provide a length selection")]
         [Display(Name = "Duration")]
-        public double length { get; set; }
+        public string length { get; set; }
 
         [Display(Name = "Campus")]
         [Required(ErrorMessage ="Please select a campus")]
@@ -438,6 +438,7 @@ namespace LibraryAssistantApp.Models
 
         public string v_id { get; set; }
 
+        [Display(Name ="Status")]
         public string status { get; set; }
     }
 

@@ -10,7 +10,7 @@
 }
 
 <h2>Update Training Session</h2>
-
+<h4 class="bg-info shaded">Provide updated training session details below:</h4>
     <div class="row">
         <div class="col-md-12">
             <hr />
@@ -43,7 +43,7 @@
                     <tr>
                         <td><b>Building:</b></td>
                         <td style="padding-left:5px;padding-bottom:5px">
-                            <select id="trainingbuildingup" class="form-control" name="building">
+                            <select id="trainingbuildingup" class="form-control" name="building" title="Select preferred building.">
                                 @foreach (var building in buildings)
                                 {
                                     <option id="@building.Building_ID">@building.Building_Name</option>
@@ -54,7 +54,7 @@
                     <tr>
                         <td><b>Venue:</b></td>
                         <td style="padding-left:5px;padding-bottom:5px">
-                            <select id="trainingvenueup" class="form-control" name="venue">
+                            <select id="trainingvenueup" class="form-control" name="venue" title="Select preferred, available venue.">
                                 @foreach (var venue in venues)
                                 {
                                     <option id="@venue.Venue_ID">@venue.Venue_Name</option>
@@ -64,7 +64,7 @@
                     </tr>
                     <tr>
                         <td><b>Description:</b></td>
-                        <td style="padding-left:5px;padding-bottom:5px"><input class="form-control" value="@Model.description" id="trainingdesc" name="desc" /></td>
+                        <td style="padding-left:5px;padding-bottom:5px"><input class="form-control" value="@Model.description" id="trainingdesc" name="desc" title="Enter training session description." /></td>
                     </tr>
                     <tr>
                         <td><b>Trainer:</b></td>
@@ -72,7 +72,7 @@
                             <div class="input-group">
                                 <input class="form-control" value="@Model.trainer" id="trainingtrainer" name="trainer" readonly />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" id="selecttrainer" type="button"><span class="fa fa-search"></span></button>
+                                    <button class="btn btn-primary" id="selecttrainer" type="button" title="Search for trainer."><span class="fa fa-search"></span></button>
                                 </span>
                             </div>
                         </td>
@@ -80,7 +80,7 @@
                     <tr>
                         <td><b>Booking Status:</b></td>
                         <td style="padding-left:5px;padding-bottom:5px">
-                            <select id="trainingstatus" class="form-control" required>
+                            <select id="trainingstatus" class="form-control" required title="Select training session booking status.">
                                 <option id="Cancelled">Cancelled</option>
                                 <option id="Confirmed">Confirmed</option>
                                 <option id="Tentative">Tentative</option>
@@ -91,7 +91,8 @@
                 </table>
             </form>
             <hr />
-            <button type="button" class="btn btn-primary" id="updateTraining"><span class="fa fa-floppy-o"></span> Save Changes</button>
+            @Html.ActionLink("Back", "manageTrainingSession", "Trainer", htmlAttributes: new { @class = "btn btn-primary", @title = "Go back to manage training sessions screen." })
+            <button type="button" class="btn btn-primary" id="updateTraining" title="Capture training session changes."><span class="fa fa-floppy-o"></span> Save Changes</button>
         </div>
     </div>  
 

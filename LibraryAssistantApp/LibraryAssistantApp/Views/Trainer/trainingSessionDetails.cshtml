@@ -2,16 +2,9 @@
 
 <div id="trainingDetails" class="col-md-4">
 
+    <h4 class="bg-warning shaded">Training Session Details:</h4>
     <div class="panel panel-default">
-        @*<div class="panel-heading">
-                Training Session Details
-            </div>*@
         <div class="panel-body text-center">
-
-            <b class="text-center">Training Session Details</b>
-
-            <hr />
-
             <div class="text-left">
                 <table>
                     <tbody>
@@ -64,8 +57,8 @@
                 </table>
 
                 <hr />
-                <button class="btn btn-primary" type="button" id="updateTraining" title="Update booking details"><span class="fa fa-wrench"></span> Update</button>
-                <button class="btn btn-primary" type="button" id="cancelTraining" title="Cancel booking"><span class="fa fa-ban"></span> Cancel</button>
+                <button class="btn btn-primary" type="button" id="updateTraining" title="Update booking details."><span class="fa fa-wrench"></span> Update</button>
+                <button class="btn btn-primary" type="button" id="cancelTraining" title="Cancel booking."><span class="fa fa-ban"></span> Cancel</button>
             </div>
 
             @{
@@ -77,8 +70,8 @@
 
                         <hr />
 
-                        @Html.ActionLink("Generate Attendance Register", "generateAttendance", "Trainer", null, htmlAttributes: new { @class = "btn btn-default btn-block" })
-                        @Html.ActionLink("Log Attendance", "logAttendance", "Trainer", null, htmlAttributes: new { @class = "btn btn-default btn-block" })
+                        @Html.ActionLink("Generate Attendance Register", "generateAttendance", "Trainer", null, htmlAttributes: new { @class = "btn btn-primary btn-block" })
+                        @Html.ActionLink("Log Attendance", "logAttendance", "Trainer", null, htmlAttributes: new { @class = "btn btn-primary btn-block", @title = "Record attendance for selected training session." })
                 }
                 else
                 {
