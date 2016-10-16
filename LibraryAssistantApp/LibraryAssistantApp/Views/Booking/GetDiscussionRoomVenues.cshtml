@@ -7,12 +7,14 @@
 
 @{ 
     var details = (DiscussionRoomBooking)Session["details"];
-    <h4 class="bg-info shaded text">Discussion Room Booking > @details.date.ToShortDateString() > @details.time.TimeOfDay > @details.length Duration > @details.campus_name</h4>
+    @*<h4 class="bg-info shaded text">Discussion Room Booking > 
+        @details.date.ToShortDateString() > @details.time.TimeOfDay > @details.length Duration > @details.campus_name
+    </h4>*@
 }
-
+<h2>Book Discussion Room</h2>
 <div class="row">
     <div class="col-md-9">
-        <h4 class="bg-warning shaded">Select A Venue Below:</h4>
+        <h4 class="bg-info shaded">Select A Venue Below:</h4>
         <div class="panel panel-default">                
             <div class="panel-body">
                 @{
@@ -31,9 +33,9 @@
                             @foreach (var building in (List<Building>)Session["buildings"])
                             {
                                 <div id="@building.Building_ID" class="tab-pane fade">
-                                    <table class="table venueTable" id="venueTable">
+                                    <table class="table table-bordered venueTable" id="venueTable">
                                         <thead>
-                                            <tr>
+                                            <tr class="shade-blue">
                                                 <th>
                                                     Venue
                                                 </th>
@@ -78,12 +80,65 @@
             </div>
             <div class="panel-footer">
                 @Html.ActionLink("Back", "BookDiscussionRoom", "Booking", htmlAttributes: new { @class = "btn btn-primary", @title = "Go back to previous screen" })
-                <input type="submit" id="bookDiscussion" data-toggle="modal" data-target="#confirmDetails" value="Submit" class="btn btn-primary" disabled="disabled" title="Submit selected venue to finalise booking" data-placement="right"/>
+                <input type="submit" id="bookDiscussion" data-toggle="modal" data-target="#confirmDetails" value="Finish Booking" class="btn btn-primary" disabled="disabled" title="Submit selected venue to finalise booking" data-placement="right"/>
             </div>
         </div>
     </div>
+    </div>
+    <div class="row">
     <div class="col-md-3">
-        <h4 class="bg-warning shaded">Additional Details:</h4> 
+        <h4 class="bg-info shaded">
+            Booking Details
+        </h4>
+        <div class="panel panel-default">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>
+                            <label>Booking</label>
+                        </td>
+                        <td>
+                            Discussion Room
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Date</label>
+                        </td>
+                        <td>
+                            @details.date.ToShortDateString()
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Time</label>
+                        </td>
+                        <td>
+                            @details.time.TimeOfDay
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Duration</label>
+                        </td>
+                        <td>
+                            @details.length Duration
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Campus</label>
+                        </td>
+                        <td>
+                            @details.campus_name
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h4 class="bg-info shaded">Additional Details:</h4>
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="panel panel-default">
@@ -99,7 +154,7 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Capacity
+                        Venue Capacity
                     </div>
                     <div>
                         <div class="panel-body">
@@ -112,7 +167,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <input type="submit" id="apply" value="Apply" class="btn btn-primary" onclick="getFilters()" title="Filter available venues" data-placement="right"/>
+                <input type="submit" id="apply" value="Apply Filter" class="btn btn-primary" onclick="getFilters()" title="Filter available venues" data-placement="right" />
             </div>
         </div>
     </div>
