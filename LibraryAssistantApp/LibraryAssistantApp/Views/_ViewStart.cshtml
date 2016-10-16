@@ -5,7 +5,7 @@
     }
     else if (this.User.IsInRole("Employee") || this.User.IsInRole("Trainer"))
     {
-        Layout = "~/Views/Shared/_LayoutEmp";
+        Layout = "~/Views/Shared/_LayoutEmp.cshtml";
     }
     else if (this.User.IsInRole("Student"))
     {

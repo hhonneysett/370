@@ -51,6 +51,34 @@
                     </ul>
                 </li>
             </ul>
+            <ul id="navbar-login">
+                    @{
+                        if (Request.IsAuthenticated)
+                        {
+                            <li>
+                                <a href="/Account/Logout" aria-expanded="false">
+                                    <span class="navbar-custom-item-icon fa fa-sign-out fa-fw"></span>
+                                    Logout
+                                </a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/Account/Login" aria-expanded="false">
+                                    <span class="navbar-custom-item-icon fa fa-sign-in fa-fw"></span>
+                                    Login
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/RegisteredPerson/RegisterStudent" aria-expanded="false">
+                                    Register
+                                </a>
+                            </li>
+                        }
+                    }
+            </ul>
             <!-- end navbar links-->
         </div>
     </div>

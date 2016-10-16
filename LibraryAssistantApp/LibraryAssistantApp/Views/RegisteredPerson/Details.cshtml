@@ -7,56 +7,57 @@
     var categories = (IEnumerable<Category>)TempData["categories"];
 }
 
-<h2>Student Details</h2>
+<h2>@Model.Person_Name @Model.Person_Surname - User Profile</h2>
 
 <div>
-
-    <hr />
-
     <div class="row">
+        <h4 class="bg-info shaded text-muted" style="text-align:center">
+            Update your <strong>User Details</strong> or favourite some training <strong>Course Topics</strong>
+        </h4>
         <div class="col-md-6">
+                <h4 class="bg-warning shaded">
+                    User Details
+                </h4>
             <div class="panel panel-default">
-                <div class="panel-body">
-                    <h4>Personal Details</h4>
-
-                    <table class="table">
-                        <tr>
-                            <td><b>Name</b></td>
-                            <td>@Model.Person_Name</td>
-                        </tr>
-                        <tr>
-                            <td>Surname</td>
-                            <td>@Model.Person_Surname</td>
-                        </tr>
-                        <tr>
-                            <td><b>Email Address</b></td>
-                            <td>@Model.Person_Email</td>
-                        </tr>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td>@Model.Person_Name</td>
+                            </tr>
+                            <tr>
+                                <td><b>Surname</b></td>
+                                <td>@Model.Person_Surname</td>
+                            </tr>
+                            <tr>
+                                <td><b>Email Address</b></td>
+                                <td>@Model.Person_Email</td>
+                            </tr>
+                        </tbody>
                     </table>
+                <div class="panel-body">
+                    @Html.ActionLink("Update Details", "UpdateDetails", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-primary" })
                 </div>
             </div>
-            @Html.ActionLink("Update Details", "UpdateDetails", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-primary" })
         </div>
         <div class="col-md-6">
+            <div>
+                <h4 class="bg-warning shaded">
+                    My Favourite Topics
+                </h4>
+                <select class="form-control drop-fixed" id="details_categorySelect">
+                    <option value="all" selected>All</option>
+                    @foreach (Category c in categories)
+                    {
+                        <option value="@c.Category_ID">@c.Category_Name</option>
+                    }
+                </select>
+            </div>
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h4>Favourite Course Topics</h4>
-
-                    <hr />
-                    <text>Categories</text>
-                    <select class="form-control" id="details_categorySelect">
-                        <option value="all" selected>All</option>
-                        @foreach (Category c in categories)
-                        {
-                            <option value="@c.Category_ID">@c.Category_Name</option>
-                        }
-                    </select>
-
-                    <hr />
                     @if (pt.Any())
                     {
-                        <p>Topics</p>
-                        <select class="form-control" id="details_topicSelect" size="5">
+                        <select class="form-control" id="details_topicSelect" size="8" style="max-width:600px; height:150px">
                             @foreach (Person_Topic t in pt)
                             {
                                 <option value="@t.Topic.Topic_Seq">@t.Topic.Topic_Name</option>
@@ -65,11 +66,13 @@
                     }
                     else
                     {
-                        <p class="center-block">No Favourite Topics</p>
+                        <p class="center-block text-info">No Favourite Topics</p>
                     }
                 </div>
+                <div class="panel-body">
+                    @Html.ActionLink("Update Favourite Topics", "updateFavTopics", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-primary" })
+                </div>
             </div>
-            @Html.ActionLink("Update Favourite Topics", "updateFavTopics", "RegisteredPerson", htmlAttributes: new { @class = "btn btn-primary" })
         </div>
     </div>
 </div>
