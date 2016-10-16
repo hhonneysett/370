@@ -16,18 +16,22 @@ namespace LibraryAssistantApp.Controllers
         private LibraryAssistantEntities db = new LibraryAssistantEntities();
 
         // GET: Question_Bank
-        public ActionResult Index(int? Topic, string Search)
+        public ActionResult Index(int? Topic, string Search, string NewTopic)
         {
             //var question_Bank = db.Question_Bank.Include(q => q.Question_Topic).Include(q => q.Style_Type);
-
+            ViewBag.Search = Search;
             ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
-
+            ViewBag.NewTopic = NewTopic;
+            
             if (Topic == null)
             {
+              
                 return View(db.Question_Bank.Where(X => X.Question_Text.Contains(Search) || Search == null).ToList());
             }
             else
             {
+                int rows =db.Question_Bank.Where(X => X.Topic_Seq == Topic).Count();
+                ViewBag.rows = rows;
                 return View(db.Question_Bank.Where(X => X.Question_Text.Contains(Search) && X.Topic_Seq == Topic || Search == null).ToList());
             }
 
@@ -47,7 +51,7 @@ namespace LibraryAssistantApp.Controllers
 
 
         // GET: Question_Bank/Create
-        public ActionResult Create(string Name, int? Topic)
+        public ActionResult Create(string Name, int? Topic, string NewTopic)
         {
             if (Topic == null)
             {
@@ -57,10 +61,10 @@ namespace LibraryAssistantApp.Controllers
             {
                 ViewBag.Topic_Seq = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic);
             }
-
+            ViewBag.TopicName = Topic;
             ViewBag.Question_Text = Name;
             ViewBag.Style_Type_IDName = "None";
-
+            ViewBag.NewTopic = NewTopic;
             ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID");
             return View();
         }
@@ -70,10 +74,21 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.NewTopic = NewTopic;
             ViewBag.Topic_Name = Topic_Name;
             ViewBag.Topic_Des = Topic_Des;
-            ViewBag.Topic_Seq = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
-            ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID");
-            ViewBag.Description = db.Style_Type.Where(X => X.Style_Type_ID == Style_Type_ID).Select(Y => Y.Description).Single();
-            ViewBag.Image = db.Style_Type.Where(X => X.Style_Type_ID == Style_Type_ID).Select(Y => Y.Preview).Single();
+
+            if (Style_Type_ID =="")
+            {
+                ViewBag.Topic_Seq = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
+                ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID");
+              
+            }
+            else
+            {
+                ViewBag.Topic_Seq = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
+                ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID");
+                ViewBag.Description = db.Style_Type.Where(X => X.Style_Type_ID == Style_Type_ID).Select(Y => Y.Description).Single();
+                ViewBag.Image = db.Style_Type.Where(X => X.Style_Type_ID == Style_Type_ID).Select(Y => Y.Preview).Single();
+
+            }
             ViewBag.Question_Text = Question_Text;
             ViewBag.Style_Type_IDName = Style_Type_ID;
             return View("Create");
@@ -93,12 +108,12 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }
 
-        public ActionResult New_Possible_Answer_From_Edit(string Style_Type_ID, int Question_Seq, string Question_Text, int Topic_Seq)
+        public ActionResult New_Possible_Answer_From_Edit(string Style_Type_ID, int Question_Seq, string Question_Text, int Topic_Seqs)
         {
             ViewBag.Question_Text = Question_Text;
             ViewBag.Style_Type_ID = Style_Type_ID;
             ViewBag.Question_Seq = Question_Seq;
-            ViewBag.Topic_Seq = Topic_Seq;
+            ViewBag.Topic_Seq = Topic_Seqs;
             ViewBag.EditNewPossibleAnswer = "Yes";
             return View("Possible_Answer");
         }
@@ -200,6 +215,8 @@ namespace LibraryAssistantApp.Controllers
             if (ViewBag.NewTopic == "YES")
             {
                 ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Name);
+                int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Name).Count();
+                ViewBag.rows = rows;
                 return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Name).ToList());
             }
             else
@@ -296,6 +313,9 @@ namespace LibraryAssistantApp.Controllers
             if (ViewBag.NewTopic == "YES")
             {
                 ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Name);
+                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Name);
+                int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Name).Count();
+                ViewBag.rows = rows;
                 return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Name).ToList());
             }
             else
@@ -415,66 +435,112 @@ namespace LibraryAssistantApp.Controllers
             return View("Index", db.Question_Bank.ToList());
         }
        
-        public ActionResult ViewQuestion (int id)
+        public ActionResult ViewQuestion (int? id, string NewTopic, int?Topic_Seq)
         {
-            ViewBag.Question1_StyleType = db.Question_Bank.Where(X => X.Question_Seq == id).Select(Y => Y.Style_Type_ID).Single();           
-            ViewBag.Question1 = db.Question_Bank.Where(X => X.Question_Seq == id).Select(Y => Y.Question_Text).Single();
-            int Count1 = db.Possible_Answer.Where(X => X.Question_Seq == id).Count();
-            ViewBag.Count1 = Count1;
-
-            if (Count1 == 0)
+            if (id == null)
             {
-                //No possible answers
-            }
-            else if (Count1 == 1)
-            {
-                ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
-            }
-            else if (Count1 == 2)
-            {
-                ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer2_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 2).Select(Y => Y.Answer_Text).Single();
-            }
-            else if (Count1 == 3)
-            {
-                ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer2_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 2).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer3_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 3).Select(Y => Y.Answer_Text).Single();
-            }
-            else if (Count1 == 4)
-            {
-                ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer2_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 2).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer3_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 3).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer4_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 4).Select(Y => Y.Answer_Text).Single();
-            }
-            else if (Count1 == 5)
-            {
-                ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer2_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 2).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer3_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 3).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer4_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 4).Select(Y => Y.Answer_Text).Single();
-                ViewBag.PossibleAnswer5_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 5).Select(Y => Y.Answer_Text).Single();
-            }
-
-            int _count_ = db.Questionnaire_Questions.Where(X => X.Question_Seq == id).Count();
-            List<Questionnaire_Questions> qq = db.Questionnaire_Questions.Where(X => X.Question_Seq == id).ToList();
-            string[] UsedWhere = new string[_count_];
-            if (_count_ > 0)
-            {
-                ViewBag.HasBeenUsed = "Yes";
-                ViewBag.Count = _count_;
-
-                for (int i = 0; i < _count_; i++)
-                {
-                    int ID_Name = qq[i].Questionnaire_ID;
-                    UsedWhere[i] = db.Questionnaires.Where(X => X.Questionnaire_ID == ID_Name).Select(Y => Y.Name).Single();                        
-                }
                 
-            }
-            ViewBag.UsedWhere = UsedWhere;
-            return View("View");
+                if (NewTopic == "YES")
+                {
+                    ViewBag.NewTopic = NewTopic;
 
+                    ViewBag.CannotEdit = "Yes";
+                    ViewBag.CannotEditMessage = "Please select an item to proceed";
+                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
+                    int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).Count();
+                    ViewBag.rows = rows;
+                    return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).ToList());
+                }
+                else
+                {
+                    ViewBag.CannotEdit = "Yes";
+                    ViewBag.CannotEditMessage = "Please select an item to proceed";
+                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                    return View("Index", db.Question_Bank);
+                }
+            }
+            else
+            {
+
+                ViewBag.NewTopic = NewTopic;
+                ViewBag.Topic_Seq = db.Question_Bank.Where(X => X.Question_Seq == id).Select(Y => Y.Topic_Seq).Single();
+                ViewBag.Question1_StyleType = db.Question_Bank.Where(X => X.Question_Seq == id).Select(Y => Y.Style_Type_ID).Single();
+                ViewBag.Question1 = db.Question_Bank.Where(X => X.Question_Seq == id).Select(Y => Y.Question_Text).Single();
+                int Count1 = db.Possible_Answer.Where(X => X.Question_Seq == id).Count();
+                ViewBag.Count1 = Count1;
+
+                if (Count1 == 0)
+                {
+                    //No possible answers
+                }
+                else if (Count1 == 1)
+                {
+                    ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
+                }
+                else if (Count1 == 2)
+                {
+                    ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer2_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 2).Select(Y => Y.Answer_Text).Single();
+                }
+                else if (Count1 == 3)
+                {
+                    ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer2_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 2).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer3_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 3).Select(Y => Y.Answer_Text).Single();
+                }
+                else if (Count1 == 4)
+                {
+                    ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer2_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 2).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer3_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 3).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer4_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 4).Select(Y => Y.Answer_Text).Single();
+                }
+                else if (Count1 == 5)
+                {
+                    ViewBag.PossibleAnswer1_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 1).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer2_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 2).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer3_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 3).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer4_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 4).Select(Y => Y.Answer_Text).Single();
+                    ViewBag.PossibleAnswer5_Q1 = db.Possible_Answer.Where(X => X.Question_Seq == id && X.Display_Order == 5).Select(Y => Y.Answer_Text).Single();
+                }
+
+                int _count_ = db.Questionnaire_Questions.Where(X => X.Question_Seq == id).Count();
+                List<Questionnaire_Questions> qq = db.Questionnaire_Questions.Where(X => X.Question_Seq == id).ToList();
+                string[] UsedWhere = new string[_count_];
+                if (_count_ > 0)
+                {
+                    ViewBag.HasBeenUsed = "Yes";
+                    ViewBag.Count = _count_;
+
+                    for (int i = 0; i < _count_; i++)
+                    {
+                        int ID_Name = qq[i].Questionnaire_ID;
+                        UsedWhere[i] = db.Questionnaires.Where(X => X.Questionnaire_ID == ID_Name).Select(Y => Y.Name).Single();
+                    }
+
+                }
+                ViewBag.UsedWhere = UsedWhere;
+                return View("View");
+            }
+        }
+        
+
+            public ActionResult BackFromDelete(string NewTopic, int Topic_Seq)
+        {
+            if (NewTopic == "YES")
+            {
+                ViewBag.NewTopic = NewTopic;
+                
+                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
+                int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).Count();
+                ViewBag.rows = rows;
+                return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).ToList());
+            }
+            else
+            {
+                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                return View("Index", db.Question_Bank);
+            }
         }
 
 
@@ -528,9 +594,11 @@ namespace LibraryAssistantApp.Controllers
                     db.SaveChanges();
                     // -------------------------------Action Log ----------------------------------------//
 
-                    if (ViewBag.NewTopic == "YES")
+                    if (NewTopic == "YES")
                     {
                         ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
+                        int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).Count();
+                        ViewBag.rows = rows;
                         return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).ToList());
                     }
                     else
@@ -562,11 +630,28 @@ namespace LibraryAssistantApp.Controllers
 
 
         // GET: Question_Bank/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, string NewTopic)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (false/*NewTopic == "YES"*/)
+                {
+                    //ViewBag.NewTopic = NewTopic;
+
+                    //ViewBag.CannotEdit = "Yes";
+                    //ViewBag.CannotEditMessage = "Please select an item to proceed";
+                    //ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
+                    //int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).Count();
+                    //ViewBag.rows = rows;
+                    //return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).ToList());
+                }
+                else
+                {
+                    ViewBag.CannotEdit = "Yes";
+                    ViewBag.CannotEditMessage = "Please select an item to proceed";
+                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                    return View("Index", db.Question_Bank);
+                }
             }
             Question_Bank question_Bank = db.Question_Bank.Find(id);
             if (question_Bank == null)
@@ -577,6 +662,7 @@ namespace LibraryAssistantApp.Controllers
             int _count_ = db.Questionnaire_Questions.Where(X => X.Question_Seq == id).Count();
             if (_count_ > 0)
             {
+                ViewBag.NewTopic = NewTopic;
                 ViewBag.CannotEdit = "Yes";
                 ViewBag.CannotEditMessage = "Question: " + question_Bank.Question_Text + " cannot be edited as it has been assigned to a questionnaire. Click on 'View' for more details.";
                 ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
@@ -584,9 +670,13 @@ namespace LibraryAssistantApp.Controllers
             }
             else
             {
-                ViewBag.Topic_Seq = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", question_Bank.Topic_Seq);
+                ViewBag.NewTopic = NewTopic;
+                ViewBag.Topic_Seq = question_Bank.Topic_Seq;
+                ViewBag.Topic_Seqs = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", question_Bank.Topic_Seq);
                 ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID", question_Bank.Style_Type_ID);
-                return View(question_Bank);
+                ViewBag.Question_Seq = question_Bank.Question_Seq;
+                ViewBag.Question_Text = question_Bank.Question_Text;
+                return View("Edit",question_Bank);
             }
         }        
     
@@ -635,45 +725,39 @@ namespace LibraryAssistantApp.Controllers
             return View("Edit_Possible_Answer");
         }
 
-
-        // POST: Question_Bank/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Question_Seq,Question_Text,Topic_Seq,Style_Type_ID")] Question_Bank question_Bank)
+        
+        public ActionResult Editing(string Question_Text, int Question_Seq, int Topic_Seqs, string StyleType, string NewTopic)
         {           
                 if (ModelState.IsValid)
                 {
-                    if (AreThereDuplicates(question_Bank.Question_Text, question_Bank.Topic_Seq))
+                    if (AreThereDuplicates(Question_Text, Topic_Seqs))
                     {
                         //If its the same question then it should be fine
-                        if (db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Question_Text).Single() == question_Bank.Question_Text)
+                        if (db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Select(Y => Y.Question_Text).Single() == Question_Text)
                         {
                             //Did you change the style type
                             //No
-                            if (db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Style_Type_ID).Single() == question_Bank.Style_Type_ID)
+                            if (db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Select(Y => Y.Style_Type_ID).Single() == StyleType)
                             {
-                                if (question_Bank.Style_Type_ID == "Free Text")
+                                if (StyleType == "Free Text")
                                 {
-                                    //Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Single();
-                                    //Existing.Question_Text = question_Bank.Question_Text;
-                                    //Existing.Style_Type_ID = question_Bank.Style_Type_ID;
-                                    //Existing.Topic_Seq = question_Bank.Topic_Seq;
+                                Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Single();
+                                Existing.Question_Text = Question_Text;
+                                Existing.Style_Type_ID = StyleType;
+                                Existing.Topic_Seq = Topic_Seqs;
 
-                                    //db.Question_Bank.Add(Existing);                                                              
-                                    //db.SaveChanges();
+                                
 
-                                    db.Entry(question_Bank).State = EntityState.Modified;
+                                db.Entry(Existing).State = EntityState.Modified;
                                     db.SaveChanges();
 
                                     ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
                                     ViewBag.EditComplete = "Yes";
 
-                                    @ViewBag.EditCompleteMessage = "Question '" + question_Bank.Question_Text + "' successfully edited";
+                                    ViewBag.EditCompleteMessage = "Question '" + Question_Text + "' successfully edited";
 
                                     // -------------------------------Action Log ----------------------------------------//
-                                    string name = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Question_Text).Single();
+                                    string name = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Select(Y => Y.Question_Text).Single();
                                     Person_Session_Action_Log psal = new Person_Session_Action_Log();
                                     psal.Action_DateTime = DateTime.Now;
                                     psal.Action_ID = 11;
@@ -683,50 +767,58 @@ namespace LibraryAssistantApp.Controllers
                                 psal.Action_Performed = "Question: " + name;
                                     db.Person_Session_Action_Log.Add(psal);
                                     db.SaveChanges();
-                                    // -------------------------------Action Log ----------------------------------------//
+                                // -------------------------------Action Log ----------------------------------------//
 
-
-                                    return View("Index", db.Question_Bank.ToList());
+                                if (NewTopic == "YES")
+                                {
+                                    ViewBag.NewTopic = NewTopic;
+                                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seqs);
+                                    int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seqs).Count();
+                                    ViewBag.rows = rows;
+                                    return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seqs).ToList());
                                 }
                                 else
                                 {
-                                    //Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Single();
-                                    //Existing.Question_Text = question_Bank.Question_Text;
-                                    //Existing.Style_Type_ID = question_Bank.Style_Type_ID;
-                                    //Existing.Topic_Seq = question_Bank.Topic_Seq;
-                                    //db.Question_Bank.Add(Existing);
-                                    //db.SaveChanges();
+                                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                                    return View("Index", db.Question_Bank.ToList());
+                                }
+                                
+                                }
+                                else
+                                {
+                                Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Single();
+                                Existing.Question_Text = Question_Text;
+                                Existing.Style_Type_ID = StyleType;
+                                Existing.Topic_Seq = Topic_Seqs;
 
-                                    db.Entry(question_Bank).State = EntityState.Modified;
+                                db.Entry(Existing).State = EntityState.Modified;
                                     db.SaveChanges();
 
-                                    return RedirectToAction("Edit_Possible_Answer", new { question_Bank.Question_Seq, question_Bank.Question_Text, question_Bank.Style_Type_ID });
+                                    return RedirectToAction("Edit_Possible_Answer", new { Question_Seq, Question_Text, StyleType });
                                 }
                             }
                             //Yes
                             else
                             {
                                 //Remove previously saved possible answers
-                                db.Possible_Answer.RemoveRange(db.Possible_Answer.Where(X => X.Question_Seq == question_Bank.Question_Seq).ToList());
+                                db.Possible_Answer.RemoveRange(db.Possible_Answer.Where(X => X.Question_Seq == Question_Seq).ToList());
 
-                                if (question_Bank.Style_Type_ID == "Free Text")
+                                if (StyleType == "Free Text")
                                 {
-                                    //Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Single();
-                                    //Existing.Question_Text = question_Bank.Question_Text;
-                                    //Existing.Style_Type_ID = question_Bank.Style_Type_ID;
-                                    //Existing.Topic_Seq = question_Bank.Topic_Seq;
-                                    //db.Question_Bank.Add(Existing);
-                                    //db.SaveChanges();
+                                Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Single();
+                                Existing.Question_Text = Question_Text;
+                                Existing.Style_Type_ID = StyleType;
+                                Existing.Topic_Seq = Topic_Seqs;
 
-                                    db.Entry(question_Bank).State = EntityState.Modified;
+                                db.Entry(Existing).State = EntityState.Modified;
                                     db.SaveChanges();
 
                                     ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
                                     ViewBag.EditComplete = "Yes";
-                                    @ViewBag.EditCompleteMessage = "Question '" + question_Bank.Question_Text + "' successfully edited";
+                                    ViewBag.EditCompleteMessage = "Question '" + Question_Text + "' successfully edited";
 
                                     // -------------------------------Action Log ----------------------------------------//
-                                    string name = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Question_Text).Single();
+                                    string name = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Select(Y => Y.Question_Text).Single();
                                     Person_Session_Action_Log psal = new Person_Session_Action_Log();
                                     psal.Action_DateTime = DateTime.Now;
                                     psal.Action_ID = 11;
@@ -736,52 +828,71 @@ namespace LibraryAssistantApp.Controllers
                                 psal.Action_Performed = "Question: " + name;
                                     db.Person_Session_Action_Log.Add(psal);
                                     db.SaveChanges();
-                                    // -------------------------------Action Log ----------------------------------------//
+                                // -------------------------------Action Log ----------------------------------------//
 
 
 
-                                    return View("Index", db.Question_Bank.ToList());
+                                if (NewTopic == "YES")
+                                {
+                                    ViewBag.NewTopic = NewTopic;
+                                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seqs);
+                                    int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seqs).Count();
+                                    ViewBag.rows = rows;
+                                    return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seqs).ToList());
                                 }
                                 else
                                 {
-                                    //Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Single();
-                                    //Existing.Question_Text = question_Bank.Question_Text;
-                                    //Existing.Style_Type_ID = question_Bank.Style_Type_ID;
-                                    //Existing.Topic_Seq = question_Bank.Topic_Seq;
-                                    //db.Question_Bank.Add(Existing);
-                                    //db.SaveChanges();
+                                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                                    return View("Index", db.Question_Bank.ToList());
+                                }
+                            }
+                                else
+                                {
+                                Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Single();
+                                Existing.Question_Text = Question_Text;
+                                Existing.Style_Type_ID = StyleType;
+                                Existing.Topic_Seq = Topic_Seqs;
 
-                                    db.Entry(question_Bank).State = EntityState.Modified;
+                                db.Entry(Existing).State = EntityState.Modified;
                                     db.SaveChanges();
 
-                                    return RedirectToAction("New_Possible_Answer_From_Edit", new { question_Bank.Style_Type_ID, question_Bank.Question_Seq, question_Bank.Question_Text, question_Bank.Topic_Seq });
+                                    return RedirectToAction("New_Possible_Answer_From_Edit", new { StyleType, Question_Seq, Question_Text, Topic_Seqs });
                                 }
                             }
                         }
                         else
                         {
-                            ModelState.AddModelError("Question_Text", "This question already exists for the selected topic. Please choose another topic or question.");
-                            ViewBag.Topic_Seq = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", question_Bank.Topic_Seq);
-                            ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID", question_Bank.Style_Type_ID);
-                            return View(question_Bank);
+                        ViewBag.ErrorMessage = "This question already exists for the selected topic. Please choose another topic or question.";
+                            ViewBag.Topic_Seqs = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seqs);
+                            ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID", StyleType);
+                        ViewBag.Question_Text = Question_Text;
+                        ViewBag.Question_Seq = Question_Seq;
+                        ViewBag.NewTopic = NewTopic;
+                        ViewBag.Topic_Seq = Topic_Seqs;
+                            return View("Edit");
                         }
                     }
                     else
                     {
                         //Did you change the style type
                         //No
-                        if (db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Style_Type_ID).Single() == question_Bank.Style_Type_ID)
+                        if (db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Select(Y => Y.Style_Type_ID).Single() == StyleType)
                         {
-                            if (question_Bank.Style_Type_ID == "Free Text")
+                            if (StyleType == "Free Text")
                             {
-                                db.Entry(question_Bank).State = EntityState.Modified;
+                            Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Single();
+                            Existing.Question_Text = Question_Text;
+                            Existing.Style_Type_ID = StyleType;
+                            Existing.Topic_Seq = Topic_Seqs;
+
+                            db.Entry(Existing).State = EntityState.Modified;
                                 db.SaveChanges();
                                 ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
                                 ViewBag.EditComplete = "Yes";
-                                @ViewBag.EditCompleteMessage = "Question '" + question_Bank.Question_Text + "' successfully edited";
+                                @ViewBag.EditCompleteMessage = "Question '" + Question_Text + "' successfully edited";
 
                                 // -------------------------------Action Log ----------------------------------------//
-                                string name = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Question_Text).Single();
+                                string name = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Select(Y => Y.Question_Text).Single();
                                 Person_Session_Action_Log psal = new Person_Session_Action_Log();
                                 psal.Action_DateTime = DateTime.Now;
                                 psal.Action_ID = 11;
@@ -791,17 +902,34 @@ namespace LibraryAssistantApp.Controllers
                             psal.Action_Performed = "Question: " + name;
                                 db.Person_Session_Action_Log.Add(psal);
                                 db.SaveChanges();
-                                // -------------------------------Action Log ----------------------------------------//
+                            // -------------------------------Action Log ----------------------------------------//
 
 
-
-                                return View("Index", db.Question_Bank.ToList());
+                            if (NewTopic == "YES")
+                            {
+                                ViewBag.NewTopic = NewTopic;
+                                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seqs);
+                                int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seqs).Count();
+                                ViewBag.rows = rows;
+                                return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seqs).ToList());
                             }
                             else
                             {
-                                db.Entry(question_Bank).State = EntityState.Modified;
+                                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                                return View("Index", db.Question_Bank.ToList());
+                            }
+                        }
+                            else
+                            {
+
+                            Question_Bank Existing = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Single();
+                            Existing.Question_Text = Question_Text;
+                            Existing.Style_Type_ID = StyleType;
+                            Existing.Topic_Seq = Topic_Seqs;
+
+                            db.Entry(Existing).State = EntityState.Modified;
                                 db.SaveChanges();
-                                return RedirectToAction("Edit_Possible_Answer", new { question_Bank.Question_Seq, question_Bank.Question_Text, question_Bank.Style_Type_ID });
+                                return RedirectToAction("Edit_Possible_Answer", new { Question_Seq, Question_Text, StyleType });
                             }
 
                         }
@@ -809,16 +937,16 @@ namespace LibraryAssistantApp.Controllers
                         else
                         {
                             //Remove previously saved possible answers
-                            db.Possible_Answer.RemoveRange(db.Possible_Answer.Where(X => X.Question_Seq == question_Bank.Question_Seq).ToList());
+                            db.Possible_Answer.RemoveRange(db.Possible_Answer.Where(X => X.Question_Seq == Question_Seq).ToList());
 
-                            if (question_Bank.Style_Type_ID == "Free Text")
+                            if (StyleType == "Free Text")
                             {
                                 ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
                                 ViewBag.EditComplete = "Yes";
-                                @ViewBag.EditCompleteMessage = "Question '" + question_Bank.Question_Text + "' successfully edited";
+                                @ViewBag.EditCompleteMessage = "Question '" + Question_Text + "' successfully edited";
 
                                 // -------------------------------Action Log ----------------------------------------//
-                                string name = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Question_Text).Single();
+                                string name = db.Question_Bank.Where(X => X.Question_Seq == Question_Seq).Select(Y => Y.Question_Text).Single();
                                 Person_Session_Action_Log psal = new Person_Session_Action_Log();
                                 psal.Action_DateTime = DateTime.Now;
                                 psal.Action_ID = 11;
@@ -828,33 +956,63 @@ namespace LibraryAssistantApp.Controllers
                             psal.Action_Performed = "Question: " + name;
                                 db.Person_Session_Action_Log.Add(psal);
                                 db.SaveChanges();
-                                // -------------------------------Action Log ----------------------------------------//
+                            // -------------------------------Action Log ----------------------------------------//
 
-
-                                return View("Index", db.Question_Bank.ToList());
+                            if (NewTopic == "YES")
+                            {
+                                ViewBag.NewTopic = NewTopic;
+                                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seqs);
+                                int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seqs).Count();
+                                ViewBag.rows = rows;
+                                return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seqs).ToList());
                             }
                             else
                             {
-                                return RedirectToAction("New_Possible_Answer_From_Edit", new { question_Bank.Style_Type_ID, question_Bank.Question_Seq, question_Bank.Question_Text, question_Bank.Topic_Seq });
+                                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                                return View("Index", db.Question_Bank.ToList());
+                            }
+                        }
+                            else
+                            {
+                                return RedirectToAction("New_Possible_Answer_From_Edit", new { StyleType, Question_Seq, Question_Text, Topic_Seqs });
                             }
                         }
 
 
                     }
                 }
-                ViewBag.Topic_Seq = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", question_Bank.Topic_Seq);
-                ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID", question_Bank.Style_Type_ID);
-                return View(question_Bank);
+                ViewBag.Topic_Seq = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seqs);
+                ViewBag.Style_Type_ID = new SelectList(db.Style_Type, "Style_Type_ID", "Style_Type_ID", StyleType);
+                ViewBag.Question_Text = Question_Text;
+            ViewBag.Question_Seq = Question_Seq;
+            return View();
             
     }
 
     // GET: Question_Bank/Delete/5
-    public ActionResult Delete(int? id)
+    public ActionResult Delete(int? id, string NewTopic)
     {
         if (id == null)
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
+                if (false/*NewTopic == "YES"*/)
+                {
+                    //ViewBag.NewTopic = NewTopic;
+
+                    //ViewBag.CannotEdit = "Yes";
+                    //ViewBag.CannotEditMessage = "Please select an item to proceed";
+                    //ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
+                    //int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).Count();
+                    //ViewBag.rows = rows;
+                    //return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).ToList());
+                }
+                else
+                {
+                    ViewBag.CannotEdit = "Yes";
+                    ViewBag.CannotEditMessage = "Please select an item to proceed";
+                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                    return View("Index", db.Question_Bank);
+                }
+            }
         Question_Bank question_Bank = db.Question_Bank.Find(id);
         if (question_Bank == null)
         {
@@ -874,49 +1032,68 @@ namespace LibraryAssistantApp.Controllers
             {
                 ViewBag.OnlyQinT = "This question is the only question assigned to its topic. Both the question and its topic will be removed upon deletion";
             }
-
-
+            ViewBag.Topic_Seq = question_Bank.Topic_Seq;
+            ViewBag.NewTopic = NewTopic;
+            ViewBag.QID = question_Bank.Question_Seq;
             return View(question_Bank);
     }
 
-        public ActionResult DeleteQ (int id)
+        public ActionResult DeleteQ (int? id, string NewTopic)
         {
-            Question_Bank question_Bank = db.Question_Bank.Find(id);
-            int Count = db.Question_Bank.Where(X => X.Topic_Seq == question_Bank.Topic_Seq).Count();
+          
+                Question_Bank question_Bank = db.Question_Bank.Find(id);
+                int Count = db.Question_Bank.Where(X => X.Topic_Seq == question_Bank.Topic_Seq).Count();
+                int Topic_Seq = question_Bank.Topic_Seq;
+                // -------------------------------Action Log ----------------------------------------//
+                string name = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Question_Text).Single();
+                Person_Session_Action_Log psal = new Person_Session_Action_Log();
+                psal.Action_DateTime = DateTime.Now;
+                psal.Action_ID = 11;
+                psal.Session_ID = db.Person_Session_Log.Select(Y => Y.Session_ID).Max();
+                //psal.Ac = "Delete";
+                psal.Crud_Operation = "Delete";
+                psal.Action_Performed = "Question: " + name;
+                db.Person_Session_Action_Log.Add(psal);
+                db.SaveChanges();
+                // -------------------------------Action Log ----------------------------------------//
 
-            // -------------------------------Action Log ----------------------------------------//
-            string name = db.Question_Bank.Where(X => X.Question_Seq == question_Bank.Question_Seq).Select(Y => Y.Question_Text).Single();
-            Person_Session_Action_Log psal = new Person_Session_Action_Log();
-            psal.Action_DateTime = DateTime.Now;
-            psal.Action_ID = 11;
-            psal.Session_ID = db.Person_Session_Log.Select(Y => Y.Session_ID).Max();
-            //psal.Ac = "Delete";
-            psal.Crud_Operation = "Delete";
-            psal.Action_Performed = "Question: " + name;
-            db.Person_Session_Action_Log.Add(psal);
-            db.SaveChanges();
-            // -------------------------------Action Log ----------------------------------------//
+
+
+                if (Count <= 1)
+                {
+                    Question_Topic question_Topic = db.Question_Topic.Where(X => X.Topic_Seq == question_Bank.Topic_Seq).Single();
+                    db.Question_Bank.Remove(question_Bank);
+                    db.Question_Topic.Remove(question_Topic);
+                }
+                else
+                {
+                    db.Question_Bank.Remove(question_Bank);
+                }
+
+                db.SaveChanges();
+                ViewBag.DeleteComplete = "Yes";
+                @ViewBag.DeleteCompleteMessage = "Question '" + question_Bank.Question_Text + "' deleted successfully";
 
 
 
-            if (Count <= 1)
-            {
-                Question_Topic question_Topic = db.Question_Topic.Where(X => X.Topic_Seq == question_Bank.Topic_Seq).Single();
-                db.Question_Bank.Remove(question_Bank);
-                db.Question_Topic.Remove(question_Topic);
-            }
-            else
-            {
-                db.Question_Bank.Remove(question_Bank);
-            }
 
-            db.SaveChanges();
-            ViewBag.DeleteComplete = "Yes";
-            @ViewBag.DeleteCompleteMessage = "Question '" + question_Bank.Question_Text + "' deleted to contain integrity";
-            ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                if (NewTopic == "YES")
+                {
+                    ViewBag.NewTopic = NewTopic;
 
-            return View("Index", db.Question_Bank.ToList());
+                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name", Topic_Seq);
 
+                    int rows = db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).Count();
+                    ViewBag.rows = rows;
+                    return View("Index", db.Question_Bank.Where(X => X.Topic_Seq == Topic_Seq).ToList());
+                }
+                else
+                {
+                    ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                    return View("Index", db.Question_Bank);
+                }
+
+            
         }
 
     // POST: Question_Bank/Delete/5

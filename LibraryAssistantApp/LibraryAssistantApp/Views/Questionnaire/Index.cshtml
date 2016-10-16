@@ -17,7 +17,10 @@
 {
     <div style="text-align:center" class="isa_success">@ViewBag.EditCompleteMessage</div>
 }
-
+@if (ViewBag.Error == "Yes")
+{
+    <div style="text-align:center" class="isa_error">@ViewBag.ErrorMessage</div>
+}
 
 <h3>Questionnaires</h3>
 
@@ -70,16 +73,16 @@
         </div>
         <div class="panel-footer">
             <div class="btn-group">
-                @Html.ActionLink("Details", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-view" })
+                @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit", title="Update the selected questionnaire." })
             </div>
             <div class="btn-group">
-                @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit" })
+                @Html.ActionLink("Details", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-view", title = "View the details of the selected questionnaire." })
             </div>
             <div class="btn-group">
-                @Html.ActionLink("Delete", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-delete" })
+                @Html.ActionLink("Delete", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-delete", title = "Delete the selected questionnaire." })
             </div>
             <div class="btn-group pull-right">
-                <button id="Select_Button" type="button" class="btn btn-primary" onclick="Create()">Create New</button>
+                <button title="Create a new questionnaire." id="Select_Button" type="button" class="btn btn-primary" onclick="Create()">Create New</button>
             </div>
         </div>
     </div>
@@ -99,7 +102,7 @@
                         Name
                     </label>
                     <div class="form-group-sm">
-                        @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value = (string)ViewBag.Search })
+                        @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value = (string)ViewBag.Search, @title = "Search questionnaires by name." })
                     </div>
                 </div>
             </div>
@@ -109,7 +112,7 @@
                         Topic
                     </label>
                     <div class="form-group-sm">
-                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
+                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic", @title= "Search questionnaires by topic." })
                     </div>
                 </div>
             </div>
@@ -125,7 +128,7 @@
                         new SelectListItem{ Text="Venue", Value = "Venue" },
                         new SelectListItem{ Text="Employee", Value = "Employee" },
                         new SelectListItem{ Text="Training Session", Value = "Training Session" }
-                     }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type })
+                     }, "All", htmlAttributes: new { @class = "form-control", id = "Assessment_Type", @value = (string)ViewBag.Assessment_Type, @title = "Search questionnaires by assessment type." })
                     </div>
                 </div>
             </div>
@@ -135,7 +138,7 @@
                     <ul style="list-style:none">
                         <li>
                             <label class="control-label" for="CheckBox">In-active Questionnaires</label>
-                            @Html.CheckBox("Include in-active questionaires", false, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox" })
+                            @Html.CheckBox("Include in-active questionaires", false, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox", @title= "When ticked all expired questionnaires will be included in the search." })
                         </li>
                     </ul>
                 }
@@ -144,7 +147,7 @@
                     <ul style="list-style:none">
                         <li>
                             <label class="control-label" for="CheckBox">In-active Questionnaires</label>
-                            @Html.CheckBox("Include in-active questionaires", true, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox", @data_toggle = "tooltip", @title = "Search for in-active questionnaires if selected." })
+                            @Html.CheckBox("Include in-active questionaires", true, htmlAttributes: new { @value = "Include in-active questionaires", id = "CheckBox", @title = "When ticked all expired questionnaires will be included in the search." })
                         </li>
                     </ul>
                 }
@@ -154,10 +157,10 @@
                 <div class="col-md-12">
                     <div class="form-group-sm">
                         <div class="btn-group">
-                            <input type="submit" class="btn btn-primary" value="Search" onclick="Search();" />
+                            <input title="Search questionnaires according to the search criteria." type="submit" class="btn btn-primary" value="Search" onclick="Search();" />
                         </div>
                         <div class="btn-group">
-                            <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questionnaires" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index","Questionnaire")'" />
+                            <input  title="Reset the search criteria and display all questionnaires" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index","Questionnaire")'" />
                         </div>
                     </div>
                 </div>
@@ -228,11 +231,6 @@
         }
 </style>
 
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
 
 <script type="text/javascript">
     $(document).ready(function () {

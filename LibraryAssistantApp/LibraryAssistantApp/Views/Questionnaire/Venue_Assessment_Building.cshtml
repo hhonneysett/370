@@ -82,6 +82,51 @@
             </table>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <h4 class="bg-info shaded">
+            Questionnaire Details
+        </h4>
+        <div class="panel panel-default">
+            <table class="table table-striped table-bordered">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><label>Name</label></td>
+                        <td>@ViewBag.Name</td>
+                    </tr>
+
+                    <tr>
+                        <td><label>Description</label></td>
+                        <td>@ViewBag.Description</td>
+                    </tr>
+
+                    <tr>
+                        <td><label>Activates on</label></td>
+                        <td>@ViewBag.Active_From</td>
+                    </tr>
+                    <tr>
+                        <td><label>Expires on</label></td>
+                        <td>@ViewBag.Active_To</td>
+                    </tr>
+                    <tr>
+                        <td><label>Assessment Type</label></td>
+                        <td>@ViewBag.Assessment_Type</td>
+                    </tr>
+                    <tr>
+                        <td><label>Topic</label></td>
+                        <td>@ViewBag.TopicName</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
     <div class="col-md-4">
         <h5 class="bg-info shaded">
             Venue Details
@@ -112,10 +157,10 @@
     </div>*@
 </div>
 <div class="btn-group">
-    <input type="submit" class="btn btn-primary" value="Back" onclick="location.href='@Url.Action("Back_From_Buildings","Questionnaire", new {ViewBag.SelectedCampus, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic, ViewBag.Edit_or_New})'" />
+    <input title="Return to the 'Select Campus' screen." type="submit" class="btn btn-primary" value="Back" onclick="location.href='@Url.Action("Back_From_Buildings","Questionnaire", new {ViewBag.SelectedCampus, ViewBag.Name, ViewBag.Description,ViewBag.Active_From,ViewBag.Active_To,ViewBag.Assessment_Type,ViewBag.Topic, ViewBag.Edit_or_New})'" />
 </div>
 <div class="btn-group">
-    <input type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
+    <input title="Proceed to select the building floor." type="button" class="btn btn-primary" value="Proceed" onclick="Submit()" />
 </div>
 
 <script>
@@ -156,9 +201,3 @@
 
 </script>
 
-
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>

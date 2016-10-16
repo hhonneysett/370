@@ -3,7 +3,7 @@
 @using LibraryAssistantApp.Models;
 
 <div id="buildings">
-    <div id="buildingDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingSummary">Select Building:</b></div>
+    <div id="buildingDetails" class="bg-info shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="buildingSummary">Select Building:</b></div>
     <hr />
     <div class="row" id="toggleBuildings">
 
@@ -19,7 +19,7 @@
                     <tbody>
                         @foreach (Building building in Model)
                         {
-                            <tr id="@building.Building_ID">
+                            <tr id="@building.Building_ID" title="Select building.">
                                 <td>
                                     @building.Building_Name
                                 </td>
@@ -51,7 +51,7 @@
 
         <div class="col-md-3 col-md-offset-1">
             <div id="search" style="padding-bottom:10px">
-                <input id="searchBuilding" type="text" placeholder="Search Building" /><button id="btnSearchBuilding">
+                <input id="searchBuilding" type="text" placeholder="Search Building" title="Enter search criteria"/><button id="btnSearchBuilding" title="Filter campus by search criteria.">
                     <span class="fa fa-search" />
                 </button>
             </div>
@@ -61,15 +61,15 @@
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateBuilding">Update Building</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateBuilding" title="Update seleceted building.">Update Building</button>
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteBuilding">Delete Building</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteBuilding" title="Delete seleceted building.">Delete Building</button>
             </div>
 
             <div style="padding-bottom:5px; width:80%">
-                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnViewBuildingFloors">View Building Floors</button>
+                <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnViewBuildingFloors" title="View buildings related to the selected building.">View Building Floors</button>
             </div>
         </div>
 

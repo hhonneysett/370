@@ -8,13 +8,14 @@
 <link rel="stylesheet" href="~/Content/datatables.min.css" />
 <script src="~/Scripts/DataTable/datatables.min.js"></script>
 
-<h2>Common Problems</h2>
-
+<div>
+    <h2>Common Problems</h2>
+    @Html.ActionLink("Create New", "addCommonProblem", null, new { @class = "btn btn-primary exp-fixed", @title = "Create new common problem." })
+</div>
+<hr />
 <div class="row">
     <div class="col-md-12">
-        <p>
-            @Html.ActionLink("Create New", "addCommonProblem")
-        </p>
+        <h4 class="bg-info shaded">Existing common problems:</h4>
         <div class="panel panel-default">
             <div class="panel-body">
                 <table id="table" class="table table-bordered">

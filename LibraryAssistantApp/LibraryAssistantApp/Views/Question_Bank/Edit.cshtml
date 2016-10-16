@@ -5,8 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h3>Update Question</h3>
-@using (Html.BeginForm())
-{<div class="row" style="padding-top:15px; padding-left:25px">
+
+<div class="row" style="padding-top:15px; padding-left:25px">
         <p><strong>Update question details:</strong></p>
         <ul style="padding-bottom:0px; padding-top:5px">
             <li>
@@ -27,20 +27,21 @@
                 @Html.AntiForgeryToken()
                 <div class="form-horizontal">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    @Html.HiddenFor(model => model.Question_Seq)
+                    @Html.HiddenFor(model => model.Question_Seq, htmlAttributes: new { id = "Question_Seq", @Value = ViewBag.Question_Seq})
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.Question_Text, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Question_Text, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Question_Text, new { htmlAttributes = new { @class = "form-control", id = "Question_Text", @Value = ViewBag.Question_Text, title = "Update the question text" } })
+                            @Html.ValidationMessageFor(model => model.Question_Text, "", new { @class = "text-danger", id = "Error_Message"})
+                            <label class="text-danger">@ViewBag.ErrorMessage</label>
                         </div>
                     </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.Topic_Seq, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.DropDownList("Topic_Seq", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("Topic_Seqs", null, htmlAttributes: new { @class = "form-control", id = "Topic_Seqs", title = "Update the selected topic for the question" })
                             @Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -54,7 +55,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Style_Type_ID, "Style Type", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.DropDownList("Style_Type_ID", null, htmlAttributes: new { @class = "form-control", id = "StyleType_Dropdown" })
+                            @Html.DropDownList("Style_Type_ID", null, htmlAttributes: new { @class = "form-control", id = "StyleType_Dropdown", title = "Update the selected style type. If changed possible answers will be affected" })
                             @Html.ValidationMessageFor(model => model.Style_Type_ID, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -66,7 +67,7 @@
         <div class="col-md-6 col-md-offset-6">
             <div class="form-actions">
                 <div class="btn-group">
-                    <input data-toggle="tooltip" data-placement="right" title="Edit possible answers" type="submit" value="Proceed" class="btn btn-primary" />
+                    <input title="Edit possible answers of this question." type="submit" value="Proceed" class="btn btn-primary" onclick="Submit()"/>
                 </div>
                 <div class="btn-group">
                     <div class="isa_info" id="Warning"></div>
@@ -75,8 +76,10 @@
         </div>
     </div>
 </div>
-}
-@Html.ActionLink("Back to List", "Index")
+
+
+@Html.ActionLink("Back to List", "BackFromDelete", new { ViewBag.NewTopic, ViewBag.Topic_Seq })
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
@@ -97,17 +100,31 @@
             });
         });
 
-        //$("#StyleType_Dropdown").mouseenter(function () {
-        //    document.getElementById("Warning").innerHTML = "If the style type is changed then all previously saved possible answers will be deleted and new possible answers must be created."
-        //    document.getElementById("Warning").style.backgroundColor = "#BDE5F8";
-        //});
-
-
-        //$("#StyleType_Dropdown"). mouseout(function () {
-        //    document.getElementById("Warning").innerHTML = ""
-        //    document.getElementById("Warning").style.backgroundColor = "white";
-        //});
+       
     })
+</script>
+
+<script>
+
+
+    function Submit() {
+
+        var StyleType = document.getElementById("StyleType_Dropdown").value;
+        var Topic_Seqs = document.getElementById("Topic_Seqs").value;
+        var Question_Text = document.getElementById("Question_Text").value;
+        var Question_Seq = document.getElementById("Question_Seq").value;
+        
+        if (Question_Text != "") {
+            window.location.href = "/Question_Bank/Editing?Question_Text=" + Question_Text + "&Question_Seq=" + Question_Seq + "&Topic_Seqs=" + Topic_Seqs + "&StyleType=" + StyleType + "&Newtopic=" + '@ViewBag.NewTopic';
+        }
+        else {
+            document.getElementById("Error_Message").innerHTML = "Question text required.";
+        }
+
+
+
+    }
+
 </script>
 
 <style>
@@ -146,9 +163,3 @@
         }
 </style>
 
-
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>

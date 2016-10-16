@@ -13,7 +13,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Enter updated topic details:</h4>
+        <h4 class="bg-info shaded">Enter updated topic details:</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Topic_Seq)
@@ -21,7 +21,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Topic_Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Topic_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Topic_Name, new { htmlAttributes = new { @class = "form-control", @title = "Enter topic name.", @maxlength = "30" } })
                 @Html.ValidationMessageFor(model => model.Topic_Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @title = "Enter topic description.", @required = true, @maxlength = "50" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -37,7 +37,7 @@
         <div class="form-group">
             @Html.Label("Category", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <select id="categorySelect" class="form-control" name="category">
+                <select id="categorySelect" class="form-control" name="category" title="Select topic category.">
                     @foreach(var item in category)
                     {
                         <option value="@item.Category_ID">@item.Category_Name</option>

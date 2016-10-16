@@ -2,19 +2,24 @@
 
 @{
     ViewBag.Title = "Report A Problem";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
     var campuses = (IEnumerable<Campus>)ViewBag.Campuses;
 }
 
 <h2 id="title">Report Venue Problem</h2>
+<h4 class="bg-info shaded">Provide venue problem details below:</h4>
 
 <div class="row thanks">
     <hr />
     <div class="col-md-12">
+        <p class="text-muted"><b>Instructions:</b></p>
+        <ul class="text-muted" style="padding-bottom:10px">
+            <li>Select the venue you would like to report a problem for.</li>
+            <li>Describe the problem you have experienced.</li>
+            <li>Submit your venue problem and we shall work on fixing it.</li>
+        </ul>
+        <h4 class="bg-warning shaded">Select a venue:</h4>
         <div class="panel panel-default">
-            <div class="panel-heading">
-                Select A Venue
-            </div>
             <div class="panel-body">
                 <div class="form-group col-md-3">
                     <label>Campus:</label>
@@ -48,10 +53,8 @@
 
 <div id="problemDesc" disabled="disabled" class="row thanks" hidden>
     <div class="col-md-12">
+        <h4 class="bg-warning shaded">Problem description:</h4>
         <div class="panel panel-default">
-            <div class="panel-heading">
-                Problem Description
-            </div>
             <div class="panel-body">
                 <div class="col-md-4">
                     <div class="form-group">

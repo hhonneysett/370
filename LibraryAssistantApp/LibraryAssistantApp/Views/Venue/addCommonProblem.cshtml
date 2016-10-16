@@ -6,6 +6,7 @@
 }
 
 <h2>Add Common Problem</h2>
+<h4 class="bg-info shaded">Provide new common problem details below:</h4>
 
 @using (Html.BeginForm()) 
 {
@@ -17,7 +18,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Common_Problem_Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Common_Problem_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Common_Problem_Name, new { htmlAttributes = new { @class = "form-control", @title = "Enter common problem name." } })
                 @Html.ValidationMessageFor(model => model.Common_Problem_Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -25,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @title = "Enter common problem description." } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -33,7 +34,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Problem Type</label> 
             <div class="col-md-10">
-                @Html.DropDownList("Common_Problem_Type_ID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Common_Problem_Type_ID", null, htmlAttributes: new { @class = "form-control", @title = "Select common problem type." })
                 @Html.ValidationMessageFor(model => model.Common_Problem_Type_ID, "", new { @class = "text-danger" })
             </div>
         </div>

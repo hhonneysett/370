@@ -32,8 +32,7 @@
 </div>
 
 <div class="form-horizontal" style="padding-bottom:35px">
-@using (Html.BeginForm())
-            {
+
     @Html.AntiForgeryToken()
     <div class="row">
         <div class="col-md-6">
@@ -76,7 +75,7 @@
                 else
                 {
                     <p style="color:red">All associated possible answers will be deleted.</p>
-                    <input type="submit" value="Delete" class="btn btn-primary" />
+                    <input title="Confirm deletion of the question" type="submit" value="Delete" class="btn btn-primary" onclick="Delete()"/>
                     if (ViewBag.OnlyQinT != null)
                     {
                         <div style="text-align:center" class="isa_warning">@ViewBag.OnlyQinT</div>
@@ -85,9 +84,9 @@
             </div>
         </div>
     </div>
-}
+
 </div>
-@Html.ActionLink("Back to List", "Index")
+@Html.ActionLink("Back to List", "BackFromDelete",new { ViewBag.NewTopic, ViewBag.Topic_Seq})
 
 <style>
     .isa_info, .isa_success, .isa_warning, .isa_error {
@@ -125,3 +124,13 @@
             vertical-align: middle;
         }
 </style>
+
+<script>
+    function Delete()
+    {
+       
+
+        window.location.href = "/Question_Bank/DeleteQ?id=" +'@ViewBag.QID' + "&NewTopic=" + '@ViewBag.NewTopic';
+    }
+
+</script>

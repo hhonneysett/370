@@ -166,21 +166,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="#">
-                                Questionnaire
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav-third-level animated fadeIn" aria-expanded="false">
-                                <li>
-                                    @Html.ActionLink("Questions", "Index", "Question_Bank")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Question Topic", "Index", "Question_Topic")
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
+                        @*<li>
                             <a href="#">
                                 Access Control
                                 <span class="fa arrow"></span>
@@ -193,7 +179,7 @@
                                     @Html.ActionLink("Person Types", "Index", "PersonType")
                                 </li>
                             </ul>
-                        </li>
+                        </li>*@
                         <li>
                             <a href="#">
                                 Venues
@@ -258,6 +244,9 @@
                         </li>
                         <li>
                             @Html.ActionLink("Backup and Restore", "Index", "Backup")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Settings", "Index", "Settings")
                         </li>
                     </ul>
                 </li>

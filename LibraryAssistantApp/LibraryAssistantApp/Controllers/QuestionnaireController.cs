@@ -55,7 +55,7 @@ namespace LibraryAssistantApp.Controllers
 
                  string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
                
-                if (Answer == "1/1/0001 12:00:00 AM")
+                if (Answer == "0001/01/01 12:00:00 AM")
                 {
                     AnswerDates[i] = "Not yet responded";
                 }
@@ -595,7 +595,11 @@ namespace LibraryAssistantApp.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                ViewBag.Error = "Yes";
+                ViewBag.ErrorMessage = "Please select a topic to proceed";
+                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                var questionnaires = db.Questionnaires.Include(q => q.Question_Topic);
+                return View("Index", questionnaires.ToList());
             }
             Questionnaire questionnaire = db.Questionnaires.Find(id);
             if (questionnaire == null)
@@ -672,8 +676,8 @@ namespace LibraryAssistantApp.Controllers
             }
 
             // ----------Venue
-            var qvenue = db.Venues.Where(v => v.Venue_ID == questionnaire.Venue_ID).First();
-            if (qvenue != null)
+
+            if (questionnaire.Assessment_Type == "Venue")
             {
                 Venue myVenue = db.Venues.Where(X => X.Campus_ID == questionnaire.Campus_ID && X.Building_ID == questionnaire.Building_ID && X.Building_Floor_ID == questionnaire.Building_Floor_ID && X.Venue_ID == questionnaire.Venue_ID).Single();
 
@@ -681,7 +685,7 @@ namespace LibraryAssistantApp.Controllers
                 ViewBag.BuildingName = db.Buildings.Where(X => X.Campus_ID == questionnaire.Campus_ID && X.Building_ID == questionnaire.Building_ID).Select(Y => Y.Building_Name).Single();
                 ViewBag.BuildingFloor = db.Building_Floor.Where(X => X.Campus_ID == questionnaire.Campus_ID && X.Building_ID == questionnaire.Building_ID && X.Building_Floor_ID == questionnaire.Building_Floor_ID).Select(Y => Y.Floor_Name).Single();
                 ViewBag.Campus = db.Campus.Where(X => X.Campus_ID == questionnaire.Campus_ID).Select(Y => Y.Campus_Name).Single();
-}
+            }
             else
             {
                 ViewBag.VenueName = "None";
@@ -3477,6 +3481,14 @@ namespace LibraryAssistantApp.Controllers
             if (CountQuestions == 0)
             {
                 #region Going to questionnaire questions to get new questionnare question data
+
+                ViewBag.Name = questionnaire.Name;
+                ViewBag.Description = questionnaire.Description;
+                ViewBag.Active_From = questionnaire.Active_From;
+                ViewBag.Active_To = questionnaire.Active_To;
+                ViewBag.Assessment_Type = questionnaire.Assessment_Type;
+                ViewBag.VenueAssessment = "Yes";
+
                 ViewBag.Questionnaire_ID = Questionnaire_ID;
                 ViewBag.Topic = questionnaire.Topic_Seq;
                 ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == questionnaire.Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -3484,6 +3496,7 @@ namespace LibraryAssistantApp.Controllers
 
                 ViewBag.Questions = new SelectList(questions, "Question_Text", "Question_Text");
                 ViewBag.Edit_or_New = "Edit";
+                ViewBag.SelectedVenueName = db.Venues.Where(X => X.Campus_ID == SelectedCampus && X.Building_ID == SelectedBuilding && X.Building_Floor_ID == SelectedBuildingFloor && X.Venue_ID == Venue_ID).Select(Y => Y.Venue_Name).Single();
                 #endregion
                 return View("Edit_Questionnaire_Questions"); //Changed topic 
             }
@@ -3491,6 +3504,13 @@ namespace LibraryAssistantApp.Controllers
             {
                 #region Going to questionnaire questions with previously saved data
                 // =====Questionnaire questions details =======//
+                ViewBag.VenueAssessment = "Yes";
+                ViewBag.Name = questionnaire.Name;
+                ViewBag.Description = questionnaire.Description;
+                ViewBag.Active_From = questionnaire.Active_From;
+                ViewBag.Active_To = questionnaire.Active_To;
+                ViewBag.Assessment_Type = questionnaire.Assessment_Type;
+                ViewBag.SelectedVenueName = db.Venues.Where(X => X.Campus_ID == SelectedCampus && X.Building_ID == SelectedBuilding && X.Building_Floor_ID == SelectedBuildingFloor && X.Venue_ID == Venue_ID).Select(Y => Y.Venue_Name).Single();
                 ViewBag.Questionnaire_ID = Questionnaire_ID;
                 ViewBag.Topic = questionnaire.Topic_Seq;
                 ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == questionnaire.Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -3592,6 +3612,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
             ViewBag.Topic = Topic;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
 
             ViewBag.SelectedCampus = SelectedCampus;
             ViewBag.SelectedBuilding = SelectedBuilding;
@@ -3618,6 +3639,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
             ViewBag.Topic = Topic;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
 
             ViewBag.SelectedCampus = SelectedCampus;
             ViewBag.SelectedBuilding = SelectedBuilding;
@@ -3642,7 +3664,8 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
             ViewBag.Topic = Topic;
-            
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
+
             ViewBag.SelectedCampus = SelectedCampus;
             ViewBag.SelectedBuilding = SelectedBuilding;
             ViewBag.Count = db.Buildings.Where(X => X.Campus_ID == SelectedCampus).Count();
@@ -3664,6 +3687,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
             ViewBag.Topic = Topic;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
             ViewBag.Count = db.Campus.Count();
             ViewBag.SelectedCampus = SelectedCampus;
             ViewBag.SelectedCampusName = db.Campus.Where(X => X.Campus_ID == SelectedCampus).Select(Y => Y.Campus_Name).Single();
@@ -3715,6 +3739,12 @@ namespace LibraryAssistantApp.Controllers
             if (CountQuestions == 0)
             {
                 #region Going to questionnaire questions to get new questionnare question data
+                ViewBag.Name = questionnaire.Name;
+                ViewBag.Description = questionnaire.Description;
+                ViewBag.Active_From = questionnaire.Active_From;
+                ViewBag.Active_To = questionnaire.Active_To;
+                ViewBag.Assessment_Type = questionnaire.Assessment_Type;
+                ViewBag.TrainingSessionAssessment = "Yes";
                 ViewBag.Questionnaire_ID = Questionnaire_ID;
                 ViewBag.Topic = questionnaire.Topic_Seq;
                 ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == questionnaire.Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -3722,13 +3752,25 @@ namespace LibraryAssistantApp.Controllers
 
                 ViewBag.Questions = new SelectList(questions, "Question_Text", "Question_Text");
                 ViewBag.Edit_or_New = "Edit";
+                ViewBag.TrainingSessionName_From = db.Venue_Booking.Where(X => X.Venue_Booking_Seq == Venue_Booking_Seq).Select(Y => Y.DateTime_From).Single();
+                ViewBag.TrainingSessionName_To = db.Venue_Booking.Where(X => X.Venue_Booking_Seq == Venue_Booking_Seq).Select(Y => Y.DateTime_To).Single();
+
                 #endregion
+                ViewBag.TrainingSession = questionnaire.Venue_Booking;
                 return View("Edit_Questionnaire_Questions"); //Changed topic 
             }
             else
             {
                 #region Going to questionnaire questions with previously saved data
                 // =====Questionnaire questions details =======//
+                ViewBag.Name = questionnaire.Name;
+                ViewBag.Description = questionnaire.Description;
+                ViewBag.Active_From = questionnaire.Active_From;
+                ViewBag.Active_To = questionnaire.Active_To;
+                ViewBag.Assessment_Type = questionnaire.Assessment_Type;
+                ViewBag.TrainingSessionName_From = db.Venue_Booking.Where(X => X.Venue_Booking_Seq == Venue_Booking_Seq).Select(Y => Y.DateTime_From).Single();
+                ViewBag.TrainingSessionName_To = db.Venue_Booking.Where(X => X.Venue_Booking_Seq == Venue_Booking_Seq).Select(Y => Y.DateTime_To).Single();
+                ViewBag.TrainingSessionAssessment = "Yes";
                 ViewBag.Questionnaire_ID = Questionnaire_ID;
                 ViewBag.Topic = questionnaire.Topic_Seq;
                 ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == questionnaire.Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -3815,6 +3857,7 @@ namespace LibraryAssistantApp.Controllers
                 ViewBag.Edit_or_New = "Edit";
                 // =====Questionnaire questions details =======//
                 #endregion
+                ViewBag.TrainingSession = questionnaire.Venue_Booking;
                 return View("Edit_Questionnaire_Questions");
             }
 
@@ -3836,6 +3879,12 @@ namespace LibraryAssistantApp.Controllers
             if (CountQuestions == 0)
             {
                 #region Going to questionnaire questions to get new questionnare question data
+                ViewBag.Name = questionnaire.Name;
+                ViewBag.Description = questionnaire.Description;
+                ViewBag.Active_From = questionnaire.Active_From;
+                ViewBag.Active_To = questionnaire.Active_To;
+                ViewBag.Assessment_Type = questionnaire.Assessment_Type;
+                ViewBag.EmployeeAssessment = "Yes";
                 ViewBag.Questionnaire_ID = Questionnaire_ID;
                 ViewBag.Topic = questionnaire.Topic_Seq;
                 ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == questionnaire.Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -3844,12 +3893,20 @@ namespace LibraryAssistantApp.Controllers
                 ViewBag.Questions = new SelectList(questions, "Question_Text", "Question_Text");
                 ViewBag.Edit_or_New = "Edit";
                 #endregion
+                ViewBag.Employee = db.Registered_Person.Where(X => X.Person_ID == Employee_ID).Select(Y => Y.Person_Name).Single();
                 return View("Edit_Questionnaire_Questions"); //Changed topic 
             }
             else
             {
                 #region Going to questionnaire questions with previously saved data
                 // =====Questionnaire questions details =======//
+                ViewBag.Name = questionnaire.Name;
+                ViewBag.EmployeeAssessment = "Yes";
+                ViewBag.Description = questionnaire.Description;
+                ViewBag.Active_From = questionnaire.Active_From;
+                ViewBag.Active_To = questionnaire.Active_To;
+                ViewBag.Assessment_Type = questionnaire.Assessment_Type;
+                
                 ViewBag.Questionnaire_ID = Questionnaire_ID;
                 ViewBag.Topic = questionnaire.Topic_Seq;
                 ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == questionnaire.Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -3936,6 +3993,7 @@ namespace LibraryAssistantApp.Controllers
                 ViewBag.Edit_or_New = "Edit";
                 // =====Questionnaire questions details =======//
                 #endregion
+                ViewBag.Employee = db.Registered_Person.Where(X => X.Person_ID == Employee_ID).Select(Y => Y.Person_Name).Single();
                 return View("Edit_Questionnaire_Questions");
             }
 
@@ -3951,6 +4009,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Active_To = Active_To;
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Topic = Topic;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
             ViewBag.Selected_TrainingSession = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Venue_Booking_Seq).Single();
             ViewBag.Topic_For_Training = new SelectList(db.Topics, "Topic_Seq", "Topic_Name");
@@ -3970,6 +4029,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Active_To = Active_To;
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Topic = Topic;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
             ViewBag.Selected_Employee = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Person_ID_Involved).Single();
 
@@ -3978,15 +4038,15 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit_Questionnaire_Questions(int Display_Order1, int Display_Order2, int Display_Order3, int Display_Order4, int Display_Order5, string SelectedQuestion1, string SelectedQuestion2, string SelectedQuestion3, string SelectedQuestion4, string SelectedQuestion5, string SelectedQ_Checkbox1, string SelectedQ_Checkbox2, string SelectedQ_Checkbox3, string SelectedQ_Checkbox4, string SelectedQ_Checkbox5, int Questionnaire_ID)
+        public ActionResult Edit_Questionnaire_Questions(int Display_Order1, int Display_Order2, int Display_Order3, int Display_Order4, int Display_Order5, string SelectedQuestion1, string SelectedQuestion2, string SelectedQuestion3, string SelectedQuestion4, string SelectedQuestion5, string SelectedQ_Checkbox1, string SelectedQ_Checkbox2, string SelectedQ_Checkbox3, string SelectedQ_Checkbox4, string SelectedQ_Checkbox5, int Questionnaire_ID, int Topic_Seq)
         {
-
+            
             db.Questionnaire_Questions.RemoveRange(db.Questionnaire_Questions.Where(X => X.Questionnaire_ID == Questionnaire_ID).ToList());
 
             Questionnaire_Questions questionnaire_Q1 = new Questionnaire_Questions();
             questionnaire_Q1.Questionnaire_ID = Questionnaire_ID;
             questionnaire_Q1.Display_Order = Display_Order1;
-            questionnaire_Q1.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion1).Select(Y => Y.Question_Seq).Single();
+            questionnaire_Q1.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion1 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
             if (SelectedQ_Checkbox1 == "true")
             {
                 questionnaire_Q1.Answer_Optional_Ind = 1;
@@ -4002,7 +4062,7 @@ namespace LibraryAssistantApp.Controllers
                 Questionnaire_Questions questionnaire_Q2 = new Questionnaire_Questions();
                 questionnaire_Q2.Questionnaire_ID = Questionnaire_ID;
                 questionnaire_Q2.Display_Order = Display_Order2;
-                questionnaire_Q2.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion2).Select(Y => Y.Question_Seq).Single();
+                questionnaire_Q2.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion2 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
                 if (SelectedQ_Checkbox2 == "true")
                 {
                     questionnaire_Q2.Answer_Optional_Ind = 1;
@@ -4020,7 +4080,7 @@ namespace LibraryAssistantApp.Controllers
                 Questionnaire_Questions questionnaire_Q3 = new Questionnaire_Questions();
                 questionnaire_Q3.Questionnaire_ID = Questionnaire_ID;
                 questionnaire_Q3.Display_Order = Display_Order3;
-                questionnaire_Q3.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion3).Select(Y => Y.Question_Seq).Single();
+                questionnaire_Q3.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion3 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
                 if (SelectedQ_Checkbox3 == "true")
                 {
                     questionnaire_Q3.Answer_Optional_Ind = 1;
@@ -4038,7 +4098,7 @@ namespace LibraryAssistantApp.Controllers
                 Questionnaire_Questions questionnaire_Q4 = new Questionnaire_Questions();
                 questionnaire_Q4.Questionnaire_ID = Questionnaire_ID;
                 questionnaire_Q4.Display_Order = Display_Order4;
-                questionnaire_Q4.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion4).Select(Y => Y.Question_Seq).Single();
+                questionnaire_Q4.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion4 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
                 if (SelectedQ_Checkbox4 == "true")
                 {
                     questionnaire_Q4.Answer_Optional_Ind = 1;
@@ -4056,7 +4116,7 @@ namespace LibraryAssistantApp.Controllers
                 Questionnaire_Questions questionnaire_Q5 = new Questionnaire_Questions();
                 questionnaire_Q5.Questionnaire_ID = Questionnaire_ID;
                 questionnaire_Q5.Display_Order = Display_Order5;
-                questionnaire_Q5.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion5).Select(Y => Y.Question_Seq).Single();
+                questionnaire_Q5.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion5 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
                 if (SelectedQ_Checkbox5 == "true")
                 {
                     questionnaire_Q5.Answer_Optional_Ind = 1;
@@ -4073,7 +4133,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.EditComplete = "Yes";
             ViewBag.EditCompleteMessage = "Questionnaire '" + Questionnaire_Name + "' successfully updated.";
             ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
-            var questionnaires = db.Questionnaires.Include(q => q.Question_Topic);
+            var questionnaires = db.Questionnaires.Include(T => T.Question_Topic);
 
 
             // -------------------------------Action Log ----------------------------------------//
@@ -4096,13 +4156,13 @@ namespace LibraryAssistantApp.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Create_Questionnaire_Questions(int Display_Order1, int Display_Order2, int Display_Order3, int Display_Order4, int Display_Order5, string SelectedQuestion1, string SelectedQuestion2, string SelectedQuestion3, string SelectedQuestion4, string SelectedQuestion5, string SelectedQ_Checkbox1, string SelectedQ_Checkbox2, string SelectedQ_Checkbox3, string SelectedQ_Checkbox4, string SelectedQ_Checkbox5, int Questionnaire_ID)
+        public ActionResult Create_Questionnaire_Questions(int Display_Order1, int Display_Order2, int Display_Order3, int Display_Order4, int Display_Order5, string SelectedQuestion1, string SelectedQuestion2, string SelectedQuestion3, string SelectedQuestion4, string SelectedQuestion5, string SelectedQ_Checkbox1, string SelectedQ_Checkbox2, string SelectedQ_Checkbox3, string SelectedQ_Checkbox4, string SelectedQ_Checkbox5, int Questionnaire_ID, int Topic_Seq)
         {
-
+            
             Questionnaire_Questions questionnaire_Q1 = new Questionnaire_Questions();
             questionnaire_Q1.Questionnaire_ID = Questionnaire_ID;
             questionnaire_Q1.Display_Order = Display_Order1;
-            questionnaire_Q1.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion1).Select(Y => Y.Question_Seq).Single();
+            questionnaire_Q1.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion1 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
             if (SelectedQ_Checkbox1 == "true")
             {
                 questionnaire_Q1.Answer_Optional_Ind = 1;
@@ -4118,7 +4178,7 @@ namespace LibraryAssistantApp.Controllers
                 Questionnaire_Questions questionnaire_Q2 = new Questionnaire_Questions();
                 questionnaire_Q2.Questionnaire_ID = Questionnaire_ID;
                 questionnaire_Q2.Display_Order = Display_Order2;
-                questionnaire_Q2.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion2).Select(Y => Y.Question_Seq).Single();
+                questionnaire_Q2.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion2 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
                 if (SelectedQ_Checkbox2 == "true")
                 {
                     questionnaire_Q2.Answer_Optional_Ind = 1;
@@ -4136,7 +4196,7 @@ namespace LibraryAssistantApp.Controllers
                 Questionnaire_Questions questionnaire_Q3 = new Questionnaire_Questions();
                 questionnaire_Q3.Questionnaire_ID = Questionnaire_ID;
                 questionnaire_Q3.Display_Order = Display_Order3;
-                questionnaire_Q3.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion3).Select(Y => Y.Question_Seq).Single();
+                questionnaire_Q3.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion3 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
                 if (SelectedQ_Checkbox3 == "true")
                 {
                     questionnaire_Q3.Answer_Optional_Ind = 1;
@@ -4154,7 +4214,7 @@ namespace LibraryAssistantApp.Controllers
                 Questionnaire_Questions questionnaire_Q4 = new Questionnaire_Questions();
                 questionnaire_Q4.Questionnaire_ID = Questionnaire_ID;
                 questionnaire_Q4.Display_Order = Display_Order4;
-                questionnaire_Q4.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion4).Select(Y => Y.Question_Seq).Single();
+                questionnaire_Q4.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion4 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
                 if (SelectedQ_Checkbox4 == "true")
                 {
                     questionnaire_Q4.Answer_Optional_Ind = 1;
@@ -4172,7 +4232,7 @@ namespace LibraryAssistantApp.Controllers
                 Questionnaire_Questions questionnaire_Q5 = new Questionnaire_Questions();
                 questionnaire_Q5.Questionnaire_ID = Questionnaire_ID;
                 questionnaire_Q5.Display_Order = Display_Order5;
-                questionnaire_Q5.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion5).Select(Y => Y.Question_Seq).Single();
+                questionnaire_Q5.Question_Seq = db.Question_Bank.Where(X => X.Question_Text == SelectedQuestion5 && X.Topic_Seq == Topic_Seq).Select(Y => Y.Question_Seq).Single();
                 if (SelectedQ_Checkbox5 == "true")
                 {
                     questionnaire_Q5.Answer_Optional_Ind = 1;
@@ -4189,7 +4249,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.CreateComplete = "Yes";
             ViewBag.CreateCompleteMessage = "Questionnaire '" + Questionnaire_Name + "' successfully created.";
             ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
-            var questionnaires = db.Questionnaires.Include(q => q.Question_Topic);
+            var questionnaires = db.Questionnaires.Include(T => T.Question_Topic);
 
             // -------------------------------Action Log ----------------------------------------//
             string name = db.Questionnaires.Where(X => X.Questionnaire_ID == Questionnaire_ID).Select(Y => Y.Name).Single();
@@ -4232,6 +4292,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.SelectedQ_Checkbox3 = SelectedQ_Checkbox3;
             ViewBag.SelectedQ_Checkbox4 = SelectedQ_Checkbox4;
             ViewBag.SelectedQ_Checkbox5 = SelectedQ_Checkbox5;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
             ViewBag.Count = Count;
 
 
@@ -4259,6 +4320,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.SelectedQ_Checkbox5 = SelectedQ_Checkbox5;
             ViewBag.Count = Count;
             ViewBag.Edit_or_New = Edit_or_New;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
 
             return View("Edit_Questionnaire_Questions");
         }
@@ -4291,7 +4353,8 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
             ViewBag.Topic = Topic;
-            
+
+            ViewBag.SelectedVenueName = db.Venues.Where(X => X.Campus_ID == SelectedCampus && X.Building_ID == SelectedBuilding && X.Building_Floor_ID == SelectedBuildingFloor && X.Venue_ID == Venue_ID).Select(Y => Y.Venue_Name).Single();
             ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
             return View("Questionnaire_Questions");
         }
@@ -4306,6 +4369,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Active_To = Active_To;
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Topic = Topic;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
             ViewBag.Questionnaire_ID = Questionnaire_ID;
            
             ViewBag.SelectedCampus = SelectedCampus;
@@ -4331,6 +4395,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Active_To = Active_To;
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Topic = Topic;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
             ViewBag.Questionnaire_ID = Questionnaire_ID;
             ViewBag.Count = db.Building_Floor.Where(X => X.Campus_ID == SelectedCampus && X.Building_ID == Building_ID).Count();
             ViewBag.SelectedCampus = SelectedCampus;
@@ -4351,6 +4416,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Active_To = Active_To;
             ViewBag.Assessment_Type = Assessment_Type;
             ViewBag.Topic = Topic;
+            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
             ViewBag.Questionnaire_ID = Questionnaire_ID;
             ViewBag.Count = db.Buildings.Where(X => X.Campus_ID == Campus_ID).Count();
             ViewBag.SelectedCampus = Campus_ID;
@@ -4443,6 +4509,7 @@ namespace LibraryAssistantApp.Controllers
                     ViewBag.Assessment_Type = Assessment_Type;
                     ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
                     ViewBag.Topic = Topic;
+                    ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
                     ViewBag.Count = db.Campus.Count();
                     return View("Venue_Assessment_Campus", db.Campus.ToList());
 
@@ -4475,6 +4542,7 @@ namespace LibraryAssistantApp.Controllers
                     ViewBag.Assessment_Type = Assessment_Type;
                     ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
                     ViewBag.Topic = Topic;
+                    ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
                     ViewBag.Count = db.Registered_Person.Where(X => X.Person_Type == "Employee").Count();
                     return View("Employee_Assessment", db.Registered_Person.Where(X => X.Person_Type == "Employee").ToList());
                 }
@@ -4506,6 +4574,7 @@ namespace LibraryAssistantApp.Controllers
                     ViewBag.Assessment_Type = Assessment_Type;
                     ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
                     ViewBag.Topic = Topic;
+                    ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic).Select(Y => Y.Topic_Name).Single();
                     ViewBag.Count = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).Count();
                     ViewBag.Topic_For_Training = new SelectList(db.Topics, "Topic_Seq", "Topic_Name");
                     return View("Training_Session_Assessment", db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).ToList().OrderByDescending(X => X.DateTime_From));
@@ -4550,6 +4619,9 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Questions = new SelectList(questions, "Question_Text", "Question_Text");
             ViewBag.Questionnaire_ID = Questionnaire_ID;
             ViewBag.TrainingSessionAssessment = "Yes";
+            ViewBag.TrainingSession = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Venue_Booking_Seq).Single();
+            ViewBag.TrainingSessionName_From = db.Venue_Booking.Where(X => X.Venue_Booking_Seq == Venue_Booking_Seq).Select(Y => Y.DateTime_From).Single();
+            ViewBag.TrainingSessionName_To = db.Venue_Booking.Where(X => X.Venue_Booking_Seq == Venue_Booking_Seq).Select(Y => Y.DateTime_To).Single();
             return View("Questionnaire_Questions");
         }
 
@@ -4574,6 +4646,7 @@ namespace LibraryAssistantApp.Controllers
             ViewBag.Questions = new SelectList(questions, "Question_Text", "Question_Text");
             ViewBag.Questionnaire_ID = Questionnaire_ID;
             ViewBag.EmployeeAssessment = "Yes";
+            ViewBag.Employee = db.Registered_Person.Where(X => X.Person_ID == Employee_ID).Select(Y => Y.Person_Name).Single();
             return View("Questionnaire_Questions");
         }
 
@@ -4584,7 +4657,11 @@ namespace LibraryAssistantApp.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                ViewBag.Error = "Yes";
+                ViewBag.ErrorMessage = "Please select a topic to proceed";
+                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                var questionnaires = db.Questionnaires.Include(q => q.Question_Topic);
+                return View("Index", questionnaires.ToList());
             }
             Questionnaire questionnaire = db.Questionnaires.Where(X => X.Questionnaire_ID == id).Single();
             if (questionnaire == null)
@@ -4748,6 +4825,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Active_To = Active_To;
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Selected_Employee = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Person_ID_Involved).Single();
                             ViewBag.Edit_or_New = "Edit";
@@ -4759,6 +4837,12 @@ namespace LibraryAssistantApp.Controllers
                         {
                             #region Going to questionnaire questions with previously saved data
                             // =====Questionnaire questions details =======//
+                            ViewBag.Name = Name;
+                            ViewBag.Description = Description;
+                            ViewBag.Active_From = Active_From;
+                            ViewBag.Active_To = Active_To;
+                            ViewBag.Assessment_Type = Assessment_Type;
+
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Topic = Topic_Seq;
                             ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -4843,6 +4927,7 @@ namespace LibraryAssistantApp.Controllers
 
                             ViewBag.Questions = new SelectList(questions, "Question_Text", "Question_Text");
                             ViewBag.Edit_or_New = "Edit";
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             // =====Questionnaire questions details =======//
                             #endregion
                             return View("Edit_Questionnaire_Questions");
@@ -4860,6 +4945,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Count = db.Campus.Count();
                             ViewBag.Edit_or_New = "Edit";
                             ViewBag.Edit_Venue_Assessment = "Yes";
@@ -4887,6 +4973,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Active_To = Active_To;
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Selected_TrainingSession = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Venue_Booking_Seq).Single();
                             ViewBag.Edit_or_New = "Edit";
@@ -4896,6 +4983,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Count = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).Count();
                             _Venue_Booking = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).ToList();
                             #endregion
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             return View("Training_Session_Assessment", _Venue_Booking);
                         }
                         #endregion
@@ -4924,6 +5012,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Active_To = Active_To;
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Edit_or_New = "Edit";
                             ViewBag.Count = db.Registered_Person.Where(X => X.Person_Type == "Employee").Count();
@@ -4934,6 +5023,12 @@ namespace LibraryAssistantApp.Controllers
                         {
                             #region Going to questionnaire questions with previously saved data
                             // =====Questionnaire questions details =======//
+                            ViewBag.Name = Name;
+                            ViewBag.Description = Description;
+                            ViewBag.Active_From = Active_From;
+                            ViewBag.Active_To = Active_To;
+                            ViewBag.Assessment_Type = Assessment_Type;
+
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Topic = Topic_Seq;
                             ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -5032,6 +5127,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Count = db.Campus.Count();
                             ViewBag.Edit_or_New = "Edit";
                             #endregion
@@ -5054,6 +5150,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Count = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).Count();
                             _Venue_Booking = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).ToList();
                             #endregion
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             return View("Training_Session_Assessment", _Venue_Booking);
                         }
                         #endregion
@@ -5068,6 +5165,26 @@ namespace LibraryAssistantApp.Controllers
                     db.Questionnaire_Questions.RemoveRange(db.Questionnaire_Questions.Where(X => X.Questionnaire_ID == Questionnaire_ID).ToList());
                     db.SaveChanges();
 
+                    Questionnaire questionnaire = db.Questionnaires.Where(X => X.Questionnaire_ID == Questionnaire_ID).Single();
+                    questionnaire.Name = Name;
+                    questionnaire.Description = Description;
+                    questionnaire.Active_From = Active_From;
+                    questionnaire.Active_To = Active_To.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+                    questionnaire.Assessment_Type = Assessment_Type;
+                    questionnaire.Topic_Seq = Topic_Seq;
+                    questionnaire.Create_Date = questionnaire.Create_Date;
+                    questionnaire.Person_ID_Creator = questionnaire.Person_ID_Creator;
+                    questionnaire.Person_ID_Involved = questionnaire.Person_ID_Involved;
+                    questionnaire.Venue_Booking_Seq = questionnaire.Venue_Booking_Seq;
+                    questionnaire.Venue_ID = questionnaire.Venue_ID;
+                    questionnaire.Building_Floor_ID = questionnaire.Building_Floor_ID;
+                    questionnaire.Building_ID = questionnaire.Building_ID;
+                    questionnaire.Campus_ID = questionnaire.Campus_ID;
+                    questionnaire.Questionnaire_ID = questionnaire.Questionnaire_ID;
+                    db.Entry(questionnaire).State = EntityState.Modified;
+                    db.SaveChanges();
+
                     if (Assessment_Changed == false)// Assessment type not changed
                     {
                         #region Going to views with previously saved data to be edited
@@ -5080,6 +5197,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Active_To = Active_To;
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Selected_Employee = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Person_ID_Involved).Single();
                             ViewBag.Edit_or_New = "Edit";
@@ -5090,6 +5208,12 @@ namespace LibraryAssistantApp.Controllers
                         else if (Assessment_Type == "Other")
                         {
                             #region Going to questionnaire questions to get new questionnare question data
+                            ViewBag.Name = Name;
+                            ViewBag.Description = Description;
+                            ViewBag.Active_From = Active_From;
+                            ViewBag.Active_To = Active_To;
+                            ViewBag.Assessment_Type = Assessment_Type;
+
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Topic = Topic_Seq;
                             ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -5114,6 +5238,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Count = db.Campus.Count();
                             ViewBag.Edit_or_New = "Edit";
                             ViewBag.Edit_Venue_Assessment = "Yes";
@@ -5140,6 +5265,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Active_To = Active_To;
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Selected_TrainingSession = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Venue_Booking_Seq).Single();
                             ViewBag.Edit_or_New = "Edit";
@@ -5149,6 +5275,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Count = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).Count();
                             _Venue_Booking = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).ToList();
                             #endregion
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             return View("Training_Session_Assessment", _Venue_Booking);
                         }
                         #endregion
@@ -5179,6 +5306,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Active_To = Active_To;
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Edit_or_New = "Edit";
                             ViewBag.Count = db.Registered_Person.Where(X => X.Person_Type == "Employee").Count();
@@ -5189,6 +5317,12 @@ namespace LibraryAssistantApp.Controllers
                         else if (Assessment_Type == "Other")
                         {
                             #region Go to questionnaire questions to get new questionnaire question details
+                            ViewBag.Name = Name;
+                            ViewBag.Description = Description;
+                            ViewBag.Active_From = Active_From;
+                            ViewBag.Active_To = Active_To;
+                            ViewBag.Assessment_Type = Assessment_Type;
+
                             ViewBag.Questionnaire_ID = Questionnaire_ID;
                             ViewBag.Topic = Topic_Seq;
                             ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
@@ -5210,6 +5344,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Assessment_Type = Assessment_Type;
                             ViewBag.Questionnaire_ID = db.Questionnaires.Where(X => X.Name == Name).Select(Y => Y.Questionnaire_ID).Single();
                             ViewBag.Topic = Topic_Seq;
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             ViewBag.Count = db.Campus.Count();
                             ViewBag.Edit_or_New = "Edit";
                             #endregion
@@ -5233,6 +5368,7 @@ namespace LibraryAssistantApp.Controllers
                             ViewBag.Count = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).Count();
                             _Venue_Booking = db.Venue_Booking.Where(X => X.DateTime_From.Year == DateTime.Now.Year && X.Booking_Type_Seq != 1).ToList();
                             #endregion
+                            ViewBag.TopicName = db.Question_Topic.Where(X => X.Topic_Seq == Topic_Seq).Select(Y => Y.Topic_Name).Single();
                             return View("Training_Session_Assessment", _Venue_Booking);
                         }
                         #endregion
@@ -5250,7 +5386,11 @@ namespace LibraryAssistantApp.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                ViewBag.Error = "Yes";
+                ViewBag.ErrorMessage = "Please select a topic to proceed";
+                ViewBag.Topic = new SelectList(db.Question_Topic, "Topic_Seq", "Topic_Name");
+                var questionnaires = db.Questionnaires.Include(q => q.Question_Topic);
+                return View("Index", questionnaires.ToList());
             }
             Questionnaire questionnaire = db.Questionnaires.Find(id);
             if (questionnaire == null)

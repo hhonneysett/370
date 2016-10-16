@@ -21,7 +21,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Topic_Name, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Topic_Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Topic_Name, new { htmlAttributes = new { @class = "form-control", @title = "Update the name of the topic. No duplicate topics are allowed" } })
                     @Html.ValidationMessageFor(model => model.Topic_Name, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -29,14 +29,14 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Description, new { rows = "3", style = "width:320px", @class = "form-control" })
+                    @Html.TextAreaFor(model => model.Description, new { rows = "3", style = "width:320px", @class = "form-control", @title = "Update the description of the topic" })
                     @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+                    <input title="Confirm the changes made to the topic" type="submit" value="Save Changes" class="btn btn-primary" />
                 </div>
             </div>
         </div>

@@ -7,12 +7,11 @@
 }
 
 <h2>Venue Maintainance</h2>
-
 <hr class="col-md-12" />
 
 <div class="col-md-12">
     <div class="row">
-        <div id="campusDetails"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="campusSummary">Select Campus:</b></div>
+        <div id="campusDetails" class="bg-info shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b id="campusSummary">Select Campus:</b></div>
         <hr />
         <div class="row" id="toggleCampus">
 
@@ -30,7 +29,7 @@
                             <tbody>
                                 @foreach (Campus campus in campuses)
                                 {
-                                    <tr id="@campus.Campus_ID">
+                                    <tr id="@campus.Campus_ID" title="Select campus.">
                                         <td>
                                             @campus.Campus_Name
                                         </td>
@@ -61,7 +60,7 @@
 
             <div class="col-md-3 col-md-offset-1">
                 <div id="search" style="padding-bottom:10px">
-                    <input id="searchCampus" type="text" placeholder="Search Campus" /><button id="btnSearchCampus">
+                    <input id="searchCampus" type="text" placeholder="Search Campus" title="Enter search criteria"/><button id="btnSearchCampus" title="Filter campus by search criteria.">
                         <span class="fa fa-search" />
                     </button>
                 </div>
@@ -71,15 +70,15 @@
                 </div>
 
                 <div style="padding-bottom:5px; width:80%">
-                    <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateCampus">Update Campus</button>
+                    <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnUpdateCampus" title="Update seleceted campus.">Update Campus</button>
                 </div>
 
                 <div style="padding-bottom:5px; width:80%">
-                    <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteCampus">Delete Campus</button>
+                    <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnDeleteCampus" title="Delete seleceted campus.">Delete Campus</button>
                 </div>
 
                 <div style="padding-bottom:5px; width:80%">
-                    <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnViewBuildings">View Buildings</button>
+                    <button class="btn btn-primary btn-block" style="padding-bottom:10px" disabled id="btnViewBuildings" title="View buildings related to the selected campus.">View Buildings</button>
                 </div>
             </div>
 

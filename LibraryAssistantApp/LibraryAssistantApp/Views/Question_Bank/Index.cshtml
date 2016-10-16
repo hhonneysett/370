@@ -22,7 +22,7 @@
     <div style="text-align:center" class="isa_error">@ViewBag.CannotEditMessage</div>
 }
 
-
+@Html.Hidden("NewTopic", (string)ViewBag.NewTopic, new { id = "NewTopic" })
 <h3>Question Bank</h3>
 
 <div class="col-md-8">
@@ -69,16 +69,23 @@
         <div class="panel-footer">
             <div style="padding-top:15px">
                 <div class="btn-group">
-                    @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit" })
+                    @Html.ActionLink("Update", "Edit",null, htmlAttributes: new { @class = "btn btn-primary btn-edit", id = "btnUpate", @title = "Update the selected question" })
                 </div>
+
+                @if (ViewBag.rows != 1)
+                {
+                    <div class="btn-group">
+                        @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete", id = "btnDelete", @title = "Delete the selected question" })
+                    </div>
+
+                }
+
+                
                 <div class="btn-group">
-                    @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete" })
-                </div>
-                <div class="btn-group">
-                    @Html.ActionLink("View", "ViewQuestion", null, htmlAttributes: new { @class = "btn btn-primary btn-view" })
+                    @Html.ActionLink("View", "ViewQuestion", null, htmlAttributes: new { @class = "btn btn-primary btn-view", id = "btnView", @title = "View how the question will look like on a questionnaire" })
                 </div>
                 <div class="btn-group pull-right">
-                    <button id="Select_Button" type="button" class="btn btn-primary" onclick="create()">Create New Question</button>
+                    <button title="Create a new question with possible answers" id="Select_Button" type="button" class="btn btn-primary" onclick="create()">Create New Question</button>
                 </div>
             </div>
         </div>
@@ -91,40 +98,49 @@
     <div class="panel panel-default">
         <div class="panel-body">
 
-            @using (Html.BeginForm("Index", "Question_Bank", FormMethod.Get))
-            {
+        
                 <p>
                     <b>Topic</b>
                     <br />
-                    @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic" })
+
+                    @if (ViewBag.NewTopic == "YES")
+                    {
+                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic", @disabled = "disabled" })
+                    }
+                    else
+                    {
+                        @Html.DropDownList("Topic", null, "All", htmlAttributes: new { @class = "form-control", id = "Topic", @title = "Select a topic to search by" })
+                    }
+
+                    
                 </p>
 
                 <p>
                     <b>Question Name</b>
                     <br />
-                    @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search" })
+                    @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control", id = "Search", @Value= (string)ViewBag.Search, @title = "Search by question name" })
                     <br />
                 </p>
 
-                if (ViewBag.NewTopic == "YES")
+                @if (ViewBag.NewTopic == "YES")
                 {
                     <div class="btn-group">
-                        <input type="submit" class="btn btn-primary" value="Search" />                        
+                        <input title="Search for questions based on the search criteria" type="submit" class="btn btn-primary" value="Search" onclick="Search()"/>                        
                     </div>
                     <div class="btn-group">
-                        <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index")'" />
+                        <input title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-primary" value="Clear" onclick="Clear()" />
                     </div>                
                 }
                 else
                 {
                     <div class="btn-group">
-                        <input type="submit" class="btn btn-primary" value="Search" />
+                        <input title="Search for questions based on the search criteria" type="submit" class="btn btn-primary" value="Search" onclick="Search()"/>
                     </div>
                     <div class="btn-group">
-                        <input data-toggle="tooltip" data-placement="right" title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index")'" />
+                        <input title="Reset the search criteria and display all questions" style="margin-left: 3px;" type="button" class="btn btn-primary" value="Clear" onclick="location.href='@Url.Action("Index")'" />
                     </div>                      
                 }
-            }
+            
         </div>
     </div>
 </div>
@@ -132,11 +148,9 @@
 {
     <div class="row">
         <div class="col-md-4">
+            
             <div class="btn-group">
-                <button style="margin-left: 3px;" id="Select_Button" type="button" class="btn btn-primary" onclick="create()">Create New Question</button>
-            </div>
-            <div class="btn-group">
-                <input style="margin-left: 3px;" type="button" class='btn btn-primary' value="Finish creating new topic" onclick="location.href='@Url.Action("Finished","Question_Topic", new { ViewBag.TopicName })'" />
+                <input title="Click when done with the new topic's associated questions to complete creation of the new topic'" style="margin-left: 3px;" type="button" class='btn btn-primary' value="Finish creating new topic" onclick="Finish()" />
             </div>
         </div>
     </div>
@@ -147,7 +161,33 @@
     {
         var Search = document.getElementById("Search").value;
         var Topic = document.getElementById("Topic").value;
-        window.location.href = "/Question_Bank/Create?Name=" + Search + "&Topic=" + Topic;
+        var NewTopic = document.getElementById("NewTopic").value;
+
+        window.location.href = "/Question_Bank/Create?Name=" + Search + "&Topic=" + Topic + "&NewTopic=" + NewTopic;
+    }
+
+
+    function Finish() {
+       
+        var Topic = document.getElementById("Topic").value;
+        
+        window.location.href = "/Question_Topic/Finished?TopicName=" + Topic;
+    }
+
+    function Search() {
+        var Search = document.getElementById("Search").value;
+        var Topic = document.getElementById("Topic").value;
+        var NewTopic = document.getElementById("NewTopic").value;
+
+        window.location.href = "/Question_Bank/Index?Topic=" + Topic + "&Search=" + Search + "&NewTopic=" + NewTopic;
+    }
+
+    function Clear() {
+       
+        var Topic = document.getElementById("Topic").value;
+        var NewTopic = document.getElementById("NewTopic").value;
+
+        window.location.href = "/Question_Bank/Index?Topic=" + Topic + "&Search=" + "" + "&NewTopic=" + NewTopic;
     }
 
 </script>
@@ -189,20 +229,18 @@
         }
 </style>
 
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
+
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         $('#tbl-quest-1 tbody tr').click(function () {
+        
             $('#tbl-quest-1 tr').removeClass('selectedrow');
             $(this).addClass('selectedrow');
-            $('.btn-edit').attr('href', '/Question_Bank/Edit/' + $(this).attr('id'));
-            $('.btn-delete').attr('href', '/Question_Bank/Delete/' + $(this).attr('id'));
-            $('.btn-view').attr('href', '/Question_Bank/ViewQuestion/' + $(this).attr('id'));
+            $('.btn-edit').attr('href', '/Question_Bank/Edit/' + $(this).attr('id') + '?NewTopic=' + '@ViewBag.NewTopic');
+            $('.btn-delete').attr('href', '/Question_Bank/Delete/' + $(this).attr('id')+'?NewTopic='+ '@ViewBag.NewTopic');
+            $('.btn-view').attr('href', '/Question_Bank/ViewQuestion/' + $(this).attr('id') + '?NewTopic=' + '@ViewBag.NewTopic');
         });
     });
 </script>

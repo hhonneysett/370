@@ -12,10 +12,10 @@
             </tr>
             <tr id="blue-1">
                 <th style="text-align:center;">
-                    <h4>Display Order</h4>
+                    <h4 title="The order in which the possible answers will be displayed">Display Order</h4>
                 </th>
                 <th style="text-align:center;">
-                    <h4>Answer</h4>
+                    <h4 title="Enter the possible answer texts for this question">Answer</h4>
                 </th>
             </tr>
         </thead>
@@ -62,15 +62,24 @@
         @if (ViewBag.EditNewPossibleAnswer == "No")
         {
             <div class="btn-group">
-                <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Possible_Answer_Back", new { ViewBag.Style_Type_ID, ViewBag.Question_Seq, ViewBag.Question_Text, ViewBag.Topic_Seq, ViewBag.Topic_Name, ViewBag.Topic_Des })'" />
+                <input title="Go back to the 'Create question' screen" type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Possible_Answer_Back", new { ViewBag.Style_Type_ID, ViewBag.Question_Seq, ViewBag.Question_Text, ViewBag.Topic_Seq, ViewBag.Topic_Name, ViewBag.Topic_Des })'" />
             </div>
             <div class="btn-group">
-                <input data-toggle="tooltip" data-placement="right" title="Finish creating question" type="submit" value="Save Changes" class="btn btn-primary" onclick="validateInput();" />
+                <input  title="Finish with possible answers and finish creating the question." type="submit" value="Save Changes" class="btn btn-primary" onclick="validateInput();" />
             </div>
             <div class="btn-group">
                 <div style="text-align:center" class="text-danger" id="Error_Topic_Seq"></div>
             </div>
-        } 
+        }
+        else
+        {
+            <div class="btn-group">
+                <input title="Finish with possible answers and finish creating the question." type="submit" value="Save Changes" class="btn btn-primary" onclick="validateInput();" />
+            </div>
+            <div class="btn-group">
+                <div style="text-align:center" class="text-danger" id="Error_Topic_Seq"></div>
+            </div>
+        }
     </div>
 </div>
 
@@ -211,12 +220,4 @@
             }
         }
     }
-</script>
-
-
-
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
 </script>

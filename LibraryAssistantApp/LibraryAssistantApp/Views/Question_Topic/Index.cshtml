@@ -20,6 +20,10 @@
 {
     <div style="text-align:center" class="isa_success">@ViewBag.EditCompleteMessage</div>
 }
+@if (ViewBag.Error == "Yes")
+{
+    <div style="text-align:center" class="isa_error">@ViewBag.ErrorMessage</div>
+}
 
 <h3>Questionnaire Topics</h3>
 
@@ -61,13 +65,13 @@
     <div class="panel-footer">
         <div style="padding-top:15px">
             <div class="btn-group">
-                @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit" })
+                @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit", @title= "Update the selected topic" })
             </div>
             <div class="btn-group">
-                @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete" })
+                @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete", @title = "Delete the selected topic" })
             </div>
             <div class="btn-group">
-                <button id="Select_Button" type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Create")'">Create New</button>
+                <button title="Create a new questionnaire topic" id="Select_Button" type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Create")'">Create New</button>
             </div>
         </div>
     </div>

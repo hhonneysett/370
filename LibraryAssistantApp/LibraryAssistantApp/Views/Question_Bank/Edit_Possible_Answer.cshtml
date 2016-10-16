@@ -37,10 +37,10 @@
             </tr>
             <tr id="blue-1">
                 <th style="text-align:center;">
-                    <h4>Display Order</h4>
+                    <h4 title="The order in which the possible answers will be displayed">Display Order</h4>
                 </th>
                 <th style="text-align:center;">
-                    <h4>Answer</h4>
+                    <h4 title="Update the possible answer texts for this question">Answer</h4>
                 </th>
             </tr>
         </thead>
@@ -119,10 +119,10 @@
     </table>
     <div class="panel-body">
         <div class="btn-group">
-            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", new {ViewBag.id})'" />
+            <input title="Go back to the 'Edit question' screen" type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", new {ViewBag.id})'" />
         </div>
         <div class="btn-group">
-            <input data-toggle="tooltip" data-placement="right" title="Finish updating  question" type="submit" value="Save Changes" class="btn btn-primary" onclick="validateInput();" />
+            <input  title="Finish with updating possible answers and finish updating the question." type="submit" value="Save Changes" class="btn btn-primary" onclick="validateInput();" />
         </div>
         <div class="btn-group">
             <div style="text-align:center" class="text-danger" id="Error_Topic_Seq"></div>

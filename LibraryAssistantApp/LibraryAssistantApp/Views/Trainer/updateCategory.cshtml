@@ -4,7 +4,7 @@
     ViewBag.Title = "Maintain Category";
 }
 
-<h2>Maintain Category</h2>
+<h2>Update Category</h2>
 <hr />
 
 @using (Html.BeginForm())
@@ -13,17 +13,15 @@
 
     <div class="row">
         <div class="col-md-6">
+            <h4 class="bg-info shaded">Enter updated category details below:</h4>
             <div class="panel panel-default">
-                <div class="panel panel-heading">
-                    Enter Updated Category Details Below:
-                </div>
                 <div class="panel-body">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.Category_ID)
                     <div class="form-group">
                         @Html.LabelFor(model => model.Category_Name, htmlAttributes: new { @class = "control-label" })
                         <div>
-                            @Html.EditorFor(model => model.Category_Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Category_Name, new { htmlAttributes = new { @class = "form-control", @title = "Enter category name.", @maxlength = "30" } })
                             @Html.ValidationMessageFor(model => model.Category_Name, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -31,13 +29,13 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
                         <div>
-                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @id = "description" } })
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @id = "description", @title = "Enter category description.", @maxlength = "50", @required = true } })
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
                 <div class="panel-footer">
-                    @Html.ActionLink("Back", "viewCategory", "Trainer", htmlAttributes: new { @class = "btn btn-default" })
+                    @Html.ActionLink("Back", "viewCategory", "Trainer", htmlAttributes: new { @class = "btn btn-primary" })
                     <input type="submit" value="Update Category" class="btn btn-primary" name="submitButton" />
                     <input type="submit" value="Delete Category" class="btn btn-primary" name="submitButton"/>
                 </div>

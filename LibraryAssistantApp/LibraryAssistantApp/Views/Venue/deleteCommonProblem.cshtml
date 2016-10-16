@@ -8,11 +8,12 @@
 
 <h2>Delete Common Problem</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h4 class="bg-info shaded">Are you sure you want to delete this?</h4>
 <div>
     <hr />
     <div class="row">
         <div class="col-md-6">
+            <h5 class="bg-warning shaded">Common problem details:</h5>
             <div class="panel panel-default">
                 <table class="table">
                     <tr>
@@ -36,8 +37,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <button class="btn btn-primary" id="btnDeleteProblem">Delete</button> |
-            @Html.ActionLink("Back to List", "viewCommonProblems")
+            <button class="btn btn-primary" id="btnDeleteProblem">Delete</button> 
+            @Html.ActionLink("Back to List", "viewCommonProblems", null, new { @class = "btn btn-primary"})
         </div>
     }
 </div>

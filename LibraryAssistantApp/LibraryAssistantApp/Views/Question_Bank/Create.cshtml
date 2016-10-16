@@ -49,7 +49,7 @@
                 }
                 else
                 {
-                    @Html.DropDownList("Topic_Seq", null, "Select a topic", htmlAttributes: new { @class = "form-control", id = "Topic_Dropdownlist" })
+                    @Html.DropDownList("Topic_Seq", null, "Select a topic", htmlAttributes: new { @class = "form-control", id = "Topic_Dropdownlist", @title = "Select a topic to assigned to the new question" })
                     <label class="text-danger" id="Error_Topic_Seq"></label>
                     @*@Html.ValidationMessageFor(model => model.Topic_Seq, "", new { @class = "text-danger", id = "Error_Topic_Seq" })*@
                 }
@@ -66,7 +66,8 @@
                {
                    @class = "form-control",
                    id = "Question_TextBox",
-                   @Value = (string)ViewBag.Question_Text
+                   @Value = (string)ViewBag.Question_Text,
+                   @title = "Enter the question text of the new question."
                }
            })
                 <label class="text-danger" id="Error_Question_Text"></label>
@@ -81,7 +82,7 @@
             <div class="form-group">
                 <div class="col-md-10 col-md-offset-2">
                     <div class="btn-group">
-                        <input data-toggle="tooltip" data-placement="right" title="Create new topic if the topic you require does not exist." type="button" value="New Topic" class="btn btn-primary" onclick="location.href='@Url.Action("Create","Question_Topic")'" />
+                        <input  title="Create new topic if the topic you require does not exist." type="button" value="New Topic" class="btn btn-primary" onclick="location.href='@Url.Action("Create","Question_Topic")'" />
                     </div>
                 </div>
             </div>
