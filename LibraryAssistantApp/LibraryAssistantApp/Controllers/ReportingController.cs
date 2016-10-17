@@ -289,6 +289,7 @@ namespace LibraryAssistantApp.Controllers
 
             return View(reportList);
         }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult BookingReport(int? year)

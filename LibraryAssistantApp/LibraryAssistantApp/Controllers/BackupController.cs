@@ -12,6 +12,7 @@ using System.Web.Script.Serialization;
 
 namespace LibraryAssistantApp.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class BackupController : Controller
     {
         public ActionResult Index()

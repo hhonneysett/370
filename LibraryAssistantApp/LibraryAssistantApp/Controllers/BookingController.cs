@@ -346,6 +346,7 @@ namespace LibraryAssistantApp.Controllers
 
         // POST: Capture the selected venue from the GetDiscussuinRoomVenues view
         [Authorize]
+        [Authorize]
         public ActionResult venueSelect(int id)
         {
             //get the selected venue object from the database from the provided id

@@ -9,6 +9,7 @@ using System.Web.Security;
 
 namespace LibraryAssistantApp.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class DashboardController : Controller
     {
         //instance of db
