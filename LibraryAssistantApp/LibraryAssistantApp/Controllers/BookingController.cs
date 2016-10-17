@@ -1173,7 +1173,7 @@ namespace LibraryAssistantApp.Controllers
             global.addAudit("Bookings", "Bookings: Book Training Session", "Create", User.Identity.Name);
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult empBookTrainingSess()
         {
             var categories = (from c in db.Categories
