@@ -12,6 +12,7 @@
     <title>Preview</title>
 </head>
 <body>
+    <a href="/help/questionnaire.pdf" title="Page Help"><div class="btn-help"><span><i class="fa fa-question-circle" aria-hidden="true"></i></span></div></a>
     @Html.Hidden("Questionnaire_ID", (int)ViewBag.Questionnaire_ID, new { id = "Questionnaire_ID" })
     @Html.Hidden("Question1", (string)ViewBag.Question1, new { id = "Question1" })
     @Html.Hidden("Question2", (string)ViewBag.Question2, new { id = "Question2" })
