@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+    //Layout = "~/Views/Shared/_LayoutStudent.cshtml";
 }
 
 @if (ViewBag.ErrorMessage != null)
@@ -10,7 +10,7 @@
     <div class="isa_warning">@ViewBag.ErrorMessage</div>
 
 }
-
+<a href="/help/questionnaire.pdf" title="Page Help"><div class="btn-help"><span><i class="fa fa-question-circle" aria-hidden="true"></i></span></div></a>
 <h2>Available Questionnaires</h2>
 <div class="row" style="padding-top:10px; padding-left:25px">
     <p class="text-muted"><strong>To answer to a questionnaire:</strong></p>

@@ -24,7 +24,7 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }    
 
-        [Authorize(Roles = "Admin, Employee")]
+        [Authorize(Roles = "Admin")]
         //capture venue selection
         public void captureVenue(int id)
         {
@@ -1161,7 +1161,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add problem type - get
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult addProblemType()
         {
             return View();
@@ -1169,7 +1169,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add problem type - post
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult addProblemType(problemTypeModel model)
         {
             if (ModelState.IsValid)
@@ -1192,7 +1192,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view problem types
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult viewProblemTypes()
         {
             var types = db.Common_Problem_Type;
@@ -1200,7 +1200,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delete problem types - get
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult deleteProblemType(int id)
         {
             var type = db.Common_Problem_Type.Where(t => t.Common_Problem_Type_ID == id).FirstOrDefault();
@@ -1210,7 +1210,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete problem types - post
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult deleteProblemType()
         {
             var id = (int)Session["typeID"];
@@ -1240,7 +1240,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //edit problem type - get
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult editProblemType(int id)
         {
             var type = db.Common_Problem_Type.Where(t => t.Common_Problem_Type_ID == id).FirstOrDefault();
@@ -1249,7 +1249,7 @@ namespace LibraryAssistantApp.Controllers
 
         //edit problem type - post
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult editProblemType(Common_Problem_Type model)
         {
             if (ModelState.IsValid)
@@ -1266,7 +1266,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view problems
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult viewCommonProblems()
         {
             var problems = db.Common_Problem;
@@ -1274,7 +1274,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add common problem - get
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult addCommonProblem()
         {
             var list = new SelectList(db.Common_Problem_Type, "Common_Problem_Type_ID", "Common_Problem_Type_Name");
@@ -1284,7 +1284,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add common problem - post
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult addCommonProblem(Common_Problem model)
         {
             if (ModelState.IsValid)
@@ -1301,7 +1301,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //edit common problem - get
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult editCommonProblem(int id)
         {
             var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == id).FirstOrDefault();
@@ -1319,7 +1319,7 @@ namespace LibraryAssistantApp.Controllers
 
         //edit common problem - post
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult editCommonProblem(commonProblemModel model)
         {
             if (ModelState.IsValid)
@@ -1348,7 +1348,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delte common problem - get
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult deleteCommonProblem(int id)
         {
             Session["problemID"] = id;
@@ -1358,7 +1358,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete common problem - post
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult deleteCommonProblem()
         {
             var id = (int)Session["problemID"];
