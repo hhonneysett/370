@@ -31,7 +31,7 @@
                             @foreach (Registered_Person rp in availableTrainers)
                             {
                                 <tr>
-                                    <td><label><input type="radio" name="trainer" class="trainerCheck" id="@rp.Person_ID" />  @rp.Person_ID - @rp.Person_Name @rp.Person_Surname</label></td>
+                                    <td title="Select trainer to host training session."><label><input type="radio" name="trainer" class="trainerCheck" id="@rp.Person_ID" />  @rp.Person_ID - @rp.Person_Name @rp.Person_Surname</label></td>
                                 </tr>
                             }
                         </tbody>
@@ -55,7 +55,7 @@
                             @foreach (Registered_Person rp in allTrainers)
                             {
                                 <tr>
-                                    <td><label><input type="radio" name="trainer" class="trainerCheck" id="@rp.Person_ID" />  @rp.Person_ID - @rp.Person_Name @rp.Person_Surname</label></td>
+                                    <td title="Select trainer to host training session."><label><input type="radio" name="trainer" class="trainerCheck" id="@rp.Person_ID" />  @rp.Person_ID - @rp.Person_Name @rp.Person_Surname</label></td>
                                 </tr>
                             }
                         </tbody>

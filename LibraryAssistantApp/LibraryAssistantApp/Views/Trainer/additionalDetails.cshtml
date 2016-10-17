@@ -11,20 +11,28 @@
     <div class="row">
         <div class="col-md-12">
             <form id="TformFour">
+                <div class="col-md-12">
+                    <p class="text-muted"><b>Instructions:</b></p>
+                    <ul class="text-muted" style="padding-bottom:10px">
+                        <li>Enter additional training session details below.</li>
+                        <li>Select recurring option if desired.</li>
+                        <li>Click the 'Submit' button to finalise the training session booking.</li>
+                    </ul>
+                </div>
                 <div class="col-md-6">
                     <table id="additionalTable">
                         <tr>
                             <td><b>Description:</b></td>
-                            <td style="padding-left:10px; padding-bottom:15px" s><input type="text" class="form-control" required id="description" placeholder="--enter description--" name="description" /></td>
+                            <td style="padding-left:10px; padding-bottom:15px" s><input title="Enter training session description." type="text" class="form-control" required id="description" placeholder="--enter description--" name="description" /></td>
                         </tr>
                         <tr>
                             <td><b>Maximum Attendees:</b></td>
-                            <td style="padding-left:10px; padding-bottom:15px"><input type="number" min="1" max="@venue.Capacity" required id="attendence" class="form-control" placeholder="-- enter max attendees --" value="@venue.Capacity" name="attendance" /></td>
+                            <td style="padding-left:10px; padding-bottom:15px"><input title="Enter training session maximum attendance." type="number" min="1" max="@venue.Capacity" required id="attendence" class="form-control" placeholder="-- enter max attendees --" value="@venue.Capacity" name="attendance" /></td>
                         </tr>
                         <tr>
                             <td><b>Confirmation Status:</b></td>
                             <td style="padding-left:10px; padding-bottom:15px">
-                                <select id="confirmation" class="form-control" name="confirmation" required>
+                                <select id="confirmation" class="form-control" name="confirmation" required title="Select training session booking status.">
                                     <option disabled selected value>--select status--</option>
                                     <option value="Confirmed">Confirmed</option>
                                     <option value="Tentative">Tentative</option>
@@ -34,7 +42,7 @@
                         <tr>
                             <td><b>Privacy Status:</b></td>
                             <td style="padding-left:10px; padding-bottom:15px">
-                                <select id="privacy" class="form-control" name="privacy" required>
+                                <select id="privacy" class="form-control" name="privacy" required title="Select training session privacy status.">
                                     <option disabled selected value>--select privacy status--</option>
                                     <option value="Public">Public</option>
                                     <option value="Private">Private</option>
@@ -44,7 +52,7 @@
                         <tr>
                             <td><b>Notify Students of Training Session Addition</b></td>
                             <td style="padding-left:10px; padding-bottom:15px">
-                                <select id="notify" class="form-control" name="notify" required>
+                                <select id="notify" class="form-control" name="notify" required title="Select training session notification status.">
                                     <option disabled selected value>--select notificaiton--</option>
                                     <option value="No">No</option>
                                     <option value="Yes">Yes</option>
@@ -60,7 +68,7 @@
                         Repeat Type
                     </div>
                     <div class="panel-body">
-                        <select id="repeat" class="form-control" onchange="getRepeatType()">
+                        <select id="repeat" class="form-control" onchange="getRepeatType()" title="Select repeat type.">
                             <option value="none">None</option>
                             <option value="daily">Daily</option>
                             <option value="weekly">Weekly</option>
@@ -72,14 +80,14 @@
                             <hr />
 
                             <div class="" id="repeatTimesPanel">
-                                <text class="control-label">Times To Repeat</text>
-                                <input type="number" class="form-control" min="1" max="54" id="repeatTimes" onkeyup="checkRepeat()" onmouseup="checkRepeat()" />
+                                <text class="control-label">Booking Instances</text>
+                                <input type="number" class="form-control" min="1" max="54" id="repeatTimes" onkeyup="checkRepeat()" onmouseup="checkRepeat()" title="Enter the amount of booking instances preferred."/>
 
                                 <div style="display:none" id="repeatErrorDiv" class="text-center">
                                     <hr />
                                     <span id="repeatError"></span><text id="repeatText" class="success text-center"></text>
                                     <hr />
-                                    <button class="btn btn-primary" id="viewClashes" hidden><span class="fa fa-search"></span> View Clashes</button>
+                                    <button class="btn btn-primary" id="viewClashes" hidden title="View bookings that are clashing with recurring instances."><span class="fa fa-search"></span> View Clashes</button>
                                 </div>
                             </div>
                         </div>
