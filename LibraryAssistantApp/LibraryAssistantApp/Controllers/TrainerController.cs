@@ -16,7 +16,6 @@ using System.Xml.Linq;
 
 namespace LibraryAssistantApp.Controllers
 {
-    //[Authorize(Roles ="Admin, Employee")]
     public class TrainerController : Controller
     {
         //initiate instance of database

@@ -33,7 +33,8 @@
     </div>
 </div>
 
-<h3>Members</h3>
+<h2 style="padding-bottom:25px">Members</h2>
+
 <span class="field-validation-error text-danger">@TempData["ErrorMsg"]</span>
 <span style="text-indent:4em" class="text-success">@TempData["SuccessMsg"]</span>
 <div class="container">
@@ -51,13 +52,13 @@
 
                 <div class="panel-body">
                     <div class="btn-group" role="group" aria-label="...">
-                        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-primary", @title="Create new member." })
                     </div>
                     <div class="btn-group">
-                        @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit" })
+                        @Html.ActionLink("Update", "Edit", null, htmlAttributes: new { @class = "btn btn-primary btn-edit", @title="Update selected member." })
                     </div>
                     <div class="btn-group">
-                        @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete" })
+                        @Html.ActionLink("Delete", "Delete", null, htmlAttributes: new { @class = "btn btn-primary btn-delete", @title="Delete selected member." })
                     </div>
                     <div class="loading"><img src="~/gif/rolling-sm-dark.gif" /></div>
                 </div>

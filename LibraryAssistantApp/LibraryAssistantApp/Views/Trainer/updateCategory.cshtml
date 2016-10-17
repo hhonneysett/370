@@ -35,9 +35,9 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    @Html.ActionLink("Back", "viewCategory", "Trainer", htmlAttributes: new { @class = "btn btn-primary" })
-                    <input type="submit" value="Update Category" class="btn btn-primary" name="submitButton" />
-                    <input type="submit" value="Delete Category" class="btn btn-primary" name="submitButton"/>
+                    @Html.ActionLink("Back", "viewCategory", "Trainer", htmlAttributes: new { @class = "btn btn-primary", @title="Back to list of categories" })
+                    <input type="submit" value="Save Changes" class="btn btn-primary" name="submitButton" title="Save changes to updated category." />
+                    <input type="submit" value="Delete Category" class="btn btn-primary" name="submitButton" title="Delete this category."/>
                 </div>
             </div>
         </div>
