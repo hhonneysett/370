@@ -13,6 +13,14 @@
     <div id="toggleThree">
 
         <div class="row">
+            <div class="col-md-12">
+                <p class="text-muted"><b>Instructions:</b></p>
+                <ul class="text-muted" style="padding-bottom:10px">
+                    <li>Select a preferred timeslot from the available timeslots below.</li>
+                    <li>Once a timeslot has been selected, select an available trainer.</li>
+                    <li>Once a timeslot and trainer has been selected, click the 'Proceed' button.</li>
+                </ul>
+            </div>
             <div class="col-md-3">
                 <div class="panel panel-default" style="max-height:400px;overflow-y: scroll;">
                     <table class="table text-center">
@@ -24,7 +32,7 @@
                         <tbody>
                             @foreach (timeslot ts in timeslots)
                             {
-                                <tr value="@ts.id">
+                                <tr value="@ts.id" title="Preferred training session timeslot">
                                     <td><input type="radio" name="timeslot" class="timeslot" value="@ts.startDate.TimeOfDay.ToString(@"hh\:mm") - @ts.endDate.TimeOfDay.ToString(@"hh\:mm")" onclick="getTrainers(this)" data-assigned-id="@ts.id" />  @ts.startDate.TimeOfDay.ToString(@"hh\:mm") - @ts.endDate.TimeOfDay.ToString(@"hh\:mm")</td>
                                 </tr>
                             }

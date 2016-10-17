@@ -23,6 +23,7 @@ namespace LibraryAssistantApp.Controllers
         
         //view categories
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public ActionResult viewCategory ()
         {
 
@@ -37,6 +38,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add category - get
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult addCategory()
         {
             return View();
@@ -45,6 +47,7 @@ namespace LibraryAssistantApp.Controllers
         //add category - post
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult addCategory([Bind(Exclude ="categoryId")]CategoryModel model)
         {
             if (ModelState.IsValid)
@@ -89,6 +92,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update category - get
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult updateCategory(int id)
         {
             //get selected category
@@ -104,6 +108,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update category - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult updateCategory(Category model, string submitButton)
         {           
             if(ModelState.IsValid)
@@ -156,6 +161,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete category - get
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteCategory(int id)
         {
             //get selected category
@@ -172,6 +178,7 @@ namespace LibraryAssistantApp.Controllers
         //delete category - post
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteCategory()
         {
             var model = (Category)TempData["selectedCat"];
@@ -210,6 +217,7 @@ namespace LibraryAssistantApp.Controllers
 
         //view topic
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult viewTopic()
         {
             //get list of existing categories
@@ -222,6 +230,7 @@ namespace LibraryAssistantApp.Controllers
 
         //get cat topics
         [HttpGet]
+        [Authorize]
         public JsonResult getCatTopic(int id)
         {
             var Topics = (from t in db.Topics
@@ -243,6 +252,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update topic - get
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult updateTopic(int id)
         {
             //get list of existing categories
@@ -271,6 +281,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update topic - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult updateTopic(Topic model, string submitButton, int category)
         {
             if (ModelState.IsValid)
@@ -435,6 +446,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add topic - get
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult addTopic()
         {
             //get list of current categories
@@ -450,6 +462,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add topic - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult addTopic(Topic model, int category)
         {
             if (ModelState.IsValid)
@@ -516,6 +529,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete topic - get
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteTopic(int id)
         {
             var topic = (from t in db.Topics
@@ -542,6 +556,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete topic - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteTopic()
         {
             var topicSeq = (int)Session["selectedTopic"];
@@ -571,35 +586,8 @@ namespace LibraryAssistantApp.Controllers
             return RedirectToAction("viewTopic");
         }
 
-        //add training session
-        [HttpGet]
-        public ActionResult addTrainingSession()
-        {
-            //get list of existing categories
-            var categories = from c in db.Categories
-                             select c;
-            //get list of existing campuses
-            var campuses = from c in db.Campus
-                           select c;
-
-            //get list of characterisstics
-            var characteristics = from c in db.Characteristics
-                                  select c;
-
-            //assign list of categories to viewbag
-            ViewBag.Categories = categories;
-
-
-            //assign list of campuses to viewbag
-            ViewBag.Campuses = campuses;
-
-            //assing list of characteristics to viewbag
-            ViewBag.Characteristics = characteristics;
-
-            return View();
-        }
-
         //add training session - new
+        [Authorize(Roles = "Admin")]
         public ActionResult addNewTrainingSession()
         {
             //get list of existing categories
@@ -638,6 +626,7 @@ namespace LibraryAssistantApp.Controllers
 
         //get training venues
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult getTrainingVenues(string model, string characteristics)
         {
             var buildings = db.Buildings.ToList();
@@ -855,6 +844,7 @@ namespace LibraryAssistantApp.Controllers
 
         //get available trainers
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public PartialViewResult getTrainers(int id)
         {
             //create local variable of timeslots
@@ -915,6 +905,7 @@ namespace LibraryAssistantApp.Controllers
 
         //get additional details
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public PartialViewResult additionalDetails(string trainer)
         {
             //assing registered person to a session variable
@@ -925,6 +916,7 @@ namespace LibraryAssistantApp.Controllers
 
         //repeat check
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public bool reapeatCheck(string repeatType, int multiple)
         {
             //local variable of selected timeslot and venue details
@@ -1098,6 +1090,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view clashes
+        [Authorize(Roles = "Admin")]
         public PartialViewResult viewClashes()
         {
             return PartialView();
@@ -1105,6 +1098,7 @@ namespace LibraryAssistantApp.Controllers
 
         //capture training session
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public bool captureTrainingSession(string description, int maxAtt, string confirmation, string privacy, string notify, string repeatType, int? multiple)
         {
             //get local versions of variables required
@@ -1561,6 +1555,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //send trainger mail
+        [Authorize(Roles = "Admin")]
         public void sendTrainerMail(string id, Venue_Booking booking)
         {
             var trainer = (from rp in db.Registered_Person
@@ -1602,6 +1597,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //send students mail
+        [Authorize(Roles = "Admin")]
         public void sendStudentsMail(int id, Venue_Booking booking)
         {
             var topicPerson = db.Person_Topic.Include(p => p.Registered_Person).Include(t => t.Topic).Where(c => c.Topic_Seq.Equals(id) && c.Registered_Person.Person_Type.Equals("Student"));
@@ -1644,6 +1640,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //send general student mail
+        [Authorize(Roles = "Admin")]
         public void sendGeneralStudentsMail(int id)
         {
             var topicPerson = db.Person_Topic.Include(p => p.Registered_Person).Include(t => t.Topic).Where(c => c.Topic_Seq.Equals(id) && c.Registered_Person.Person_Type.Equals("Student"));
@@ -1674,6 +1671,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //manage training session
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult manageTrainingSession()
         {
             //get list of campuses to display in form
@@ -1687,6 +1685,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //get list of training sessions for the manage training sessions screen
+        [Authorize(Roles = "Admin, Employee")]
         public JsonResult getTrainingSessions(string id)
         {
             var length = id.Length;
@@ -1739,6 +1738,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //show details of selected training session
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult trainingSessionDetails(int id)
         {
             //store the selected session id in session data
@@ -1794,6 +1794,7 @@ namespace LibraryAssistantApp.Controllers
 
         //show further training session details
         [HttpGet]
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult addTrainingSessionDetails(int id)
         {
             //create local variable of selected venue
@@ -1830,6 +1831,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //generate attendance register
+        [Authorize(Roles = "Admin, Employee")]
         public void generateAttendance()
         {
             //get the id of the selected session
@@ -1875,6 +1877,7 @@ namespace LibraryAssistantApp.Controllers
 
         //log attendants
         [HttpGet]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult logAttendance()
         {
             //get the id of the selected session
@@ -1908,6 +1911,7 @@ namespace LibraryAssistantApp.Controllers
 
         //submit attendance
         [HttpPost]
+        [Authorize(Roles = "Admin, Employee")]
         public void submitAttendance(string attended, int? document)
         {
             List<string> studentAtt = Deserialise<List<string>>(attended);
@@ -2030,6 +2034,7 @@ namespace LibraryAssistantApp.Controllers
 
         //cancel training
         [HttpPost]
+        [Authorize(Roles = "Admin, Employee")]
         public void cancelTraining()
         {
             var bookingSeq = (int)Session["selectedSession"];
@@ -2083,6 +2088,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add training category - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult addTrainingCategory()
         {
             return PartialView();
@@ -2090,6 +2096,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add training category - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult addTrainingCategory(string name, string description)
         {
             var categories = db.Categories.ToList();
@@ -2121,6 +2128,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add training topic - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult addTrainingTopic()
         {
             var categories = db.Categories.ToList();
@@ -2130,6 +2138,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add training topic - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult addTrainingTopic(string name, string description, int category)
         {
             var topics = db.Topics.ToList();
@@ -2171,6 +2180,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //update training session - get
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult updateTrainingSess()
         {
             var bookingSeq = (int)Session["selectedSession"];
@@ -2236,6 +2246,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update training session - post
         [HttpPost]
+        [Authorize(Roles = "Admin, Employee")]
         public JsonResult updateTrainingSess(int venue, string desc, string trainer, string status)
         {
             try
@@ -2275,6 +2286,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //select updated trainer
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult selectUpdateTrainer()
         {
             var bookingSeq = (int)Session["selectedSession"];
@@ -2317,6 +2329,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //get available venues
+        [Authorize(Roles = "Admin, Employee")]
         public JsonResult getTrainingUpVenues(int building)
         {
             var bookingSeq = (int)Session["selectedSession"];

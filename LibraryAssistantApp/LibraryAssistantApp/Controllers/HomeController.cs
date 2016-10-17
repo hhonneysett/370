@@ -9,6 +9,7 @@ using System.Xml.Linq;
 
 namespace LibraryAssistantApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
 

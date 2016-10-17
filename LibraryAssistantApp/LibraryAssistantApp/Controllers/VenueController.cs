@@ -15,6 +15,7 @@ namespace LibraryAssistantApp.Controllers
         //db connection
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
+        [Authorize(Roles = "Admin")]
         //load venue maintainence screen
         public ActionResult venueMaintainence()
         {
@@ -23,6 +24,7 @@ namespace LibraryAssistantApp.Controllers
             return View();
         }    
 
+        [Authorize(Roles = "Admin, Employee")]
         //capture venue selection
         public void captureVenue(int id)
         {
@@ -31,6 +33,7 @@ namespace LibraryAssistantApp.Controllers
             Session["idHolder"] = idHolder;
         }
 
+        [Authorize(Roles = "Admin")]
         //add a campus - get
         public PartialViewResult addCampus()
         {
@@ -39,6 +42,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add a campus - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult addCampus(string campus)
         {
             var a = campus.ToUpper();
@@ -63,6 +67,7 @@ namespace LibraryAssistantApp.Controllers
 
         //check campus exists already
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public JsonResult checkCampus(string campusName)
         {
             var campuses = db.Campus.ToList();
@@ -80,6 +85,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delete campus - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult deleteCampus(int id)
         {
             var campus = db.Campus.Where(c => c.Campus_ID == id).FirstOrDefault();
@@ -91,6 +97,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete campus - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult confirmDelete()
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -124,6 +131,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //update campus - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult updateCampus(int id)
         {
             var campus = db.Campus.Where(c => c.Campus_ID == id).FirstOrDefault();
@@ -135,6 +143,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update campus - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult captureUpdateCampus(string campusName)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -161,6 +170,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //check updated campus
+        [Authorize(Roles = "Admin")]
         public JsonResult checkUpdateCampus(string Campus_Name)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -179,6 +189,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //get buildings matching selected campus
+        [Authorize]
         public PartialViewResult getBuildings(int id)
         {
             var campus = db.Campus.Where(c => c.Campus_ID == id).FirstOrDefault();
@@ -195,6 +206,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add building - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult addBuilding()
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -206,6 +218,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add building - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult addBuilding(string buildingName)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -237,6 +250,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //check building
+        [Authorize(Roles = "Admin")]
         public JsonResult checkBuilding(string buildingName)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -251,6 +265,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delete building - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult deleteBuilding(int id)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -270,6 +285,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete building - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult deleteBuilding()
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -305,6 +321,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //update building - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult updateBuilding(int id)
         {
             var campuses = db.Campus.ToList();
@@ -321,6 +338,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update building - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult updateBuilding(string buildingName, int campusID)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -351,6 +369,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //check updated building
+        [Authorize(Roles = "Admin")]
         public JsonResult checkUpdateBuilding(string Building_Name)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -366,6 +385,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //get building floors
+        [Authorize]
         public PartialViewResult getBuildingFloors(int id)
         {
             var buildingFloors = (from f in db.Building_Floor
@@ -378,6 +398,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add building floors - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult addBuildingFloor()
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -393,6 +414,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add building floor - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult addBuildingFloor(string floorName)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -421,6 +443,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //check building floor
+        [Authorize(Roles = "Admin")]
         public JsonResult checkFloor(string floorName)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -435,6 +458,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delete building floor - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult deleteFloor(int id)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -455,6 +479,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete building floor - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult deleteFloor()
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -486,6 +511,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //update building floor - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult updateFloor(int id)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -505,6 +531,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update building floor - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult updateBuildingFloor(string floorName, int campus, int building)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -530,6 +557,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //check update floor
+        [Authorize(Roles = "Admin")]
         public JsonResult checkUpdateFloor(string Floor_Name, int campus, int building)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -545,6 +573,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //get campus buildings
+        [Authorize]
         public JsonResult getCamBuildings(int id)
         {
             var buildings = db.Buildings.Where(b => b.Campus_ID == id).ToList();
@@ -559,6 +588,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //get venues for selected building floor
+        [Authorize]
         public PartialViewResult getVenues(int id)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -571,6 +601,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add venue - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult addVenue()
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -592,6 +623,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add venue - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult addVenue(string venueName, string characteristicsJson, string type, int capacity)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -640,6 +672,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //check venue
+        [Authorize(Roles = "Admin")]
         public JsonResult checkVenue(string venueName)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -654,6 +687,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delete venue - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult deleteVenue(int id)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -676,6 +710,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete venue - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult deleteVenue()
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -721,6 +756,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //update venue - get
+        [Authorize(Roles = "Admin")]
         public PartialViewResult updateVenue(int id)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -771,6 +807,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update venue - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult updateVenue(string venueName, int venueCapacity, int campus, int building, int floor, string type, string characteristics)
         {
             var characteristicsList = Deserialise<IEnumerable<int>>(characteristics);
@@ -823,6 +860,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //get building floors
+        [Authorize]
         public JsonResult getBuildFloors(int id)
         {
             var floors = db.Building_Floor.Where(f => f.Building_ID == id).ToList();
@@ -837,6 +875,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //search campus
+        [Authorize(Roles = "Admin")]
         public JsonResult searchCampus(string search)
         {
             if (search != null)
@@ -868,6 +907,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //search building
+        [Authorize(Roles = "Admin")]
         public JsonResult searchBuilding(string search)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -901,6 +941,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //search floors
+        [Authorize(Roles = "Admin")]
         public JsonResult searchFloor(string search)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -934,6 +975,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //search venues
+        [Authorize(Roles = "Admin")]
         public JsonResult searchVenue(string search)
         {
             var idHolder = (Venue)Session["idHolder"];
@@ -973,6 +1015,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //report a venue problem
+        [Authorize]
         public PartialViewResult reportProblem()
         {
             var campuses = db.Campus.ToList();
@@ -980,6 +1023,7 @@ namespace LibraryAssistantApp.Controllers
             return PartialView();
         }
 
+        [Authorize]
         //get buildings for selected floor
         public JsonResult getFloorVenues(int id)
         {
@@ -993,6 +1037,7 @@ namespace LibraryAssistantApp.Controllers
             return Json(jsonObj, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         //get common problem types
         public JsonResult getProblemTypes()
         {
@@ -1006,6 +1051,7 @@ namespace LibraryAssistantApp.Controllers
             return Json(jsonObj, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         //get problems
         public JsonResult getProblems(int id)
         {
@@ -1021,6 +1067,7 @@ namespace LibraryAssistantApp.Controllers
 
         //capture venue problem
         [HttpPost]
+        [Authorize]
         public void captureProblem(int venue, int problem, string comment)
         {
             var vp = new Venue_Problem
@@ -1041,6 +1088,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view venue problems
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult viewProblems()
         {
             var campuses = db.Campus.ToList();
@@ -1070,6 +1118,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view problem details
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult viewProblemDetails(int id)
         {
             var problem = db.Venue_Problem.Where(p => p.Problem_Seq == id).FirstOrDefault();
@@ -1085,6 +1134,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //resolve venue problem - get
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult resolveProblem(int id)
         {
             Session["problem"] = id;
@@ -1093,6 +1143,7 @@ namespace LibraryAssistantApp.Controllers
 
         //resolve venue problem - post
         [HttpPost]
+        [Authorize(Roles = "Admin, Employee")]
         public string resolveProblem()
         {
             var id = (int)Session["problem"];
@@ -1110,6 +1161,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add problem type - get
+        [Authorize(Roles = "Admin")]
         public ActionResult addProblemType()
         {
             return View();
@@ -1117,6 +1169,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add problem type - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult addProblemType(problemTypeModel model)
         {
             if (ModelState.IsValid)
@@ -1139,6 +1192,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view problem types
+        [Authorize(Roles = "Admin")]
         public ActionResult viewProblemTypes()
         {
             var types = db.Common_Problem_Type;
@@ -1146,6 +1200,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delete problem types - get
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteProblemType(int id)
         {
             var type = db.Common_Problem_Type.Where(t => t.Common_Problem_Type_ID == id).FirstOrDefault();
@@ -1155,6 +1210,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete problem types - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteProblemType()
         {
             var id = (int)Session["typeID"];
@@ -1184,6 +1240,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //edit problem type - get
+        [Authorize(Roles = "Admin")]
         public ActionResult editProblemType(int id)
         {
             var type = db.Common_Problem_Type.Where(t => t.Common_Problem_Type_ID == id).FirstOrDefault();
@@ -1192,6 +1249,7 @@ namespace LibraryAssistantApp.Controllers
 
         //edit problem type - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult editProblemType(Common_Problem_Type model)
         {
             if (ModelState.IsValid)
@@ -1208,6 +1266,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view problems
+        [Authorize(Roles = "Admin")]
         public ActionResult viewCommonProblems()
         {
             var problems = db.Common_Problem;
@@ -1215,6 +1274,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add common problem - get
+        [Authorize(Roles = "Admin")]
         public ActionResult addCommonProblem()
         {
             var list = new SelectList(db.Common_Problem_Type, "Common_Problem_Type_ID", "Common_Problem_Type_Name");
@@ -1224,6 +1284,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add common problem - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult addCommonProblem(Common_Problem model)
         {
             if (ModelState.IsValid)
@@ -1240,6 +1301,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //edit common problem - get
+        [Authorize(Roles = "Admin")]
         public ActionResult editCommonProblem(int id)
         {
             var problem = db.Common_Problem.Where(p => p.Common_Problem_ID == id).FirstOrDefault();
@@ -1257,6 +1319,7 @@ namespace LibraryAssistantApp.Controllers
 
         //edit common problem - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult editCommonProblem(commonProblemModel model)
         {
             if (ModelState.IsValid)
@@ -1285,6 +1348,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delte common problem - get
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteCommonProblem(int id)
         {
             Session["problemID"] = id;
@@ -1294,6 +1358,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete common problem - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteCommonProblem()
         {
             var id = (int)Session["problemID"];
@@ -1320,6 +1385,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view characteristic
+        [Authorize(Roles = "Admin")]
         public ActionResult viewCharacteristics()
         {
             var characteristics = db.Characteristics.ToList();
@@ -1327,12 +1393,14 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add characteristics - get
+        [Authorize(Roles = "Admin")]
         public ActionResult addCharacteristic()
         {
             return View();
         }
 
         //add characteristic - partial
+        [Authorize(Roles = "Admin")]
         public PartialViewResult addVenueCharacteristic()
         {
             return PartialView();
@@ -1340,6 +1408,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add characteristic - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult addCharacteristic(Characteristic model)
         {
             if (ModelState.IsValid)
@@ -1359,6 +1428,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //update characteristic - get
+        [Authorize(Roles = "Admin")]
         public ActionResult updateCharacteristic(int id)
         {
             var c = db.Characteristics.Where(e => e.Characteristic_ID == id).FirstOrDefault();
@@ -1373,6 +1443,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update characteristic - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult updateCharacteristic(UpdateCharModel model)
         {
             var c = db.Characteristics.Where(e => e.Characteristic_ID == model.id).FirstOrDefault();
@@ -1388,6 +1459,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delete characteristic - get
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteCharacteristic(int id)
         {
             Session["charID"] = id;
@@ -1397,6 +1469,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete characteristic - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteCharacteristic()
         {
             var id = (int)Session["charID"];

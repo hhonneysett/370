@@ -285,6 +285,7 @@ namespace LibraryAssistantApp.Controllers
 
             return View(reportList);
         }
+
         [HttpGet]
         public ActionResult BookingReport(int? year)
         {

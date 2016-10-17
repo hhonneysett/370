@@ -36,6 +36,7 @@ namespace LibraryAssistantApp.Controllers
         // POST: Add file
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Employee")]
         public ActionResult AddFile(AddFileModel model)
         {
             //check if model state is valid
@@ -374,8 +375,9 @@ namespace LibraryAssistantApp.Controllers
                 return View(model);
             }
         }
-        
+
         //delete file type - get
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteFileType(int id)
         {
             Session["typeID"] = id;
@@ -385,6 +387,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete file type = post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteFileType()
         {
             int id = (int)Session["typeID"];
@@ -413,6 +416,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view file categories
+        [Authorize(Roles = "Admin")]
         public ActionResult viewFileCategories()
         {
             var categories = db.Document_Category.ToList();
@@ -420,6 +424,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add file category - get
+        [Authorize(Roles = "Admin")]
         public ActionResult addFileCategory()
         {
             return View();
@@ -427,6 +432,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add file category - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult addFileCategory(AddFileCategory model)
         {
             if (ModelState.IsValid)
@@ -456,6 +462,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //update file category - get
+        [Authorize(Roles = "Admin")]
         public ActionResult updateFileCategory(int id)
         {
             var category = db.Document_Category.Where(c => c.Category_ID == id).FirstOrDefault();
@@ -470,6 +477,7 @@ namespace LibraryAssistantApp.Controllers
 
         //update file category - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult updateFileCategory(UpdateFileCategory model)
         {
             var category = db.Document_Category.Where(c => c.Category_ID == model.id).FirstOrDefault();
@@ -497,6 +505,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //delete file category - get
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteFileCategory(int id)
         {
             Session["catID"] = id;
@@ -506,6 +515,7 @@ namespace LibraryAssistantApp.Controllers
 
         //delete file category - post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult deleteFileCategory()
         {
             var id = (int)Session["catID"];
