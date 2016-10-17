@@ -53,7 +53,7 @@
                                     @Html.ActionLink("Discussion Room", "employeeBookDiscussionRoom", "Booking")
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Training Session", "bookTrainingSess", "Booking")
+                                    @Html.ActionLink("Training Session", "empBookTrainingSess", "Booking")
                                 </li>
                             </ul>
                         </li>
@@ -75,7 +75,7 @@
                             </a>
                             <ul class="nav-third-level" aria-expanded="false">
                                 <li>
-                                    @Html.ActionLink("Create Training Session", "addTrainingSession", "Trainer")
+                                    @Html.ActionLink("Create Training Session", "addNewTrainingSession", "Trainer")
                                 </li>
                                 <li>
                                     @Html.ActionLink("Manage Training Sessions", "manageTrainingSession", "Trainer")
@@ -97,72 +97,24 @@
                 </li>
                 <li>
                     <a href="#" aria-expanded="false">
-                        <span class="navbar-custom-item-icon fa fa-hospital-o fa-fw"></span>
-                        Venues
-                    </a>
-                    <ul class="nav-second-level" aria-expanded="false">
-                        <li>
-                            <a href="#">View Problems</a>
-                        </li>
-                        <li>
-                            <a href="#">Report Problem</a>
-                        </li>
-                        <li>
-                            <a href="#">Update Problem Status</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" aria-expanded="false">
-                        <span class="navbar-custom-item-icon fa fa-graduation-cap fa-fw"></span>
-                        Tutorials
-                    </a>
-                    <ul class="nav-second-level" aria-expanded="false">
-                        <li>
-                            @Html.ActionLink("Manage Repository", "ViewFile", "Repository")
-                        </li>
-                        <li>
-                            @Html.ActionLink("View Library Map", "ViewMap", "Repository")
-                        </li>
-                        <li>
-                            <a href="#">View Tutorials</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" aria-expanded="false">
                         <span class="navbar-custom-item-icon fa fa-files-o fa-fw"></span>
                         Questionnaires
                     </a>
-                    <ul class="nav-second-level" aria-expanded="false">
+                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
                         <li>
-                            <a href="#">Create Questionnaire</a>
+                            @Html.ActionLink("Questionnaires", "Index", "Questionnaire")
                         </li>
                         <li>
-                            <a href="#">Manage Questionnaires</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" aria-expanded="false">
-                        <span class="navbar-custom-item-icon fa fa-bar-chart fa-fw"></span>
-                        Reporting
-                    </a>
-                    <ul class="nav-second-level" aria-expanded="false">
-                        <li>
-                            @Html.ActionLink("Session Log", "personSession", "Reporting")
+                            @Html.ActionLink("Question Bank", "Index", "Question_Bank")
                         </li>
                         <li>
-                            @Html.ActionLink("Document Access Log", "documentAccess", "Reporting")
+                            @Html.ActionLink("Question Topics", "Index", "Question_Topic")
                         </li>
                         <li>
-                            @Html.ActionLink("Action Log", "personSessionAction", "Reporting")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Venue Usage Log", "venueUsage", "Reporting")
+                            @Html.ActionLink("Questionnaire Results", "Get_Questionnaire_Results", "Questionnaire")
                         </li>
                     </ul>
-                </li>              
+                </li>             
             </ul>
             <ul id="navbar-login">
                 <li>
