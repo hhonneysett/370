@@ -97,10 +97,44 @@
                 </li>
                 <li>
                     <a href="#" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-hospital-o fa-fw"></span>
+                        Venues
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li>
+                            @Html.ActionLink("Common Problems", "viewCommonProblems", "Venue")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Common Problem Types", "viewProblemTypes", "Venue")
+                        </li>
+                        <li>
+                            @Html.ActionLink("View Venue Problems", "viewProblems", "Venue")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Report Problem", "reportProblem", "Venue")
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-graduation-cap fa-fw"></span>
+                        Tutorials
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li>
+                            @Html.ActionLink("Manage Repository", "ViewFile", "Repository")
+                        </li>
+                        <li>
+                            @Html.ActionLink("View Library Map", "ViewMap", "Repository")
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" aria-expanded="false">
                         <span class="navbar-custom-item-icon fa fa-files-o fa-fw"></span>
                         Questionnaires
                     </a>
-                    <ul class="nav-second-level animated fadeIn" aria-expanded="false">
+                    <ul class="nav-second-level" aria-expanded="false">
                         <li>
                             @Html.ActionLink("Questionnaires", "Index", "Questionnaire")
                         </li>
@@ -114,7 +148,27 @@
                             @Html.ActionLink("Questionnaire Results", "Get_Questionnaire_Results", "Questionnaire")
                         </li>
                     </ul>
-                </li>             
+                </li>
+                @*<li>
+                    <a href="#" aria-expanded="false">
+                        <span class="navbar-custom-item-icon fa fa-bar-chart fa-fw"></span>
+                        Reporting
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li>
+                            @Html.ActionLink("Questionnaires", "Index", "Questionnaire")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Question Bank", "Index", "Question_Bank")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Question Topics", "Index", "Question_Topic")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Questionnaire Results", "Get_Questionnaire_Results", "Questionnaire")
+                        </li>
+                    </ul>
+                </li>*@              
             </ul>
             <ul id="navbar-login">
                 <li>
@@ -135,6 +189,10 @@
                         }
                     }
                 </li>
+                <!--general help-->
+                <li id="navbar-help">
+                    <a href="#" title="General Help">Help</a>
+                </li>
             </ul>
             <!-- end navbar links-->
         </div>
@@ -142,6 +200,7 @@
 
     <div class="container body-content">
         <div class="row" style="padding-top:10px">
+            <!--page help-->
             @Html.Notification()
         </div>
         @RenderBody()

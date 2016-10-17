@@ -1128,12 +1128,6 @@
     <Content Include="Views\Employee\Employees.cshtml" />
     <Content Include="Views\Employee\Categories.cshtml" />
     <Content Include="Views\Employee\Categories_edit.cshtml" />
-    <Content Include="Views\Member\Index.cshtml" />
-    <Content Include="Views\Member\Members.cshtml" />
-    <Content Include="Views\Member\Create.cshtml" />
-    <Content Include="Views\Member\Edit.cshtml" />
-    <Content Include="Views\Member\Delete.cshtml" />
-    <Content Include="Views\Member\MemberDetails.cshtml" />
     <Content Include="Views\Venue\addVenueCharacteristic.cshtml" />
     <Content Include="Views\Repository\DeleteFileType.cshtml" />
     <Content Include="Views\Repository\viewFileCategories.cshtml" />
@@ -1158,6 +1152,12 @@
     <Content Include="Views\Questionnaire\Venue_Assessment_Venue.cshtml" />
     <Content Include="Views\Person_Session_Action_Log\Index.cshtml" />
     <Content Include="Views\Backup\Index.cshtml" />
+    <Content Include="Views\Member\Create.cshtml" />
+    <Content Include="Views\Member\Delete.cshtml" />
+    <Content Include="Views\Member\Edit.cshtml" />
+    <Content Include="Views\Member\Index.cshtml" />
+    <Content Include="Views\Member\MemberDetails.cshtml" />
+    <Content Include="Views\Member\Members.cshtml" />
     <Content Include="Views\Booking\empBookTrainingSess.cshtml" />
     <Content Include="Views\Home\About_Us.cshtml" />
     <None Include="Web.Debug.config">

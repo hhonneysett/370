@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @if (ViewBag.DeleteComplete == "Yes")
@@ -24,7 +24,7 @@
 
 @Html.Hidden("NewTopic", (string)ViewBag.NewTopic, new { id = "NewTopic" })
 <h3>Question Bank</h3>
-
+<a href="/help/questionnaire.pdf" title="Page Help"><div class="btn-help"><span><i class="fa fa-question-circle" aria-hidden="true"></i></span></div></a>
 <div class="col-md-8">
     <h4 class="bg-info-1 shaded">
         Questions
