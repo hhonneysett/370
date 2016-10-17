@@ -8,12 +8,12 @@ using System.Web.Mvc;
 
 namespace LibraryAssistantApp.Controllers
 {
+    [Authorize(Roles = "Admin, Employee")]
     public class ReportingController : Controller
     {
         LibraryAssistantEntities db = new LibraryAssistantEntities();
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public ActionResult personSession()
         {
             var persons = (from a in db.Person_Session_Log
@@ -50,7 +50,6 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Admin")]
         public ActionResult documentAccess()
         {
             var documentsSeq = (from d in db.Document_Access_Log
@@ -173,7 +172,6 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Admin")]
         public ActionResult personSessionAction()
         {
             var actions = (from a in db.Person_Session_Action_Log
@@ -206,7 +204,6 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Admin")]
         public ActionResult venueUsage()
         {
             var venueIds = (from v in db.Venue_Booking
@@ -253,7 +250,6 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Admin")]
         public ActionResult trainingAttendance()
         {
             var trainingSeq = (from t in db.Venue_Booking
@@ -291,7 +287,6 @@ namespace LibraryAssistantApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public ActionResult BookingReport(int? year)
         {
             if (year == null)

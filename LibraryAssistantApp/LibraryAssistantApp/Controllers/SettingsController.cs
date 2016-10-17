@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 namespace LibraryAssistantApp.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class SettingsController : Controller
     {
         public const int ImageMinimumBytes = 512;

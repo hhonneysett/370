@@ -25,7 +25,7 @@
             {
                         <table class="table table-bordered" id="filesTable">
                             <thead>
-                                <tr>
+                                <tr class="shade-blue">
                                     <th>
                                         @Html.DisplayNameFor(model => model.Document_Name)
                                     </th>
@@ -78,14 +78,12 @@
                         <div>No files currently exist</div>
                     }
                 </div>
+                <div class="panel-body">
+                        @Html.ActionLink("Add New File", "AddFile", "Repository", htmlAttributes: new { @class = "btn btn-primary", @title = "Click to add a new file to the document repository." })
+                </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            @Html.ActionLink("Add File", "AddFile", "Repository", htmlAttributes: new { @class = "btn btn-primary" })
-        </div>
-    </div> 
 }
 
 <script type="text/javascript">

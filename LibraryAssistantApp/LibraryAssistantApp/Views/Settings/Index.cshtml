@@ -15,6 +15,13 @@
 <hr />
 
 <div class="row">
+    <div class="col-md-8">
+        <h4 class="bg-success shaded">
+            Email Schedule
+        </h4>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-4" style="height:100%">
         <div class="panel panel-default">
             <table class="table">
@@ -26,12 +33,19 @@
                 </tbody>
             </table>
             <div class="panel-body">
-                <button class="btn btn-primary form-group" id="btnSaveTime"><span class="fa fa-floppy-o"></span> Save Time</button>
+                <button class="btn btn-primary form-group" id="btnSaveTime" title="Saves the schedulled email time."><span class="fa fa-floppy-o"></span> Save Time</button>
             </div>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-8">
+        <h4 class="bg-success shaded">
+            Home Page Picture Slider
+        </h4>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <div class="panel panel-default">
@@ -48,9 +62,8 @@
                         {
                             <tr id="@picture">
                                 <td><a class="pic" id="@picture">Image @counter</a></td>
-                                <td style="padding-left:5px; padding-bottom:5px"><button id="@picture" class="removePicture"><span class="fa fa-times"></span> Remove</button></td>
+                                <td style="padding-left:5px; padding-bottom:5px"><button id="@picture" class="removePicture" title="Removes picture from home page carousel."><span class="fa fa-times"></span> Remove</button></td>
                             </tr>
-
                             counter = counter + 1;
                         }
                     </tbody>
@@ -75,18 +88,25 @@
                 </table>
                 <div class="panel-body">
                     <div class="form-group">
-                        <input id="fileInput" type="file" multiple accept='image/*'>
+                        <input id="fileInput" type="file" multiple accept='image/*' title="Choose a file to upload.">
 
                     </div>
-                    <div class="">
-                        <input type="submit" value="Upload file" class="btn btn-primary" />
-                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="btn-group"><input type="submit" value="Upload file" class="btn btn-primary" title="Upload an image "/></div>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-8">
+        <h4 class="bg-success shaded">
+            Allowed Training Session Duration
+        </h4>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <div class="panel panel-default">
@@ -103,7 +123,7 @@
                         {
                             <tr id="@t">
                                 <td>@t</td>
-                                <td style="padding-left:5px; padding-bottom:5px"><button id="@t" class="removeTrainingTime"><span class="fa fa-times"></span> Remove</button></td>
+                                <td style="padding-left:5px; padding-bottom:5px"><button id="@t" class="removeTrainingTime" title="Remove this training duration."><span class="fa fa-times"></span> Remove</button></td>
                             </tr>
                         }
                     </tbody>
@@ -137,15 +157,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="">
-                        <button class="btn btn-primary" id="addTDur">Add Duration</button>
-                    </div>
+                </div>
+                <div class="panel-body">
+                    <button class="btn btn-primary" id="addTDur" title="Allow a new training session duration.">Add Duration</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-8">
+        <h4 class="bg-success shaded">
+            Allowed Discussion Room Session Duration
+        </h4>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <div class="panel panel-default">
@@ -162,7 +189,7 @@
                         {
                             <tr id="@t">
                                 <td>@t</td>
-                                <td style="padding-left:5px; padding-bottom:5px"><button id="@t" class="removeDiscussionTime"><span class="fa fa-times"></span> Remove</button></td>
+                                <td style="padding-left:5px; padding-bottom:5px"><button id="@t" class="removeDiscussionTime" title="Remove this discussion room duration."><span class="fa fa-times"></span> Remove</button></td>
                             </tr>
                         }
                     </tbody>
@@ -196,15 +223,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="">
-                        <button class="btn btn-default" id="addDDur">Add Duration</button>
-                    </div>
+                </div>
+                <div class="panel-body">
+                    <button class="btn btn-primary" id="addDDur" title="Allow this discussion room duration.">Add Duration</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-8">
+        <h4 class="bg-success shaded">
+            Library Operating Hours
+        </h4>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <form id="openTimeForm">
@@ -216,12 +250,12 @@
                     <div class="form-group col-md-12">
                         <label class="control-label col-md-2">Open Time:</label>
                         <div class="col-md-10">
-                            <input id="openTime" class="form-control" value="@openTime" name="openTime"/>
+                            <input id="openTime" class="form-control" value="@openTime" name="openTime" title="Default library opening time."/>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="col-md-2"></div>
-                        <div class="col-md-10"><button class="btn btn-primary" id="saveOpenTime"><span class="fa fa-save"></span> Save</button></div>
+                        <div class="col-md-10"><button class="btn btn-primary" id="saveOpenTime" title="Save the default library opening time."><span class="fa fa-save"></span> Save</button></div>
                     </div>
                 </div>
             </div>
@@ -238,12 +272,12 @@
                     <div class="form-group col-md-12">
                         <label class="control-label col-md-2">Close Time:</label>
                         <div class="col-md-10">
-                            <input id="closeTime" class="form-control" value="@closeTime" name="closeTime"/>
+                            <input id="closeTime" class="form-control" value="@closeTime" name="closeTime" title="Default library closing time"/>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="col-md-2"></div>
-                        <div class="col-md-10"><button class="btn btn-primary" id="saveCloseTime"><span class="fa fa-save"></span> Save</button></div>
+                        <div class="col-md-10"><button class="btn btn-primary" id="saveCloseTime" title="Save the default library closing time."><span class="fa fa-save"></span> Save</button></div>
                     </div>
                 </div>
             </div>
