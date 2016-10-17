@@ -86,19 +86,21 @@
             var id = $("#bkTrainingCat").children(":selected").val();
 
             //$("#sessionToggle").hide(800);
+            if ($("#booktrainingsession").valid()) {
 
-            $.ajax({
-                type: 'GET',
-                url: '/Booking/getTopics',
-                data: "id=" + id,
-                success: function (result) {
-                    $('#topicPanel').replaceWith(result);
-                    $("#topicToggle").show();
-                },
-                error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
-                }
-            });
+                $.ajax({
+                    type: 'GET',
+                    url: '/Booking/getTopics',
+                    data: "id=" + id,
+                    success: function (result) {
+                        $('#topicPanel').replaceWith(result);
+                        $("#topicToggle").show();
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                });
+            }
         })
 
         function getTrainingBookingDetails() {
@@ -126,17 +128,20 @@
 
         //confirm booking
         function studentBook() {
-            $.ajax({
-                type: 'POST',
-                url: '/Booking/captureStudentTraining',
-                data: {student: $("#trainingstudent").val()},
-                success: function (result) {
-                    window.location.href = "/Booking/ViewBookings/";
-                },
-                error: function (err, result) {
-                    alert("Error in assigning dataToSave" + err.responseText);
-                }
-            });
+            if ($("#booktrainingsession").valid())
+            {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Booking/captureStudentTraining',
+                    data: { student: $("#trainingstudent").val() },
+                    success: function (result) {
+                        window.location.href = "/Booking/ViewBookings/";
+                    },
+                    error: function (err, result) {
+                        alert("Error in assigning dataToSave" + err.responseText);
+                    }
+                });
+            }
         };
     </script>
 }
