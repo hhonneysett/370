@@ -1158,6 +1158,8 @@
     <Content Include="Views\Member\Index.cshtml" />
     <Content Include="Views\Member\MemberDetails.cshtml" />
     <Content Include="Views\Member\Members.cshtml" />
+    <Content Include="Views\Booking\empBookTrainingSess.cshtml" />
+    <Content Include="Views\Home\About_Us.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

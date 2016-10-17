@@ -1045,20 +1045,25 @@ namespace LibraryAssistantApp.Controllers
 
         [HttpGet]
         [Authorize]
-        public PartialViewResult getAvailableTrainingSess(int id)
+        public PartialViewResult getAvailableTrainingSess(int id, string person)
         {
             var trainingSessions = db.Venue_Booking.Where(b => b.Booking_Type.Booking_Type_Name == "Training" && b.Booking_Status == "Confirmed" && b.Topic_Seq == id && b.DateTime_From > DateTime.Today).ToList();
 
             var filtered = new List<Venue_Booking>();
+
+            var personid = "";
+            if (person != null)
+                personid = person;
+            else personid = User.Identity.Name;
 
             foreach(var session in trainingSessions)
             {
                 var persons = session.Venue_Booking_Person;
                 var check = true;
 
-                foreach(var person in persons)
+                foreach(var p in persons)
                 {
-                    if (person.Person_ID == User.Identity.Name)
+                    if (p.Person_ID == personid)
                     {
                         check = false;
                     }
@@ -1133,13 +1138,28 @@ namespace LibraryAssistantApp.Controllers
 
         [HttpPost]
         [Authorize]
-        public void captureStudentTraining()
+        public void captureStudentTraining(string student)
         {
+            var personid = "";
+            if (student != null)
+            {
+                personid = student;
+                var students = db.Registered_Person.ToList();
+                var check = students.Where(s => s.Person_ID.ToLower() == personid.ToLower());
+                if (!check.Any())
+                {
+                    TempData["Message"] = "Invalid student number!";
+                    TempData["classStyle"] = "danger";
+                    return;
+                }
+            }
+            else personid = User.Identity.Name;
+
             var id = (int)Session["studentSelectedSess"];
 
             Venue_Booking_Person a = new Venue_Booking_Person
             {
-                Person_ID = User.Identity.Name,
+                Person_ID = personid,
                 Venue_Booking_Seq = id,
                 Attendee_Type = "Student",
                 Attendee_Status = "Active",
@@ -1151,6 +1171,27 @@ namespace LibraryAssistantApp.Controllers
 
             //record action
             global.addAudit("Bookings", "Bookings: Book Training Session", "Create", User.Identity.Name);
+        }
+
+        [Authorize(Roles ="Admin")]
+        public ActionResult empBookTrainingSess()
+        {
+            var categories = (from c in db.Categories
+                              select c);
+
+            Session["categories"] = categories;
+
+            return View();
+        }
+
+        [Authorize]
+        public JsonResult checkValidStudent(string student)
+        {
+            var students = db.Registered_Person.ToList();
+            var check = students.Where(s => s.Person_ID.ToLower() == student.ToLower());
+            if (check.Any())
+                return Json(true, JsonRequestBehavior.AllowGet);
+            else return Json(false, JsonRequestBehavior.AllowGet);
         }
     }
 }

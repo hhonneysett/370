@@ -35,7 +35,7 @@
         $.ajax({
             type: 'GET',
             url: '/Booking/getAvailableTrainingSess',
-            data: "id=" + id,
+            data: { id: id, person: $("#trainingstudent").val() },
             success: function (result) {
                 $('#bkTrainingBookings').replaceWith(result);
                 $("#sessionToggle").show();

@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace LibraryAssistantApp.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
 
@@ -24,6 +24,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //get pictures
+        [Authorize]
         public JsonResult getPictures()
         {
             //access xml
@@ -45,6 +46,12 @@ namespace LibraryAssistantApp.Controllers
             }
 
             return Json(spictures.ToArray(), JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowAnonymous]
+        public ActionResult About_Us()
+        {
+            return View();
         }
     }
 }
