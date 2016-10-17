@@ -199,3 +199,31 @@ table tbody tr :hover {
     top:60px;
     left:70%;
 }
+
+/*Help button*/
+
+.btn-help {
+    position:absolute;
+    top: 65px;
+    right:25px; 
+}
+
+@media (max-width: 1447px) {
+    .btn-help {
+        top: 70px;
+    } 
+}
+
+/*set below navbar !temporary fix*/
+@media (max-width: 1192px) {
+    .btn-help{
+        top: 110px;
+    } 
+}
+
+/*set top below navbar !temporary fix*/
+@media (max-width: 767px) {
+    .btn-help {
+            top: 70px;
+        } 
+}
