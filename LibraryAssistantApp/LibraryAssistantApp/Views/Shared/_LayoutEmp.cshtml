@@ -102,13 +102,16 @@
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
-                            <a href="#">View Problems</a>
+                            @Html.ActionLink("Common Problems", "viewCommonProblems", "Venue")
                         </li>
                         <li>
-                            <a href="#">Report Problem</a>
+                            @Html.ActionLink("Common Problem Types", "viewProblemTypes", "Venue")
                         </li>
                         <li>
-                            <a href="#">Update Problem Status</a>
+                            @Html.ActionLink("View Venue Problems", "viewProblems", "Venue")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Report Problem", "reportProblem", "Venue")
                         </li>
                     </ul>
                 </li>
@@ -124,9 +127,6 @@
                         <li>
                             @Html.ActionLink("View Library Map", "ViewMap", "Repository")
                         </li>
-                        <li>
-                            <a href="#">View Tutorials</a>
-                        </li>
                     </ul>
                 </li>
                 <li>
@@ -136,14 +136,20 @@
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li>
-                            <a href="#">Create Questionnaire</a>
+                            @Html.ActionLink("Questionnaires", "Index", "Questionnaire")
                         </li>
                         <li>
-                            <a href="#">Manage Questionnaires</a>
+                            @Html.ActionLink("Question Bank", "Index", "Question_Bank")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Question Topics", "Index", "Question_Topic")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Questionnaire Results", "Get_Questionnaire_Results", "Questionnaire")
                         </li>
                     </ul>
                 </li>
-                <li>
+                @*<li>
                     <a href="#" aria-expanded="false">
                         <span class="navbar-custom-item-icon fa fa-bar-chart fa-fw"></span>
                         Reporting
@@ -162,7 +168,7 @@
                             @Html.ActionLink("Venue Usage Log", "venueUsage", "Reporting")
                         </li>
                     </ul>
-                </li>              
+                </li>*@              
             </ul>
             <ul id="navbar-login">
                 <li>

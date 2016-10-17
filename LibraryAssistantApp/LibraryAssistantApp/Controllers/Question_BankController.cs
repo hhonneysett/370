@@ -10,7 +10,7 @@ using LibraryAssistantApp.Models;
 
 namespace LibraryAssistantApp.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Employee")]
     public class Question_BankController : Controller
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();

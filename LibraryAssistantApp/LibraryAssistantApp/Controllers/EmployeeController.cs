@@ -15,7 +15,7 @@ using System.Web.Script.Serialization;
 
 namespace LibraryAssistantApp.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         private LibraryAssistantEntities db = new LibraryAssistantEntities();

@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Delete";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @{
@@ -13,7 +13,7 @@
     }
 }
 
-<h3>Delete Member</h3>
+<h2>Delete Member</h2>
 
 <div class="col-md-10">
     <div class="alert @alertcolor" role="alert">
@@ -35,7 +35,7 @@
                             Member Details
                         </label>
                     </div>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" title="Details of the selected member.">
                         <tbody>
                             <tr>
                                 <td>
@@ -82,7 +82,7 @@
                             Roles
                         </label>
                     </div>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" title="Roles for the selected member.">
                         <tbody>
                             @if (Model.person_role.Count() != 0)
                             {
@@ -103,7 +103,7 @@
 
         <div class="col-md-11 col-md-offset-1">
             <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-default" @TempData["Disabled"] /> |
+                <input type="submit" value="Delete" class="btn btn-primary" @TempData["Disabled"] title="Delete the selected member." /> |
                 @Html.ActionLink("Back to List", "Index")
             </div>
         </div>
