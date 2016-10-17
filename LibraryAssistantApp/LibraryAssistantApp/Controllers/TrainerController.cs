@@ -587,7 +587,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add training session - new
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult addNewTrainingSession()
         {
             //get list of existing categories
@@ -626,7 +626,7 @@ namespace LibraryAssistantApp.Controllers
 
         //get training venues
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public ActionResult getTrainingVenues(string model, string characteristics)
         {
             var buildings = db.Buildings.ToList();
@@ -844,7 +844,7 @@ namespace LibraryAssistantApp.Controllers
 
         //get available trainers
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult getTrainers(int id)
         {
             //create local variable of timeslots
@@ -905,7 +905,7 @@ namespace LibraryAssistantApp.Controllers
 
         //get additional details
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult additionalDetails(string trainer)
         {
             //assing registered person to a session variable
@@ -916,7 +916,7 @@ namespace LibraryAssistantApp.Controllers
 
         //repeat check
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public bool reapeatCheck(string repeatType, int multiple)
         {
             //local variable of selected timeslot and venue details
@@ -1090,7 +1090,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //view clashes
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult viewClashes()
         {
             return PartialView();
@@ -1098,7 +1098,7 @@ namespace LibraryAssistantApp.Controllers
 
         //capture training session
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public bool captureTrainingSession(string description, int maxAtt, string confirmation, string privacy, string notify, string repeatType, int? multiple)
         {
             //get local versions of variables required
@@ -1555,7 +1555,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //send trainger mail
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public void sendTrainerMail(string id, Venue_Booking booking)
         {
             var trainer = (from rp in db.Registered_Person
@@ -1597,7 +1597,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //send students mail
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public void sendStudentsMail(int id, Venue_Booking booking)
         {
             var topicPerson = db.Person_Topic.Include(p => p.Registered_Person).Include(t => t.Topic).Where(c => c.Topic_Seq.Equals(id) && c.Registered_Person.Person_Type.Equals("Student"));
@@ -1640,7 +1640,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //send general student mail
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public void sendGeneralStudentsMail(int id)
         {
             var topicPerson = db.Person_Topic.Include(p => p.Registered_Person).Include(t => t.Topic).Where(c => c.Topic_Seq.Equals(id) && c.Registered_Person.Person_Type.Equals("Student"));
@@ -2088,7 +2088,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add training category - get
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult addTrainingCategory()
         {
             return PartialView();
@@ -2096,7 +2096,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add training category - post
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public JsonResult addTrainingCategory(string name, string description)
         {
             var categories = db.Categories.ToList();
@@ -2128,7 +2128,7 @@ namespace LibraryAssistantApp.Controllers
         }
 
         //add training topic - get
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public PartialViewResult addTrainingTopic()
         {
             var categories = db.Categories.ToList();
@@ -2138,7 +2138,7 @@ namespace LibraryAssistantApp.Controllers
 
         //add training topic - post
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public JsonResult addTrainingTopic(string name, string description, int category)
         {
             var topics = db.Topics.ToList();
