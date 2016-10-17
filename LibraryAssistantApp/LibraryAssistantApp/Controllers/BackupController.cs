@@ -12,7 +12,7 @@ using System.Web.Script.Serialization;
 
 namespace LibraryAssistantApp.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class BackupController : Controller
     {
         public ActionResult Index()
@@ -43,7 +43,7 @@ namespace LibraryAssistantApp.Controllers
                 string fileName = Path.GetFileName(_path);
                 string dataTime = DateTime.Now.ToString("yyyy-MM-dd") + "-" + DateTime.Now.ToString("HH-mm");
                 string logName = "LibraryAssistant_LogBackup_" + dataTime + ".bak";
-                var sqlCommand = @"USE [master] ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE BACKUP LOG [{0}] TO  DISK = N'{1}' WITH NOFORMAT, NOINIT,  NAME = N'LibraryAssistant_LogBackup', NOSKIP, NOREWIND, NOUNLOAD,  NORECOVERY ,  STATS = 5 RESTORE DATABASE[{0}] FROM DISK = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Backup\{2}' WITH FILE = 1, NOUNLOAD, STATS = 5 ALTER DATABASE [{0}] SET MULTI_USER";
+                var sqlCommand = @"USE [master] ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE BACKUP LOG [{0}] TO  DISK = N'{1}' WITH NOFORMAT, NOINIT,  NAME = N'LibraryAssistant_LogBackup', NOSKIP, NOREWIND, NOUNLOAD,  NORECOVERY ,  STATS = 5 RESTORE DATABASE[{0}] FROM DISK = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Backup\{2}' WITH FILE = 1, NOUNLOAD, REPLACE, STATS = 5 ALTER DATABASE [{0}] SET MULTI_USER";
                 using (var db = new LibraryAssistantEntities())
                 {
                     string dbname = db.Database.Connection.Database;

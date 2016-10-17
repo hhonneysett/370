@@ -7,7 +7,7 @@
 <h2>Categories</h2>
 <hr />
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <p class="text-muted"><b>Instructions:</b></p>
         <ul class="text-muted" style="padding-bottom:10px">
             <li>Select an existing category to view available actions or add a new category.</li>
@@ -19,15 +19,15 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.categoryName, htmlAttributes: new {})
                     <div>
-                        @Html.ListBox("Category_ID", null, htmlAttributes: new { @class = "form-control", @id = "categoryList" })
+                        @Html.ListBox("Category_ID", null, htmlAttributes: new { @class = "form-control", @id = "categoryList", @size="8", @style="max-width=600px; width=600px", @title="List of categories." })
                         @Html.ValidationMessageFor(model => model.categoryName, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
             <div class="panel-footer">
-                <input type="submit" id="btnAddCat" class="btn btn-primary" value="Add Category"/>
-                <input type="submit" id="btnUpdateCat" class="btn btn-primary" value="Update Category" />
-                <input type="submit" id="btnDeleteCat" class="btn btn-primary" value="Delete Category" />
+                <input type="submit" id="btnAddCat" class="btn btn-primary" value="Add Category" title="Add a new category."/>
+                <input type="submit" id="btnUpdateCat" class="btn btn-primary" value="Update Category" title="Update an existing category."/>
+                <input type="submit" id="btnDeleteCat" class="btn btn-primary" value="Delete Category" title="Delete a category."/>
             </div>
         </div>
     </div>

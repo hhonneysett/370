@@ -1159,6 +1159,7 @@
     <Content Include="Views\Person_Session_Action_Log\Index.cshtml" />
     <Content Include="Views\Backup\Index.cshtml" />
     <Content Include="Views\Booking\empBookTrainingSess.cshtml" />
+    <Content Include="Views\Home\About_Us.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
