@@ -667,6 +667,13 @@ namespace LibraryAssistantApp.Controllers
                 TempData["Disabled"] = "Disabled";
                 return View(viewModel);
             }
+            /*Check venue booking person table*/
+            if (db.Venue_Booking_Person.Any(x => x.Person_ID == id))
+            {
+                ViewBag.ErrorMsg = "Employee cannot be deleted because they have been active on the system (relating to venue bookings).";
+                TempData["Disabled"] = "Disabled";
+                return View(viewModel);
+            }
 
             ViewBag.ErrorMsg = "Are you sure you want to delete?";
             TempData["Show"] = false;

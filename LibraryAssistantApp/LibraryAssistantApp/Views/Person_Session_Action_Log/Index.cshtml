@@ -11,7 +11,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-12">
         <h4 class="bg-info shaded">
             Audit Log Report
         </h4>
@@ -86,7 +86,7 @@
         </div>
     </div>
 
-    <div class="col-md-3">
+    @*<div class="col-md-3">
         <h4 class="bg-info shaded">
             Search
         </h4>
@@ -124,7 +124,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 </div>
 
 <script>
@@ -150,4 +150,7 @@
             $(this).datepicker();
         });
     });
+    function demoFromHTML() {
+        $('#tbl-audit-log').tableExport({ type: 'pdf', escape: 'false', pdfFontSize: '7' });
+    };
 </script>

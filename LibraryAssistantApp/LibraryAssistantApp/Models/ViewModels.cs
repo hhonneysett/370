@@ -401,7 +401,7 @@ namespace LibraryAssistantApp.Models
 
     public class TrainingDetailsModel
     {
-        [Display(Name ="Person ID")]
+        [Display(Name ="Username")]
         public string personId { get; set; }
 
         [Display(Name ="Booking Type")]
