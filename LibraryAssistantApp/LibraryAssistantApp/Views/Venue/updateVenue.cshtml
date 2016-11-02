@@ -11,7 +11,7 @@
     var currentType = (string)ViewBag.CurrentType;
 }
 
-<form id="updateVenueForm" name="updateVenueForm" class="form-group">
+<form id="updateVenueForm" name="updateVenueForm" class="form-group" style="padding-left:50px">
     <table>
         <tr>
             <td><b>Campus:</b></td>
@@ -68,20 +68,38 @@
     </table>
 </form>
 
-<div class="form-group">
-
-    <label class="control-label">Venue Characteristics:</label>
-
+<div style="padding-bottom:15px">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-1">
+            <label class="control-label">Venue Characteristics:</label>
+        </div>
+        <div class="col-sm-4">
+            <label class="control-label">Quantity:</label>
+        </div>
+    </div>
     @foreach (checkedCharacteristics characteristic in characteristics)
-    {
-        <div class="checkbox">
-            <label><input type="checkbox" value="@characteristic.characteristic.Characteristic_ID" class="Characteristic_ID" checked="@characteristic.has"/>@characteristic.characteristic.Characteristic_Name</label>
+            {
+        <div class="row">
+            <div class="charList">
+                <div class="col-sm-4 col-sm-offset-1">
+                    <div class="checkbox">
+                        <label><input type="checkbox" value="@characteristic.characteristic.Characteristic_ID" class="Characteristic_ID" checked="@characteristic.has" />@characteristic.characteristic.Characteristic_Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    @Html.EditorFor(x => characteristic.count, new { htmlAttributes = new { @class = "iCount form-control", @title = "Quantity of characteristic.", @min = "0", @max = "1000" } })
+                </div>
+            </div>
         </div>
     }
 </div>
 
-<button class="btn btn-primary" id="btnConfirmVenueUpdate">Update Building</button>
-<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+<div class="row">
+    <div class="col-md-12 col-md-offset-1">
+        <button class="btn btn-primary" id="btnConfirmVenueUpdate">Update Building</button>
+        <button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+    </div>
+</div>
 <hr />
 
 <script type="text/javascript">
@@ -112,18 +130,27 @@
     $("#btnConfirmVenueUpdate").click(function() {
         var check = $("#updateVenueForm").valid();
 
-        //disable button on add click
+        //disable button on addsclick
         $("#btnConfirmVenueUpdate").prop('disabled', true);
 
-        //get characteristics
+        //get characteristicss
         var characteristicsList = [];
 
-        $('input:checkbox.Characteristic_ID').each(function () {
-            var sThisVal = (this.checked ? $(this).val() : "");
-            if (sThisVal > 0) {
-                characteristicsList.push(sThisVal);
+        $('.charList').each(function (){
+            var indicator = ($('input:checkbox.Characteristic_ID', this).is(':checked'));
+            var i = $('.iCount', this).val();
+            if (indicator == true) {
+                var sThisVal = ($('input:checkbox.Characteristic_ID', this).val());
+                characteristicsList.push({ seq: sThisVal, count: i });
             };
         });
+
+        //$('input:checkbox.Characteristic_ID').each(function () {
+        //    var sThisVal = (this.checked ? $(this).val() : "");
+        //    if (sThisVal > 0) {
+        //        characteristicsList.push(sThisVal);
+        //    };
+        //});
 
         if (check)
         {

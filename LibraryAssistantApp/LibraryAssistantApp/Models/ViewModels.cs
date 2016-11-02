@@ -773,7 +773,9 @@ namespace LibraryAssistantApp.Models
     public class checkedCharacteristics
     {
         public Characteristic characteristic;
-        public bool has;
+        public int seq { get; set; }
+        public bool has { get; set; }
+        public int count { get; set; }
     }
 
     public class monthList

@@ -8,7 +8,7 @@
     var types = (IEnumerable<Venue_Type>)ViewBag.Types;
 }
 
-<form id="addVenueForm" class="form-group">
+<form id="addVenueForm" class="form-group" style="padding-left:50px">
     <table>
         <tr>
             <td><b>Campus Name:</b></td>
@@ -24,7 +24,7 @@
         </tr>
         <tr>
             <td><b>Type:</b></td>
-            <td style="padding-left:5px; padding-bottom:5px"">
+            <td style="padding-left:5px; padding-bottom:5px">
                 <select id="venueTypeSelect" class="form-control" required>
                     @foreach (var vtype in types)
                     {
@@ -44,20 +44,40 @@
     </table>
 </form>
 
-<div class="form-group">
-
-    <label class="control-label">Venue Characteristics:</label>
-
+<div style="padding-bottom:15px">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-1">
+            <label class="control-label">Venue Characteristics:</label>
+        </div>
+        <div class="col-sm-4">
+            <label class="control-label">Quantity:</label>
+        </div>
+    </div>
     @foreach (Characteristic characteristic in characteristics)
     {
-        <div class="checkbox">
-            <label><input type="checkbox" value="@characteristic.Characteristic_ID" class="Characteristic_ID"/>@characteristic.Characteristic_Name</label>
+        <div class="row">
+            <div class="charList">
+                <div class="col-sm-4 col-sm-offset-1">
+                    <div class="checkbox">
+                        <label><input type="checkbox" value="@characteristic.Characteristic_ID" class="Characteristic_ID" />@characteristic.Characteristic_Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control iCount" title="Quantity of characteristic." min="0" max="1000" value="0"/>
+                </div>
+            </div>
         </div>
     }
 </div>
 
-<button class="btn btn-primary" id="btnAddVenueModal">Add Venue</button>
-<button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+
+
+<div class="row">
+    <div class="col-md-12 col-md-offset-1">
+        <button class="btn btn-primary" id="btnAddVenueModal">Add Venue</button>
+        <button class="btn btn-primary" id="btnCancelModal">Cancel</button>
+    </div>
+</div>
 <hr />
 
 <script type="text/javascript">
@@ -101,12 +121,21 @@
             //get characteristics
             var characteristicsList = [];
 
-            $('input:checkbox.Characteristic_ID').each(function () {
-                var sThisVal = (this.checked ? $(this).val() : "");
-                if (sThisVal > 0) {
-                    characteristicsList.push(sThisVal);
+            $('.charList').each(function () {
+                var indicator = ($('input:checkbox.Characteristic_ID', this).is(':checked'));
+                var i = $('.iCount', this).val();
+                if (indicator == true) {
+                    var sThisVal = ($('input:checkbox.Characteristic_ID', this).val());
+                    characteristicsList.push({ seq: sThisVal, count: i });
                 };
             });
+
+            //$('input:checkbox.Characteristic_ID').each(function () {
+            //    var sThisVal = (this.checked ? $(this).val() : "");
+            //    if (sThisVal > 0) {
+            //        characteristicsList.push(sThisVal);
+            //    };
+            //});
 
             //disable button on add click
             $("#btnAddVenueModal").prop('disabled', true);

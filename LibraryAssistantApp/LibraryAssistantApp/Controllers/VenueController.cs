@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace LibraryAssistantApp.Controllers
 {
@@ -628,7 +629,9 @@ namespace LibraryAssistantApp.Controllers
         {
             var idHolder = (Venue)Session["idHolder"];
 
-            var characteristics = Deserialise<IEnumerable<int>>(characteristicsJson);
+            //var characteristics = Deserialise<IEnumerable<int>>(characteristicsJson);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var characteristicsList = (List<checkedCharacteristics>)js.Deserialize(characteristicsJson, typeof(List<checkedCharacteristics>));
 
             var venue = new Venue();
 
@@ -645,13 +648,12 @@ namespace LibraryAssistantApp.Controllers
             //record action
             global.addAudit("Venues", "Venues: Add Venue", "Create", User.Identity.Name);
 
-            foreach (int characteristic in characteristics)
+            foreach (var c in characteristicsList)
             {
-                var ch = new Venue_Characteristic
-                {
-                    Venue_ID = venue.Venue_ID,
-                    Characteristic_ID = characteristic,
-                };
+                var ch = new Venue_Characteristic();
+                ch.Venue_ID = venue.Venue_ID;
+                ch.Characteristic_ID = c.seq;
+                ch.Quantity = c.count;
                 db.Venue_Characteristic.Add(ch);
             }
 
@@ -784,6 +786,11 @@ namespace LibraryAssistantApp.Controllers
                 var a = new checkedCharacteristics();
                 a.characteristic = characteristic;
                 a.has = true;
+                var characteristicCount = (from c in db.Venue_Characteristic
+                                           where (c.Venue_ID == id) && (c.Characteristic_ID == characteristic.Characteristic_ID)
+                                           select c.Quantity).Single();
+                a.count = characteristicCount;
+                a.count = characteristicCount;
                 charList.Add(a);
             }
 
@@ -792,6 +799,7 @@ namespace LibraryAssistantApp.Controllers
                 var a = new checkedCharacteristics();
                 a.characteristic = characteristic;
                 a.has = false;
+                a.count = 0;
                 charList.Add(a);
             }
 
@@ -810,7 +818,9 @@ namespace LibraryAssistantApp.Controllers
         [Authorize(Roles = "Admin")]
         public JsonResult updateVenue(string venueName, int venueCapacity, int campus, int building, int floor, string type, string characteristics)
         {
-            var characteristicsList = Deserialise<IEnumerable<int>>(characteristics);
+            //var characteristicsList = Deserialise<IEnumerable<int>>(characteristics);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var characteristicsList = (List<checkedCharacteristics>)js.Deserialize(characteristics, typeof(List<checkedCharacteristics>));
 
             var idHolder = (Venue)Session["idHolder"];
 
@@ -837,7 +847,8 @@ namespace LibraryAssistantApp.Controllers
             {
                 var venChar = new Venue_Characteristic();
                 venChar.Venue_ID = idHolder.Venue_ID;
-                venChar.Characteristic_ID = c;
+                venChar.Characteristic_ID = c.seq;
+                venChar.Quantity = c.count;
                 db.Venue_Characteristic.Add(venChar);
             }
 

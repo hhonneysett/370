@@ -5,67 +5,94 @@
     var allTrainers = (List<Registered_Person>)Session["allTrainers"];
 }
 
-<div class="col-md-9" id="possibleTrainers">
-
-    <div class="panel panel-default">
-        <div class="panel-body">
+<div class="col-sm-8" id="possibleTrainers">
+    <p class="text-muted"><b>Choose a trainer to present the training session</b></p>
+    <div style="list-style:none">
+        <ul>
+            <li style="display:inline">
+                <input type="radio" name="trainer" class="trainerCheck" id="None" />  <label>None</label>
+            </li>
+            <li style="display:inline; padding-left:25px">
+                <input type="radio" name="trainer" class="trainerCheck" id="External" />  <label>External</label>
+            </li>
+            <li style="display:inline; padding-left:25px">
+                <span class="text-danger">OR select a trainer below</span>
+            </li>
+        </ul>
+    </div>
             <ul class="nav nav-pills" style="padding-bottom:5px; border-bottom:thin solid lightgrey">
                 <li class="active"><a data-toggle="pill" href="#qualifiedT">Qualified Trainers</a></li>
                 <li><a data-toggle="pill" href="#allT">All Trainers</a></li>
             </ul>
+    <h5 class="bg-warning shaded">Available trainers:</h5>
             <div class="tab-content" style="padding-top:5px">
                 <div id="qualifiedT" class="tab-pane fade in active">
-                    <table class="table" id="trainerTable">
+                    <table class="table table-bordered" id="trainerTable">
                         <thead>
                             <tr>
-                                <th>Trainer</th>
+                                <th>
+                                    Username
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Surname
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><label><input type="radio" name="trainer" class="trainerCheck" id="None" />  None</label></td>
-                            </tr>
-                            <tr>
-                                <td><label><input type="radio" name="trainer" class="trainerCheck" id="External" />  External Trainer</label></td>
-                            </tr>
                             @foreach (Registered_Person rp in availableTrainers)
                             {
                                 <tr>
-                                    <td title="Select trainer to host training session."><label><input type="radio" name="trainer" class="trainerCheck" id="@rp.Person_ID" />  @rp.Person_ID - @rp.Person_Name @rp.Person_Surname</label></td>
+                                    <td title="Select trainer to host training session.">
+                                        <label><input type="radio" name="trainer" class="trainerCheck" id="@rp.Person_ID" />  @rp.Person_ID</label>
+                                    </td>
+                                    <td>
+                                        @rp.Person_Name
+                                    </td>
+                                    <td>
+                                        @rp.Person_Surname
+                                    </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-
                 </div>
                 <div id="allT" class="tab-pane fade">
-                    <table class="table" id="allTrainerTable">
+                    <table class="table table-bordered" id="allTrainerTable">
                         <thead>
                             <tr>
-                                <th>Trainer</th>
+                                <th>
+                                    Username
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Surname
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><label><input type="radio" name="trainer" class="trainerCheck" id="None" />  None</label></td>
-                            </tr>
-                            <tr>
-                                <td><label><input type="radio" name="trainer" class="trainerCheck" id="External" />  External Trainer</label></td>
-                            </tr>
                             @foreach (Registered_Person rp in allTrainers)
                             {
                                 <tr>
-                                    <td title="Select trainer to host training session."><label><input type="radio" name="trainer" class="trainerCheck" id="@rp.Person_ID" />  @rp.Person_ID - @rp.Person_Name @rp.Person_Surname</label></td>
+                                    <td title="Select trainer to host training session.">
+                                        <label><input type="radio" name="trainer" class="trainerCheck" id="@rp.Person_ID" />  @rp.Person_ID</label>
+                                    </td>
+                                    <td>
+                                        @rp.Person_Name
+                                    </td>
+                                    <td>
+                                        @rp.Person_Surname
+                                    </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-
-
 </div>
 
 <script type="text/javascript">

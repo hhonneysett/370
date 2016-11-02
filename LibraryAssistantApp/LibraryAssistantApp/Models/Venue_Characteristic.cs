@@ -18,8 +18,9 @@ namespace LibraryAssistantApp.Models
         public int Characteristic_ID { get; set; }
         public int Venue_ID { get; set; }
         public string Additional_Information { get; set; }
+        public int Quantity { get; set; }
     
-        public virtual Characteristic Characteristic { get; set; }
         public virtual Venue Venue { get; set; }
+        public virtual Characteristic Characteristic { get; set; }
     }
 }

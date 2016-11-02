@@ -39,7 +39,6 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Calender_Rules> Calender_Rules { get; set; }
         public virtual DbSet<Campus> Campus { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Characteristic> Characteristics { get; set; }
         public virtual DbSet<Colour> Colours { get; set; }
         public virtual DbSet<Common_Problem> Common_Problem { get; set; }
         public virtual DbSet<Common_Problem_Type> Common_Problem_Type { get; set; }
@@ -76,6 +75,7 @@ namespace LibraryAssistantApp.Models
         public virtual DbSet<Venue_Characteristic> Venue_Characteristic { get; set; }
         public virtual DbSet<Venue_Problem> Venue_Problem { get; set; }
         public virtual DbSet<Venue_Type> Venue_Type { get; set; }
+        public virtual DbSet<Characteristic> Characteristics { get; set; }
     
         public virtual ObjectResult<Venue> findBookingVenuesFunc(Nullable<System.DateTime> bookingStart, Nullable<System.DateTime> bookingEnd, string venueType, Nullable<int> campusID)
         {

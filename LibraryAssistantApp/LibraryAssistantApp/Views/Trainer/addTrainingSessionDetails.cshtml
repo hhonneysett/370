@@ -5,30 +5,28 @@
 }
 
 <div class="row" id="detailsThree">
-
-    <div id="headingThree" class="bg-warning shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Select Timeslot:</b></div>
-
+    <div id="headingThree" class="bg-info shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom pull-right" style="padding-right:20px"></span><b>Select Timeslot & Presenter:</b></div>
     <hr />
-
     <div id="toggleThree">
-
         <div class="row">
-            <div class="col-md-12">
+            @*<div class="col-sm-12">
                 <p class="text-muted"><b>Instructions:</b></p>
                 <ul class="text-muted" style="padding-bottom:10px">
                     <li>Select a preferred timeslot from the available timeslots below.</li>
                     <li>Once a timeslot has been selected, select an available trainer.</li>
                     <li>Once a timeslot and trainer has been selected, click the 'Proceed' button.</li>
                 </ul>
-            </div>
-            <div class="col-md-3">
-                <div class="panel panel-default" style="max-height:400px;overflow-y: scroll;">
+            </div>*@
+            <div class="col-sm-4">
+                <p class="text-muted"><b>Choose a time for the training session</b></p>
+                <h5 class="bg-warning shaded">Available times:</h5>
+                <div class="panel panel-default scrollable" style="max-height:400px">
                     <table class="table text-center">
-                        <thead>
+                        @*<thead>
                             <tr class="text-center">
                                 <th class="text-center">Select A Timeslot</th>
                             </tr>
-                        </thead>
+                        </thead>*@
                         <tbody>
                             @foreach (timeslot ts in timeslots)
                             {
@@ -40,18 +38,19 @@
                     </table>
                 </div>
             </div>
-
-            <div class="col-md-9" id="possibleTrainers">
+            <div class="col-sm-8" id="possibleTrainers">
+                <p class="text-muted"><b>Choose a trainer to present the training session</b></p>
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <h3>No Timeslot Selected</h3>
+                        <h5>Select a timeslot to view available trainers</h5>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="row col-md-12">
-            <input type="button" class="btn btn-primary" id="trainingProThree" value="Proceed" />
+        <div class="row" style="padding-top:25px; padding-bottom:25px">
+            <div class="col-sm-12">
+                <input type="button" class="btn btn-success btn-block" id="trainingProThree" value="Submit" />
+            </div>
         </div>
     </div>   
 </div>
@@ -87,13 +86,13 @@
     //toggle details when clicked
     $("#headingThree").click(function () {
         //toggle section
-        $("#toggleThree").toggle(800);
-        if ($("#detailsThree span").hasClass("glyphicon glyphicon-triangle-right")) {
-            $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-right");
+        $("#toggleThree").toggle(400);
+        if ($("#detailsThree span").hasClass("glyphicon glyphicon-triangle-left")) {
+            $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-left");
             $("#detailsThree span").addClass("glyphicon glyphicon-triangle-bottom");
         } else {
             $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-bottom");
-            $("#detailsThree span").addClass("glyphicon glyphicon-triangle-right");
+            $("#detailsThree span").addClass("glyphicon glyphicon-triangle-left");
         }
     });
 
@@ -123,13 +122,13 @@
                 table.append("<tr><td><b>Timeslot:</b></td><td style='padding-left:5px; padding-bottom:5px'>" + $("input:radio.timeslot:checked").val() + "</td></tr>");
 
                 //toggle section
-                $("#toggleThree").toggle(800);
-                if ($("#detailsThree span").hasClass("glyphicon glyphicon-triangle-right")) {
-                    $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-right");
+                $("#toggleThree").toggle(400);
+                if ($("#detailsThree span").hasClass("glyphicon glyphicon-triangle-left")) {
+                    $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-left");
                     $("#detailsThree span").addClass("glyphicon glyphicon-triangle-bottom");
                 } else {
                     $("#detailsThree span").removeClass("glyphicon glyphicon-triangle-bottom");
-                    $("#detailsThree span").addClass("glyphicon glyphicon-triangle-right");
+                    $("#detailsThree span").addClass("glyphicon glyphicon-triangle-left");
                 }
             }
         })

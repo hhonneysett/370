@@ -5,21 +5,20 @@
 }
 
 <div id="detailsFour" class="row">
-
-    <div id="headingFour" class="bg-warning shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom"></span><b>Addition Details:</b></div>
+    <div id="headingFour" class="bg-info shaded cursor"><span id="arrow" class="glyphicon glyphicon-triangle-bottom pull-right" style="padding-right:20px"></span><b>Additional Details:</b></div>
     <hr />
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-11 col-sm-offset-1">
             <form id="TformFour">
-                <div class="col-md-12">
+                @*<div class="col-md-12">
                     <p class="text-muted"><b>Instructions:</b></p>
                     <ul class="text-muted" style="padding-bottom:10px">
                         <li>Enter additional training session details below.</li>
                         <li>Select recurring option if desired.</li>
                         <li>Click the 'Submit' button to finalise the training session booking.</li>
                     </ul>
-                </div>
-                <div class="col-md-6">
+                </div>*@
+                <div class="col-sm-9">
                     <table id="additionalTable">
                         <tr>
                             <td><b>Description:</b></td>
@@ -62,7 +61,7 @@
                     </table>
                 </div>
             </form>
-            <div class="col-md-3">
+            <div class="col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Repeat Type
@@ -96,7 +95,11 @@
             </div>
         </div>        
     </div>
-    <div class="col-md-offset-5">    <input id="trainingProFour" type="button" class="btn btn-primary" value="Finalise Training Session" onclick="submitTrainingSession()" /> </div>  
+    <div class="row" style="padding-top:25px; padding-bottom:25px">
+        <div class="col-sm-12">
+            <input id="trainingProFour" type="button" class="btn btn-success" value="Finalise Training Session" onclick="submitTrainingSession()" />
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -108,11 +111,11 @@
     //toggle the repeat type
     function getRepeatType() {
         var id = $("#repeat").children(":selected").val();
-        $("#repeatErrorDiv").hide(800);
+        $("#repeatErrorDiv").hide(200);
         if (id == "none") {
-            $("#repeatToggle").hide(800);
+            $("#repeatToggle").hide(200);
         } else {
-            $("#repeatToggle").show(800);
+            $("#repeatToggle").show(200);
         }
 
     }
