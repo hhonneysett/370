@@ -146,7 +146,7 @@ namespace LibraryAssistantApp.Controllers
             StringBuilder sbEmailBody = new StringBuilder();
             sbEmailBody.Append("Dear " + UserName + ",<br/><br/>");
             sbEmailBody.Append("Please click on the following link to reset your password");
-            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://localhost:52612/Account/ResetPassword/?id=" + UniqueId);
+            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://192.168.35.1:52612/Account/ResetPassword/?id=" + UniqueId);
             sbEmailBody.Append("<br/><br/>");
             sbEmailBody.Append("<b>UP Library Assistant</b>");
 
