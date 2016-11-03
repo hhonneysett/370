@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
@@ -635,11 +636,16 @@ namespace LibraryAssistantApp.Controllers
             //deserialise the training session model
             TrainingSessionModel sessionDetails = Deserialise<TrainingSessionModel>(model);
 
+
+
             //capture the session details to a session variable
             Session["sessionDetails"] = sessionDetails;
 
             //deserialize the list of characteristics
-            IEnumerable<int> characteristicList = Deserialise<IEnumerable<int>>(characteristics);
+
+            //IEnumerable<int> characteristicList = Deserialise<IEnumerable<int>>(characteristics);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var characteristicList = (List<checkedCharacteristics>)js.Deserialize(characteristics, typeof(List<checkedCharacteristics>));
 
             DateTime date = Convert.ToDateTime(sessionDetails.startDate);
 
@@ -722,8 +728,19 @@ namespace LibraryAssistantApp.Controllers
                 var venueChar = db.Venue_Characteristic.Where(p => venueId.Contains(p.Venue_ID)).Include(v => v.Characteristic);
 
                 //get venue char objects that match the submitted criteria
+                var filteredVenueId = new List<int>();
+                int k = 0;
+                foreach (var item in characteristicList)
+                {
+                    if (venueChar.Any(x => x.Characteristic_ID == item.seq))
+                    {
+                        k = item.seq;
+                        filteredVenueId.Add(k);
+                    }
+                }
+
                 var filteredVenueChar = (from fc in venueChar
-                                         where characteristicList.Contains(fc.Characteristic_ID)
+                                         where filteredVenueId.Contains(fc.Characteristic_ID)
                                          select fc.Venue_ID).ToList();
 
                 //get all venues that have characteristics provided
@@ -732,22 +749,34 @@ namespace LibraryAssistantApp.Controllers
                                       select fv).ToList();
 
                 //get total number of characteristics provided
-                int charCount = characteristicList.Count();
+
+                //int charCount = characteristicList.Count();
                 int loopCounter = 0;                
 
                 //get the rating of the venues
                 foreach (var venue in filteredVenues)
                 {
                     //reset loop counter each venue loop
-                    loopCounter = 0;
+                    //loopCounter = 0;
                     string matchCharString = "";
-
+                    double charCount = 0;
                     //go through each characteristic and see if the venue satisfys it
-                    foreach(var charac in venueChar)
+                    foreach (var charac in venueChar)
                     {
-                        if (characteristicList.Contains(charac.Characteristic_ID) && charac.Venue_ID.Equals(venue.Venue_ID))
+                        if (filteredVenueId.Contains(charac.Characteristic_ID) && charac.Venue_ID.Equals(venue.Venue_ID))
                         {
-                            loopCounter = loopCounter + 1;
+                            var filteredVenueCharCount = (from fc in venueChar
+                                                          where fc.Venue_ID == charac.Venue_ID && charac.Venue_ID.Equals(venue.Venue_ID)
+                                                          select fc.Quantity).ToList();
+                            charCount += filteredVenueCharCount.Sum(x => x);
+                            //foreach (int item in filteredVenueCharCount)
+                            //{
+                            //    charCount += item;
+                            //}
+                            var characteristicItem = (from b in characteristicList
+                                                      where b.seq == charac.Characteristic_ID
+                                                      select b.count).FirstOrDefault();
+                            loopCounter = loopCounter + characteristicItem;
                             if (matchCharString.Length == 0)
                             {
                                 matchCharString = matchCharString + charac.Characteristic.Characteristic_Name;
@@ -756,12 +785,26 @@ namespace LibraryAssistantApp.Controllers
                             {
                                 matchCharString = matchCharString + ", " + charac.Characteristic.Characteristic_Name;
                             }
-                            
+                        }
+                        else if (charac.Venue_ID.Equals(venue.Venue_ID))
+                        {
+                            if (matchCharString.Length == 0)
+                            {
+                                matchCharString = matchCharString + charac.Characteristic.Characteristic_Name;
+                            }
+                            else
+                            {
+                                matchCharString = matchCharString + ", " + charac.Characteristic.Characteristic_Name;
+                            }
                         }
                     }
 
                     //add the venue and value to the venue rating list
                     decimal rating = (Convert.ToDecimal(loopCounter) / Convert.ToDecimal(charCount)) * 100m;
+                    if (rating > 100)
+                    {
+                        rating = 100;
+                    }
                     var building = buildings.Where(b => b.Building_ID == venue.Building_ID).First();
                     var floor = floors.Where(f => f.Building_Floor_ID == venue.Building_Floor_ID).First();
                     venueRating a = new venueRating

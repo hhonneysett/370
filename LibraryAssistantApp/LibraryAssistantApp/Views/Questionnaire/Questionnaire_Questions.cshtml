@@ -499,13 +499,14 @@
         var SelectedQ_Checkbox4 = document.getElementById("SelectedQ_Checkbox4").checked;
         var SelectedQ_Checkbox5 = document.getElementById("SelectedQ_Checkbox5").checked;
         var Questionnaire_ID = document.getElementById("Questionnaire_ID").value;
+        var Topic_Seq = document.getElementById("Topic").value;
 
 
         if (SelectedQuestion1 == "") {
             document.getElementById("Warning").innerHTML = "At least one question must be assigned to a questionnaire.";
         }
         else {
-            window.location.href = "/Questionnaire/Create_Questionnaire_Questions?Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Display_Order3=" + Display_Order3 + "&Display_Order4=" + Display_Order4 + "&Display_Order5=" + Display_Order5 + "&SelectedQuestion1=" + SelectedQuestion1 + "&SelectedQuestion2=" + SelectedQuestion2 + "&SelectedQuestion3=" + SelectedQuestion3 + "&SelectedQuestion4=" + SelectedQuestion4 + "&SelectedQuestion5=" + SelectedQuestion5 + "&SelectedQ_Checkbox1=" + SelectedQ_Checkbox1 + "&SelectedQ_Checkbox2=" + SelectedQ_Checkbox2 + "&SelectedQ_Checkbox3=" + SelectedQ_Checkbox3 + "&SelectedQ_Checkbox4=" + SelectedQ_Checkbox4 + "&SelectedQ_Checkbox5=" + SelectedQ_Checkbox5 + "&Questionnaire_ID=" + Questionnaire_ID;
+            window.location.href = "/Questionnaire/Create_Questionnaire_Questions?Display_Order1=" + Display_Order1 + "&Display_Order2=" + Display_Order2 + "&Display_Order3=" + Display_Order3 + "&Display_Order4=" + Display_Order4 + "&Display_Order5=" + Display_Order5 + "&SelectedQuestion1=" + SelectedQuestion1 + "&SelectedQuestion2=" + SelectedQuestion2 + "&SelectedQuestion3=" + SelectedQuestion3 + "&SelectedQuestion4=" + SelectedQuestion4 + "&SelectedQuestion5=" + SelectedQuestion5 + "&SelectedQ_Checkbox1=" + SelectedQ_Checkbox1 + "&SelectedQ_Checkbox2=" + SelectedQ_Checkbox2 + "&SelectedQ_Checkbox3=" + SelectedQ_Checkbox3 + "&SelectedQ_Checkbox4=" + SelectedQ_Checkbox4 + "&SelectedQ_Checkbox5=" + SelectedQ_Checkbox5 + "&Questionnaire_ID=" + Questionnaire_ID + "&Topic_Seq=" + Topic_Seq;
         }
 
 
