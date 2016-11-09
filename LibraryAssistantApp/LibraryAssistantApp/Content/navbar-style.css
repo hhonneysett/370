@@ -296,29 +296,58 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
         padding-right: 20px;
         padding: 15px 25px 15px 15px;
     }
-
 }
 
-@media (max-width: 1109px) {
-    #navbar-login a {
+@media (max-width: 937px) {
+    #navbar-login {
         padding-right: 20px;
         padding: 15px 25px 15px 15px;
         position: fixed;
-        top: 0;
+        top: -15px;
         right: 0;
     }
+        #navbar-help {
+        padding-right: 20px;
+        padding: 15px 25px 15px 15px;
+        position: fixed;
+        top:-15px;
+        right:105px;
+    }
 
+}
+
+@media (max-width: 767px) and (min-width:0px) {
+    #navbar-login {
+        position:initial;
+        margin-right:-10px;
+
+    }
+    #navbar-login a{
+                padding: 10px 15px;
+                        margin-bottom:10px;
+    }
+    #navbar-help {
+        display:none;
+        position:initial;
+        overflow:hidden;
+    }
+        #navbar-help a{
+        display:none;
+    }
 }
 
 @media (max-width: 767px) {
     #navbar-login {
         border-top: solid 1px #e7e7e7;
         padding: inherit;
-        margin: 0px -15px;
+                margin: 0px -15px;
+
     }
         #navbar-login a {
+            margin-top:10px;
         display:block;
         text-decoration:none;
+
     }
 
     #navbar-login > li > a {
@@ -329,6 +358,7 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
 
 }
 
+
 /*Navbar help*/
 
 #navbar-help a:hover {
@@ -336,20 +366,16 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
+    #navbar-help a {
+        padding: 15px 10px 15px 10px;
+    }
+
+/*
 @media (min-width: 768px) {
     #navbar-help a {
         float:right;
         padding-right: 20px;
         padding: 15px 10px 15px 10px;
-    }
-
-}
-
-@media (max-width: 1109px) {
-    #navbar-help a {
-        padding-right: 20px;
-        padding: 15px 10px 15px 10px;
-        display:none;
     }
 
 }
@@ -373,16 +399,16 @@ fieldset[disabled] .navbar-custom .btn-link:focus {
     }
 
 }
-
+*/
 @media (max-width: 767px) {
     #navbar-help {
-        border-top: solid 1px #e7e7e7;
+
         padding: inherit;
-        margin: 0px -15px;
+        margin-bottom:10px;
+
     }
         #navbar-help a {
         display:block;
-
         right:initial;
         text-decoration:none;
     }
