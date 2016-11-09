@@ -54,7 +54,7 @@ namespace LibraryAssistantApp.Controllers
 
                  string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
                
-                if (Answer == "0001/01/01 12:00:00 AM")
+                if (Answer == "1/1/0001 12:00:00 AM")
                 {
                     AnswerDates[i] = "Not yet responded";
                 }
@@ -124,7 +124,7 @@ namespace LibraryAssistantApp.Controllers
                     }
                     string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
 
-                    if (Answer == "0001/01/01 12:00:00 AM")
+                    if (Answer == "1/1/0001 12:00:00 AM")
                     {
                         AnswerDates[i] = "Not yet responded";
                     }
@@ -163,7 +163,7 @@ namespace LibraryAssistantApp.Controllers
                     }
                     string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
 
-                    if (Answer == "0001/01/01 12:00:00 AM")
+                    if (Answer == "1/1/0001 12:00:00 AM")
                     {
                         AnswerDates[i] = "Not yet responded";
                     }
@@ -202,7 +202,7 @@ namespace LibraryAssistantApp.Controllers
                     }
                     string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
 
-                    if (Answer == "0001/01/01 12:00:00 AM")
+                    if (Answer == "1/1/0001 12:00:00 AM")
                     {
                         AnswerDates[i] = "Not yet responded";
                     }
@@ -241,7 +241,7 @@ namespace LibraryAssistantApp.Controllers
                     }
                     string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
 
-                    if (Answer == "0001/01/01 12:00:00 AM")
+                    if (Answer == "1/1/0001 12:00:00 AM")
                     {
                         AnswerDates[i] = "Not yet responded";
                     }
@@ -283,7 +283,7 @@ namespace LibraryAssistantApp.Controllers
 
                     string Answer = db.Person_Questionnaire.Where(X => X.Person_ID == User.Identity.Name && X.Questionnaire_ID == getitem).Select(Y => Y.Answer_Date).FirstOrDefault().ToString();
 
-                    if (Answer == "0001/01/01 12:00:00 AM")
+                    if (Answer == "1/1/0001 12:00:00 AM")
                     {
                         AnswerDates[i] = "Not yet responded";
                     }

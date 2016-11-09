@@ -9,7 +9,7 @@ namespace LibraryAssistantApp.Models
 {
     public class Login
     {
-        [Required(ErrorMessage = "Student number required.", AllowEmptyStrings = false), Display(Name = "Student Number")]
+        [Required(ErrorMessage = "Username required.", AllowEmptyStrings = false), Display(Name = "Student Number")]
         public string Person_ID { get; set; }
 
         [Required(ErrorMessage = "Please provide a password", AllowEmptyStrings = false)]
